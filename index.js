@@ -120,4 +120,4 @@ class Storyblok {
   }
 }
 
-export default Storyblok;
+module.exports = Storyblok;

@@ -1,6 +1,6 @@
 {
   "name": "storyblok-js-client",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Universal JavaScript SDK for Storyblok's API",
   "main": "index.js",
   "repository": {
@@ -16,9 +16,7 @@
     "url": "https://github.com/storyblok/storyblok-js-client/issues"
   },
   "homepage": "https://github.com/storyblok/storyblok-js-client#readme",
-  "devDependencies": {
-    
-  },
+  "devDependencies": {},
   "dependencies": {
     "axios": "^0.17.1",
     "object-hash": "^1.1.8"
