@@ -37,12 +37,13 @@ let Storyblok = new StoryblokClient({
 
 The Storyblok client comes with a caching mechanism.
 When initializing the Storyblok client you can define a cache provider for caching the requests in memory.
-To clear the cache you can call `Storyblok.flushCache();`.
+To clear the cache you can call `Storyblok.flushCache();` or activate the automatic clear with clear: 'auto'.
 
 ```javascript
 let Storyblok = new StoryblokClient({
   privateToken: 'xf5dRMMjltLzKOcNgMaU9Att',
   cache: {
+    clear: 'auto',
     type: 'memory'
   }
 });

@@ -12,11 +12,11 @@ class Storyblok {
       endpoint = API_ENDPOINT_DEFAULT;
     }
 
-    let headers = Object.assign({'X-Storyblok-Client': 'JS/1.0.0'}, config.headers);
+    let headers = Object.assign({}, {'X-Storyblok-Client': 'JS/1.0.0'}, config.headers);
 
     this.cacheVersion = (this.cacheVersion || this.newVersion());
     this.accessToken = config.accessToken;
-    this.cache = config.cache || {};
+    this.cache = config.cache || {clear: 'manual'};
     this.client = axios.create({
       baseURL: endpoint,
       timeout: (config.timeout || 3000),
@@ -49,6 +49,10 @@ class Storyblok {
       let cacheKey = hash({url: url, params: params});
       let provider = this.cacheProvider();
       let cache = provider.get(cacheKey);
+
+      if (this.cache.clear === 'auto' && params.version === 'draft') {
+        this.flushCache();
+      }
 
       if (params.version === 'published' && cache) {
         resolve(cache);
