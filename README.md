@@ -41,7 +41,7 @@ To clear the cache you can call `Storyblok.flushCache();` or activate the automa
 
 ```javascript
 let Storyblok = new StoryblokClient({
-  privateToken: 'xf5dRMMjltLzKOcNgMaU9Att',
+  accessToken: 'xf5dRMMjltLzKOcNgMaU9Att',
   cache: {
     clear: 'auto',
     type: 'memory'
