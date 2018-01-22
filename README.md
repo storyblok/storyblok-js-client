@@ -83,6 +83,49 @@ Storyblok
 Storyblok.flushCache();
 ```
 
+### Nodejs code example
+
+Following a code example using the storyblok-js-client to backup all content on your local filesystem inside a 'backup' folder.
+
+~~~javascript
+let StoryblokClient = require('./dist/index.js')
+const fs = require('fs')
+
+let client = new StoryblokClient({
+  accessToken: 'WcdDcNgDm59K72EbsQg8Lgtt'
+})
+
+let lastPage = 1
+let getStories = (page) => {
+  client.get('cdn/stories', {
+      version: 'draft',
+      per_page: 25,
+      page: page
+    }).then((res) => {
+
+    let stories = res.data.stories
+    stories.forEach((story) => {
+      fs.writeFile('./backup/' + story.id + '.json', JSON.stringify(story), (err) => {  
+        if (err) throw err
+
+        console.log(story.full_slug + ' backed up')
+      })
+    })
+
+    let total = res.total
+    lastPage = Math.ceil((res.total / res.perPage))
+
+    if (page <= lastPage) {
+      page++
+      getStories(page)
+    }
+  })
+}
+
+getStories(1)
+~~~
+
+
 ## Contribution
 
 Fork me on [Github](https://github.com/storyblok/storyblok-js-client)
