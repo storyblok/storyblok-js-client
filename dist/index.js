@@ -7,6 +7,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var API_ENDPOINT_DEFAULT = 'https://api.storyblok.com/v1';
 var hash = require('object-hash');
 var axios = require('axios');
+var throttledQueue = require('throttled-queue');
 var memory = {};
 
 var Storyblok = function () {
@@ -19,6 +20,7 @@ var Storyblok = function () {
 
     var headers = Object.assign({}, { 'X-Storyblok-Client': 'JS/1.0.0' }, config.headers);
 
+    this.throttle = throttledQueue(5, 1000);
     this.cacheVersion = this.cacheVersion || this.newVersion();
     this.accessToken = config.accessToken;
     this.cache = config.cache || { clear: 'manual' };
@@ -40,8 +42,11 @@ var Storyblok = function () {
           query.version = 'published';
         }
 
+        if (!query.cv) {
+          query.cv = this.cacheVersion;
+        }
+
         query.token = this.getToken();
-        query.cv = this.cacheVersion;
       }
 
       return this.cacheResponse(url, query);
@@ -68,26 +73,28 @@ var Storyblok = function () {
         if (params.version === 'published' && cache) {
           resolve(cache);
         } else {
-          _this.client.get(url, { params: params }).then(function (res) {
-            var response = { data: res.data, headers: res.headers };
+          _this.throttle(function () {
+            _this.client.get(url, { params: params }).then(function (res) {
+              var response = { data: res.data, headers: res.headers };
 
-            if (res.headers['per-page']) {
-              response = Object.assign({}, response, {
-                perPage: parseInt(res.headers['per-page']),
-                total: parseInt(res.headers['total'])
-              });
-            }
+              if (res.headers['per-page']) {
+                response = Object.assign({}, response, {
+                  perPage: parseInt(res.headers['per-page']),
+                  total: parseInt(res.headers['total'])
+                });
+              }
 
-            if (res.status != 200) {
-              return reject(res);
-            }
+              if (res.status != 200) {
+                return reject(res);
+              }
 
-            if (params.version === 'published') {
-              provider.set(cacheKey, response);
-            }
-            resolve(response);
-          }).catch(function (response) {
-            reject(response);
+              if (params.version === 'published') {
+                provider.set(cacheKey, response);
+              }
+              resolve(response);
+            }).catch(function (response) {
+              reject(response);
+            });
           });
         }
       });
