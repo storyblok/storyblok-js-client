@@ -34,11 +34,11 @@ class Storyblok {
       if (!query.version) {
         query.version = 'published'
       }
-      
+
       if (!query.cv) {
         query.cv = this.cacheVersion
       }
-      
+
       query.token = this.getToken()
     }
 
