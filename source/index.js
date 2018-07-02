@@ -13,7 +13,7 @@ class Storyblok {
       endpoint = API_ENDPOINT_DEFAULT
     }
 
-    let headers = Object.assign({}, {'X-Storyblok-Client': 'JS/1.0.0'}, config.headers)
+    let headers = Object.assign({}, config.headers)
 
     this.throttle = throttledQueue(5, 1000)
     this.cacheVersion = (this.cacheVersion || this.newVersion())
@@ -21,7 +21,7 @@ class Storyblok {
     this.cache = config.cache || {clear: 'manual'}
     this.client = axios.create({
       baseURL: endpoint,
-      timeout: (config.timeout || 3000),
+      timeout: (config.timeout || 5000),
       headers: headers
     })
   }
@@ -39,10 +39,16 @@ class Storyblok {
         query.cv = this.cacheVersion
       }
 
-      query.token = this.getToken()
+      if (!query.token) {
+        query.token = this.getToken()
+      }
     }
 
     return this.cacheResponse(url, query)
+  }
+
+  setToken(token) {
+    this.accessToken = token
   }
 
   getToken() {

@@ -1,5 +1,7 @@
 'use strict';
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -18,7 +20,7 @@ var Storyblok = function () {
       endpoint = API_ENDPOINT_DEFAULT;
     }
 
-    var headers = Object.assign({}, { 'X-Storyblok-Client': 'JS/1.0.0' }, config.headers);
+    var headers = _extends({}, config.headers);
 
     this.throttle = throttledQueue(5, 1000);
     this.cacheVersion = this.cacheVersion || this.newVersion();
@@ -26,7 +28,7 @@ var Storyblok = function () {
     this.cache = config.cache || { clear: 'manual' };
     this.client = axios.create({
       baseURL: endpoint,
-      timeout: config.timeout || 3000,
+      timeout: config.timeout || 5000,
       headers: headers
     });
   }
@@ -46,10 +48,17 @@ var Storyblok = function () {
           query.cv = this.cacheVersion;
         }
 
-        query.token = this.getToken();
+        if (!query.token) {
+          query.token = this.getToken();
+        }
       }
 
       return this.cacheResponse(url, query);
+    }
+  }, {
+    key: 'setToken',
+    value: function setToken(token) {
+      this.accessToken = token;
     }
   }, {
     key: 'getToken',
@@ -78,7 +87,7 @@ var Storyblok = function () {
               var response = { data: res.data, headers: res.headers };
 
               if (res.headers['per-page']) {
-                response = Object.assign({}, response, {
+                response = _extends({}, response, {
                   perPage: parseInt(res.headers['per-page']),
                   total: parseInt(res.headers['total'])
                 });
