@@ -83,12 +83,56 @@ Storyblok
 Storyblok.flushCache();
 ```
 
-### Nodejs code example
+### Code examples
+
+#### Filter by content type values and path
+
+~~~javascript
+const StoryblokClient = require('storyblok-js-client')
+
+let client = new StoryblokClient({
+  accessToken: 'zlRONoLBKrilxkz2k6fYuwtt'
+})
+
+// Filter by boolean value in content type
+client.get('cdn/stories', {
+    version: 'draft',
+    filter_query: {
+      is_featured: {
+        all: '1'
+      }
+    }
+  }).then((res) => {
+    console.log(res.data.stories)
+  })
+
+// Get all news and author contents
+client.get('cdn/stories', {
+    version: 'draft',
+    filter_query: {
+      component: {
+        in: 'news,author'
+      }
+    }
+  }).then((res) => {
+    console.log(res.data.stories)
+  })
+
+// Get all content from the news folder
+client.get('cdn/stories', {
+    version: 'draft',
+    starts_with: 'news/'
+  }).then((res) => {
+    console.log(res.data.stories)
+  })
+~~~
+
+#### Download all content from Storyblok
 
 Following a code example using the storyblok-js-client to backup all content on your local filesystem inside a 'backup' folder.
 
 ~~~javascript
-let StoryblokClient = require('./dist/index.js')
+const StoryblokClient = require('storyblok-js-client')
 const fs = require('fs')
 
 let client = new StoryblokClient({

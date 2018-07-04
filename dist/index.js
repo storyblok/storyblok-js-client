@@ -8,6 +8,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var API_ENDPOINT_DEFAULT = 'https://api.storyblok.com/v1';
 var hash = require('object-hash');
+var qs = require('qs');
 var axios = require('axios');
 var throttledQueue = require('throttled-queue');
 var memory = {};
@@ -71,7 +72,7 @@ var Storyblok = function () {
       var _this = this;
 
       return new Promise(function (resolve, reject) {
-        var cacheKey = hash({ url: url, params: params });
+        var cacheKey = qs.stringify({ url: url, params: params }, { arrayFormat: 'brackets' });
         var provider = _this.cacheProvider();
         var cache = provider.get(cacheKey);
 
@@ -83,7 +84,12 @@ var Storyblok = function () {
           resolve(cache);
         } else {
           _this.throttle(function () {
-            _this.client.get(url, { params: params }).then(function (res) {
+            _this.client.get(url, {
+              params: params,
+              paramsSerializer: function paramsSerializer(params) {
+                return qs.stringify(params, { arrayFormat: 'brackets' });
+              }
+            }).then(function (res) {
               var response = { data: res.data, headers: res.headers };
 
               if (res.headers['per-page']) {

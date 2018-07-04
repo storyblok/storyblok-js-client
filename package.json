@@ -1,8 +1,9 @@
 {
   "name": "storyblok-js-client",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Universal JavaScript SDK for Storyblok's API",
   "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "scripts": {
     "build": "babel source --presets babel-preset-es2015 --plugins transform-object-assign --out-dir dist"
   },
@@ -26,7 +27,7 @@
   },
   "dependencies": {
     "axios": "^0.17.1",
-    "object-hash": "^1.1.8",
+    "qs": "^6.5.2",
     "throttled-queue": "^1.0.5"
   }
 }

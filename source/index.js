@@ -2,6 +2,7 @@
 
 const API_ENDPOINT_DEFAULT = 'https://api.storyblok.com/v1'
 const hash = require('object-hash')
+const qs = require('qs')
 const axios = require('axios')
 const throttledQueue = require('throttled-queue')
 let memory = {}
@@ -57,7 +58,7 @@ class Storyblok {
 
   cacheResponse(url, params) {
     return new Promise((resolve, reject) => {
-      let cacheKey = hash({url: url, params: params})
+      let cacheKey = qs.stringify({url: url, params: params}, {arrayFormat: 'brackets'})
       let provider = this.cacheProvider()
       let cache = provider.get(cacheKey)
 
@@ -69,7 +70,10 @@ class Storyblok {
         resolve(cache)
       } else {
         this.throttle(() => {
-          this.client.get(url, {params: params})
+          this.client.get(url, {
+              params: params,
+              paramsSerializer: params => qs.stringify(params, {arrayFormat: 'brackets'})
+            })
             .then((res) => {
               let response = {data: res.data,  headers: res.headers}
 
