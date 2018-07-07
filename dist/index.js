@@ -7,7 +7,6 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var API_ENDPOINT_DEFAULT = 'https://api.storyblok.com/v1';
-var hash = require('object-hash');
 var qs = require('qs');
 var axios = require('axios');
 var throttledQueue = require('throttled-queue');
