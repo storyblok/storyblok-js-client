@@ -3,9 +3,16 @@ declare global {
     initOnlyOnce?: boolean,
     accessToken: string
   }
+  interface StoryblokEventPayload {
+    action: 'customEvent' | 'published' | 'input' | 'change' | 'unpublished' | 'enterEditmode'
+    event?: string
+    story?: any
+    storyId?: string
+    reload?: boolean
+  }
   interface StoryblokBridge {
     init: (config: StoryblokBridgeConfig) => void
-    on: (event: any, callback: () => void) => void
+    on: (event: 'customEvent' | 'published' | 'input' | 'change' | 'unpublished' | 'enterEditmode', callback: (payload: StoryblokEventPayload) => void) => void
   }
   interface Window {
     storyblok: StoryblokBridge
@@ -30,6 +37,7 @@ export interface StoryblokResult {
   data: any
   perPage: number
   total: number
+  headers: any
 }
 
 export interface Stories {
@@ -57,6 +65,7 @@ export interface Stories {
   }
   perPage: number
   total: number
+  headers: any
 }
 
 export interface Story {
@@ -82,9 +91,10 @@ export interface Story {
       uuid: string
     }
   }
+  headers: any
 }
 
-interface Params {
+interface StoriesParams {
   token?: string
   with_tag?: string
   is_startpage?: 0 | 1
@@ -92,13 +102,24 @@ interface Params {
   by_uuids?: string
   excluding_ids?: string
   excluding_fields?: string
+  resolve_links?: 0 | 1
   version?: 'draft' | 'published'
+  resolve_relations?: string
   cv?: number
   sort_by?: string
   search_term?: string
   filter_query?: any
   per_page?: number
   page?: string
+}
+
+interface StoryParams {
+  token?: string
+  find_by?: 'uuid'
+  version?: 'draft' | 'published'
+  resolve_links?: 0 | 1
+  resolve_relations?: string
+  cv?: number
 }
 
 declare class Storyblok {
@@ -108,12 +129,12 @@ declare class Storyblok {
   cache: StoryblokCache
   client: AxiosInstance
   constructor(config: StoryblokConfig, endpoint?: string)
-  get(slug: string, params?: Params): Promise<StoryblokResult>
-  getStories(slug: string, params?: Params): Promise<Stories>
-  getStory(slug: string, params?: Params): Promise<Story>
+  get(slug: string, params?: any): Promise<StoryblokResult>
+  getStories(params?: StoriesParams): Promise<Stories>
+  getStory(slug: string, params?: StoryParams): Promise<Story>
   setToken(token: string): void
   getToken(): string
-  cacheResponse(url: string, params: Params): Promise<StoryblokResult>
+  cacheResponse(url: string, params: any): Promise<StoryblokResult>
   newVersion(): number
   cacheProvider(): {
     get(key: string): any

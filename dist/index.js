@@ -56,6 +56,16 @@ var Storyblok = function () {
       return this.cacheResponse(url, query);
     }
   }, {
+    key: 'getStories',
+    value: function getStories(params) {
+      return this.get('cdn/stories', params);
+    }
+  }, {
+    key: 'getStory',
+    value: function getStory(slug, params) {
+      return this.get('cdn/stories/' + slug, params);
+    }
+  }, {
     key: 'setToken',
     value: function setToken(token) {
       this.accessToken = token;

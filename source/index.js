@@ -47,12 +47,12 @@ class Storyblok {
     return this.cacheResponse(url, query)
   }
 
-  getStories(slug, params) {
-    return this.get(slug, params)
+  getStories(params) {
+    return this.get('cdn/stories', params)
   }
 
   getStory(slug, params) {
-    return this.get(slug, params)
+    return this.get(`cdn/stories/${slug}`, params)
   }
 
   setToken(token) {
