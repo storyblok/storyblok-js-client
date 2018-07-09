@@ -1,7 +1,6 @@
 'use strict'
 
 const API_ENDPOINT_DEFAULT = 'https://api.storyblok.com/v1'
-const hash = require('object-hash')
 const qs = require('qs')
 const axios = require('axios')
 const throttledQueue = require('throttled-queue')
