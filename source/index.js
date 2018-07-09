@@ -47,6 +47,14 @@ class Storyblok {
     return this.cacheResponse(url, query)
   }
 
+  getStories(params) {
+    return this.get('cdn/stories', params)
+  }
+
+  getStory(slug, params) {
+    return this.get(`cdn/stories/${slug}`, params)
+  }
+
   setToken(token) {
     this.accessToken = token
   }
