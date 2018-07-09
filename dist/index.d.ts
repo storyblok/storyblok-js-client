@@ -15,7 +15,7 @@ declare global {
     pingEditor: () => void
     isInEditor: () => void
     enterEditmode: () => void
-    on: (event: 'customEvent' | 'published' | 'input' | 'change' | 'unpublished' | 'enterEditmode', callback: (payload?: StoryblokEventPayload) => void) => void
+    on: (event: 'customEvent' | 'published' | 'input' | 'change' | 'unpublished' | 'enterEditmode' | string[], callback: (payload?: StoryblokEventPayload) => void) => void
   }
   interface Window {
     storyblok: StoryblokBridge
@@ -48,6 +48,8 @@ export interface Stories {
     stories: {
       alternates: string[]
       content: {
+        component: string
+        _uid: string
         [index: string]: string
       }
       created_at: string
@@ -76,6 +78,8 @@ export interface Story {
     story: {
       alternates: string[]
       content: {
+        component: string
+        _uid: string
         [index: string]: string
       }
       created_at: string
