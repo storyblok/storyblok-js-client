@@ -11,8 +11,11 @@ declare global {
     reload?: boolean
   }
   interface StoryblokBridge {
-    init: (config: StoryblokBridgeConfig) => void
-    on: (event: 'customEvent' | 'published' | 'input' | 'change' | 'unpublished' | 'enterEditmode', callback: (payload: StoryblokEventPayload) => void) => void
+    init: (config?: StoryblokBridgeConfig) => void
+    pingEditor: () => void
+    isInEditor: () => void
+    enterEditmode: () => void
+    on: (event: 'customEvent' | 'published' | 'input' | 'change' | 'unpublished' | 'enterEditmode', callback: (payload?: StoryblokEventPayload) => void) => void
   }
   interface Window {
     storyblok: StoryblokBridge
