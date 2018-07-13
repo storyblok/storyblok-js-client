@@ -1,7 +1,7 @@
 declare global {
   interface StoryblokBridgeConfig {
     initOnlyOnce?: boolean,
-    accessToken: string
+    accessToken?: string
   }
   interface StoryblokEventPayload {
     action: 'customEvent' | 'published' | 'input' | 'change' | 'unpublished' | 'enterEditmode'
@@ -19,6 +19,7 @@ declare global {
   }
   interface Window {
     storyblok: StoryblokBridge
+    StoryblokCacheVersion: number
   }
 }
 
@@ -50,7 +51,7 @@ export interface Stories {
       content: {
         component: string
         _uid: string
-        [index: string]: string
+        [index: string]: any
       }
       created_at: string
       full_slug: string
@@ -80,7 +81,7 @@ export interface Story {
       content: {
         component: string
         _uid: string
-        [index: string]: string
+        [index: string]: any
       }
       created_at: string
       full_slug: string
