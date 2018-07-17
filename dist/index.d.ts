@@ -47,7 +47,7 @@ export interface StoryblokResult {
   headers: any
 }
 
-export interface StoryContent {
+export interface StoryData {
   alternates: string[]
   content: {
     component: string
@@ -72,7 +72,7 @@ export interface StoryContent {
 
 export interface Stories {
   data: {
-    stories: StoryContent[]
+    stories: StoryData[]
   }
   perPage: number
   total: number
@@ -81,7 +81,7 @@ export interface Stories {
 
 export interface Story {
   data: {
-    story: StoryContent
+    story: StoryData
   }
   headers: any
 }
