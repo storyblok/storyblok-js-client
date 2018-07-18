@@ -1,6 +1,6 @@
 declare global {
   interface StoryblokBridgeConfig {
-    initOnlyOnce?: boolean,
+    initOnlyOnce?: boolean
     accessToken?: string
   }
   interface StoryblokEventPayload {
@@ -15,7 +15,10 @@ declare global {
     pingEditor: () => void
     isInEditor: () => void
     enterEditmode: () => void
-    on: (event: 'customEvent' | 'published' | 'input' | 'change' | 'unpublished' | 'enterEditmode' | string[], callback: (payload?: StoryblokEventPayload) => void) => void
+    on: (
+      event: 'customEvent' | 'published' | 'input' | 'change' | 'unpublished' | 'enterEditmode' | string[],
+      callback: (payload?: StoryblokEventPayload) => void,
+    ) => void
   }
   interface Window {
     storyblok: StoryblokBridge
@@ -44,30 +47,32 @@ export interface StoryblokResult {
   headers: any
 }
 
+export interface StoryData {
+  alternates: string[]
+  content: {
+    component: string
+    _uid: string
+    [index: string]: any
+  }
+  created_at: string
+  full_slug: string
+  group_id: string
+  id: number
+  is_startpage: boolean
+  meta_data: any
+  name: string
+  parent_id: number
+  position: number
+  published_at: string | null
+  slug: string
+  sort_by_date: string | null
+  tag_list: string[]
+  uuid: string
+}
+
 export interface Stories {
   data: {
-    stories: {
-      alternates: string[]
-      content: {
-        component: string
-        _uid: string
-        [index: string]: any
-      }
-      created_at: string
-      full_slug: string
-      group_id: string
-      id: number
-      is_startpage: boolean
-      meta_data: any
-      name: string
-      parent_id: number
-      position: number
-      published_at: string | null
-      slug: string
-      sort_by_date: string | null
-      tag_list: string[]
-      uuid: string
-    }
+    stories: StoryData[]
   }
   perPage: number
   total: number
@@ -76,28 +81,7 @@ export interface Stories {
 
 export interface Story {
   data: {
-    story: {
-      alternates: string[]
-      content: {
-        component: string
-        _uid: string
-        [index: string]: any
-      }
-      created_at: string
-      full_slug: string
-      group_id: string
-      id: number
-      is_startpage: boolean
-      meta_data: any
-      name: string
-      parent_id: number
-      position: number
-      published_at: string | null
-      slug: string
-      sort_by_date: string | null
-      tag_list: string[]
-      uuid: string
-    }
+    story: StoryData
   }
   headers: any
 }
