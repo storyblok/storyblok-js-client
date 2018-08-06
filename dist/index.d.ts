@@ -29,7 +29,8 @@ declare global {
 import { AxiosInstance } from 'axios'
 
 interface StoryblokConfig {
-  accessToken: string
+  accessToken?: string
+  oauthToken?: string
   cache?: StoryblokCache
   timeout?: number
   headers?: any
@@ -44,6 +45,11 @@ export interface StoryblokResult {
   data: any
   perPage: number
   total: number
+  headers: any
+}
+
+export interface StoryblokManagmentApiResult {
+  data: any
   headers: any
 }
 
@@ -122,6 +128,9 @@ declare class Storyblok {
   client: AxiosInstance
   constructor(config: StoryblokConfig, endpoint?: string)
   get(slug: string, params?: any): Promise<StoryblokResult>
+  post(slug: string, params?: any): Promise<StoryblokManagmentApiResult>
+  put(slug: string, params?: any): Promise<StoryblokManagmentApiResult>
+  delete(slug: string, params?: any): Promise<StoryblokManagmentApiResult>
   getStories(params?: StoriesParams): Promise<Stories>
   getStory(slug: string, params?: StoryParams): Promise<Story>
   setToken(token: string): void

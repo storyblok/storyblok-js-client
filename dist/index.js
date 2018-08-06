@@ -22,13 +22,17 @@ var Storyblok = function () {
 
     var headers = _extends({}, config.headers);
 
+    if (typeof config.oauthToken != 'undefined') {
+      headers['Authorization'] = config.oauthToken;
+    }
+
     this.throttle = throttledQueue(5, 1000);
     this.cacheVersion = this.cacheVersion || this.newVersion();
     this.accessToken = config.accessToken;
     this.cache = config.cache || { clear: 'manual' };
     this.client = axios.create({
       baseURL: endpoint,
-      timeout: config.timeout || 5000,
+      timeout: config.timeout || 0,
       headers: headers
     });
   }
@@ -54,6 +58,24 @@ var Storyblok = function () {
       }
 
       return this.cacheResponse(url, query);
+    }
+  }, {
+    key: 'post',
+    value: function post(slug, params) {
+      var url = '/' + slug;
+      return this.throttledRequest('post', url, params);
+    }
+  }, {
+    key: 'put',
+    value: function put(slug, params) {
+      var url = '/' + slug;
+      return this.throttledRequest('put', url, params);
+    }
+  }, {
+    key: 'delete',
+    value: function _delete(slug, params) {
+      var url = '/' + slug;
+      return this.throttledRequest('delete', url, params);
     }
   }, {
     key: 'getStories',
@@ -92,35 +114,48 @@ var Storyblok = function () {
         if (params.version === 'published' && cache) {
           resolve(cache);
         } else {
-          _this.throttle(function () {
-            _this.client.get(url, {
-              params: params,
-              paramsSerializer: function paramsSerializer(params) {
-                return qs.stringify(params, { arrayFormat: 'brackets' });
-              }
-            }).then(function (res) {
-              var response = { data: res.data, headers: res.headers };
+          _this.throttledRequest('get', url, {
+            params: params,
+            paramsSerializer: function paramsSerializer(params) {
+              return qs.stringify(params, { arrayFormat: 'brackets' });
+            }
+          }).then(function (res) {
+            var response = { data: res.data, headers: res.headers };
 
-              if (res.headers['per-page']) {
-                response = _extends({}, response, {
-                  perPage: parseInt(res.headers['per-page']),
-                  total: parseInt(res.headers['total'])
-                });
-              }
+            if (res.headers['per-page']) {
+              response = _extends({}, response, {
+                perPage: parseInt(res.headers['per-page']),
+                total: parseInt(res.headers['total'])
+              });
+            }
 
-              if (res.status != 200) {
-                return reject(res);
-              }
+            if (res.status != 200) {
+              return reject(res);
+            }
 
-              if (params.version === 'published') {
-                provider.set(cacheKey, response);
-              }
-              resolve(response);
-            }).catch(function (response) {
-              reject(response);
-            });
+            if (params.version === 'published') {
+              provider.set(cacheKey, response);
+            }
+            resolve(response);
+          }).catch(function (response) {
+            reject(response);
           });
         }
+      });
+    }
+  }, {
+    key: 'throttledRequest',
+    value: function throttledRequest(type, url, params) {
+      var _this2 = this;
+
+      return new Promise(function (resolve, reject) {
+        _this2.throttle(function () {
+          _this2.client[type](url, params).then(function (response) {
+            resolve(response);
+          }).catch(function (response) {
+            reject(response);
+          });
+        });
       });
     }
   }, {

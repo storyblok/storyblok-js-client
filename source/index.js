@@ -15,13 +15,17 @@ class Storyblok {
 
     let headers = Object.assign({}, config.headers)
 
+    if (typeof config.oauthToken != 'undefined') {
+      headers['Authorization'] = config.oauthToken
+    }
+
     this.throttle = throttledQueue(5, 1000)
     this.cacheVersion = (this.cacheVersion || this.newVersion())
     this.accessToken = config.accessToken
     this.cache = config.cache || {clear: 'manual'}
     this.client = axios.create({
       baseURL: endpoint,
-      timeout: (config.timeout || 5000),
+      timeout: (config.timeout || 0),
       headers: headers
     })
   }
@@ -45,6 +49,21 @@ class Storyblok {
     }
 
     return this.cacheResponse(url, query)
+  }
+
+  post(slug, params) {
+    let url = `/${slug}`
+    return this.throttledRequest('post', url, params)
+  }
+
+  put(slug, params) {
+    let url = `/${slug}`
+    return this.throttledRequest('put', url, params)
+  }
+
+  delete(slug, params) {
+    let url = `/${slug}`
+    return this.throttledRequest('delete', url, params)
   }
 
   getStories(params) {
@@ -76,35 +95,48 @@ class Storyblok {
       if (params.version === 'published' && cache) {
         resolve(cache)
       } else {
-        this.throttle(() => {
-          this.client.get(url, {
-              params: params,
-              paramsSerializer: params => qs.stringify(params, {arrayFormat: 'brackets'})
-            })
-            .then((res) => {
-              let response = {data: res.data,  headers: res.headers}
+        this.throttledRequest('get', url, {
+            params: params,
+            paramsSerializer: params => qs.stringify(params, {arrayFormat: 'brackets'})
+          })
+          .then((res) => {
+            let response = {data: res.data,  headers: res.headers}
 
-              if (res.headers['per-page']) {
-                response = Object.assign({}, response, {
-                  perPage: parseInt(res.headers['per-page']),
-                  total: parseInt(res.headers['total'])
-                })
-              }
+            if (res.headers['per-page']) {
+              response = Object.assign({}, response, {
+                perPage: parseInt(res.headers['per-page']),
+                total: parseInt(res.headers['total'])
+              })
+            }
 
-              if (res.status != 200) {
-                return reject(res)
-              }
+            if (res.status != 200) {
+              return reject(res)
+            }
 
-              if (params.version === 'published') {
-                provider.set(cacheKey, response)
-              }
-              resolve(response)
-            })
-            .catch((response) => {
-              reject(response)
-            })
-        })
+            if (params.version === 'published') {
+              provider.set(cacheKey, response)
+            }
+            resolve(response)
+          })
+          .catch((response) => {
+            reject(response)
+          })
+        
       }
+    })
+  }
+
+  throttledRequest(type, url, params) {
+    return new Promise((resolve, reject) => {
+      this.throttle(() => {
+        this.client[type](url, params)
+          .then((response) => {
+            resolve(response)
+          })
+          .catch((response) => {
+            reject(response)
+          })
+      })
     })
   }
 
