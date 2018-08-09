@@ -1,6 +1,5 @@
 'use strict'
 
-const API_ENDPOINT_DEFAULT = 'https://api.storyblok.com/v1'
 const qs = require('qs')
 const axios = require('axios')
 const throttledQueue = require('throttled-queue')
@@ -10,7 +9,8 @@ class Storyblok {
 
   constructor(config, endpoint) {
     if (!endpoint) {
-      endpoint = API_ENDPOINT_DEFAULT
+      let region = config.region ? `-${config.region}` : ''
+      endpoint = `https://api${region}.storyblok.com/v1`
     }
 
     let headers = Object.assign({}, config.headers)

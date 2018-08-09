@@ -34,6 +34,7 @@ interface StoryblokConfig {
   cache?: StoryblokCache
   timeout?: number
   headers?: any
+  region?: string
 }
 
 interface StoryblokCache {
