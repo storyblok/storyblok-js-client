@@ -8,7 +8,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var qs = require('qs');
 var axios = require('axios');
-var throttledQueue = require('p-throttle');
+var throttledQueue = require('throttle-promise');
 var memory = {};
 
 var Storyblok = function () {

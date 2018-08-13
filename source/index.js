@@ -2,7 +2,7 @@
 
 const qs = require('qs')
 const axios = require('axios')
-const throttledQueue = require('p-throttle')
+const throttledQueue = require('throttle-promise')
 let memory = {}
 
 class Storyblok {
