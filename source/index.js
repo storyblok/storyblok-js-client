@@ -2,7 +2,7 @@
 
 const qs = require('qs')
 const axios = require('axios')
-const throttledQueue = require('throttled-queue')
+const throttledQueue = require('p-throttle')
 let memory = {}
 
 class Storyblok {
@@ -19,7 +19,7 @@ class Storyblok {
       headers['Authorization'] = config.oauthToken
     }
 
-    this.throttle = throttledQueue(5, 1000)
+    this.throttle = throttledQueue(this.throttledRequest, 5, 1000)
     this.cacheVersion = (this.cacheVersion || this.newVersion())
     this.accessToken = config.accessToken
     this.cache = config.cache || {clear: 'manual'}
@@ -53,17 +53,17 @@ class Storyblok {
 
   post(slug, params) {
     let url = `/${slug}`
-    return this.throttledRequest('post', url, params)
+    return this.throttle('post', url, params)
   }
 
   put(slug, params) {
     let url = `/${slug}`
-    return this.throttledRequest('put', url, params)
+    return this.throttle('put', url, params)
   }
 
   delete(slug, params) {
     let url = `/${slug}`
-    return this.throttledRequest('delete', url, params)
+    return this.throttle('delete', url, params)
   }
 
   getStories(params) {
@@ -95,7 +95,7 @@ class Storyblok {
       if (params.version === 'published' && cache) {
         resolve(cache)
       } else {
-        this.throttledRequest('get', url, {
+        this.throttle('get', url, {
             params: params,
             paramsSerializer: params => qs.stringify(params, {arrayFormat: 'brackets'})
           })
@@ -128,7 +128,7 @@ class Storyblok {
 
   throttledRequest(type, url, params) {
     return new Promise((resolve, reject) => {
-      this.throttle(() => {
+      
         this.client[type](url, params)
           .then((response) => {
             resolve(response)
@@ -136,7 +136,7 @@ class Storyblok {
           .catch((response) => {
             reject(response)
           })
-      })
+      
     })
   }
 

@@ -8,7 +8,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var qs = require('qs');
 var axios = require('axios');
-var throttledQueue = require('throttled-queue');
+var throttledQueue = require('p-throttle');
 var memory = {};
 
 var Storyblok = function () {
@@ -26,7 +26,7 @@ var Storyblok = function () {
       headers['Authorization'] = config.oauthToken;
     }
 
-    this.throttle = throttledQueue(5, 1000);
+    this.throttle = throttledQueue(this.throttledRequest, 5, 1000);
     this.cacheVersion = this.cacheVersion || this.newVersion();
     this.accessToken = config.accessToken;
     this.cache = config.cache || { clear: 'manual' };
@@ -63,19 +63,19 @@ var Storyblok = function () {
     key: 'post',
     value: function post(slug, params) {
       var url = '/' + slug;
-      return this.throttledRequest('post', url, params);
+      return this.throttle('post', url, params);
     }
   }, {
     key: 'put',
     value: function put(slug, params) {
       var url = '/' + slug;
-      return this.throttledRequest('put', url, params);
+      return this.throttle('put', url, params);
     }
   }, {
     key: 'delete',
     value: function _delete(slug, params) {
       var url = '/' + slug;
-      return this.throttledRequest('delete', url, params);
+      return this.throttle('delete', url, params);
     }
   }, {
     key: 'getStories',
@@ -114,7 +114,7 @@ var Storyblok = function () {
         if (params.version === 'published' && cache) {
           resolve(cache);
         } else {
-          _this.throttledRequest('get', url, {
+          _this.throttle('get', url, {
             params: params,
             paramsSerializer: function paramsSerializer(params) {
               return qs.stringify(params, { arrayFormat: 'brackets' });
@@ -149,12 +149,11 @@ var Storyblok = function () {
       var _this2 = this;
 
       return new Promise(function (resolve, reject) {
-        _this2.throttle(function () {
-          _this2.client[type](url, params).then(function (response) {
-            resolve(response);
-          }).catch(function (response) {
-            reject(response);
-          });
+
+        _this2.client[type](url, params).then(function (response) {
+          resolve(response);
+        }).catch(function (response) {
+          reject(response);
         });
       });
     }

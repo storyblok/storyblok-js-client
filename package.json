@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "axios": "^0.17.1",
-    "qs": "^6.5.2",
-    "throttled-queue": "^1.0.5"
+    "p-throttle": "^1.1.0",
+    "qs": "^6.5.2"
   }
 }
