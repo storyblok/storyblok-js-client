@@ -18,7 +18,8 @@ npm install storyblok-js-client
   - `accessToken` String, The preview token you can find in your space dashboard at https://app.storyblok.com
   - `cache` Object
     - `type` String, `none` or `memory`
-- (`endpoint` optional)
+  - (`region` String, optional)
+- (`endpoint` String, optional)
 
 **Example**
 
