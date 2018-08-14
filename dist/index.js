@@ -17,7 +17,8 @@ var Storyblok = function () {
 
     if (!endpoint) {
       var region = config.region ? '-' + config.region : '';
-      endpoint = 'https://api' + region + '.storyblok.com/v1';
+      var protocol = config.https === false ? 'http' : 'https';
+      endpoint = protocol + '://api' + region + '.storyblok.com/v1';
     }
 
     var headers = _extends({}, config.headers);

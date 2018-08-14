@@ -10,7 +10,8 @@ class Storyblok {
   constructor(config, endpoint) {
     if (!endpoint) {
       let region = config.region ? `-${config.region}` : ''
-      endpoint = `https://api${region}.storyblok.com/v1`
+      let protocol = config.https === false ? 'http' : 'https'
+      endpoint = `${protocol}://api${region}.storyblok.com/v1`
     }
 
     let headers = Object.assign({}, config.headers)

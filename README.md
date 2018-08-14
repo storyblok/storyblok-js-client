@@ -19,6 +19,7 @@ npm install storyblok-js-client
   - `cache` Object
     - `type` String, `none` or `memory`
   - (`region` String, optional)
+  - (`https` Boolean, optional)
 - (`endpoint` String, optional)
 
 **Example**
