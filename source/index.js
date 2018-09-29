@@ -15,12 +15,18 @@ class Storyblok {
     }
 
     let headers = Object.assign({}, config.headers)
+    let rateLimit = 5 // per second for cdn api
 
     if (typeof config.oauthToken != 'undefined') {
       headers['Authorization'] = config.oauthToken
+      rateLimit = 3 // per second for management api
     }
 
-    this.throttle = throttledQueue(this.throttledRequest, 5, 1000)
+    if (typeof config.rateLimit != 'undefined') {
+      rateLimit = config.rateLimit
+    }
+
+    this.throttle = throttledQueue(this.throttledRequest, rateLimit, 1000)
     this.cacheVersion = (this.cacheVersion || this.newVersion())
     this.accessToken = config.accessToken
     this.cache = config.cache || {clear: 'manual'}

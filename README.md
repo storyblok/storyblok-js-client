@@ -20,6 +20,7 @@ npm install storyblok-js-client
     - `type` String, `none` or `memory`
   - (`region` String, optional)
   - (`https` Boolean, optional)
+  - (`rateLimit` Integer, optional, defaults to 3 for management api and 5 for cdn api)
 - (`endpoint` String, optional)
 
 **Example**
