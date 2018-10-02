@@ -43,8 +43,8 @@ let Storyblok = new StoryblokClient({
 const StoryblokClient = require('storyblok-js-client')
 const spaceId = 12345
 
-// 2. Initialize the client with the preview token 
-// from your space dashboard at https://app.storyblok.com
+// 2. Initialize the client with the oauth token
+// from the my account area at https://app.storyblok.com
 let Storyblok = new StoryblokClient({
   oauthToken: 'YOUR_OAUTH_TOKEN'
 })
