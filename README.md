@@ -23,24 +23,42 @@ npm install storyblok-js-client
   - (`rateLimit` Integer, optional, defaults to 3 for management api and 5 for cdn api)
 - (`endpoint` String, optional)
 
-**Example**
+**Example for using the content deliver api**
 
 ```javascript
 // 1. Require the Storyblok client
-const StoryblokClient = require('storyblok-js-client');
+const StoryblokClient = require('storyblok-js-client')
 
 // 2. Initialize the client with the preview token 
 // from your space dashboard at https://app.storyblok.com
 let Storyblok = new StoryblokClient({
   accessToken: 'xf5dRMMjltLzKOcNgMaU9Att'
-});
+})
+```
+
+**Example for using the content management api**
+
+```javascript
+// 1. Require the Storyblok client
+const StoryblokClient = require('storyblok-js-client')
+const spaceId = 12345
+
+// 2. Initialize the client with the preview token 
+// from your space dashboard at https://app.storyblok.com
+let Storyblok = new StoryblokClient({
+  oauthToken: 'YOUR_OAUTH_TOKEN'
+})
+
+Storyblok.post(`spaces/${spaceId}/stories`, {story: {name: 'xy', slug: 'xy'}})
+Storyblok.put(`spaces/${spaceId}/stories/1`, {story: {name: 'xy', slug: 'xy'}})
+Storyblok.delete(`spaces/${spaceId}/stories/1`, null)
 ```
 
 ### Activating request cache
 
 The Storyblok client comes with a caching mechanism.
 When initializing the Storyblok client you can define a cache provider for caching the requests in memory.
-To clear the cache you can call `Storyblok.flushCache();` or activate the automatic clear with clear: 'auto'.
+To clear the cache you can call `Storyblok.flushCache()` or activate the automatic clear with clear: 'auto'.
 
 ```javascript
 let Storyblok = new StoryblokClient({
@@ -49,7 +67,7 @@ let Storyblok = new StoryblokClient({
     clear: 'auto',
     type: 'memory'
   }
-});
+})
 ```
 
 ### Method `Storyblok#get`
@@ -71,7 +89,71 @@ Storyblok
   })
   .catch((error) => {
     console.log(error);
-  });
+  })
+```
+
+### Method `Storyblok#post` (only management api)
+
+**Parameters**
+- `[return]` Promise, Object `response`
+- `path` String, Path (`spaces/*`, ... see more at https://www.storyblok.com/docs/management-api/authentication)
+- `payload` Object
+
+**Example**
+
+```javascript
+Storyblok
+  .post('spaces/12345/stories', {
+    story: {name 'xy', slug: 'xy'}
+  })
+  .then((response) => {
+    console.log(response);
+  })
+  .catch((error) => {
+    console.log(error);
+  })
+```
+
+### Method `Storyblok#put` (only management api)
+
+**Parameters**
+- `[return]` Promise, Object `response`
+- `path` String, Path (`spaces/*`, ... see more at https://www.storyblok.com/docs/management-api/authentication)
+- `payload` Object
+
+**Example**
+
+```javascript
+Storyblok
+  .put('spaces/12345/stories', {
+    story: {name 'xy', slug: 'xy'}
+  })
+  .then((response) => {
+    console.log(response);
+  })
+  .catch((error) => {
+    console.log(error);
+  })
+```
+
+### Method `Storyblok#delete` (only management api)
+
+**Parameters**
+- `[return]` Promise, Object `response`
+- `path` String, Path (`spaces/*`, ... see more at https://www.storyblok.com/docs/management-api/authentication)
+- `payload` Object
+
+**Example**
+
+```javascript
+Storyblok
+  .delete('spaces/12345/stories', null)
+  .then((response) => {
+    console.log(response);
+  })
+  .catch((error) => {
+    console.log(error);
+  })
 ```
 
 ### Method `Storyblok#flushCache`
@@ -83,7 +165,7 @@ Storyblok
 **Example**
 
 ```javascript
-Storyblok.flushCache();
+Storyblok.flushCache()
 ```
 
 ### Code examples
