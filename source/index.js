@@ -34,7 +34,7 @@ class Storyblok {
       baseURL: endpoint,
       timeout: (config.timeout || 0),
       headers: headers,
-      proxy: config.proxy,
+      proxy: (config.proxy || false)
     })
   }
 
