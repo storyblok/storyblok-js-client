@@ -29,7 +29,7 @@ npm install storyblok-js-client
 // 1. Require the Storyblok client
 const StoryblokClient = require('storyblok-js-client')
 
-// 2. Initialize the client with the preview token 
+// 2. Initialize the client with the preview token
 // from your space dashboard at https://app.storyblok.com
 let Storyblok = new StoryblokClient({
   accessToken: 'xf5dRMMjltLzKOcNgMaU9Att'
@@ -234,7 +234,7 @@ let getStories = (page) => {
 
     let stories = res.data.stories
     stories.forEach((story) => {
-      fs.writeFile('./backup/' + story.id + '.json', JSON.stringify(story), (err) => {  
+      fs.writeFile('./backup/' + story.id + '.json', JSON.stringify(story), (err) => {
         if (err) throw err
 
         console.log(story.full_slug + ' backed up')
@@ -254,6 +254,27 @@ let getStories = (page) => {
 getStories(1)
 ~~~
 
+#### Add proxy server
+
+~~~javascript
+const proxy = {
+  host: host,
+  port: port,
+  auth: {
+    username: 'username',
+    password: 'password'
+  }
+},
+
+const storyblok = new StoryblokClient({
+  ...
+  https: false,
+  proxy,
+});
+
+~~~
+
+Read more about proxy settings in axios [documentation](https://github.com/axios/axios)
 
 ## Contribution
 

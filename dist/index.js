@@ -40,7 +40,8 @@ var Storyblok = function () {
     this.client = axios.create({
       baseURL: endpoint,
       timeout: config.timeout || 0,
-      headers: headers
+      headers: headers,
+      proxy: config.proxy
     });
   }
 

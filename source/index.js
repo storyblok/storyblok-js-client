@@ -33,7 +33,8 @@ class Storyblok {
     this.client = axios.create({
       baseURL: endpoint,
       timeout: (config.timeout || 0),
-      headers: headers
+      headers: headers,
+      proxy: config.proxy,
     })
   }
 
@@ -128,14 +129,14 @@ class Storyblok {
           .catch((response) => {
             reject(response)
           })
-        
+
       }
     })
   }
 
   throttledRequest(type, url, params) {
     return new Promise((resolve, reject) => {
-      
+
         this.client[type](url, params)
           .then((response) => {
             resolve(response)
@@ -143,7 +144,7 @@ class Storyblok {
           .catch((response) => {
             reject(response)
           })
-      
+
     })
   }
 
