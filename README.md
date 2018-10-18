@@ -254,7 +254,7 @@ let getStories = (page) => {
 getStories(1)
 ~~~
 
-#### Add proxy server
+#### Initialize with a proxy server
 
 ~~~javascript
 const proxy = {
@@ -264,14 +264,13 @@ const proxy = {
     username: 'username',
     password: 'password'
   }
-},
+}
 
 const storyblok = new StoryblokClient({
   ...
   https: false,
-  proxy,
-});
-
+  proxy: proxy
+})
 ~~~
 
 Read more about proxy settings in axios [documentation](https://github.com/axios/axios)
