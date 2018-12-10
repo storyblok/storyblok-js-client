@@ -184,7 +184,7 @@ client.get('cdn/stories', {
     version: 'draft',
     filter_query: {
       is_featured: {
-        all: '1'
+        in: true
       }
     }
   }).then((res) => {
