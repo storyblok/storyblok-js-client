@@ -28,7 +28,7 @@
     "randomatic": ">=3.0.0"
   },
   "dependencies": {
-    "axios": "^0.17.1",
+    "axios": "^0.18.0",
     "qs": "^6.5.2",
     "throttle-promise": "^1.0.4"
   }
