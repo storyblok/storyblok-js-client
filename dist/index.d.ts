@@ -103,7 +103,7 @@ interface StoriesParams {
   by_uuids?: string
   excluding_ids?: string
   excluding_fields?: string
-  resolve_links?: 0 | 1
+  resolve_links?: 'url' | 'story'
   version?: 'draft' | 'published'
   resolve_relations?: string
   cv?: number
