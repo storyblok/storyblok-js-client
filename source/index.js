@@ -3,6 +3,7 @@
 const qs = require('qs')
 const axios = require('axios')
 const throttledQueue = require('throttle-promise')
+const delay = ms => new Promise(res => setTimeout(res, ms))
 let memory = {}
 
 class Storyblok {
@@ -26,6 +27,7 @@ class Storyblok {
       rateLimit = config.rateLimit
     }
 
+    this.maxRetries = config.maxRetries || 5
     this.throttle = throttledQueue(this.throttledRequest, rateLimit, 1000)
     this.cacheVersion = (this.cacheVersion || this.newVersion())
     this.accessToken = config.accessToken
@@ -90,8 +92,12 @@ class Storyblok {
     return this.accessToken
   }
 
-  cacheResponse(url, params) {
-    return new Promise((resolve, reject) => {
+  cacheResponse(url, params, retries) {
+    if (typeof retries === 'undefined') {
+      retries = 0
+    }
+
+    return new Promise(async (resolve, reject) => {
       let cacheKey = qs.stringify({url: url, params: params}, {arrayFormat: 'brackets'})
       let provider = this.cacheProvider()
       let cache = provider.get(cacheKey)
@@ -103,49 +109,46 @@ class Storyblok {
       if (params.version === 'published' && cache) {
         resolve(cache)
       } else {
-        this.throttle('get', url, {
+        try {
+          let res = await this.throttle('get', url, {
             params: params,
             paramsSerializer: params => qs.stringify(params, {arrayFormat: 'brackets'})
           })
-          .then((res) => {
-            let response = {data: res.data,  headers: res.headers}
+          let response = {data: res.data,  headers: res.headers}
 
-            if (res.headers['per-page']) {
-              response = Object.assign({}, response, {
-                perPage: parseInt(res.headers['per-page']),
-                total: parseInt(res.headers['total'])
-              })
+          if (res.headers['per-page']) {
+            response = Object.assign({}, response, {
+              perPage: parseInt(res.headers['per-page']),
+              total: parseInt(res.headers['total'])
+            })
+          }
+
+          if (res.status != 200) {
+            return reject(res)
+          }
+
+          if (params.version === 'published') {
+            provider.set(cacheKey, response)
+          }
+          resolve(response)
+        } catch (error) {
+          if (error.response.status === 429) {
+            retries = retries + 1
+
+            if (retries < this.maxRetries) {
+              console.log(`Hit rate limit. Retrying in ${retries} seconds.`)
+              await delay(1000 * retries)
+              return this.cacheResponse(url, params, retries).then(resolve).catch(reject)
             }
-
-            if (res.status != 200) {
-              return reject(res)
-            }
-
-            if (params.version === 'published') {
-              provider.set(cacheKey, response)
-            }
-            resolve(response)
-          })
-          .catch((response) => {
-            reject(response)
-          })
-
+          }
+          reject(error)
+        }
       }
     })
   }
 
   throttledRequest(type, url, params) {
-    return new Promise((resolve, reject) => {
-
-        this.client[type](url, params)
-          .then((response) => {
-            resolve(response)
-          })
-          .catch((response) => {
-            reject(response)
-          })
-
-    })
+    return this.client[type](url, params)
   }
 
   newVersion() {

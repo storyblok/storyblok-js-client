@@ -22,6 +22,7 @@ npm install storyblok-js-client
   - (`https` Boolean, optional)
   - (`rateLimit` Integer, optional, defaults to 3 for management api and 5 for cdn api)
   - (`timeout` Integer, optional)
+  - (`maxRetries` Integer, optional, defaults to 5)
 - (`endpoint` String, optional)
 
 **Example for using the content deliver api**

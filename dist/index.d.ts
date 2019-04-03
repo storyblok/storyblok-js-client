@@ -7,6 +7,7 @@ declare global {
     action: 'customEvent' | 'published' | 'input' | 'change' | 'unpublished' | 'enterEditmode'
     event?: string
     story?: any
+    slug?: string
     storyId?: string
     reload?: boolean
   }
@@ -35,6 +36,7 @@ interface StoryblokConfig {
   timeout?: number
   headers?: any
   region?: string
+  maxRetries?: number
 }
 
 interface StoryblokCache {
