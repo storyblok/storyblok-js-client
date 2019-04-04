@@ -118,7 +118,7 @@ interface StoryParams {
   token?: string
   find_by?: 'uuid'
   version?: 'draft' | 'published'
-  resolve_links?: 0 | 1
+  resolve_links?: 'url' | 'story'
   resolve_relations?: string
   cv?: number
 }
