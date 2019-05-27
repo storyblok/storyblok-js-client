@@ -132,7 +132,7 @@ class Storyblok {
           }
           resolve(response)
         } catch (error) {
-          if (error.response.status === 429) {
+          if (error.response && error.response.status === 429) {
             retries = retries + 1
 
             if (retries < this.maxRetries) {

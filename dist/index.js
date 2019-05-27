@@ -219,7 +219,7 @@ function () {
                   _context.prev = 20;
                   _context.t0 = _context["catch"](8);
 
-                  if (!(_context.t0.response.status === 429)) {
+                  if (!(_context.t0.response && _context.t0.response.status === 429)) {
                     _context.next = 29;
                     break;
                   }
