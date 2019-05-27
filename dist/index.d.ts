@@ -56,12 +56,11 @@ export interface StoryblokManagmentApiResult {
   headers: any
 }
 
-export interface StoryData {
+export interface StoryData<Content = { [index: string]: any }> {
   alternates: string[]
-  content: {
+  content: Content & {
     component: string
     _uid: string
-    [index: string]: any
   }
   created_at: string
   full_slug: string
