@@ -22,7 +22,7 @@ var qs = require('qs');
 
 var axios = require('axios');
 
-var throttledQueue = require('throttle-promise');
+var throttledQueue = require('./throttlePromise');
 
 var delay = function delay(ms) {
   return new _promise.default(function (res) {

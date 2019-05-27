@@ -2,7 +2,7 @@
 
 const qs = require('qs')
 const axios = require('axios')
-const throttledQueue = require('throttle-promise')
+const throttledQueue = require('./throttlePromise')
 const delay = ms => new Promise(res => setTimeout(res, ms))
 let memory = {}
 
