@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "@babel/runtime-corejs2": "^7.4.2",
-    "axios": "^0.17.1",
+    "axios": "^0.18.1",
     "qs": "^6.5.2"
   }
 }
