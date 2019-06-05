@@ -1,6 +1,6 @@
 {
   "name": "storyblok-js-client",
-  "version": "1.0.24",
+  "version": "1.0.25",
   "description": "Universal JavaScript SDK for Storyblok's API",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "@babel/runtime-corejs2": "^7.4.2",
-    "axios": "^0.18.1",
+    "axios": "^0.19.0",
     "qs": "^6.5.2"
   }
 }
