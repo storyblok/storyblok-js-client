@@ -29,7 +29,7 @@ declare global {
 
 import { AxiosInstance } from 'axios'
 
-interface StoryblokConfig {
+export interface StoryblokConfig {
   accessToken?: string
   oauthToken?: string
   cache?: StoryblokCache
@@ -39,7 +39,7 @@ interface StoryblokConfig {
   maxRetries?: number
 }
 
-interface StoryblokCache {
+export interface StoryblokCache {
   type?: 'memory'
   clear?: 'auto' | 'manual'
 }
@@ -94,7 +94,7 @@ export interface Story {
   headers: any
 }
 
-interface StoriesParams {
+export interface StoriesParams {
   token?: string
   with_tag?: string
   is_startpage?: 0 | 1
@@ -113,7 +113,7 @@ interface StoriesParams {
   page?: string
 }
 
-interface StoryParams {
+export interface StoryParams {
   token?: string
   find_by?: 'uuid'
   version?: 'draft' | 'published'
