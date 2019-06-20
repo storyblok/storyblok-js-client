@@ -162,7 +162,7 @@ Storyblok
 
 **Parameters**
 
-- `[return]` Object, returns the Storyblok client
+- `[return]` Promise, Object returns the Storyblok client
 
 **Example**
 

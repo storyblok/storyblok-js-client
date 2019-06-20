@@ -149,7 +149,7 @@ declare class Storyblok {
   cacheResponse(url: string, params: any): Promise<StoryblokResult>
   newVersion(): number
   cacheProvider(): StoryblokCacheProvider
-  flushCache(): this
+  flushCache(): Promise<this>
 }
 
 export default Storyblok
