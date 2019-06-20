@@ -27,7 +27,7 @@ declare global {
   }
 }
 
-import { AxiosInstance } from 'axios'
+import { AxiosInstance, AxiosProxyConfig } from 'axios'
 
 export interface StoryblokConfig {
   accessToken?: string
