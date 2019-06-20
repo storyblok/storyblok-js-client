@@ -7,6 +7,7 @@ const delay = ms => new Promise(res => setTimeout(res, ms))
 let memory = {}
 
 class Storyblok {
+
   constructor(config, endpoint) {
     if (!endpoint) {
       let region = config.region ? `-${config.region}` : ''
@@ -28,14 +29,14 @@ class Storyblok {
 
     this.maxRetries = config.maxRetries || 5
     this.throttle = throttledQueue(this.throttledRequest, rateLimit, 1000)
-    this.cacheVersion = this.cacheVersion || this.newVersion()
+    this.cacheVersion = (this.cacheVersion || this.newVersion())
     this.accessToken = config.accessToken
-    this.cache = config.cache || { clear: 'manual' }
+    this.cache = (config.cache || { clear: 'manual' })
     this.client = axios.create({
       baseURL: endpoint,
-      timeout: config.timeout || 0,
+      timeout: (config.timeout || 0),
       headers: headers,
-      proxy: config.proxy || false
+      proxy: (config.proxy || false)
     })
   }
 
