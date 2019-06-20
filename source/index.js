@@ -7,7 +7,6 @@ const delay = ms => new Promise(res => setTimeout(res, ms))
 let memory = {}
 
 class Storyblok {
-
   constructor(config, endpoint) {
     if (!endpoint) {
       let region = config.region ? `-${config.region}` : ''
@@ -29,14 +28,14 @@ class Storyblok {
 
     this.maxRetries = config.maxRetries || 5
     this.throttle = throttledQueue(this.throttledRequest, rateLimit, 1000)
-    this.cacheVersion = (this.cacheVersion || this.newVersion())
+    this.cacheVersion = this.cacheVersion || this.newVersion()
     this.accessToken = config.accessToken
-    this.cache = config.cache || {clear: 'manual'}
+    this.cache = config.cache || { clear: 'manual' }
     this.client = axios.create({
       baseURL: endpoint,
-      timeout: (config.timeout || 0),
+      timeout: config.timeout || 0,
       headers: headers,
-      proxy: (config.proxy || false)
+      proxy: config.proxy || false
     })
   }
 
@@ -98,51 +97,53 @@ class Storyblok {
     }
 
     return new Promise(async (resolve, reject) => {
-      let cacheKey = qs.stringify({url: url, params: params}, {arrayFormat: 'brackets'})
+      let cacheKey = qs.stringify({ url: url, params: params }, { arrayFormat: 'brackets' })
       let provider = this.cacheProvider()
-      let cache = provider.get(cacheKey)
 
       if (this.cache.clear === 'auto' && params.version === 'draft') {
-        this.flushCache()
+        await this.flushCache()
       }
 
-      if (params.version === 'published' && cache) {
-        resolve(cache)
-      } else {
-        try {
-          let res = await this.throttle('get', url, {
-            params: params,
-            paramsSerializer: params => qs.stringify(params, {arrayFormat: 'brackets'})
+      if (params.version === 'published') {
+        const cache = await provider.get(cacheKey)
+        if (cache) {
+          return resolve(cache)
+        }
+      }
+
+      try {
+        let res = await this.throttle('get', url, {
+          params: params,
+          paramsSerializer: (params) => qs.stringify(params, { arrayFormat: 'brackets' })
+        })
+        let response = { data: res.data, headers: res.headers }
+
+        if (res.headers['per-page']) {
+          response = Object.assign({}, response, {
+            perPage: parseInt(res.headers['per-page']),
+            total: parseInt(res.headers['total'])
           })
-          let response = {data: res.data,  headers: res.headers}
+        }
 
-          if (res.headers['per-page']) {
-            response = Object.assign({}, response, {
-              perPage: parseInt(res.headers['per-page']),
-              total: parseInt(res.headers['total'])
-            })
-          }
-
-          if (res.status != 200) {
-            return reject(res)
-          }
+        if (res.status != 200) {
+          return reject(res)
+        }
 
           if (params.version === 'published') {
             provider.set(cacheKey, response)
           }
           resolve(response)
-        } catch (error) {
-          if (error.response && error.response.status === 429) {
-            retries = retries + 1
+      } catch (error) {
+        if (error.response && error.response.status === 429) {
+          retries = retries + 1
 
-            if (retries < this.maxRetries) {
-              console.log(`Hit rate limit. Retrying in ${retries} seconds.`)
-              await delay(1000 * retries)
-              return this.cacheResponse(url, params, retries).then(resolve).catch(reject)
-            }
+          if (retries < this.maxRetries) {
+            console.log(`Hit rate limit. Retrying in ${retries} seconds.`)
+            await delay(1000 * retries)
+            return this.cacheResponse(url, params, retries).then(resolve).catch(reject)
           }
-          reject(error)
         }
+        reject(error)
       }
     })
   }
@@ -156,9 +157,7 @@ class Storyblok {
   }
 
   cacheProvider() {
-    let cacheConfig = this.cache
-
-    switch(this.cache.type) {
+    switch (this.cache.type) {
       case 'memory':
         return {
           get(key) {
@@ -171,22 +170,20 @@ class Storyblok {
             memory = {}
           }
         }
-        break
-
       default:
         this.cacheVersion = this.newVersion()
 
         return {
-          get() { },
-          set() { },
-          flush() { }
+          get() {},
+          set() {},
+          flush() {}
         }
     }
   }
 
-  flushCache() {
+  async flushCache() {
     this.cacheVersion = this.newVersion()
-    this.cacheProvider().flush()
+    await this.cacheProvider().flush()
     return this
   }
 }
