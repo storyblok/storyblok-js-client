@@ -18,7 +18,7 @@ declare global {
     enterEditmode: () => void
     on: (
       event: 'customEvent' | 'published' | 'input' | 'change' | 'unpublished' | 'enterEditmode' | string[],
-      callback: (payload?: StoryblokEventPayload) => void,
+      callback: (payload?: StoryblokEventPayload) => void
     ) => void
   }
   interface Window {
@@ -27,7 +27,7 @@ declare global {
   }
 }
 
-import { AxiosInstance } from 'axios'
+import { AxiosInstance, AxiosProxyConfig } from 'axios'
 
 export interface StoryblokConfig {
   accessToken?: string
@@ -37,11 +37,20 @@ export interface StoryblokConfig {
   headers?: any
   region?: string
   maxRetries?: number
+  https?: boolean
+  rateLimit?: number
+  proxy?: AxiosProxyConfig
 }
 
 export interface StoryblokCache {
   type?: 'memory'
   clear?: 'auto' | 'manual'
+}
+
+export interface StoryblokCacheProvider {
+  get: (key: string) => Promise<StoryblokResult> | StoryblokResult
+  set: (key: string, content: StoryblokResult) => Promise<void> | any
+  flush: () => Promise<void> | void
 }
 
 export interface StoryblokResult {
@@ -139,12 +148,8 @@ declare class Storyblok {
   getToken(): string
   cacheResponse(url: string, params: any): Promise<StoryblokResult>
   newVersion(): number
-  cacheProvider(): {
-    get(key: string): any
-    set(key: string, content: string): void
-    flush(): void
-  }
-  flushCache(): this
+  cacheProvider(): StoryblokCacheProvider
+  flushCache(): Promise<this>
 }
 
 export default Storyblok
