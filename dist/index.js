@@ -158,24 +158,37 @@ function () {
                     arrayFormat: 'brackets'
                   });
                   provider = _this.cacheProvider();
-                  cache = provider.get(cacheKey);
 
-                  if (_this.cache.clear === 'auto' && params.version === 'draft') {
-                    _this.flushCache();
-                  }
-
-                  if (!(params.version === 'published' && cache)) {
-                    _context.next = 8;
+                  if (!(_this.cache.clear === 'auto' && params.version === 'draft')) {
+                    _context.next = 5;
                     break;
                   }
 
-                  resolve(cache);
-                  _context.next = 30;
-                  break;
+                  _context.next = 5;
+                  return _this.flushCache();
+
+                case 5:
+                  if (!(params.version === 'published')) {
+                    _context.next = 11;
+                    break;
+                  }
+
+                  _context.next = 8;
+                  return provider.get(cacheKey);
 
                 case 8:
-                  _context.prev = 8;
-                  _context.next = 11;
+                  cache = _context.sent;
+
+                  if (!cache) {
+                    _context.next = 11;
+                    break;
+                  }
+
+                  return _context.abrupt("return", resolve(cache));
+
+                case 11:
+                  _context.prev = 11;
+                  _context.next = 14;
                   return _this.throttle('get', url, {
                     params: params,
                     paramsSerializer: function paramsSerializer(params) {
@@ -185,7 +198,7 @@ function () {
                     }
                   });
 
-                case 11:
+                case 14:
                   res = _context.sent;
                   response = {
                     data: res.data,
@@ -200,53 +213,53 @@ function () {
                   }
 
                   if (!(res.status != 200)) {
-                    _context.next = 16;
+                    _context.next = 19;
                     break;
                   }
 
                   return _context.abrupt("return", reject(res));
 
-                case 16:
+                case 19:
                   if (params.version === 'published') {
                     provider.set(cacheKey, response);
                   }
 
                   resolve(response);
-                  _context.next = 30;
+                  _context.next = 33;
                   break;
 
-                case 20:
-                  _context.prev = 20;
-                  _context.t0 = _context["catch"](8);
+                case 23:
+                  _context.prev = 23;
+                  _context.t0 = _context["catch"](11);
 
                   if (!(_context.t0.response && _context.t0.response.status === 429)) {
-                    _context.next = 29;
+                    _context.next = 32;
                     break;
                   }
 
                   retries = retries + 1;
 
                   if (!(retries < _this.maxRetries)) {
-                    _context.next = 29;
+                    _context.next = 32;
                     break;
                   }
 
                   console.log("Hit rate limit. Retrying in ".concat(retries, " seconds."));
-                  _context.next = 28;
+                  _context.next = 31;
                   return delay(1000 * retries);
 
-                case 28:
+                case 31:
                   return _context.abrupt("return", _this.cacheResponse(url, params, retries).then(resolve).catch(reject));
 
-                case 29:
+                case 32:
                   reject(_context.t0);
 
-                case 30:
+                case 33:
                 case "end":
                   return _context.stop();
               }
             }
-          }, _callee, null, [[8, 20]]);
+          }, _callee, null, [[11, 23]]);
         }));
 
         return function (_x, _x2) {
@@ -267,8 +280,6 @@ function () {
   }, {
     key: "cacheProvider",
     value: function cacheProvider() {
-      var cacheConfig = this.cache;
-
       switch (this.cache.type) {
         case 'memory':
           return {
@@ -282,7 +293,6 @@ function () {
               memory = {};
             }
           };
-          break;
 
         default:
           this.cacheVersion = this.newVersion();
@@ -295,11 +305,35 @@ function () {
     }
   }, {
     key: "flushCache",
-    value: function flushCache() {
-      this.cacheVersion = this.newVersion();
-      this.cacheProvider().flush();
-      return this;
-    }
+    value: function () {
+      var _flushCache = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee2() {
+        return _regenerator.default.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                this.cacheVersion = this.newVersion();
+                _context2.next = 3;
+                return this.cacheProvider().flush();
+
+              case 3:
+                return _context2.abrupt("return", this);
+
+              case 4:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
+
+      function flushCache() {
+        return _flushCache.apply(this, arguments);
+      }
+
+      return flushCache;
+    }()
   }]);
   return Storyblok;
 }();

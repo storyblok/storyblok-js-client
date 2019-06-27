@@ -130,10 +130,10 @@ class Storyblok {
           return reject(res)
         }
 
-          if (params.version === 'published') {
-            provider.set(cacheKey, response)
-          }
-          resolve(response)
+        if (params.version === 'published') {
+          provider.set(cacheKey, response)
+        }
+        resolve(response)
       } catch (error) {
         if (error.response && error.response.status === 429) {
           retries = retries + 1
