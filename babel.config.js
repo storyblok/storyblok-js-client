@@ -7,11 +7,12 @@ const presets = [
         edge: "17",
         firefox: "60",
         chrome: "67",
-        safari: "11.1",
+        safari: "11.1"
       },
       useBuiltIns: "usage",
-    },
-  ],
+      corejs: 3
+    }
+  ]
 ];
 
 const plugins = [
@@ -19,7 +20,7 @@ const plugins = [
     "@babel/plugin-transform-runtime",
     {
       "absoluteRuntime": false,
-      "corejs": 2,
+      "corejs": 3,
       "helpers": true,
       "regenerator": true,
       "useESModules": false
