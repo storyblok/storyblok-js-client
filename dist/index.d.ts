@@ -48,7 +48,7 @@ export interface StoryblokCache {
 }
 
 export interface StoryblokCacheProvider {
-  get: (key: string) => Promise<StoryblokResult> | StoryblokResult
+  get: (key: string) => Promise<StoryblokResult | null> | (StoryblokResult | null)
   set: (key: string, content: StoryblokResult) => Promise<void> | any
   flush: () => Promise<void> | void
 }
@@ -65,12 +65,15 @@ export interface StoryblokManagmentApiResult {
   headers: any
 }
 
-export interface StoryData<Content = { [index: string]: any }> {
+export interface StoryblokComponent<TComp extends string> { 
+  _uid: string
+  component: TComp
+  _editable?: string
+}
+
+export interface StoryData<Content = StoryblokComponent<string> & { [index: string]: any }> {
   alternates: string[]
-  content: Content & {
-    component: string
-    _uid: string
-  }
+  content: Content 
   created_at: string
   full_slug: string
   group_id: string
