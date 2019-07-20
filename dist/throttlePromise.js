@@ -1,10 +1,18 @@
 "use strict";
 
-var _interopRequireDefault = require("@babel/runtime-corejs2/helpers/interopRequireDefault");
+var _interopRequireDefault = require("@babel/runtime-corejs3/helpers/interopRequireDefault");
 
-require("core-js/modules/es6.function.name");
+require("core-js/modules/es.function.name");
 
-var _promise = _interopRequireDefault(require("@babel/runtime-corejs2/core-js/promise"));
+var _forEach = _interopRequireDefault(require("@babel/runtime-corejs3/core-js-stable/instance/for-each"));
+
+var _promise = _interopRequireDefault(require("@babel/runtime-corejs3/core-js-stable/promise"));
+
+var _indexOf = _interopRequireDefault(require("@babel/runtime-corejs3/core-js-stable/instance/index-of"));
+
+var _filter = _interopRequireDefault(require("@babel/runtime-corejs3/core-js-stable/instance/filter"));
+
+var _setTimeout2 = _interopRequireDefault(require("@babel/runtime-corejs3/core-js-stable/set-timeout"));
 
 function isFinite(value) {
   if (typeof value !== 'number') {
@@ -33,19 +41,19 @@ function throttle(fn, limit, interval) {
 
   var next = function next() {
     activeCount++;
-    var id = setTimeout(function () {
+    var id = (0, _setTimeout2.default)(function () {
       activeCount--;
 
       if (queue.length > 0) {
         next();
       }
 
-      timeouts = timeouts.filter(function (currentId) {
+      timeouts = (0, _filter.default)(timeouts).call(timeouts, function (currentId) {
         return currentId !== id;
       });
     }, interval);
 
-    if (timeouts.indexOf(id) < 0) {
+    if ((0, _indexOf.default)(timeouts).call(timeouts, id) < 0) {
       timeouts.push(id);
     }
 
@@ -71,9 +79,9 @@ function throttle(fn, limit, interval) {
   };
 
   throttled.abort = function () {
-    timeouts.forEach(clearTimeout);
+    (0, _forEach.default)(timeouts).call(timeouts, clearTimeout);
     timeouts = [];
-    queue.forEach(function (x) {
+    (0, _forEach.default)(queue).call(queue, function (x) {
       x.reject(new throttle.AbortError());
     });
     queue.length = 0;
