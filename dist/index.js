@@ -6,8 +6,6 @@ var _regenerator = _interopRequireDefault(require("@babel/runtime-corejs3/regene
 
 var _parseInt2 = _interopRequireDefault(require("@babel/runtime-corejs3/core-js-stable/parse-int"));
 
-require("regenerator-runtime/runtime");
-
 var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime-corejs3/helpers/asyncToGenerator"));
 
 var _indexOf = _interopRequireDefault(require("@babel/runtime-corejs3/core-js-stable/instance/index-of"));
