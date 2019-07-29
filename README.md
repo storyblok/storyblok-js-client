@@ -2,6 +2,8 @@
 
 This client is a thin wrapper for the Storyblok API's to use in Node.js and the browser.
 
+The version 2 uses corejs 3. If you are looking for the version that uses corejs 2 please use [version 1.x.x](https://github.com/storyblok/storyblok-js-client/tree/v1).
+
 ## Install
 
 ```
