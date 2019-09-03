@@ -1,0 +1,150 @@
+const defaultHtmlSerializer = require('./schema')
+const escapeHTML = function(string) {
+  const htmlEscapes = {
+    '&': '&amp',
+    '<': '&lt',
+    '>': '&gt',
+    '"': '&quot',
+    "'": '&#39'
+  }
+
+  const reUnescapedHtml = /[&<>"']/g
+  const reHasUnescapedHtml = RegExp(reUnescapedHtml.source)
+
+  return (string && reHasUnescapedHtml.test(string))
+      ? string.replace(reUnescapedHtml, (chr) => htmlEscapes[chr])
+      : string
+}
+
+class RichTextResolver {
+
+  constructor(schema) {
+    if (!schema) {
+      schema = defaultHtmlSerializer
+    }
+
+    this.marks = schema.marks
+    this.nodes = schema.nodes
+  }
+
+  addNode(key, schema) {
+    this.nodes[key] = schema
+  }
+
+  addMark(key, schema) {
+    this.marks[key] = schema
+  }
+
+  render(data) {
+    let html = ''
+
+    data.content.forEach((node) => {
+      html += this.renderNode(node)
+    })
+
+    return html
+  }
+
+  renderNode(item) {
+    let html = []
+
+    if (item.marks) {
+      item.marks.forEach((m) => {
+        const mark = this.getMatchingMark(m)
+
+        if (mark) {
+          html.push(this.renderOpeningTag(mark.tag))
+        }
+      })
+    }
+
+    const node = this.getMatchingNode(item)
+
+    if (node && node.tag) {
+      html.push(this.renderOpeningTag(node.tag)) 
+    }
+
+    if (item.content) {
+      item.content.forEach((content) => {
+        html.push(this.renderNode(content))
+      })
+    } else if (item.text) {
+      html.push(escapeHTML(item.text))
+    } else if (node && node.html) {
+      html.push(node.html)
+    }
+
+    if (node && node.tag) {
+      html.push(this.renderClosingTag(node.tag)) 
+    }
+
+    if (item.marks) {
+      item.marks.reverse().forEach((m) => {
+        const mark = this.getMatchingMark(m)
+
+        if (mark) {
+          html.push(this.renderClosingTag(mark.tag))
+        }
+      })
+    }
+
+    return html.join('')
+  }
+
+  renderOpeningTag(tags) {
+    if (tags.constructor === String) {
+      return `<${tags}>` 
+    }
+
+    const all = tags.map((tag) => {
+      if (tag.constructor === String) {
+        return `<${tag}>`
+      } else {
+        let h = `<${tag.tag}`
+        if (tag.attrs) {
+          for (let key in tag.attrs) {
+            let value = tag.attrs[key]
+            if (value !== null) {
+              h += ` ${key}="${value}"`
+            }
+          }
+        }
+
+        return `${h}>`
+      }
+    })
+    return all.join('')
+  }
+
+  renderClosingTag(tags) {
+    if (tags.constructor === String) {
+      return `</${tags}>`
+    }
+
+    const all = tags.reverse().map((tag) => {
+      if (tag.constructor === String) {
+        return `</${tag}>`
+      } else {
+        return `</${tag.tag}>`
+      }
+    })
+
+    return all.join('')
+  }
+
+  getMatchingNode(item) {
+    if (typeof this.nodes[item.type] !== 'function') {
+      return
+    }
+    return this.nodes[item.type](item)
+  }
+
+  getMatchingMark(item) {
+    if (typeof this.marks[item.type] !== 'function') {
+      return
+    }
+    return this.marks[item.type](item)
+  }
+}
+
+module.exports = RichTextResolver
