@@ -40,6 +40,7 @@ export interface StoryblokConfig {
   https?: boolean
   rateLimit?: number
   proxy?: AxiosProxyConfig
+  componentResolver?: (component: string, data: any) => void
 }
 
 export interface StoryblokCache {
@@ -153,6 +154,7 @@ declare class Storyblok {
   newVersion(): number
   cacheProvider(): StoryblokCacheProvider
   flushCache(): Promise<this>
+  setComponentResolver((component: string, data: any) => void): void
 }
 
 export default Storyblok
