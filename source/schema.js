@@ -71,7 +71,7 @@ module.exports = {
   marks: {
     bold() {
       return {
-        tag: 'bold'
+        tag: 'b'
       }
     },
     strike() {
@@ -96,7 +96,7 @@ module.exports = {
     },
     italic() {
       return {
-        tag: 'italic'
+        tag: 'i'
       }
     },
     link(node) {

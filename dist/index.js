@@ -30,6 +30,8 @@ var delay = function delay(ms) {
   });
 };
 
+var RichTextResolver = require('./richTextResolver');
+
 var memory = {};
 
 var Storyblok =
@@ -56,6 +58,12 @@ function () {
       rateLimit = config.rateLimit;
     }
 
+    this.richTextResolver = new RichTextResolver();
+
+    if (typeof config.componentResolver === 'function') {
+      this.setComponentResolver(config.componentResolver);
+    }
+
     this.maxRetries = config.maxRetries || 5;
     this.throttle = throttledQueue(this.throttledRequest, rateLimit, 1000);
     this.cacheVersion = this.cacheVersion || this.newVersion();
@@ -72,6 +80,19 @@ function () {
   }
 
   (0, _createClass2.default)(Storyblok, [{
+    key: "setComponentResolver",
+    value: function setComponentResolver(resolver) {
+      this.richTextResolver.addNode('blok', function (node) {
+        var html = '';
+        node.attrs.body.forEach(function (blok) {
+          html += resolver(blok.component, blok);
+        });
+        return {
+          html: html
+        };
+      });
+    }
+  }, {
     key: "get",
     value: function get(slug, params) {
       var query = params || {};
