@@ -4,6 +4,7 @@ const qs = require('qs')
 const axios = require('axios')
 const throttledQueue = require('./throttlePromise')
 const delay = ms => new Promise(res => setTimeout(res, ms))
+const RichTextResolver = require('./richTextResolver')
 let memory = {}
 
 class Storyblok {
@@ -25,6 +26,22 @@ class Storyblok {
 
     if (typeof config.rateLimit != 'undefined') {
       rateLimit = config.rateLimit
+    }
+
+    this.richTextResolver = new RichTextResolver()
+
+    if (typeof config.componentResolver === 'function') {
+      this.richTextResolver.addNode('blok', (node) => {
+        let html = ''
+
+        node.attrs.body.forEach((blok) => {
+          html += config.componentResolver(blok.component, blok)
+        })
+
+        return {
+          html: html
+        }
+      })
     }
 
     this.maxRetries = config.maxRetries || 5
