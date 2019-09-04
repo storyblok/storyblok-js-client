@@ -69,17 +69,7 @@ function () {
     this.richTextResolver = new RichTextResolver();
 
     if (typeof config.componentResolver === 'function') {
-      this.richTextResolver.addNode('blok', function (node) {
-        var _context2;
-
-        var html = '';
-        (0, _forEach.default)(_context2 = node.attrs.body).call(_context2, function (blok) {
-          html += config.componentResolver(blok.component, blok);
-        });
-        return {
-          html: html
-        };
-      });
+      this.setComponentResolver(config.componentResolver);
     }
 
     this.maxRetries = config.maxRetries || 5;
@@ -98,6 +88,21 @@ function () {
   }
 
   (0, _createClass2.default)(Storyblok, [{
+    key: "setComponentResolver",
+    value: function setComponentResolver(resolver) {
+      this.richTextResolver.addNode('blok', function (node) {
+        var _context2;
+
+        var html = '';
+        (0, _forEach.default)(_context2 = node.attrs.body).call(_context2, function (blok) {
+          html += resolver(blok.component, blok);
+        });
+        return {
+          html: html
+        };
+      });
+    }
+  }, {
     key: "get",
     value: function get(slug, params) {
       var query = params || {};
