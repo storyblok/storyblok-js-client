@@ -31,17 +31,7 @@ class Storyblok {
     this.richTextResolver = new RichTextResolver()
 
     if (typeof config.componentResolver === 'function') {
-      this.richTextResolver.addNode('blok', (node) => {
-        let html = ''
-
-        node.attrs.body.forEach((blok) => {
-          html += config.componentResolver(blok.component, blok)
-        })
-
-        return {
-          html: html
-        }
-      })
+      this.setComponentResolver(config.componentResolver)
     }
 
     this.maxRetries = config.maxRetries || 5
@@ -54,6 +44,20 @@ class Storyblok {
       timeout: (config.timeout || 0),
       headers: headers,
       proxy: (config.proxy || false)
+    })
+  }
+
+  setComponentResolver(resolver) {
+    this.richTextResolver.addNode('blok', (node) => {
+      let html = ''
+
+      node.attrs.body.forEach((blok) => {
+        html += resolver(blok.component, blok)
+      })
+
+      return {
+        html: html
+      }
     })
   }
 
