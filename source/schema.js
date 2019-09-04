@@ -1,6 +1,6 @@
 module.exports = {
   nodes: {
-  	horizontal_rule(node) {
+    horizontal_rule(node) {
       return {
         html: '<hr />'
       }
