@@ -172,6 +172,31 @@ Storyblok
 Storyblok.flushCache()
 ```
 
+### Method `Storyblok#setComponentResolver`
+
+**Parameters**
+
+- `callback` Function, Render function to render components of the richtext field
+
+```javascript
+Storyblok.setComponentResolver((component, blok) => {
+  return `<component :blok='${JSON.stringify(blok)}'
+                     is="${component}"></component>`
+})
+```
+
+### Method `Storyblok#richTextResolver.render`
+
+**Parameters**
+- `[return]` String, Rendered html of a richtext field
+- `richtext` Object, Json object from a richtext field
+
+**Example**
+
+```javascript
+Storyblok.richTextResolver.render(blok.richtext)
+```
+
 ### Code examples
 
 #### Filter by content type values and path
