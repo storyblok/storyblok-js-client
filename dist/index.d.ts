@@ -135,12 +135,17 @@ export interface StoryParams {
   cv?: number
 }
 
+export interface RichtextInstance {
+  render: (richtext: any) => void
+}
+
 declare class Storyblok {
   throttle: any
   cacheVersion: number
   accessToken: string
   cache: StoryblokCache
   client: AxiosInstance
+  richTextResolver: RichtextInstance
   constructor(config: StoryblokConfig, endpoint?: string)
   get(slug: string, params?: any): Promise<StoryblokResult>
   post(slug: string, params?: any): Promise<StoryblokManagmentApiResult>
@@ -154,7 +159,7 @@ declare class Storyblok {
   newVersion(): number
   cacheProvider(): StoryblokCacheProvider
   flushCache(): Promise<this>
-  setComponentResolver((component: string, data: any) => void): void
+  setComponentResolver(renderFunction: (component: string, data: any) => void): void
 }
 
 export default Storyblok
