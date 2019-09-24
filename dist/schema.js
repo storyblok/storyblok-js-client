@@ -78,7 +78,7 @@ module.exports = {
   marks: {
     bold: function bold() {
       return {
-        tag: 'bold'
+        tag: 'strong'
       };
     },
     strike: function strike() {
