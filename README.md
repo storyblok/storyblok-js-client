@@ -304,6 +304,23 @@ const storyblok = new StoryblokClient({
 
 Read more about proxy settings in axios [documentation](https://github.com/axios/axios)
 
+
+#### How to define a custom schema for the rich text renderer
+
+To define to add some classes to specific html attributes rendered by the rich text renderer. To do so you can overwrite the resolver and initialize it with your own schema definition. Copy the content of https://github.com/storyblok/storyblok-js-client/blob/master/source/schema.js to my-schema.js and overwrite richTextResolver like in the following example:
+
+~~~javascript
+const StoryblokClient = require('storyblok-js-client')
+const RichTextResolver = require('storyblok-js-client/dist/richTextResolver')
+const MySchema = require('./my-schema')
+
+let client = new StoryblokClient({
+  accessToken: 'WcdDcNgDm59K72EbsQg8Lgtt'
+})
+
+client.richTextResolver = new RichTextResolver(MySchema)
+~~~
+
 ## Contribution
 
 Fork me on [Github](https://github.com/storyblok/storyblok-js-client)
