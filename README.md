@@ -178,6 +178,25 @@ Storyblok.flushCache()
 
 - `callback` Function, Render function to render components of the richtext field
 
+Option 1: Use a switch case definition to render different components:
+
+```javascript
+Storyblok.setComponentResolver((component, blok) => {
+  switch(component) {
+    case 'my-custom-component':
+      return `<div class="my-component-class">${blok.text}</div>`
+      break;
+    case 'my-header':
+      return `<h1 class="my-class">${blok.title}</h1>`
+      break;
+    default:
+      return 'Resolver not defined'
+  }
+})
+```
+
+Option 2: Dynamically render a component (Example in Vue.js):
+
 ```javascript
 Storyblok.setComponentResolver((component, blok) => {
   return `<component :blok='${JSON.stringify(blok)}'
