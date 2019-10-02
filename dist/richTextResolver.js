@@ -2,9 +2,9 @@
 
 var _interopRequireDefault = require("@babel/runtime-corejs3/helpers/interopRequireDefault");
 
-var _concat = _interopRequireDefault(require("@babel/runtime-corejs3/core-js-stable/instance/concat"));
-
 var _map = _interopRequireDefault(require("@babel/runtime-corejs3/core-js-stable/instance/map"));
+
+var _concat = _interopRequireDefault(require("@babel/runtime-corejs3/core-js-stable/instance/concat"));
 
 var _reverse = _interopRequireDefault(require("@babel/runtime-corejs3/core-js-stable/instance/reverse"));
 
@@ -100,6 +100,8 @@ function () {
         });
       } else if (item.text) {
         html.push(escapeHTML(item.text));
+      } else if (node && node.singleTag) {
+        html.push(this.renderTag(node.singleTag, ' /'));
       } else if (node && node.html) {
         html.push(node.html);
       }
@@ -123,49 +125,66 @@ function () {
       return html.join('');
     }
   }, {
-    key: "renderOpeningTag",
-    value: function renderOpeningTag(tags) {
+    key: "renderTag",
+    value: function renderTag(tags, ending) {
       if (tags.constructor === String) {
-        return "<".concat(tags, ">");
+        var _context6, _context7;
+
+        return (0, _concat.default)(_context6 = (0, _concat.default)(_context7 = "<").call(_context7, tags)).call(_context6, ending, ">");
       }
 
       var all = (0, _map.default)(tags).call(tags, function (tag) {
         if (tag.constructor === String) {
-          return "<".concat(tag, ">");
+          var _context8, _context9;
+
+          return (0, _concat.default)(_context8 = (0, _concat.default)(_context9 = "<").call(_context9, tag)).call(_context8, ending, ">");
         } else {
-          var h = "<".concat(tag.tag);
+          var _context10, _context13, _context14;
+
+          var h = (0, _concat.default)(_context10 = "<").call(_context10, tag.tag);
 
           if (tag.attrs) {
             for (var key in tag.attrs) {
               var value = tag.attrs[key];
 
               if (value !== null) {
-                var _context6;
+                var _context11, _context12;
 
-                h += (0, _concat.default)(_context6 = " ".concat(key, "=\"")).call(_context6, value, "\"");
+                h += (0, _concat.default)(_context11 = (0, _concat.default)(_context12 = " ").call(_context12, key, "=\"")).call(_context11, value, "\"");
               }
             }
           }
 
-          return "".concat(h, ">");
+          return (0, _concat.default)(_context13 = (0, _concat.default)(_context14 = "").call(_context14, h)).call(_context13, ending, ">");
         }
       });
       return all.join('');
     }
   }, {
+    key: "renderOpeningTag",
+    value: function renderOpeningTag(tags) {
+      return this.renderTag(tags, '');
+    }
+  }, {
     key: "renderClosingTag",
     value: function renderClosingTag(tags) {
-      var _context7;
+      var _context16;
 
       if (tags.constructor === String) {
-        return "</".concat(tags, ">");
+        var _context15;
+
+        return (0, _concat.default)(_context15 = "</").call(_context15, tags, ">");
       }
 
-      var all = (0, _map.default)(_context7 = (0, _reverse.default)(tags).call(tags)).call(_context7, function (tag) {
+      var all = (0, _map.default)(_context16 = (0, _reverse.default)(tags).call(tags)).call(_context16, function (tag) {
         if (tag.constructor === String) {
-          return "</".concat(tag, ">");
+          var _context17;
+
+          return (0, _concat.default)(_context17 = "</").call(_context17, tag, ">");
         } else {
-          return "</".concat(tag.tag, ">");
+          var _context18;
+
+          return (0, _concat.default)(_context18 = "</").call(_context18, tag.tag, ">");
         }
       });
       return all.join('');

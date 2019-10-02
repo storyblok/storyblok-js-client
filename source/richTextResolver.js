@@ -70,6 +70,8 @@ class RichTextResolver {
       })
     } else if (item.text) {
       html.push(escapeHTML(item.text))
+    } else if (node && node.singleTag) {
+      html.push(this.renderTag(node.singleTag, ' /'))
     } else if (node && node.html) {
       html.push(node.html)
     }
@@ -91,14 +93,14 @@ class RichTextResolver {
     return html.join('')
   }
 
-  renderOpeningTag(tags) {
+  renderTag(tags, ending) {
     if (tags.constructor === String) {
-      return `<${tags}>` 
+      return `<${tags}${ending}>`
     }
 
     const all = tags.map((tag) => {
       if (tag.constructor === String) {
-        return `<${tag}>`
+        return `<${tag}${ending}>`
       } else {
         let h = `<${tag.tag}`
         if (tag.attrs) {
@@ -110,10 +112,14 @@ class RichTextResolver {
           }
         }
 
-        return `${h}>`
+        return `${h}${ending}>`
       }
     })
     return all.join('')
+  }
+
+  renderOpeningTag(tags) {
+    return this.renderTag(tags, '')
   }
 
   renderClosingTag(tags) {

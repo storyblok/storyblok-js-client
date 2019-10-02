@@ -1,11 +1,12 @@
 {
   "name": "storyblok-js-client",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "description": "Universal JavaScript SDK for Storyblok's API",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "build": "babel source --out-dir dist"
+    "build": "babel source --out-dir dist",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -24,7 +25,8 @@
     "@babel/cli": "^7.2.3",
     "@babel/core": "^7.4.0",
     "@babel/plugin-transform-runtime": "^7.4.0",
-    "@babel/preset-env": "^7.4.2"
+    "@babel/preset-env": "^7.4.2",
+    "jest": "^24.9.0"
   },
   "dependencies": {
     "@babel/runtime-corejs3": "^7.4.5",

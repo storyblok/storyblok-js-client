@@ -4,11 +4,31 @@ var _interopRequireDefault = require("@babel/runtime-corejs3/helpers/interopRequ
 
 var _concat = _interopRequireDefault(require("@babel/runtime-corejs3/core-js-stable/instance/concat"));
 
+var _indexOf = _interopRequireDefault(require("@babel/runtime-corejs3/core-js-stable/instance/index-of"));
+
+var pick = function pick(attrs, allowed) {
+  if (!attrs) {
+    return null;
+  }
+
+  var h = {};
+
+  for (var key in attrs) {
+    var value = attrs[key];
+
+    if ((0, _indexOf.default)(allowed).call(allowed, key) > -1 && value !== null) {
+      h[key] = value;
+    }
+  }
+
+  return h;
+};
+
 module.exports = {
   nodes: {
     horizontal_rule: function horizontal_rule(node) {
       return {
-        html: '<hr />'
+        singleTag: 'hr'
       };
     },
     blockquote: function blockquote(node) {
@@ -31,32 +51,22 @@ module.exports = {
     },
     hard_break: function hard_break(node) {
       return {
-        html: '<br />'
+        singleTag: 'br'
       };
     },
     heading: function heading(node) {
+      var _context;
+
       return {
-        tag: "h".concat(node.attrs.level)
+        tag: (0, _concat.default)(_context = "h").call(_context, node.attrs.level)
       };
     },
     image: function image(node) {
-      var h = '<img';
-
-      if (node.attrs) {
-        for (var key in node.attrs) {
-          var value = node.attrs[key];
-
-          if (value !== null) {
-            var _context;
-
-            h += (0, _concat.default)(_context = " ".concat(key, "=\"")).call(_context, value, "\"");
-          }
-        }
-      }
-
-      h += ' />';
       return {
-        html: h
+        singleTag: [{
+          tag: 'img',
+          attrs: pick(node.attrs, ['src', 'alt', 'title'])
+        }]
       };
     },
     list_item: function list_item(node) {
@@ -78,7 +88,7 @@ module.exports = {
   marks: {
     bold: function bold() {
       return {
-        tag: 'strong'
+        tag: 'b'
       };
     },
     strike: function strike() {
@@ -103,13 +113,21 @@ module.exports = {
     },
     italic: function italic() {
       return {
-        tag: 'italic'
+        tag: 'i'
       };
     },
     link: function link(node) {
       return {
         tag: [{
           tag: 'a',
+          attrs: node.attrs
+        }]
+      };
+    },
+    styled: function styled(node) {
+      return {
+        tag: [{
+          tag: 'span',
           attrs: node.attrs
         }]
       };
