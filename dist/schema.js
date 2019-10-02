@@ -1,10 +1,28 @@
 "use strict";
 
+var pick = function pick(attrs, allowed) {
+  if (!attrs) {
+    return null;
+  }
+
+  var h = {};
+
+  for (var key in attrs) {
+    var value = attrs[key];
+
+    if (allowed.indexOf(key) > -1 && value !== null) {
+      h[key] = value;
+    }
+  }
+
+  return h;
+};
+
 module.exports = {
   nodes: {
     horizontal_rule: function horizontal_rule(node) {
       return {
-        html: '<hr />'
+        singleTag: 'hr'
       };
     },
     blockquote: function blockquote(node) {
@@ -27,7 +45,7 @@ module.exports = {
     },
     hard_break: function hard_break(node) {
       return {
-        html: '<br />'
+        singleTag: 'br'
       };
     },
     heading: function heading(node) {
@@ -36,21 +54,11 @@ module.exports = {
       };
     },
     image: function image(node) {
-      var h = '<img';
-
-      if (node.attrs) {
-        for (var key in node.attrs) {
-          var value = node.attrs[key];
-
-          if (value !== null) {
-            h += " ".concat(key, "=\"").concat(value, "\"");
-          }
-        }
-      }
-
-      h += ' />';
       return {
-        html: h
+        singleTag: [{
+          tag: 'img',
+          attrs: pick(node.attrs, ['src', 'alt', 'title'])
+        }]
       };
     },
     list_item: function list_item(node) {
@@ -104,6 +112,14 @@ module.exports = {
       return {
         tag: [{
           tag: 'a',
+          attrs: node.attrs
+        }]
+      };
+    },
+    styled: function styled(node) {
+      return {
+        tag: [{
+          tag: 'span',
           attrs: node.attrs
         }]
       };

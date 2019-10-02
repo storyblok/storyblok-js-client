@@ -1,8 +1,22 @@
+const pick = function(attrs, allowed) {
+  if (!attrs) {
+    return null
+  }
+  let h = {}
+  for (let key in attrs) {
+    let value = attrs[key]
+    if (allowed.indexOf(key) > -1 && value !== null) {
+      h[key] = value
+    }
+  }
+  return h
+}
+
 module.exports = {
   nodes: {
   	horizontal_rule(node) {
       return {
-        html: '<hr />'
+        singleTag: 'hr'
       }
     },
     blockquote(node) {
@@ -28,7 +42,7 @@ module.exports = {
     },
     hard_break(node) {
       return {
-        html: '<br />'
+        singleTag: 'br'
       }
     },
     heading(node) {
@@ -37,19 +51,11 @@ module.exports = {
       }
     },
     image(node) {
-      let h = '<img'
-      if (node.attrs) {
-        for (let key in node.attrs) {
-          let value = node.attrs[key]
-          if (value !== null) {
-            h += ` ${key}="${value}"`
-          }
-        }
-      }
-      h += ' />'
-
       return {
-        html: h
+        singleTag: [{
+          tag: 'img',
+          attrs: pick(node.attrs, ['src', 'alt', 'title'])
+        }]
       }
     },
     list_item(node) {
@@ -103,6 +109,14 @@ module.exports = {
       return {
         tag: [{
           tag: 'a',
+          attrs: node.attrs
+        }]
+      }
+    },
+    styled(node) {
+      return {
+        tag: [{
+          tag: 'span',
           attrs: node.attrs
         }]
       }

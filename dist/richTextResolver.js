@@ -91,6 +91,8 @@ function () {
         });
       } else if (item.text) {
         html.push(escapeHTML(item.text));
+      } else if (node && node.singleTag) {
+        html.push(this.renderTag(node.singleTag, ' /'));
       } else if (node && node.html) {
         html.push(node.html);
       }
@@ -112,15 +114,15 @@ function () {
       return html.join('');
     }
   }, {
-    key: "renderOpeningTag",
-    value: function renderOpeningTag(tags) {
+    key: "renderTag",
+    value: function renderTag(tags, ending) {
       if (tags.constructor === String) {
-        return "<".concat(tags, ">");
+        return "<".concat(tags).concat(ending, ">");
       }
 
       var all = tags.map(function (tag) {
         if (tag.constructor === String) {
-          return "<".concat(tag, ">");
+          return "<".concat(tag).concat(ending, ">");
         } else {
           var h = "<".concat(tag.tag);
 
@@ -134,10 +136,15 @@ function () {
             }
           }
 
-          return "".concat(h, ">");
+          return "".concat(h).concat(ending, ">");
         }
       });
       return all.join('');
+    }
+  }, {
+    key: "renderOpeningTag",
+    value: function renderOpeningTag(tags) {
+      return this.renderTag(tags, '');
     }
   }, {
     key: "renderClosingTag",
