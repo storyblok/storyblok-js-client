@@ -7,6 +7,13 @@ const delay = ms => new Promise(res => setTimeout(res, ms))
 const RichTextResolver = require('./richTextResolver')
 let memory = {}
 
+/**
+ * @method isCDNUrl
+ * @param  {String} url /cdn/, /stories/, /spaces/...
+ * @return {Boolean}
+ */
+const isCDNUrl = url => url.indexOf('/cdn/') > -1
+
 class Storyblok {
 
   constructor(config, endpoint) {
@@ -61,23 +68,33 @@ class Storyblok {
     })
   }
 
-  get(slug, params) {
-    let query = params || {}
-    let url = `/${slug}`
-
-    if (url.indexOf('/cdn/') > -1) {
-      if (!query.version) {
-        query.version = 'published'
-      }
-
-      if (!query.cv) {
-        query.cv = this.cacheVersion
-      }
-
-      if (!query.token) {
-        query.token = this.getToken()
-      }
+  parseParams(params = {}) {
+    if (!params.version) {
+      params.version = 'published'
     }
+
+    if (!params.cv) {
+      params.cv = this.cacheVersion
+    }
+
+    if (!params.token) {
+      params.token = this.getToken()
+    }
+
+    return params
+  }
+
+  factoryParamOptions(url, params = {}) {
+    if (isCDNUrl(url)) {
+      return this.parseParams(params)
+    }
+
+    return params
+  }
+
+  get(slug, params) {
+    let url = `/${slug}`
+    const query = this.factoryParamOptions(url, params)
 
     return this.cacheResponse(url, query)
   }
