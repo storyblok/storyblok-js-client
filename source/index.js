@@ -14,6 +14,21 @@ let memory = {}
  */
 const isCDNUrl = url => url.indexOf('/cdn/') > -1
 
+/**
+ * @method getOptionsPage
+ * @param  {Object} options
+ * @param  {Number} perPage
+ * @param  {Number} page
+ * @return {Object}         merged options with perPag and page values
+ */
+const getOptionsPage = (options, perPage, page) => {
+  return {
+    ...options,
+    per_page: perPage,
+    page
+  }
+}
+
 class Storyblok {
 
   constructor(config, endpoint) {
@@ -92,11 +107,42 @@ class Storyblok {
     return params
   }
 
+  makeRequest(url, params, per_page, page) {
+    const options = this.factoryParamOptions(
+      url,
+      getOptionsPage(params, per_page, page)
+    )
+
+    return this.cacheResponse(url, options)
+  }
+
   get(slug, params) {
     let url = `/${slug}`
     const query = this.factoryParamOptions(url, params)
 
     return this.cacheResponse(url, query)
+  }
+
+  async getAll(slug, params, entity) {
+    const perPage = params.per_page || 25
+    let page = 1
+    let url = `/${slug}`
+
+    let res = await this.makeRequest(url, params, perPage, page)
+    let all = Object.values(res.data[entity])
+    let total = res.total
+    let lastPage = Math.ceil((total / perPage))
+
+    while (page < lastPage) {
+      page++
+      res = await this.makeRequest(url, params, perPage, page)
+      all = [
+        ...all,
+        ...Object.values(res.data[entity])
+      ]
+    }
+
+    return all
   }
 
   post(slug, params) {
