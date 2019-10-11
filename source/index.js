@@ -3,31 +3,11 @@
 const qs = require('qs')
 const axios = require('axios')
 const throttledQueue = require('./throttlePromise')
-const delay = ms => new Promise(res => setTimeout(res, ms))
 const RichTextResolver = require('./richTextResolver')
 let memory = {}
 
-/**
- * @method isCDNUrl
- * @param  {String} url /cdn/, /stories/, /spaces/...
- * @return {Boolean}
- */
-const isCDNUrl = url => url.indexOf('/cdn/') > -1
+const { delay, getOptionsPage, isCDNUrl } = require('./helpers')
 
-/**
- * @method getOptionsPage
- * @param  {Object} options
- * @param  {Number} perPage
- * @param  {Number} page
- * @return {Object}         merged options with perPag and page values
- */
-const getOptionsPage = (options, perPage, page) => {
-  return {
-    ...options,
-    per_page: perPage,
-    page
-  }
-}
 
 class Storyblok {
 
