@@ -103,10 +103,12 @@ class Storyblok {
     return this.cacheResponse(url, query)
   }
 
-  async getAll(slug, params, entity) {
+  async getAll(slug, params = {}, entity) {
     const perPage = params.per_page || 25
     let page = 1
     let url = `/${slug}`
+    const urlParts = url.split('/')
+    entity = entity || urlParts[urlParts.length - 1]
 
     let res = await this.makeRequest(url, params, perPage, page)
     let all = Object.values(res.data[entity])
