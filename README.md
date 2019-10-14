@@ -96,6 +96,29 @@ Storyblok
   })
 ```
 
+### Method `Storyblok#getAll`
+
+**Parameters**
+- `[return]` Promise, Array of entity object `data`
+- `path` String, Path (can be `cdn/stories`, `cdn/stories/*`, `cdn/tags`, `cdn/datasources`, `cdn/links`)
+- `options` Object, Options can be found in the [API documentation](https://www.storyblok.com/docs/Delivery-Api/get-a-story).
+- `entity` String, Storyblok entity like stories, links or datasource. It's optional.
+
+**Example**
+
+```javascript
+Storyblok
+  .get('cdn/stories', {
+    version: 'draft'
+  })
+  .then((stories) => {
+    console.log(stories); // an array
+  })
+  .catch((error) => {
+    console.log(error);
+  })
+```
+
 ### Method `Storyblok#post` (only management api)
 
 **Parameters**
