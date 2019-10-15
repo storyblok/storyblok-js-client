@@ -76,6 +76,8 @@ let Storyblok = new StoryblokClient({
 
 ### Method `Storyblok#get`
 
+With this method you can get single or multiple items. The multiple items are paginated and you will receive 25 items per page by default. If you want to get all items at once use the `getAll` method.
+
 **Parameters**
 - `[return]` Promise, Object `response`
 - `path` String, Path (can be `cdn/stories`, `cdn/stories/*`, `cdn/tags`, `cdn/datasources`, `cdn/links`)
@@ -98,8 +100,10 @@ Storyblok
 
 ### Method `Storyblok#getAll`
 
+With this method you can get all items at once.
+
 **Parameters**
-- `[return]` Promise, Array of entity object `data`
+- `[return]` Promise, Array of entities
 - `path` String, Path (can be `cdn/stories`, `cdn/stories/*`, `cdn/tags`, `cdn/datasources`, `cdn/links`)
 - `options` Object, Options can be found in the [API documentation](https://www.storyblok.com/docs/Delivery-Api/get-a-story).
 - `entity` String, Storyblok entity like stories, links or datasource. It's optional.
