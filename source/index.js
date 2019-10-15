@@ -3,9 +3,11 @@
 const qs = require('qs')
 const axios = require('axios')
 const throttledQueue = require('./throttlePromise')
-const delay = ms => new Promise(res => setTimeout(res, ms))
 const RichTextResolver = require('./richTextResolver')
 let memory = {}
+
+const { delay, getOptionsPage, isCDNUrl } = require('./helpers')
+
 
 class Storyblok {
 
@@ -61,25 +63,68 @@ class Storyblok {
     })
   }
 
-  get(slug, params) {
-    let query = params || {}
-    let url = `/${slug}`
-
-    if (url.indexOf('/cdn/') > -1) {
-      if (!query.version) {
-        query.version = 'published'
-      }
-
-      if (!query.cv) {
-        query.cv = this.cacheVersion
-      }
-
-      if (!query.token) {
-        query.token = this.getToken()
-      }
+  parseParams(params = {}) {
+    if (!params.version) {
+      params.version = 'published'
     }
 
+    if (!params.cv) {
+      params.cv = this.cacheVersion
+    }
+
+    if (!params.token) {
+      params.token = this.getToken()
+    }
+
+    return params
+  }
+
+  factoryParamOptions(url, params = {}) {
+    if (isCDNUrl(url)) {
+      return this.parseParams(params)
+    }
+
+    return params
+  }
+
+  makeRequest(url, params, per_page, page) {
+    const options = this.factoryParamOptions(
+      url,
+      getOptionsPage(params, per_page, page)
+    )
+
+    return this.cacheResponse(url, options)
+  }
+
+  get(slug, params) {
+    let url = `/${slug}`
+    const query = this.factoryParamOptions(url, params)
+
     return this.cacheResponse(url, query)
+  }
+
+  async getAll(slug, params = {}, entity) {
+    const perPage = params.per_page || 25
+    let page = 1
+    let url = `/${slug}`
+    const urlParts = url.split('/')
+    entity = entity || urlParts[urlParts.length - 1]
+
+    let res = await this.makeRequest(url, params, perPage, page)
+    let all = Object.values(res.data[entity])
+    let total = res.total
+    let lastPage = Math.ceil((total / perPage))
+
+    while (page < lastPage) {
+      page++
+      res = await this.makeRequest(url, params, perPage, page)
+      all = [
+        ...all,
+        ...Object.values(res.data[entity])
+      ]
+    }
+
+    return all
   }
 
   post(slug, params) {
