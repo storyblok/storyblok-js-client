@@ -108,7 +108,7 @@ Storyblok
 
 ```javascript
 Storyblok
-  .get('cdn/stories', {
+  .getAll('cdn/stories', {
     version: 'draft'
   })
   .then((stories) => {
