@@ -148,6 +148,7 @@ declare class Storyblok {
   richTextResolver: RichtextInstance
   constructor(config: StoryblokConfig, endpoint?: string)
   get(slug: string, params?: any): Promise<StoryblokResult>
+  getAll(slug: string, params?: any, entity: string): Promise<Array>
   post(slug: string, params?: any): Promise<StoryblokManagmentApiResult>
   put(slug: string, params?: any): Promise<StoryblokManagmentApiResult>
   delete(slug: string, params?: any): Promise<StoryblokManagmentApiResult>
