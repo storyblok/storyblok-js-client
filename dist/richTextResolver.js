@@ -128,34 +128,34 @@ function () {
     key: "renderTag",
     value: function renderTag(tags, ending) {
       if (tags.constructor === String) {
-        var _context6, _context7;
+        var _context6;
 
-        return (0, _concat.default)(_context6 = (0, _concat.default)(_context7 = "<").call(_context7, tags)).call(_context6, ending, ">");
+        return (0, _concat.default)(_context6 = "<".concat(tags)).call(_context6, ending, ">");
       }
 
       var all = (0, _map.default)(tags).call(tags, function (tag) {
         if (tag.constructor === String) {
-          var _context8, _context9;
+          var _context7;
 
-          return (0, _concat.default)(_context8 = (0, _concat.default)(_context9 = "<").call(_context9, tag)).call(_context8, ending, ">");
+          return (0, _concat.default)(_context7 = "<".concat(tag)).call(_context7, ending, ">");
         } else {
-          var _context10, _context13, _context14;
+          var _context9;
 
-          var h = (0, _concat.default)(_context10 = "<").call(_context10, tag.tag);
+          var h = "<".concat(tag.tag);
 
           if (tag.attrs) {
             for (var key in tag.attrs) {
               var value = tag.attrs[key];
 
               if (value !== null) {
-                var _context11, _context12;
+                var _context8;
 
-                h += (0, _concat.default)(_context11 = (0, _concat.default)(_context12 = " ").call(_context12, key, "=\"")).call(_context11, value, "\"");
+                h += (0, _concat.default)(_context8 = " ".concat(key, "=\"")).call(_context8, value, "\"");
               }
             }
           }
 
-          return (0, _concat.default)(_context13 = (0, _concat.default)(_context14 = "").call(_context14, h)).call(_context13, ending, ">");
+          return (0, _concat.default)(_context9 = "".concat(h)).call(_context9, ending, ">");
         }
       });
       return all.join('');
@@ -168,23 +168,17 @@ function () {
   }, {
     key: "renderClosingTag",
     value: function renderClosingTag(tags) {
-      var _context16;
+      var _context10;
 
       if (tags.constructor === String) {
-        var _context15;
-
-        return (0, _concat.default)(_context15 = "</").call(_context15, tags, ">");
+        return "</".concat(tags, ">");
       }
 
-      var all = (0, _map.default)(_context16 = (0, _reverse.default)(tags).call(tags)).call(_context16, function (tag) {
+      var all = (0, _map.default)(_context10 = (0, _reverse.default)(tags).call(tags)).call(_context10, function (tag) {
         if (tag.constructor === String) {
-          var _context17;
-
-          return (0, _concat.default)(_context17 = "</").call(_context17, tag, ">");
+          return "</".concat(tag, ">");
         } else {
-          var _context18;
-
-          return (0, _concat.default)(_context18 = "</").call(_context18, tag.tag, ">");
+          return "</".concat(tag.tag, ">");
         }
       });
       return all.join('');

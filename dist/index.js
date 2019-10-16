@@ -2,13 +2,17 @@
 
 var _interopRequireDefault = require("@babel/runtime-corejs3/helpers/interopRequireDefault");
 
-var _regenerator = _interopRequireDefault(require("@babel/runtime-corejs3/regenerator"));
-
 var _parseInt2 = _interopRequireDefault(require("@babel/runtime-corejs3/core-js-stable/parse-int"));
 
-var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime-corejs3/helpers/asyncToGenerator"));
+var _promise = _interopRequireDefault(require("@babel/runtime-corejs3/core-js-stable/promise"));
 
-var _indexOf = _interopRequireDefault(require("@babel/runtime-corejs3/core-js-stable/instance/index-of"));
+var _regenerator = _interopRequireDefault(require("@babel/runtime-corejs3/regenerator"));
+
+var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime-corejs3/helpers/toConsumableArray"));
+
+var _values = _interopRequireDefault(require("@babel/runtime-corejs3/core-js-stable/object/values"));
+
+var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime-corejs3/helpers/asyncToGenerator"));
 
 var _forEach = _interopRequireDefault(require("@babel/runtime-corejs3/core-js-stable/instance/for-each"));
 
@@ -20,25 +24,20 @@ var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime-corejs3/he
 
 var _createClass2 = _interopRequireDefault(require("@babel/runtime-corejs3/helpers/createClass"));
 
-var _setTimeout2 = _interopRequireDefault(require("@babel/runtime-corejs3/core-js-stable/set-timeout"));
-
-var _promise = _interopRequireDefault(require("@babel/runtime-corejs3/core-js-stable/promise"));
-
 var qs = require('qs');
 
 var axios = require('axios');
 
 var throttledQueue = require('./throttlePromise');
 
-var delay = function delay(ms) {
-  return new _promise.default(function (res) {
-    return (0, _setTimeout2.default)(res, ms);
-  });
-};
-
 var RichTextResolver = require('./richTextResolver');
 
 var memory = {};
+
+var _require = require('./helpers'),
+    delay = _require.delay,
+    getOptionsPage = _require.getOptionsPage,
+    isCDNUrl = _require.isCDNUrl;
 
 var Storyblok =
 /*#__PURE__*/
@@ -47,11 +46,11 @@ function () {
     (0, _classCallCheck2.default)(this, Storyblok);
 
     if (!endpoint) {
-      var _context, _context2, _context3;
+      var _context;
 
-      var region = config.region ? (0, _concat.default)(_context = "-").call(_context, config.region) : '';
+      var region = config.region ? "-".concat(config.region) : '';
       var protocol = config.https === false ? 'http' : 'https';
-      endpoint = (0, _concat.default)(_context2 = (0, _concat.default)(_context3 = "").call(_context3, protocol, "://api")).call(_context2, region, ".storyblok.com/v1");
+      endpoint = (0, _concat.default)(_context = "".concat(protocol, "://api")).call(_context, region, ".storyblok.com/v1");
     }
 
     var headers = (0, _assign.default)({}, config.headers);
@@ -91,10 +90,10 @@ function () {
     key: "setComponentResolver",
     value: function setComponentResolver(resolver) {
       this.richTextResolver.addNode('blok', function (node) {
-        var _context4;
+        var _context2;
 
         var html = '';
-        (0, _forEach.default)(_context4 = node.attrs.body).call(_context4, function (blok) {
+        (0, _forEach.default)(_context2 = node.attrs.body).call(_context2, function (blok) {
           html += resolver(blok.component, blok);
         });
         return {
@@ -103,51 +102,136 @@ function () {
       });
     }
   }, {
-    key: "get",
-    value: function get(slug, params) {
-      var _context5;
+    key: "parseParams",
+    value: function parseParams() {
+      var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-      var query = params || {};
-      var url = (0, _concat.default)(_context5 = "/").call(_context5, slug);
-
-      if ((0, _indexOf.default)(url).call(url, '/cdn/') > -1) {
-        if (!query.version) {
-          query.version = 'published';
-        }
-
-        if (!query.cv) {
-          query.cv = this.cacheVersion;
-        }
-
-        if (!query.token) {
-          query.token = this.getToken();
-        }
+      if (!params.version) {
+        params.version = 'published';
       }
 
+      if (!params.cv) {
+        params.cv = this.cacheVersion;
+      }
+
+      if (!params.token) {
+        params.token = this.getToken();
+      }
+
+      return params;
+    }
+  }, {
+    key: "factoryParamOptions",
+    value: function factoryParamOptions(url) {
+      var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+      if (isCDNUrl(url)) {
+        return this.parseParams(params);
+      }
+
+      return params;
+    }
+  }, {
+    key: "makeRequest",
+    value: function makeRequest(url, params, per_page, page) {
+      var options = this.factoryParamOptions(url, getOptionsPage(params, per_page, page));
+      return this.cacheResponse(url, options);
+    }
+  }, {
+    key: "get",
+    value: function get(slug, params) {
+      var url = "/".concat(slug);
+      var query = this.factoryParamOptions(url, params);
       return this.cacheResponse(url, query);
     }
   }, {
+    key: "getAll",
+    value: function () {
+      var _getAll = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee(slug) {
+        var params,
+            entity,
+            perPage,
+            page,
+            url,
+            urlParts,
+            res,
+            all,
+            total,
+            lastPage,
+            _context3,
+            _args = arguments;
+
+        return _regenerator.default.wrap(function _callee$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                params = _args.length > 1 && _args[1] !== undefined ? _args[1] : {};
+                entity = _args.length > 2 ? _args[2] : undefined;
+                perPage = params.per_page || 25;
+                page = 1;
+                url = "/".concat(slug);
+                urlParts = url.split('/');
+                entity = entity || urlParts[urlParts.length - 1];
+                _context4.next = 9;
+                return this.makeRequest(url, params, perPage, page);
+
+              case 9:
+                res = _context4.sent;
+                all = (0, _values.default)(res.data[entity]);
+                total = res.total;
+                lastPage = Math.ceil(total / perPage);
+
+              case 13:
+                if (!(page < lastPage)) {
+                  _context4.next = 21;
+                  break;
+                }
+
+                page++;
+                _context4.next = 17;
+                return this.makeRequest(url, params, perPage, page);
+
+              case 17:
+                res = _context4.sent;
+                all = (0, _concat.default)(_context3 = []).call(_context3, (0, _toConsumableArray2.default)(all), (0, _toConsumableArray2.default)((0, _values.default)(res.data[entity])));
+                _context4.next = 13;
+                break;
+
+              case 21:
+                return _context4.abrupt("return", all);
+
+              case 22:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function getAll(_x) {
+        return _getAll.apply(this, arguments);
+      }
+
+      return getAll;
+    }()
+  }, {
     key: "post",
     value: function post(slug, params) {
-      var _context6;
-
-      var url = (0, _concat.default)(_context6 = "/").call(_context6, slug);
+      var url = "/".concat(slug);
       return this.throttle('post', url, params);
     }
   }, {
     key: "put",
     value: function put(slug, params) {
-      var _context7;
-
-      var url = (0, _concat.default)(_context7 = "/").call(_context7, slug);
+      var url = "/".concat(slug);
       return this.throttle('put', url, params);
     }
   }, {
     key: "delete",
     value: function _delete(slug, params) {
-      var _context8;
-
-      var url = (0, _concat.default)(_context8 = "/").call(_context8, slug);
+      var url = "/".concat(slug);
       return this.throttle('delete', url, params);
     }
   }, {
@@ -158,9 +242,7 @@ function () {
   }, {
     key: "getStory",
     value: function getStory(slug, params) {
-      var _context9;
-
-      return this.get((0, _concat.default)(_context9 = "cdn/stories/").call(_context9, slug), params);
+      return this.get("cdn/stories/".concat(slug), params);
     }
   }, {
     key: "setToken",
@@ -186,12 +268,11 @@ function () {
       function () {
         var _ref = (0, _asyncToGenerator2.default)(
         /*#__PURE__*/
-        _regenerator.default.mark(function _callee(resolve, reject) {
-          var cacheKey, provider, cache, res, response, _context10;
-
-          return _regenerator.default.wrap(function _callee$(_context11) {
+        _regenerator.default.mark(function _callee2(resolve, reject) {
+          var cacheKey, provider, cache, res, response;
+          return _regenerator.default.wrap(function _callee2$(_context5) {
             while (1) {
-              switch (_context11.prev = _context11.next) {
+              switch (_context5.prev = _context5.next) {
                 case 0:
                   cacheKey = qs.stringify({
                     url: url,
@@ -202,35 +283,35 @@ function () {
                   provider = _this.cacheProvider();
 
                   if (!(_this.cache.clear === 'auto' && params.version === 'draft')) {
-                    _context11.next = 5;
+                    _context5.next = 5;
                     break;
                   }
 
-                  _context11.next = 5;
+                  _context5.next = 5;
                   return _this.flushCache();
 
                 case 5:
                   if (!(params.version === 'published')) {
-                    _context11.next = 11;
+                    _context5.next = 11;
                     break;
                   }
 
-                  _context11.next = 8;
+                  _context5.next = 8;
                   return provider.get(cacheKey);
 
                 case 8:
-                  cache = _context11.sent;
+                  cache = _context5.sent;
 
                   if (!cache) {
-                    _context11.next = 11;
+                    _context5.next = 11;
                     break;
                   }
 
-                  return _context11.abrupt("return", resolve(cache));
+                  return _context5.abrupt("return", resolve(cache));
 
                 case 11:
-                  _context11.prev = 11;
-                  _context11.next = 14;
+                  _context5.prev = 11;
+                  _context5.next = 14;
                   return _this.throttle('get', url, {
                     params: params,
                     paramsSerializer: function paramsSerializer(params) {
@@ -241,7 +322,7 @@ function () {
                   });
 
                 case 14:
-                  res = _context11.sent;
+                  res = _context5.sent;
                   response = {
                     data: res.data,
                     headers: res.headers
@@ -255,11 +336,11 @@ function () {
                   }
 
                   if (!(res.status != 200)) {
-                    _context11.next = 19;
+                    _context5.next = 19;
                     break;
                   }
 
-                  return _context11.abrupt("return", reject(res));
+                  return _context5.abrupt("return", reject(res));
 
                 case 19:
                   if (params.version === 'published') {
@@ -267,44 +348,44 @@ function () {
                   }
 
                   resolve(response);
-                  _context11.next = 33;
+                  _context5.next = 33;
                   break;
 
                 case 23:
-                  _context11.prev = 23;
-                  _context11.t0 = _context11["catch"](11);
+                  _context5.prev = 23;
+                  _context5.t0 = _context5["catch"](11);
 
-                  if (!(_context11.t0.response && _context11.t0.response.status === 429)) {
-                    _context11.next = 32;
+                  if (!(_context5.t0.response && _context5.t0.response.status === 429)) {
+                    _context5.next = 32;
                     break;
                   }
 
                   retries = retries + 1;
 
                   if (!(retries < _this.maxRetries)) {
-                    _context11.next = 32;
+                    _context5.next = 32;
                     break;
                   }
 
-                  console.log((0, _concat.default)(_context10 = "Hit rate limit. Retrying in ").call(_context10, retries, " seconds."));
-                  _context11.next = 31;
+                  console.log("Hit rate limit. Retrying in ".concat(retries, " seconds."));
+                  _context5.next = 31;
                   return delay(1000 * retries);
 
                 case 31:
-                  return _context11.abrupt("return", _this.cacheResponse(url, params, retries).then(resolve).catch(reject));
+                  return _context5.abrupt("return", _this.cacheResponse(url, params, retries).then(resolve).catch(reject));
 
                 case 32:
-                  reject(_context11.t0);
+                  reject(_context5.t0);
 
                 case 33:
                 case "end":
-                  return _context11.stop();
+                  return _context5.stop();
               }
             }
-          }, _callee, null, [[11, 23]]);
+          }, _callee2, null, [[11, 23]]);
         }));
 
-        return function (_x, _x2) {
+        return function (_x2, _x3) {
           return _ref.apply(this, arguments);
         };
       }());
@@ -350,24 +431,24 @@ function () {
     value: function () {
       var _flushCache = (0, _asyncToGenerator2.default)(
       /*#__PURE__*/
-      _regenerator.default.mark(function _callee2() {
-        return _regenerator.default.wrap(function _callee2$(_context12) {
+      _regenerator.default.mark(function _callee3() {
+        return _regenerator.default.wrap(function _callee3$(_context6) {
           while (1) {
-            switch (_context12.prev = _context12.next) {
+            switch (_context6.prev = _context6.next) {
               case 0:
                 this.cacheVersion = this.newVersion();
-                _context12.next = 3;
+                _context6.next = 3;
                 return this.cacheProvider().flush();
 
               case 3:
-                return _context12.abrupt("return", this);
+                return _context6.abrupt("return", this);
 
               case 4:
               case "end":
-                return _context12.stop();
+                return _context6.stop();
             }
           }
-        }, _callee2, this);
+        }, _callee3, this);
       }));
 
       function flushCache() {

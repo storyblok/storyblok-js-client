@@ -2,8 +2,6 @@
 
 var _interopRequireDefault = require("@babel/runtime-corejs3/helpers/interopRequireDefault");
 
-var _concat = _interopRequireDefault(require("@babel/runtime-corejs3/core-js-stable/instance/concat"));
-
 var _indexOf = _interopRequireDefault(require("@babel/runtime-corejs3/core-js-stable/instance/index-of"));
 
 var pick = function pick(attrs, allowed) {
@@ -55,10 +53,8 @@ module.exports = {
       };
     },
     heading: function heading(node) {
-      var _context;
-
       return {
-        tag: (0, _concat.default)(_context = "h").call(_context, node.attrs.level)
+        tag: "h".concat(node.attrs.level)
       };
     },
     image: function image(node) {
