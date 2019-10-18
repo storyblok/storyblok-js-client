@@ -78,6 +78,7 @@ test('link to generate a tag', () => {
             type: 'link',
             attrs: {
               href: '/link',
+              target: '_blank',
               uuid: null
             }
           }
@@ -86,7 +87,7 @@ test('link to generate a tag', () => {
     ]
   }
 
-  expect(resolver.render(doc)).toBe('<a href="/link">link text</a>')
+  expect(resolver.render(doc)).toBe('<a href="/link" target="_blank">link text</a>')
 })
 
 test('code_block to generate a pre and code tag', () => {
