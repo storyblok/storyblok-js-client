@@ -136,7 +136,7 @@ export interface StoryParams {
 }
 
 export interface RichtextInstance {
-  render: (richtext: any) => void
+  render: (richtext: any) => string
 }
 
 declare class Storyblok {
