@@ -124,6 +124,7 @@ export interface StoriesParams {
   filter_query?: any
   per_page?: number
   page?: string
+  from_release?: string
 }
 
 export interface StoryParams {
@@ -133,6 +134,7 @@ export interface StoryParams {
   resolve_links?: 'url' | 'story' | '0' | '1'
   resolve_relations?: string
   cv?: number
+  from_release?: string
 }
 
 export interface RichtextInstance {
