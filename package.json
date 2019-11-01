@@ -1,6 +1,6 @@
 {
   "name": "storyblok-js-client",
-  "version": "2.0.10",
+  "version": "0.0.0-development",
   "description": "Universal JavaScript SDK for Storyblok's API",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/storyblok/storyblok-js-client.git"
+    "url": "https://github.com/storyblok/storyblok-js-client.git"
   },
   "keywords": [
     "storyblok"
