@@ -148,7 +148,7 @@ declare class Storyblok {
   cache: StoryblokCache
   client: AxiosInstance
   richTextResolver: RichtextInstance
-  constructor(config: StoryblokConfig, endpoint?: string)
+  constructor(config: StoryblokConfig, endpoint?: string, initialCache?: object)
   get(slug: string, params?: any): Promise<StoryblokResult>
   getAll(slug: string, params?: any, entity?: string): Promise<any[]>
   post(slug: string, params?: any): Promise<StoryblokManagmentApiResult>
@@ -162,6 +162,7 @@ declare class Storyblok {
   newVersion(): number
   cacheProvider(): StoryblokCacheProvider
   flushCache(): Promise<this>
+  getCache(): object
   setComponentResolver(renderFunction: (component: string, data: any) => void): void
 }
 
