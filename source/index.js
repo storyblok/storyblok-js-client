@@ -11,11 +11,15 @@ const { delay, getOptionsPage, isCDNUrl } = require('./helpers')
 
 class Storyblok {
 
-  constructor(config, endpoint) {
+  constructor(config, endpoint, initialCache) {
     if (!endpoint) {
       let region = config.region ? `-${config.region}` : ''
       let protocol = config.https === false ? 'http' : 'https'
       endpoint = `${protocol}://api${region}.storyblok.com/v1`
+    }
+
+    if(initialCache) {
+      memory = initialCache
     }
 
     let headers = Object.assign({}, config.headers)
