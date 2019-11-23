@@ -252,6 +252,10 @@ class Storyblok {
     }
   }
 
+  getCache() {
+    return memory
+  }
+
   async flushCache() {
     this.cacheVersion = this.newVersion()
     await this.cacheProvider().flush()
