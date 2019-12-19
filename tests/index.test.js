@@ -37,7 +37,7 @@ describe('getAll function', () => {
   }
 })
 
-describe('uncached requests', () => {
+describe('test uncached requests', () => {
   test('get(\'cdn/spaces/me\') should not be cached', async () => {
     let provider = Storyblok.cacheProvider()
     provider.flush()
