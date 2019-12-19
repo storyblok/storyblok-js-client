@@ -291,7 +291,7 @@ function () {
                   return _this.flushCache();
 
                 case 5:
-                  if (!(params.version === 'published')) {
+                  if (!(params.version === 'published' && url != '/cdn/spaces/me')) {
                     _context5.next = 11;
                     break;
                   }
@@ -343,7 +343,7 @@ function () {
                   return _context5.abrupt("return", reject(res));
 
                 case 19:
-                  if (params.version === 'published') {
+                  if (params.version === 'published' && url != '/cdn/spaces/me') {
                     provider.set(cacheKey, response);
                   }
 
@@ -409,6 +409,9 @@ function () {
             get: function get(key) {
               return memory[key];
             },
+            getAll: function getAll() {
+              return memory;
+            },
             set: function set(key, content) {
               memory[key] = content;
             },
@@ -421,6 +424,7 @@ function () {
           this.cacheVersion = this.newVersion();
           return {
             get: function get() {},
+            getAll: function getAll() {},
             set: function set() {},
             flush: function flush() {}
           };

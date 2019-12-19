@@ -3,7 +3,8 @@ jest.setTimeout(60000)
 const StoryblokClient = require('../source/index')
 
 let Storyblok = new StoryblokClient({
-  accessToken: 'trB5kgOeDD22QJQDdPNCjAtt'
+  accessToken: 'trB5kgOeDD22QJQDdPNCjAtt',
+  cache: {type: 'memory'}
 })
 
 if (process.env.OAUTH_TOKEN) {
@@ -34,4 +35,13 @@ describe('getAll function', () => {
       expect(result.length).toBe(26)
     })
   }
+})
+
+describe('uncached requests', () => {
+  test('get(\'cdn/spaces/me\') should not be cached', async () => {
+    let provider = Storyblok.cacheProvider()
+    provider.flush()
+    const result = await Storyblok.get('cdn/spaces/me')
+    expect(Object.values(provider.getAll()).length).toBe(0)
+  })
 })
