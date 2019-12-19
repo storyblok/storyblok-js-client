@@ -171,7 +171,7 @@ class Storyblok {
         await this.flushCache()
       }
 
-      if (params.version === 'published') {
+      if (params.version === 'published' && url != '/cdn/spaces/me') {
         const cache = await provider.get(cacheKey)
         if (cache) {
           return resolve(cache)
@@ -196,7 +196,7 @@ class Storyblok {
           return reject(res)
         }
 
-        if (params.version === 'published') {
+        if (params.version === 'published' && url != '/cdn/spaces/me') {
           provider.set(cacheKey, response)
         }
         resolve(response)
@@ -230,6 +230,9 @@ class Storyblok {
           get(key) {
             return memory[key]
           },
+          getAll() {
+            return memory
+          },
           set(key, content) {
             memory[key] = content
           },
@@ -242,6 +245,7 @@ class Storyblok {
 
         return {
           get() {},
+          getAll() {},
           set() {},
           flush() {}
         }
