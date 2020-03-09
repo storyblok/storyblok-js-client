@@ -12,6 +12,8 @@ const pick = function(attrs, allowed) {
   return h
 }
 
+const isEmailLinkType = type => type === 'email'
+
 module.exports = {
   nodes: {
     horizontal_rule(node) {
@@ -106,10 +108,17 @@ module.exports = {
       }
     },
     link(node) {
+      const attrs = { ...node.attrs }
+      const { linktype = 'url' } = node.attrs
+
+      if (isEmailLinkType(linktype)) {
+        attrs.href = `mailto:${attrs.href}`
+      }
+
       return {
         tag: [{
           tag: 'a',
-          attrs: node.attrs
+          attrs: attrs
         }]
       }
     },
