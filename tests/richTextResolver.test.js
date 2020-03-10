@@ -79,7 +79,34 @@ test('link to generate a tag', () => {
             attrs: {
               href: '/link',
               target: '_blank',
-              uuid: null
+              uuid: '300aeadc-c82d-4529-9484-f3f8f09cf9f5'
+            }
+          }
+        ]
+      }
+    ]
+  }
+  const result = resolver.render(doc)
+  const expected = '<a href="/link" target="_blank" uuid="300aeadc-c82d-4529-9484-f3f8f09cf9f5">link text</a>'
+
+  expect(result).toBe(expected)
+})
+
+test('link to generate a tag with an email', () => {
+  const doc = {
+    type: 'doc',
+    content: [
+      {
+        text: 'an email link',
+        type: 'text',
+        marks: [
+          {
+            type: 'link',
+            attrs: {
+              href: 'email@client.com',
+              target: '_blank',
+              uuid: null,
+              linktype: 'email'
             }
           }
         ]
@@ -87,7 +114,10 @@ test('link to generate a tag', () => {
     ]
   }
 
-  expect(resolver.render(doc)).toBe('<a href="/link" target="_blank">link text</a>')
+  const result = resolver.render(doc)
+  const expected = '<a href="mailto:email@client.com" target="_blank" linktype="email">an email link</a>'
+
+  expect(result).toBe(expected)
 })
 
 test('code_block to generate a pre and code tag', () => {
