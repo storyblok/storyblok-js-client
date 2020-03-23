@@ -113,6 +113,7 @@ export interface StoriesParams {
   is_startpage?: 0 | 1
   starts_with?: string
   by_uuids?: string
+  by_uuids_ordered?: string
   excluding_ids?: string
   excluding_fields?: string
   resolve_links?: 'url' | 'story' | '0' | '1'
