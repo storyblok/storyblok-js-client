@@ -2,6 +2,8 @@
 
 var _interopRequireDefault = require("@babel/runtime-corejs3/helpers/interopRequireDefault");
 
+var _objectSpread2 = _interopRequireDefault(require("@babel/runtime-corejs3/helpers/objectSpread"));
+
 var _indexOf = _interopRequireDefault(require("@babel/runtime-corejs3/core-js-stable/instance/index-of"));
 
 var pick = function pick(attrs, allowed) {
@@ -20,6 +22,10 @@ var pick = function pick(attrs, allowed) {
   }
 
   return h;
+};
+
+var isEmailLinkType = function isEmailLinkType(type) {
+  return type === 'email';
 };
 
 module.exports = {
@@ -113,10 +119,18 @@ module.exports = {
       };
     },
     link: function link(node) {
+      var attrs = (0, _objectSpread2.default)({}, node.attrs);
+      var _node$attrs$linktype = node.attrs.linktype,
+          linktype = _node$attrs$linktype === void 0 ? 'url' : _node$attrs$linktype;
+
+      if (isEmailLinkType(linktype)) {
+        attrs.href = "mailto:".concat(attrs.href);
+      }
+
       return {
         tag: [{
           tag: 'a',
-          attrs: node.attrs
+          attrs: attrs
         }]
       };
     },
