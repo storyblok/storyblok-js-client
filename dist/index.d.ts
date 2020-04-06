@@ -20,6 +20,7 @@ declare global {
       event: 'customEvent' | 'published' | 'input' | 'change' | 'unpublished' | 'enterEditmode' | string[],
       callback: (payload?: StoryblokEventPayload) => void
     ) => void
+    addComments: (tree: StoryblokComponent<string>, storyId: string) => StoryblokComponent<string>
   }
   interface Window {
     storyblok: StoryblokBridge
@@ -125,6 +126,11 @@ export interface StoriesParams {
   per_page?: number
   page?: string
   from_release?: string
+  fallback_language?: string
+  first_published_at_gt?: string
+  first_published_at_lt?: string
+  published_at_gt?: string
+  published_at_lt?: string
 }
 
 export interface StoryParams {
