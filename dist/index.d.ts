@@ -144,8 +144,12 @@ export interface StoryParams {
   from_release?: string
 }
 
+export interface Richtext {
+  content: Array<Object>
+}
+
 export interface RichtextInstance {
-  render: (richtext: any) => string
+  render: (data: Richtext) => string
 }
 
 declare class Storyblok {
