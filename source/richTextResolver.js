@@ -35,14 +35,19 @@ class RichTextResolver {
     this.marks[key] = schema
   }
 
-  render(data) {
-    let html = ''
+  render(data = {}) {
+    if (data.content && Array.isArray(data.content)) {
+      let html = ''
 
-    data.content.forEach((node) => {
-      html += this.renderNode(node)
-    })
+      data.content.forEach((node) => {
+        html += this.renderNode(node)
+      })
 
-    return html
+      return html
+    }
+
+    console.warn('The render method must receive an object with a content field, which is an array')
+    return ''
   }
 
   renderNode(item) {
