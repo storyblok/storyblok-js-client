@@ -235,7 +235,7 @@ Storyblok.setComponentResolver((component, blok) => {
 
 **Parameters**
 - `[return]` String, Rendered html of a richtext field
-- `richtext` Object, Json object from a richtext field
+- `data` Richtext object, An object with a `content` (an array of nodes) field.
 
 **Example**
 
