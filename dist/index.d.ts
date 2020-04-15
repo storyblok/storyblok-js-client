@@ -13,8 +13,8 @@ declare global {
   }
   interface StoryblokBridge {
     init: (config?: StoryblokBridgeConfig) => void
-    pingEditor: () => void
-    isInEditor: () => void
+    pingEditor: (callback: () => void) => void
+    isInEditor: () => boolean
     enterEditmode: () => void
     on: (
       event: 'customEvent' | 'published' | 'input' | 'change' | 'unpublished' | 'enterEditmode' | string[],
