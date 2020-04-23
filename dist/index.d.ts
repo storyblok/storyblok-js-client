@@ -92,7 +92,7 @@ export interface StoryData<Content = StoryblokComponent<string> & { [index: stri
   uuid: string
 }
 
-interface AlternateObject {
+export interface AlternateObject {
   id: number;
   name: string;
   slug: string;
