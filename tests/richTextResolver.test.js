@@ -2,6 +2,19 @@ const RichTextResolver = require('../source/richTextResolver')
 
 let resolver = new RichTextResolver()
 
+test('call render function without any argument return an empty string', () => {
+  expect(resolver.render()).toBe('')
+})
+
+test('call render function with a incorrect object return an empty string', () => {
+  expect(resolver.render({})).toBe('')
+  expect(resolver.render({ test: [] })).toBe('')
+})
+
+test('call render function with an object.content equals an empty return an empty string', () => {
+  expect(resolver.render({ content: [] })).toBe('')
+})
+
 test('styled mark to add span with red class', () => {
   const doc = {
     type: 'doc',
