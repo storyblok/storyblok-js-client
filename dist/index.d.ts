@@ -86,6 +86,7 @@ export interface StoryData<Content = StoryblokComponent<string> & { [index: stri
   parent_id: number
   position: number
   published_at: string | null
+  first_published_at: string | null
   slug: string
   sort_by_date: string | null
   tag_list: string[]
