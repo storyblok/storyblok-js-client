@@ -74,7 +74,7 @@ export interface StoryblokComponent<TComp extends string> {
 }
 
 export interface StoryData<Content = StoryblokComponent<string> & { [index: string]: any }> {
-  alternates: string[]
+  alternates: AlternateLink[]
   content: Content 
   created_at: string
   full_slug: string
@@ -90,6 +90,16 @@ export interface StoryData<Content = StoryblokComponent<string> & { [index: stri
   sort_by_date: string | null
   tag_list: string[]
   uuid: string
+}
+
+export interface AlternateObject {
+  id: number;
+  name: string;
+  slug: string;
+  published: boolean;
+  full_slug: string;
+  is_folder: boolean;
+  parent_id: number;
 }
 
 export interface Stories {
