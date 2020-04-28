@@ -3,18 +3,18 @@ declare global {
     initOnlyOnce?: boolean
     accessToken?: string
   }
-  interface StoryblokEventPayload {
+  interface StoryblokEventPayload<S extends StoryblokComponent<string> = any> {
     action: 'customEvent' | 'published' | 'input' | 'change' | 'unpublished' | 'enterEditmode'
     event?: string
-    story?: any
+    story?: S
     slug?: string
     storyId?: string
     reload?: boolean
   }
   interface StoryblokBridge {
     init: (config?: StoryblokBridgeConfig) => void
-    pingEditor: () => void
-    isInEditor: () => void
+    pingEditor: (callback: (instance: StoryblokBridge) => void) => void
+    isInEditor: () => boolean
     enterEditmode: () => void
     on: (
       event: 'customEvent' | 'published' | 'input' | 'change' | 'unpublished' | 'enterEditmode' | string[],
