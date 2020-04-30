@@ -149,3 +149,29 @@ test('code_block to generate a pre and code tag', () => {
 
   expect(resolver.render(doc)).toBe('<pre><code>code</code></pre>')
 })
+
+test('escape html marks from text', () => {
+  const doc = {
+    type: 'doc',
+    content: [{
+        type: 'paragraph',
+        content: [{
+          text: '<p>Footer data</p>',
+          type: 'text'
+        }]
+      },
+      {
+        type: 'paragraph',
+        content: [{
+          text: 'Another footer data',
+          type: 'text',
+          marks: [{
+            type: 'bold'
+          }]
+        }]
+      }
+    ]
+  }
+
+  expect(resolver.render(doc)).toBe('<p>&ltp&gtFooter data&lt/p&gt</p><p><b>Another footer data</b></p>')
+})
