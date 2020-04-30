@@ -66,7 +66,7 @@ class RichTextResolver {
     const node = this.getMatchingNode(item)
 
     if (node && node.tag) {
-      html.push(this.renderOpeningTag(node.tag)) 
+      html.push(this.renderOpeningTag(node.tag))
     }
 
     if (item.content) {
@@ -82,11 +82,11 @@ class RichTextResolver {
     }
 
     if (node && node.tag) {
-      html.push(this.renderClosingTag(node.tag)) 
+      html.push(this.renderClosingTag(node.tag))
     }
 
     if (item.marks) {
-      item.marks.reverse().forEach((m) => {
+      item.marks.slice(0).reverse().forEach((m) => {
         const mark = this.getMatchingMark(m)
 
         if (mark) {
@@ -132,7 +132,7 @@ class RichTextResolver {
       return `</${tags}>`
     }
 
-    const all = tags.reverse().map((tag) => {
+    const all = tags.slice(0).reverse().map((tag) => {
       if (tag.constructor === String) {
         return `</${tag}>`
       } else {
