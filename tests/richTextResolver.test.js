@@ -149,3 +149,31 @@ test('code_block to generate a pre and code tag', () => {
 
   expect(resolver.render(doc)).toBe('<pre><code>code</code></pre>')
 })
+
+test('link to generate a tag with achor', () => {
+  const doc = {
+    type: 'doc',
+    content: [
+      {
+        text: 'link text',
+        type: 'text',
+        marks: [
+          {
+            type: 'link',
+            attrs: {
+              href: '/link',
+              target: '_blank',
+              uuid: '300aeadc-c82d-4529-9484-f3f8f09cf9f5',
+              anchor: 'anchor-text'
+            }
+          }
+        ]
+      }
+    ]
+  }
+
+  const result = resolver.render(doc)
+  const expected = '<a href="/link#anchor-text" target="_blank" uuid="300aeadc-c82d-4529-9484-f3f8f09cf9f5">link text</a>'
+
+  expect(result).toBe(expected)
+})
