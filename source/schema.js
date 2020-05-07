@@ -115,9 +115,9 @@ module.exports = {
         attrs.href = `mailto:${attrs.href}`
       }
 
-      if(attrs.anchor) {
+      if (attrs.anchor) {
         attrs.href = `${attrs.href}#${attrs.anchor}`
-        attrs.anchor = null
+        delete attrs.anchor
       }
 
       return {
