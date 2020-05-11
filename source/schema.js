@@ -115,6 +115,11 @@ module.exports = {
         attrs.href = `mailto:${attrs.href}`
       }
 
+      if (attrs.anchor) {
+        attrs.href = `${attrs.href}#${attrs.anchor}`
+        delete attrs.anchor
+      }
+
       return {
         tag: [{
           tag: 'a',
