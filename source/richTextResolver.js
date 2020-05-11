@@ -1,5 +1,4 @@
 const defaultHtmlSerializer = require('./schema')
-
 const escapeHTML = function(string) {
   const htmlEscapes = {
     '&': '&amp',
