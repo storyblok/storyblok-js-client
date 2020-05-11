@@ -1,5 +1,4 @@
 const defaultHtmlSerializer = require('./schema')
-const cloneDeep = require('lodash.clonedeep')
 
 const escapeHTML = function(string) {
   const htmlEscapes = {
@@ -38,12 +37,10 @@ class RichTextResolver {
   }
 
   render(data = {}) {
-    let dataCloned = cloneDeep(data)
-
-    if (dataCloned.content && Array.isArray(dataCloned.content)) {
+    if (data.content && Array.isArray(data.content)) {
       let html = ''
 
-      dataCloned.content.forEach((node) => {
+      data.content.forEach((node) => {
         html += this.renderNode(node)
       })
 
