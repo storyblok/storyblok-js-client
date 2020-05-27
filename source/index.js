@@ -1,12 +1,14 @@
 'use strict'
 
-const qs = require('qs')
-const axios = require('axios')
-const throttledQueue = require('./throttlePromise')
-const RichTextResolver = require('./richTextResolver')
+import qs from  'qs'
+import axios from  'axios'
+
+import throttledQueue from './throttlePromise'
+import RichTextResolver from './richTextResolver'
+
 let memory = {}
 
-const { delay, getOptionsPage, isCDNUrl } = require('./helpers')
+import { delay, getOptionsPage, isCDNUrl } from './helpers'
 
 
 class Storyblok {
@@ -259,4 +261,5 @@ class Storyblok {
   }
 }
 
-module.exports = Storyblok
+export { Storyblok }
+export default Storyblok

@@ -84,4 +84,4 @@ function AbortError() {
 
 throttle.AbortError = AbortError;
 
-module.exports = throttle;
+export default throttled;

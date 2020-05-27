@@ -1,4 +1,5 @@
-const defaultHtmlSerializer = require('./schema')
+import defaultHtmlSerializer from './schema'
+
 const escapeHTML = function(string) {
   const htmlEscapes = {
     '&': '&amp',
@@ -158,4 +159,4 @@ class RichTextResolver {
   }
 }
 
-module.exports = RichTextResolver
+export default RichTextResolver
