@@ -2,10 +2,14 @@
   "name": "storyblok-js-client",
   "version": "0.0.0-development",
   "description": "Universal JavaScript SDK for Storyblok's API",
-  "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "main": "./dist/index.cjs.js",
+  "module": "./dist/index.es.js",
+  "source": "source/index.js",
   "scripts": {
-    "build": "babel source --out-dir dist",
+    "build": "run-s build:**",
+    "build:es5": "ENABLE_BABEL=yes rollup --config",
+    "build:es6": "rollup --config",
     "prepare": "npm run-script build",
     "test": "jest"
   },
@@ -23,15 +27,19 @@
   },
   "homepage": "https://github.com/storyblok/storyblok-js-client#readme",
   "devDependencies": {
-    "@babel/cli": "^7.2.3",
-    "@babel/core": "^7.4.0",
-    "@babel/plugin-transform-runtime": "^7.4.0",
-    "@babel/preset-env": "^7.4.2",
-    "jest": "^25.1.0"
+    "@babel/core": "^7.10.0",
+    "@babel/preset-env": "^7.10.0",
+    "@rollup/plugin-babel": "^5.0.2",
+    "@rollup/plugin-node-resolve": "^8.0.0",
+    "jest": "^25.1.0",
+    "npm-run-all": "^4.1.5",
+    "rollup": "^2.10.9",
+    "rollup-plugin-terser": "^6.1.0"
+  },
+  "peerDependencies": {
+    "axios": "^0.19.0"
   },
   "dependencies": {
-    "@babel/runtime-corejs3": "^7.4.5",
-    "axios": "^0.19.0",
     "qs": "^6.5.2"
   }
 }
