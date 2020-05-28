@@ -10,7 +10,6 @@ let memory = {}
 
 import { delay, getOptionsPage, isCDNUrl } from './helpers'
 
-
 class Storyblok {
 
   constructor(config, endpoint) {
@@ -261,5 +260,5 @@ class Storyblok {
   }
 }
 
-export { Storyblok }
+export { Storyblok as Client }
 export default Storyblok
