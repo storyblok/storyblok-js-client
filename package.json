@@ -2,7 +2,7 @@
   "name": "storyblok-js-client",
   "version": "0.0.0-development",
   "description": "Universal JavaScript SDK for Storyblok's API",
-  "types": "./dist/index.d.ts",
+  "types": "./types/index.d.ts",
   "main": "./dist/index.cjs.js",
   "module": "./dist/index.es.js",
   "unpkg": "./dist/index.standalone.js",
