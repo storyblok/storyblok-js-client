@@ -30,6 +30,11 @@ declare global {
 
 import { AxiosInstance, AxiosProxyConfig } from 'axios'
 
+interface RichTextSchema {
+  nodes: {}
+  marks: {}
+}
+
 export interface StoryblokConfig {
   accessToken?: string
   oauthToken?: string
@@ -42,6 +47,7 @@ export interface StoryblokConfig {
   rateLimit?: number
   proxy?: AxiosProxyConfig
   componentResolver?: (component: string, data: any) => void
+  richTextSchema?: RichTextSchema
 }
 
 export interface StoryblokCache {

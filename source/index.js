@@ -31,7 +31,7 @@ class Storyblok {
       rateLimit = config.rateLimit
     }
 
-    this.richTextResolver = new RichTextResolver()
+    this.richTextResolver = new RichTextResolver(config.richTextSchema)
 
     if (typeof config.componentResolver === 'function') {
       this.setComponentResolver(config.componentResolver)

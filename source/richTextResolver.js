@@ -24,8 +24,8 @@ class RichTextResolver {
       schema = defaultHtmlSerializer
     }
 
-    this.marks = schema.marks
-    this.nodes = schema.nodes
+    this.marks = schema.marks || []
+    this.nodes = schema.nodes || []
   }
 
   addNode(key, schema) {
