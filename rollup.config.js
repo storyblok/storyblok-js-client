@@ -1,7 +1,8 @@
 import babel from '@rollup/plugin-babel'
 import { terser } from 'rollup-plugin-terser'
-import resolve from '@rollup/plugin-node-resolve'
-import commonjs from '@rollup/plugin-commonjs'
+import rollupResolve from '@rollup/plugin-node-resolve'
+import rollupJson from '@rollup/plugin-json'
+import rollupCommonjs from '@rollup/plugin-commonjs'
 
 const pkg = require('./package.json')
 
@@ -29,7 +30,7 @@ const factoryOutputObject = format => {
     format,
     banner,
     exports: 'default',
-    name: 'Storyblok',
+    name: 'StoryblokClient',
     file: makeFileName(format)
   }
 }
@@ -37,18 +38,16 @@ const factoryOutputObject = format => {
 const factoryOutputStandalone = () => {
   return {
     ...factoryOutputObject('standalone'),
-    format: 'iife',
-    globals: {
-      axios: 'axios'
-    }
+    format: 'iife'
   }
 }
 
 const plugins = [
   enableBabel && babel({ babelHelpers: 'bundled' }),
-  resolve(),
-  enableStandalone && commonjs(),
-  // terser()
+  rollupResolve({ jsnext: true, preferBuiltins: true, browser: true }),
+  enableStandalone && rollupCommonjs(),
+  enableStandalone && rollupJson(),
+  terser()
 ].filter(Boolean)
 
 export default {
@@ -61,5 +60,5 @@ export default {
   ],
   plugins,
   // when standalone, put all external libraries into final code
-  external: [ !enableStandalone && 'qs', 'axios' ].filter(Boolean)
+  external: enableStandalone ? [] : ['qs', 'axios']
 }
