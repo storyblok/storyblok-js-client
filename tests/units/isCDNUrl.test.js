@@ -1,4 +1,4 @@
-const { isCDNUrl } = require('../../source/helpers')
+import { isCDNUrl } from '../../source/helpers'
 
 describe('isCDNUrl function', () => {
   test('isCDNUrl() should be false', () => {

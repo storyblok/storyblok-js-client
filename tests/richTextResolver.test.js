@@ -1,4 +1,4 @@
-const RichTextResolver = require('../source/richTextResolver')
+import RichTextResolver from '../source/richTextResolver'
 
 let resolver = new RichTextResolver()
 

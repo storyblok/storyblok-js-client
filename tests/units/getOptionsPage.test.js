@@ -1,4 +1,4 @@
-const { getOptionsPage } = require('../../source/helpers')
+import { getOptionsPage } from '../../source/helpers'
 
 describe('getOptionsPage function', () => {
   test('getOptionsPage() should be equal a object with default pagination options', () => {
