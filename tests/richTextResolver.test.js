@@ -1,6 +1,15 @@
-import RichTextResolver from '../source/richTextResolver'
+const TOKEN = 'trB5kgOeDD22QJQDdPNCjAtt'
 
-let resolver = new RichTextResolver()
+import StoryblokClient from '../source/index'
+import customSchema from './customSchema'
+
+let client = new StoryblokClient({
+  accessToken: TOKEN,
+  cache: { type: 'memory', clear: 'auto' }
+})
+
+// get the resolver function from StoryblokClient
+const resolver = client.richTextResolver
 
 test('call render function without any argument return an empty string', () => {
   expect(resolver.render()).toBe('')
@@ -343,6 +352,39 @@ test('Complex and immutability test', () => {
 
   const result = resolver.render(doc)
   const expected = `<p><b>Lorem</b> ipsum, <strike>dolor</strike> sit amet <u>consectetur</u> adipisicing elit. <code>Eos architecto</code> asperiores temporibus <a href="/test/our-service#anchor-text" uuid="931e04b7-f701-4fe4-8ec0-78be0bee8809" target="_blank" linktype="story">suscipit harum </a>ut, fugit, cumque <a href="asdfsdfasf" target="_blank" linktype="url">molestiae </a>ratione non adipisci, <i>facilis</i> inventore optio dolores. Rem, perspiciatis <a href="/home" uuid="fc6a453f-9aa6-4a00-a22d-49c5878f7983" target="_self" linktype="story">deserunt!</a> Esse, maiores!</p>`
+
+  expect(result).toBe(expected)
+})
+
+test('test with a custom schema from StoryblokRich', () => {
+  const internalClient = new StoryblokClient({
+    accessToken: TOKEN,
+    richTextSchema: customSchema
+  })
+
+  const doc = {
+    type: 'doc',
+    content: [
+      {
+        text: 'link text from custom schema',
+        type: 'text',
+        marks: [
+          {
+            type: 'link',
+            attrs: {
+              href: '/link',
+              target: '_blank',
+              uuid: '300aeadc-c82d-4529-9484-f3f8f09cf9f5',
+              anchor: 'anchor-text'
+            }
+          }
+        ]
+      }
+    ]
+  }
+
+  const result = internalClient.richTextResolver.render(doc)
+  const expected = '<a href="/link%anchor-text" target="_blank" uuid="300aeadc-c82d-4529-9484-f3f8f09cf9f5">link text from custom schema</a>'
 
   expect(result).toBe(expected)
 })
