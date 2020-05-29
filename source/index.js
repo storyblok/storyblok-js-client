@@ -260,5 +260,4 @@ class Storyblok {
   }
 }
 
-export { Storyblok as Client }
 export default Storyblok

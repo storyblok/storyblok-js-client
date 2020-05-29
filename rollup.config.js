@@ -28,7 +28,7 @@ const factoryOutputObject = format => {
   return {
     format,
     banner,
-    exports: 'named',
+    exports: 'default',
     name: 'Storyblok',
     file: makeFileName(format)
   }
@@ -48,7 +48,7 @@ const plugins = [
   enableBabel && babel({ babelHelpers: 'bundled' }),
   resolve(),
   enableStandalone && commonjs(),
-  terser()
+  // terser()
 ].filter(Boolean)
 
 export default {

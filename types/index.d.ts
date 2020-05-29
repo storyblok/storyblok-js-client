@@ -187,6 +187,4 @@ declare class Storyblok {
   setComponentResolver(renderFunction: (component: string, data: any) => void): void
 }
 
-export { Storyblok as Client }
-
 export default Storyblok
