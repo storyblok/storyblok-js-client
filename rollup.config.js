@@ -15,15 +15,23 @@ const getDistFolder = (fileName = '') => {
 
 const year = new Date().getFullYear()
 
-const yearString = (year === 2018) ? '2018' : `2018-${year}`
+const yearString = (year === 2020) ? '2020' : `2020-${year}`
 
 const banner = `/*!
  * ${pkg.name} v${pkg.version}
  * ${pkg.description}
- * (c) ${yearString} Stobylok
+ * (c) ${yearString} Stobylok Team
  */`
 
-const makeFileName = (format) => getDistFolder(`index.${format}.js`)
+ const richtextBanner = `/*!
+ * RichTextResolver v${pkg.version}
+ * ${pkg.description}
+ * (c) ${yearString} Stobylok Team
+ */`
+
+const makeFileName = (format, file = 'index') => {
+  return getDistFolder(`${file}.${format}.js`)
+}
 
 const factoryOutputObject = format => {
   return {
@@ -61,15 +69,43 @@ const plugins = [
   })
 ].filter(Boolean)
 
-export default {
-  input: 'source/index.js',
-  output: enableStandalone ? [
-    factoryOutputStandalone()
-  ] : [
-    factoryOutputObject('es'),
-    factoryOutputObject('cjs')
-  ],
-  plugins,
-  // when standalone, put all external libraries into final code
-  external: enableStandalone ? [] : ['qs', 'axios']
+const factoryRichTextOutput = format => {
+  return {
+    format,
+    banner: richtextBanner,
+    exports: 'default',
+    name: 'RichTextResolver',
+    file: makeFileName(format, 'rich-text-resolver')
+  }
 }
+
+export default [
+  // StoryblokClient
+  {
+    input: 'source/index.js',
+    output: enableStandalone ? [
+      factoryOutputStandalone()
+    ] : [
+      factoryOutputObject('es'),
+      factoryOutputObject('cjs')
+    ],
+    plugins,
+    // when standalone, put all external libraries into final code
+    external: enableStandalone ? [] : ['qs', 'axios']
+  },
+
+  // Richtext
+  {
+    input: 'source/richTextResolver.js',
+    output: enableStandalone ? [
+      {
+        ...factoryRichTextOutput('standalone'),
+        format: 'iife'
+      }
+    ] : [
+      factoryRichTextOutput('es'),
+      factoryRichTextOutput('cjs')
+    ],
+    plugins
+  }
+]
