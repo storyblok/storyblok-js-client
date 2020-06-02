@@ -43,11 +43,22 @@ const factoryOutputStandalone = () => {
 }
 
 const plugins = [
-  enableBabel && babel({ babelHelpers: 'bundled' }),
+  // to resolve correctly non-esmodules packages
   rollupResolve({ jsnext: true, preferBuiltins: true, browser: true }),
-  enableStandalone && rollupCommonjs(),
+
+  // to include, when not external, non-esmodules packages (axios and qs e.g)
+  rollupCommonjs(),
+
   enableStandalone && rollupJson(),
-  terser()
+
+  // to minify the code
+  terser(),
+
+  // to run babel
+  enableBabel && babel({
+    babelHelpers: 'runtime',
+    exclude: 'node_modules/**' // only transpile our source code
+  })
 ].filter(Boolean)
 
 export default {

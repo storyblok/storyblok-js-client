@@ -9,6 +9,7 @@
   "jsdelivr": "./dist/index.standalone.js",
   "source": "source/index.js",
   "scripts": {
+    "prebuild": "rimraf dist/",
     "build": "run-s build:**",
     "build:es5": "ENABLE_BABEL=yes rollup --config",
     "build:es6": "rollup --config",
@@ -31,6 +32,7 @@
   "homepage": "https://github.com/storyblok/storyblok-js-client#readme",
   "devDependencies": {
     "@babel/core": "^7.10.0",
+    "@babel/plugin-transform-runtime": "^7.10.1",
     "@babel/preset-env": "^7.10.0",
     "@rollup/plugin-babel": "^5.0.2",
     "@rollup/plugin-commonjs": "^12.0.0",
@@ -40,6 +42,7 @@
     "babel-jest": "^26.0.1",
     "jest": "^25.1.0",
     "npm-run-all": "^4.1.5",
+    "rimraf": "^3.0.2",
     "rollup": "^2.10.9",
     "rollup-plugin-terser": "^6.1.0"
   },
@@ -47,6 +50,7 @@
     "axios": "^0.19.0"
   },
   "dependencies": {
+    "core-js": "^3.6.5",
     "qs": "^6.5.2"
   }
 }
