@@ -152,28 +152,68 @@ test('code_block to generate a pre and code tag', () => {
 
 test('escape html marks from text', () => {
   const doc = {
-    type: 'doc',
-    content: [{
-        type: 'paragraph',
-        content: [{
-          text: '<p>Footer data</p>',
-          type: 'text'
-        }]
+    "type": "doc",
+    "content": [
+      {
+        "type": "paragraph",
+        "content": [
+          {
+            "text": "Simple phrases to test escapes:",
+            "type": "text"
+          }
+        ]
       },
       {
-        type: 'paragraph',
-        content: [{
-          text: 'Another footer data',
-          type: 'text',
-          marks: [{
-            type: 'bold'
-          }]
-        }]
+        "type": "bullet_list",
+        "content": [
+          {
+            "type": "list_item",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "text": "A dummy apostrophe's test",
+                    "type": "text"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "list_item",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "text": "<p>Just a tag</p>",
+                    "type": "text"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "list_item",
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "text": "<p>Dummy & test</p>",
+                    "type": "text"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
       }
     ]
   }
 
-  expect(resolver.render(doc)).toBe('<p>&ltp&gtFooter data&lt/p&gt</p><p><b>Another footer data</b></p>')
+  expect(resolver.render(doc)).toBe('<p>Simple phrases to test escapes:</p><ul><li><p>A dummy apostrophe&#39;s test</p></li><li><p>&lt;p&gt;Just a tag&lt;/p&gt;</p></li><li><p>&lt;p&gt;Dummy &amp; test&lt;/p&gt;</p></li></ul>')
 })
 
 test('link to generate a tag with achor', () => {
