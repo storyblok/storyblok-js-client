@@ -33,6 +33,7 @@ var throttledQueue = require('./throttlePromise');
 var RichTextResolver = require('./richTextResolver');
 
 var memory = {};
+var _cacheVersions = {};
 
 var _require = require('./helpers'),
     delay = _require.delay,
@@ -50,7 +51,7 @@ function () {
 
       var region = config.region ? "-".concat(config.region) : '';
       var protocol = config.https === false ? 'http' : 'https';
-      endpoint = (0, _concat.default)(_context = "".concat(protocol, "://api")).call(_context, region, ".storyblok.com/v1");
+      endpoint = (0, _concat.default)(_context = "".concat(protocol, "://api")).call(_context, region, ".storyblok.com/v2");
     }
 
     var headers = (0, _assign.default)({}, config.headers);
@@ -73,7 +74,6 @@ function () {
 
     this.maxRetries = config.maxRetries || 5;
     this.throttle = throttledQueue(this.throttledRequest, rateLimit, 1000);
-    this.cacheVersion = this.cacheVersion || this.newVersion();
     this.accessToken = config.accessToken;
     this.cache = config.cache || {
       clear: 'manual'
@@ -110,12 +110,12 @@ function () {
         params.version = 'published';
       }
 
-      if (!params.cv) {
-        params.cv = this.cacheVersion;
-      }
-
       if (!params.token) {
         params.token = this.getToken();
+      }
+
+      if (!params.cv) {
+        params.cv = _cacheVersions[params.token];
       }
 
       return params;
@@ -323,6 +323,7 @@ function () {
 
                 case 14:
                   res = _context5.sent;
+                  console.log(res.request._redirectable._redirectCount);
                   response = {
                     data: res.data,
                     headers: res.headers
@@ -336,53 +337,57 @@ function () {
                   }
 
                   if (!(res.status != 200)) {
-                    _context5.next = 19;
+                    _context5.next = 20;
                     break;
                   }
 
                   return _context5.abrupt("return", reject(res));
 
-                case 19:
+                case 20:
                   if (params.version === 'published' && url != '/cdn/spaces/me') {
                     provider.set(cacheKey, response);
                   }
 
+                  if (response.data.cv) {
+                    _cacheVersions[params.token] = response.data.cv;
+                  }
+
                   resolve(response);
-                  _context5.next = 33;
+                  _context5.next = 35;
                   break;
 
-                case 23:
-                  _context5.prev = 23;
+                case 25:
+                  _context5.prev = 25;
                   _context5.t0 = _context5["catch"](11);
 
                   if (!(_context5.t0.response && _context5.t0.response.status === 429)) {
-                    _context5.next = 32;
+                    _context5.next = 34;
                     break;
                   }
 
                   retries = retries + 1;
 
                   if (!(retries < _this.maxRetries)) {
-                    _context5.next = 32;
+                    _context5.next = 34;
                     break;
                   }
 
                   console.log("Hit rate limit. Retrying in ".concat(retries, " seconds."));
-                  _context5.next = 31;
+                  _context5.next = 33;
                   return delay(1000 * retries);
 
-                case 31:
+                case 33:
                   return _context5.abrupt("return", _this.cacheResponse(url, params, retries).then(resolve).catch(reject));
 
-                case 32:
+                case 34:
                   reject(_context5.t0);
 
-                case 33:
+                case 35:
                 case "end":
                   return _context5.stop();
               }
             }
-          }, _callee2, null, [[11, 23]]);
+          }, _callee2, null, [[11, 25]]);
         }));
 
         return function (_x2, _x3) {
@@ -396,9 +401,9 @@ function () {
       return this.client[type](url, params);
     }
   }, {
-    key: "newVersion",
-    value: function newVersion() {
-      return new Date().getTime();
+    key: "cacheVersions",
+    value: function cacheVersions() {
+      return _cacheVersions;
     }
   }, {
     key: "cacheProvider",
@@ -421,7 +426,6 @@ function () {
           };
 
         default:
-          this.cacheVersion = this.newVersion();
           return {
             get: function get() {},
             getAll: function getAll() {},
@@ -440,14 +444,13 @@ function () {
           while (1) {
             switch (_context6.prev = _context6.next) {
               case 0:
-                this.cacheVersion = this.newVersion();
-                _context6.next = 3;
+                _context6.next = 2;
                 return this.cacheProvider().flush();
 
-              case 3:
+              case 2:
                 return _context6.abrupt("return", this);
 
-              case 4:
+              case 3:
               case "end":
                 return _context6.stop();
             }

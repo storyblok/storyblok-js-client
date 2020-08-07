@@ -6,9 +6,13 @@ var _map = _interopRequireDefault(require("@babel/runtime-corejs3/core-js-stable
 
 var _concat = _interopRequireDefault(require("@babel/runtime-corejs3/core-js-stable/instance/concat"));
 
+var _slice = _interopRequireDefault(require("@babel/runtime-corejs3/core-js-stable/instance/slice"));
+
 var _reverse = _interopRequireDefault(require("@babel/runtime-corejs3/core-js-stable/instance/reverse"));
 
 var _forEach = _interopRequireDefault(require("@babel/runtime-corejs3/core-js-stable/instance/for-each"));
+
+var _isArray = _interopRequireDefault(require("@babel/runtime-corejs3/core-js-stable/array/is-array"));
 
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime-corejs3/helpers/classCallCheck"));
 
@@ -18,11 +22,11 @@ var defaultHtmlSerializer = require('./schema');
 
 var escapeHTML = function escapeHTML(string) {
   var htmlEscapes = {
-    '&': '&amp',
-    '<': '&lt',
-    '>': '&gt',
-    '"': '&quot',
-    "'": '&#39'
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
   };
   var reUnescapedHtml = /[&<>"']/g;
   var reHasUnescapedHtml = RegExp(reUnescapedHtml.source);
@@ -57,15 +61,23 @@ function () {
     }
   }, {
     key: "render",
-    value: function render(data) {
-      var _context,
-          _this = this;
+    value: function render() {
+      var _this = this;
 
-      var html = '';
-      (0, _forEach.default)(_context = data.content).call(_context, function (node) {
-        html += _this.renderNode(node);
-      });
-      return html;
+      var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+      if (data.content && (0, _isArray.default)(data.content)) {
+        var _context;
+
+        var html = '';
+        (0, _forEach.default)(_context = data.content).call(_context, function (node) {
+          html += _this.renderNode(node);
+        });
+        return html;
+      }
+
+      console.warn('The render method must receive an object with a content field, which is an array');
+      return '';
     }
   }, {
     key: "renderNode",
@@ -111,9 +123,9 @@ function () {
       }
 
       if (item.marks) {
-        var _context4, _context5;
+        var _context4, _context5, _context6;
 
-        (0, _forEach.default)(_context4 = (0, _reverse.default)(_context5 = item.marks).call(_context5)).call(_context4, function (m) {
+        (0, _forEach.default)(_context4 = (0, _reverse.default)(_context5 = (0, _slice.default)(_context6 = item.marks).call(_context6, 0)).call(_context5)).call(_context4, function (m) {
           var mark = _this2.getMatchingMark(m);
 
           if (mark) {
@@ -128,18 +140,18 @@ function () {
     key: "renderTag",
     value: function renderTag(tags, ending) {
       if (tags.constructor === String) {
-        var _context6;
+        var _context7;
 
-        return (0, _concat.default)(_context6 = "<".concat(tags)).call(_context6, ending, ">");
+        return (0, _concat.default)(_context7 = "<".concat(tags)).call(_context7, ending, ">");
       }
 
       var all = (0, _map.default)(tags).call(tags, function (tag) {
         if (tag.constructor === String) {
-          var _context7;
+          var _context8;
 
-          return (0, _concat.default)(_context7 = "<".concat(tag)).call(_context7, ending, ">");
+          return (0, _concat.default)(_context8 = "<".concat(tag)).call(_context8, ending, ">");
         } else {
-          var _context9;
+          var _context10;
 
           var h = "<".concat(tag.tag);
 
@@ -148,14 +160,14 @@ function () {
               var value = tag.attrs[key];
 
               if (value !== null) {
-                var _context8;
+                var _context9;
 
-                h += (0, _concat.default)(_context8 = " ".concat(key, "=\"")).call(_context8, value, "\"");
+                h += (0, _concat.default)(_context9 = " ".concat(key, "=\"")).call(_context9, value, "\"");
               }
             }
           }
 
-          return (0, _concat.default)(_context9 = "".concat(h)).call(_context9, ending, ">");
+          return (0, _concat.default)(_context10 = "".concat(h)).call(_context10, ending, ">");
         }
       });
       return all.join('');
@@ -168,13 +180,13 @@ function () {
   }, {
     key: "renderClosingTag",
     value: function renderClosingTag(tags) {
-      var _context10;
+      var _context11, _context12;
 
       if (tags.constructor === String) {
         return "</".concat(tags, ">");
       }
 
-      var all = (0, _map.default)(_context10 = (0, _reverse.default)(tags).call(tags)).call(_context10, function (tag) {
+      var all = (0, _map.default)(_context11 = (0, _reverse.default)(_context12 = (0, _slice.default)(tags).call(tags, 0)).call(_context12)).call(_context11, function (tag) {
         if (tag.constructor === String) {
           return "</".concat(tag, ">");
         } else {
