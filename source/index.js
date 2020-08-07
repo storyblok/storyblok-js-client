@@ -5,6 +5,7 @@ const axios = require('axios')
 const throttledQueue = require('./throttlePromise')
 const RichTextResolver = require('./richTextResolver')
 let memory = {}
+let cacheVersions = {}
 
 const { delay, getOptionsPage, isCDNUrl } = require('./helpers')
 
@@ -15,7 +16,7 @@ class Storyblok {
     if (!endpoint) {
       let region = config.region ? `-${config.region}` : ''
       let protocol = config.https === false ? 'http' : 'https'
-      endpoint = `${protocol}://api${region}.storyblok.com/v1`
+      endpoint = `${protocol}://api${region}.storyblok.com/v2`
     }
 
     let headers = Object.assign({}, config.headers)
@@ -38,7 +39,6 @@ class Storyblok {
 
     this.maxRetries = config.maxRetries || 5
     this.throttle = throttledQueue(this.throttledRequest, rateLimit, 1000)
-    this.cacheVersion = (this.cacheVersion || this.newVersion())
     this.accessToken = config.accessToken
     this.cache = (config.cache || { clear: 'manual' })
     this.client = axios.create({
@@ -68,12 +68,12 @@ class Storyblok {
       params.version = 'published'
     }
 
-    if (!params.cv) {
-      params.cv = this.cacheVersion
-    }
-
     if (!params.token) {
       params.token = this.getToken()
+    }
+
+    if (!params.cv) {
+      params.cv = cacheVersions[params.token]
     }
 
     return params
@@ -183,6 +183,7 @@ class Storyblok {
           params: params,
           paramsSerializer: (params) => qs.stringify(params, { arrayFormat: 'brackets' })
         })
+        console.log(res.request._redirectable._redirectCount)
         let response = { data: res.data, headers: res.headers }
 
         if (res.headers['per-page']) {
@@ -199,6 +200,11 @@ class Storyblok {
         if (params.version === 'published' && url != '/cdn/spaces/me') {
           provider.set(cacheKey, response)
         }
+
+        if (response.data.cv) {
+          cacheVersions[params.token] = response.data.cv
+        }
+
         resolve(response)
       } catch (error) {
         if (error.response && error.response.status === 429) {
@@ -219,8 +225,8 @@ class Storyblok {
     return this.client[type](url, params)
   }
 
-  newVersion() {
-    return new Date().getTime()
+  cacheVersions() {
+    return cacheVersions
   }
 
   cacheProvider() {
@@ -241,8 +247,6 @@ class Storyblok {
           }
         }
       default:
-        this.cacheVersion = this.newVersion()
-
         return {
           get() {},
           getAll() {},
@@ -253,7 +257,6 @@ class Storyblok {
   }
 
   async flushCache() {
-    this.cacheVersion = this.newVersion()
     await this.cacheProvider().flush()
     return this
   }
