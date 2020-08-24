@@ -3,6 +3,7 @@ jest.setTimeout(60000)
 const StoryblokClient = require('../source/index')
 
 let Storyblok = new StoryblokClient({
+  region: 'testing',
   accessToken: 'trB5kgOeDD22QJQDdPNCjAtt',
   cache: { type: 'memory', clear: 'auto' }
 })
@@ -43,31 +44,5 @@ describe('test uncached requests', () => {
     provider.flush()
     const result = await Storyblok.get('cdn/spaces/me')
     expect(Object.values(provider.getAll()).length).toBe(0)
-  })
-})
-
-describe('test cached requests', () => {
-  test('get(\'cdn/stories\') should be cached when is a published version', async () => {
-    const cacheVersion = Storyblok.cacheVersion
-
-    await Storyblok.get('cdn/stories')
-
-    expect(cacheVersion).toBe(Storyblok.cacheVersion)
-
-    await Storyblok.get('cdn/stories')
-
-    expect(cacheVersion).toBe(Storyblok.cacheVersion)
-
-    await Storyblok.get('cdn/stories')
-
-    expect(cacheVersion).toBe(Storyblok.cacheVersion)
-  })
-
-  test('get(\'cdn/stories\') should be not cached when is a draft version', async () => {
-    const cacheVersion = Storyblok.cacheVersion
-
-    await Storyblok.get('cdn/stories', { version: 'draft' })
-
-    expect(cacheVersion).not.toBe(Storyblok.cacheVersion)
   })
 })

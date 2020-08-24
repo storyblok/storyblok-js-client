@@ -6,6 +6,10 @@ var _parseInt2 = _interopRequireDefault(require("@babel/runtime-corejs3/core-js-
 
 var _promise = _interopRequireDefault(require("@babel/runtime-corejs3/core-js-stable/promise"));
 
+var _slice = _interopRequireDefault(require("@babel/runtime-corejs3/core-js-stable/instance/slice"));
+
+var _indexOf = _interopRequireDefault(require("@babel/runtime-corejs3/core-js-stable/instance/index-of"));
+
 var _regenerator = _interopRequireDefault(require("@babel/runtime-corejs3/regenerator"));
 
 var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime-corejs3/helpers/toConsumableArray"));
@@ -75,6 +79,7 @@ function () {
     this.maxRetries = config.maxRetries || 5;
     this.throttle = throttledQueue(this.throttledRequest, rateLimit, 1000);
     this.accessToken = config.accessToken;
+    this.relations = {};
     this.cache = config.cache || {
       clear: 'manual'
     };
@@ -255,9 +260,140 @@ function () {
       return this.accessToken;
     }
   }, {
+    key: "insertRelations",
+    value: function insertRelations(story, fields) {
+      var _this = this;
+
+      var enrich = function enrich(jtree) {
+        if (jtree == null) {
+          return;
+        }
+
+        if (jtree.constructor === Array) {
+          for (var item = 0; item < jtree.length; item++) {
+            enrich(jtree[item]);
+          }
+        } else if (jtree.constructor === Object && jtree.component && jtree._uid) {
+          for (var treeItem in jtree) {
+            if ((0, _indexOf.default)(fields).call(fields, jtree.component + '.' + treeItem) > -1) {
+              if (typeof jtree[treeItem] === 'string') {
+                if (_this.relations[jtree[treeItem]]) {
+                  jtree[treeItem] = _this.relations[jtree[treeItem]];
+                }
+              } else if (jtree[treeItem].constructor === Array) {
+                var _context5;
+
+                var stories = [];
+                (0, _forEach.default)(_context5 = jtree[treeItem]).call(_context5, function (uuid) {
+                  if (this.relations[uuid]) {
+                    stories.push(this.relations[uuid]);
+                  }
+                });
+                jtree[treeItem] = stories;
+              }
+            }
+
+            enrich(jtree[treeItem]);
+          }
+        }
+      };
+
+      enrich(story.content);
+    }
+  }, {
+    key: "resolveRelations",
+    value: function () {
+      var _resolveRelations = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee2(responseData, params) {
+        var _this2 = this;
+
+        var relations, relSize, chunks, chunkSize, i, _context6, end, chunkIndex, _context7, relationsRes, _context8;
+
+        return _regenerator.default.wrap(function _callee2$(_context9) {
+          while (1) {
+            switch (_context9.prev = _context9.next) {
+              case 0:
+                relations = [];
+
+                if (!responseData.rel_uuids) {
+                  _context9.next = 17;
+                  break;
+                }
+
+                relSize = responseData.rel_uuids.length;
+                chunks = [];
+                chunkSize = 50;
+
+                for (i = 0; i < relSize; i += chunkSize) {
+                  end = Math.min(relSize, i + chunkSize);
+                  chunks.push((0, _slice.default)(_context6 = responseData.rel_uuids).call(_context6, i, end));
+                }
+
+                chunkIndex = 0;
+
+              case 7:
+                if (!(chunkIndex < chunks.length)) {
+                  _context9.next = 15;
+                  break;
+                }
+
+                _context9.next = 10;
+                return this.getStories({
+                  per_page: chunkSize,
+                  version: params.version,
+                  by_uuids: chunks[chunkIndex]
+                });
+
+              case 10:
+                relationsRes = _context9.sent;
+                (0, _forEach.default)(_context7 = relationsRes.data.stories).call(_context7, function (rel) {
+                  relations.push(rel);
+                });
+
+              case 12:
+                chunkIndex++;
+                _context9.next = 7;
+                break;
+
+              case 15:
+                _context9.next = 18;
+                break;
+
+              case 17:
+                relations = responseData.rels;
+
+              case 18:
+                (0, _forEach.default)(relations).call(relations, function (story) {
+                  _this2.relations[story.uuid] = story;
+                });
+
+                if (responseData.story) {
+                  this.insertRelations(responseData.story, params.resolve_relations.split(','));
+                } else {
+                  (0, _forEach.default)(_context8 = responseData.stories).call(_context8, function (story) {
+                    _this2.insertRelations(story, params.resolve_relations.split(','));
+                  });
+                }
+
+              case 20:
+              case "end":
+                return _context9.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
+
+      function resolveRelations(_x2, _x3) {
+        return _resolveRelations.apply(this, arguments);
+      }
+
+      return resolveRelations;
+    }()
+  }, {
     key: "cacheResponse",
     value: function cacheResponse(url, params, retries) {
-      var _this = this;
+      var _this3 = this;
 
       if (typeof retries === 'undefined') {
         retries = 0;
@@ -268,11 +404,11 @@ function () {
       function () {
         var _ref = (0, _asyncToGenerator2.default)(
         /*#__PURE__*/
-        _regenerator.default.mark(function _callee2(resolve, reject) {
+        _regenerator.default.mark(function _callee3(resolve, reject) {
           var cacheKey, provider, cache, res, response;
-          return _regenerator.default.wrap(function _callee2$(_context5) {
+          return _regenerator.default.wrap(function _callee3$(_context10) {
             while (1) {
-              switch (_context5.prev = _context5.next) {
+              switch (_context10.prev = _context10.next) {
                 case 0:
                   cacheKey = qs.stringify({
                     url: url,
@@ -280,39 +416,39 @@ function () {
                   }, {
                     arrayFormat: 'brackets'
                   });
-                  provider = _this.cacheProvider();
+                  provider = _this3.cacheProvider();
 
-                  if (!(_this.cache.clear === 'auto' && params.version === 'draft')) {
-                    _context5.next = 5;
+                  if (!(_this3.cache.clear === 'auto' && params.version === 'draft')) {
+                    _context10.next = 5;
                     break;
                   }
 
-                  _context5.next = 5;
-                  return _this.flushCache();
+                  _context10.next = 5;
+                  return _this3.flushCache();
 
                 case 5:
                   if (!(params.version === 'published' && url != '/cdn/spaces/me')) {
-                    _context5.next = 11;
+                    _context10.next = 11;
                     break;
                   }
 
-                  _context5.next = 8;
+                  _context10.next = 8;
                   return provider.get(cacheKey);
 
                 case 8:
-                  cache = _context5.sent;
+                  cache = _context10.sent;
 
                   if (!cache) {
-                    _context5.next = 11;
+                    _context10.next = 11;
                     break;
                   }
 
-                  return _context5.abrupt("return", resolve(cache));
+                  return _context10.abrupt("return", resolve(cache));
 
                 case 11:
-                  _context5.prev = 11;
-                  _context5.next = 14;
-                  return _this.throttle('get', url, {
+                  _context10.prev = 11;
+                  _context10.next = 14;
+                  return _this3.throttle('get', url, {
                     params: params,
                     paramsSerializer: function paramsSerializer(params) {
                       return qs.stringify(params, {
@@ -322,8 +458,7 @@ function () {
                   });
 
                 case 14:
-                  res = _context5.sent;
-                  console.log(res.request._redirectable._redirectCount);
+                  res = _context10.sent;
                   response = {
                     data: res.data,
                     headers: res.headers
@@ -337,60 +472,73 @@ function () {
                   }
 
                   if (!(res.status != 200)) {
-                    _context5.next = 20;
+                    _context10.next = 19;
                     break;
                   }
 
-                  return _context5.abrupt("return", reject(res));
+                  return _context10.abrupt("return", reject(res));
 
-                case 20:
+                case 19:
+                  if (!(typeof params.resolve_relations !== 'undefined' && params.resolve_relations.length > 0)) {
+                    _context10.next = 22;
+                    break;
+                  }
+
+                  _context10.next = 22;
+                  return _this3.resolveRelations(response.data, params);
+
+                case 22:
                   if (params.version === 'published' && url != '/cdn/spaces/me') {
                     provider.set(cacheKey, response);
                   }
 
-                  if (response.data.cv) {
+                  if (response.data.cv && (params.version == 'draft' || res.request._redirectable && res.request._redirectable._redirectCount === 1)) {
                     _cacheVersions[params.token] = response.data.cv;
+
+                    if (params.version == 'draft' && _cacheVersions[params.token] != response.data.cv) {
+                      _this3.flushCache();
+                    }
                   }
 
                   resolve(response);
-                  _context5.next = 35;
+                  _context10.next = 37;
                   break;
 
-                case 25:
-                  _context5.prev = 25;
-                  _context5.t0 = _context5["catch"](11);
+                case 27:
+                  _context10.prev = 27;
+                  _context10.t0 = _context10["catch"](11);
 
-                  if (!(_context5.t0.response && _context5.t0.response.status === 429)) {
-                    _context5.next = 34;
+                  if (!(_context10.t0.response && _context10.t0.response.status === 429)) {
+                    _context10.next = 36;
                     break;
                   }
 
                   retries = retries + 1;
 
-                  if (!(retries < _this.maxRetries)) {
-                    _context5.next = 34;
+                  if (!(retries < _this3.maxRetries)) {
+                    _context10.next = 36;
                     break;
                   }
 
                   console.log("Hit rate limit. Retrying in ".concat(retries, " seconds."));
-                  _context5.next = 33;
+                  _context10.next = 35;
                   return delay(1000 * retries);
 
-                case 33:
-                  return _context5.abrupt("return", _this.cacheResponse(url, params, retries).then(resolve).catch(reject));
-
-                case 34:
-                  reject(_context5.t0);
-
                 case 35:
+                  return _context10.abrupt("return", _this3.cacheResponse(url, params, retries).then(resolve).catch(reject));
+
+                case 36:
+                  reject(_context10.t0);
+
+                case 37:
                 case "end":
-                  return _context5.stop();
+                  return _context10.stop();
               }
             }
-          }, _callee2, null, [[11, 25]]);
+          }, _callee3, null, [[11, 27]]);
         }));
 
-        return function (_x2, _x3) {
+        return function (_x4, _x5) {
           return _ref.apply(this, arguments);
         };
       }());
@@ -404,6 +552,18 @@ function () {
     key: "cacheVersions",
     value: function cacheVersions() {
       return _cacheVersions;
+    }
+  }, {
+    key: "cacheVersion",
+    value: function cacheVersion() {
+      return _cacheVersions[this.accessToken];
+    }
+  }, {
+    key: "setCacheVersion",
+    value: function setCacheVersion(cv) {
+      if (this.accessToken) {
+        _cacheVersions[this.accessToken] = cv;
+      }
     }
   }, {
     key: "cacheProvider",
@@ -439,23 +599,23 @@ function () {
     value: function () {
       var _flushCache = (0, _asyncToGenerator2.default)(
       /*#__PURE__*/
-      _regenerator.default.mark(function _callee3() {
-        return _regenerator.default.wrap(function _callee3$(_context6) {
+      _regenerator.default.mark(function _callee4() {
+        return _regenerator.default.wrap(function _callee4$(_context11) {
           while (1) {
-            switch (_context6.prev = _context6.next) {
+            switch (_context11.prev = _context11.next) {
               case 0:
-                _context6.next = 2;
+                _context11.next = 2;
                 return this.cacheProvider().flush();
 
               case 2:
-                return _context6.abrupt("return", this);
+                return _context11.abrupt("return", this);
 
               case 3:
               case "end":
-                return _context6.stop();
+                return _context11.stop();
             }
           }
-        }, _callee3, this);
+        }, _callee4, this);
       }));
 
       function flushCache() {

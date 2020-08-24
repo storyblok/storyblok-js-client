@@ -40,6 +40,7 @@ class Storyblok {
     this.maxRetries = config.maxRetries || 5
     this.throttle = throttledQueue(this.throttledRequest, rateLimit, 1000)
     this.accessToken = config.accessToken
+    this.relations = {}
     this.cache = (config.cache || { clear: 'manual' })
     this.client = axios.create({
       baseURL: endpoint,
@@ -158,6 +159,77 @@ class Storyblok {
     return this.accessToken
   }
 
+  insertRelations(story, fields) {
+    var enrich = (jtree) => {
+      if (jtree == null) {
+        return
+      }
+      if (jtree.constructor === Array) {
+        for (var item = 0; item < jtree.length; item++) {
+          enrich(jtree[item])
+        }
+      } else if (jtree.constructor === Object && jtree.component && jtree._uid) {
+        for (var treeItem in jtree) {
+          if (fields.indexOf(jtree.component + '.' + treeItem) > -1) {
+            if (typeof jtree[treeItem] === 'string') {
+              if (this.relations[jtree[treeItem]]) {
+                jtree[treeItem] = this.relations[jtree[treeItem]]
+              }
+            } else if (jtree[treeItem].constructor === Array) {
+              var stories = []
+              jtree[treeItem].forEach(function(uuid) {
+                if (this.relations[uuid]) {
+                  stories.push(this.relations[uuid])
+                }
+              })
+              jtree[treeItem] = stories
+            }
+          }
+          enrich(jtree[treeItem])
+        }
+      }
+    }
+
+    enrich(story.content)
+  }
+
+  async resolveRelations(responseData, params) {
+    let relations = []
+
+    if (responseData.rel_uuids) {
+      const relSize = responseData.rel_uuids.length
+      let chunks = []
+      const chunkSize = 50
+
+      for (let i = 0; i < relSize; i += chunkSize) {
+        const end = Math.min(relSize, i + chunkSize)
+        chunks.push(responseData.rel_uuids.slice(i, end))
+      }
+
+      for (var chunkIndex = 0; chunkIndex < chunks.length; chunkIndex++) {
+        let relationsRes = await this.getStories({per_page: chunkSize, version: params.version, by_uuids: chunks[chunkIndex]})
+
+        relationsRes.data.stories.forEach((rel) => {
+          relations.push(rel)
+        })
+      }
+    } else {
+      relations = responseData.rels
+    }
+
+    relations.forEach((story) => {
+      this.relations[story.uuid] = story
+    })
+
+    if (responseData.story) {
+      this.insertRelations(responseData.story, params.resolve_relations.split(','))
+    } else {
+      responseData.stories.forEach((story) => {
+        this.insertRelations(story, params.resolve_relations.split(','))
+      })
+    }
+  }
+
   cacheResponse(url, params, retries) {
     if (typeof retries === 'undefined') {
       retries = 0
@@ -183,7 +255,7 @@ class Storyblok {
           params: params,
           paramsSerializer: (params) => qs.stringify(params, { arrayFormat: 'brackets' })
         })
-        console.log(res.request._redirectable._redirectCount)
+
         let response = { data: res.data, headers: res.headers }
 
         if (res.headers['per-page']) {
@@ -197,12 +269,20 @@ class Storyblok {
           return reject(res)
         }
 
+        if (typeof params.resolve_relations !== 'undefined' && params.resolve_relations.length > 0) {
+          await this.resolveRelations(response.data, params)
+        }
+
         if (params.version === 'published' && url != '/cdn/spaces/me') {
           provider.set(cacheKey, response)
         }
 
-        if (response.data.cv) {
+        if (response.data.cv && (params.version == 'draft' || (res.request._redirectable && res.request._redirectable._redirectCount === 1))) {
           cacheVersions[params.token] = response.data.cv
+
+          if (params.version == 'draft' && cacheVersions[params.token] != response.data.cv) {
+            this.flushCache()
+          }
         }
 
         resolve(response)
@@ -227,6 +307,16 @@ class Storyblok {
 
   cacheVersions() {
     return cacheVersions
+  }
+
+  cacheVersion() {
+    return cacheVersions[this.accessToken]
+  }
+
+  setCacheVersion(cv) {
+    if (this.accessToken) {
+      cacheVersions[this.accessToken] = cv
+    }
   }
 
   cacheProvider() {
