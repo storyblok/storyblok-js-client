@@ -8,6 +8,12 @@
   "unpkg": "./dist/index.standalone.js",
   "jsdelivr": "./dist/index.standalone.js",
   "source": "source/index.js",
+  "files": [
+    "dist",
+    "source",
+    "types",
+    "test"
+  ],
   "scripts": {
     "clean": "rimraf dist/",
     "build": "run-s clean build:**",
