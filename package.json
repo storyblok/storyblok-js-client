@@ -9,8 +9,8 @@
   "jsdelivr": "./dist/index.standalone.js",
   "source": "source/index.js",
   "scripts": {
-    "prebuild": "rimraf dist/",
-    "build": "run-s build:**",
+    "clean": "rimraf dist/",
+    "build": "run-s clean build:**",
     "build:es5": "ENABLE_BABEL=yes rollup --config",
     "build:es6": "rollup --config",
     "build:standalone:es5": "STANDALONE=yes ENABLE_BABEL=yes rollup --config",
