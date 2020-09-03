@@ -21,6 +21,7 @@ declare global {
       callback: (payload?: StoryblokEventPayload) => void
     ) => void
     addComments: (tree: StoryblokComponent<string>, storyId: string) => StoryblokComponent<string>
+    resolveRelations: (story: any, resolve: string[], callback: (storyContent: any) => void) => void
   }
   interface Window {
     storyblok: StoryblokBridge

@@ -2,11 +2,11 @@ import defaultHtmlSerializer from './schema'
 
 const escapeHTML = function(string) {
   const htmlEscapes = {
-    '&': '&amp',
-    '<': '&lt',
-    '>': '&gt',
-    '"': '&quot',
-    "'": '&#39'
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
   }
 
   const reUnescapedHtml = /[&<>"']/g

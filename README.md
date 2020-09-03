@@ -418,6 +418,74 @@ let client = new StoryblokClient({
 client.richTextResolver.render(data)
 ~~~
 
+If you just want to change the way a specific tag is rendered you can import the default schema and extend it. Following an example that will render headlines with classes:
+
+Instead of `<p>Normal headline</p><h3><span class="margin-bottom-fdsafdsada">Styled headline</span></h3>` it will render `<p>Normal headline</p><h3 class="margin-bottom-fdsafdsada">Styled headline</h3>`.
+
+~~~javascript
+
+const RichTextResolver = require('storyblok-js-client/dist/richTextResolver')
+const MySchema = require('storyblok-js-client/dist/schema')
+
+MySchema.nodes.heading = function(node) {
+  let attrs = {}
+
+  if (node.content &&
+      node.content.length === 1 &&
+      node.content[0].marks &&
+      node.content[0].marks.length === 1 &&
+      node.content[0].marks[0].type === 'styled') {
+    attrs = node.content[0].marks[0].attrs
+    delete node.content[0].marks
+  }
+
+  return {
+    tag: [{
+      tag: `h${node.attrs.level}`,
+      attrs: attrs
+    }]
+  }
+}
+
+let rteResolver = new RichTextResolver(MySchema)
+let rendered = rteResolver.render({
+  "content": [
+    {
+      "content": [
+        {
+          "text": "Normal headline",
+          "type": "text"
+        }
+      ],
+      "type": "paragraph"
+    },
+    {
+      "attrs": {
+        "level": 3
+      },
+      "content": [
+        {
+          "marks": [
+            {
+              "attrs": {
+                "class": "margin-bottom-fdsafdsada"
+              },
+              "type": "styled"
+            }
+          ],
+          "text": "Styled headline",
+          "type": "text"
+        }
+      ],
+      "type": "heading"
+    }
+  ],
+  "type": "doc"
+})
+
+console.log(rendered)
+~~~
+
 ## Contribution
 
 Fork me on [Github](https://github.com/storyblok/storyblok-js-client).
