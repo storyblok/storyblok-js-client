@@ -1,6 +1,6 @@
 'use strict'
 
-import qs from  'qs'
+import { stringify } from 'qs'
 import axios from  'axios'
 
 import throttledQueue from './throttlePromise'
@@ -165,7 +165,7 @@ class Storyblok {
     }
 
     return new Promise(async (resolve, reject) => {
-      let cacheKey = qs.stringify({ url: url, params: params }, { arrayFormat: 'brackets' })
+      let cacheKey = stringify({ url: url, params: params }, { arrayFormat: 'brackets' })
       let provider = this.cacheProvider()
 
       if (this.cache.clear === 'auto' && params.version === 'draft') {
@@ -182,7 +182,7 @@ class Storyblok {
       try {
         let res = await this.throttle('get', url, {
           params: params,
-          paramsSerializer: (params) => qs.stringify(params, { arrayFormat: 'brackets' })
+          paramsSerializer: (params) => stringify(params, { arrayFormat: 'brackets' })
         })
         let response = { data: res.data, headers: res.headers }
 
