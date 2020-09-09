@@ -1,6 +1,7 @@
 jest.setTimeout(60000)
 
 import StoryblokClient from '../source/index'
+import RichTextResolver from '../source/richTextResolver'
 
 let Storyblok = new StoryblokClient({
   accessToken: 'trB5kgOeDD22QJQDdPNCjAtt',
@@ -66,5 +67,11 @@ describe('test cached requests', () => {
     await Storyblok.get('cdn/stories', { version: 'draft' })
 
     expect(cacheVersion).not.toBe(Storyblok.cacheVersion)
+  })
+})
+
+describe('test constructor', () => {
+  it('should have a richtextResolver field that is an instance of RichTextResolver', () => {
+    expect(Storyblok.richTextResolver).toBeInstanceOf(RichTextResolver)
   })
 })
