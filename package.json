@@ -38,21 +38,21 @@
   },
   "homepage": "https://github.com/storyblok/storyblok-js-client#readme",
   "devDependencies": {
-    "@babel/core": "^7.10.0",
-    "@babel/plugin-transform-runtime": "^7.10.1",
-    "@babel/preset-env": "^7.10.0",
-    "@rollup/plugin-babel": "^5.0.2",
-    "@rollup/plugin-commonjs": "^12.0.0",
-    "@rollup/plugin-json": "^4.0.3",
-    "@rollup/plugin-node-resolve": "^8.0.0",
+    "@babel/core": "^7.11.6",
+    "@babel/plugin-transform-runtime": "^7.11.5",
+    "@babel/preset-env": "^7.11.5",
+    "@rollup/plugin-babel": "^5.2.1",
+    "@rollup/plugin-commonjs": "^15.0.0",
+    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-node-resolve": "^9.0.0",
     "axios": "^0.20.0",
-    "babel-jest": "^26.0.1",
+    "babel-jest": "^26.3.0",
     "core-js": "^3.6.5",
-    "jest": "^25.1.0",
+    "jest": "^26.4.2",
     "npm-run-all": "^4.1.5",
     "rimraf": "^3.0.2",
-    "rollup": "^2.10.9",
-    "rollup-plugin-terser": "^6.1.0"
+    "rollup": "^2.26.11",
+    "rollup-plugin-terser": "^7.0.2"
   },
   "peerDependencies": {
     "axios": "^0.20.0"
