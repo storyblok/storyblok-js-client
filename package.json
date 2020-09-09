@@ -58,7 +58,7 @@
     "axios": "^0.20.0"
   },
   "dependencies": {
-    "qs": "^6.5.2"
+    "qs": "^6.9.4"
   },
   "release": {
     "branches": [
