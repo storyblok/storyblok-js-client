@@ -59,20 +59,20 @@ This package has a standalone version that contains all dependencies and you can
 
 ```html
 <!-- This import makes the StoryblokClient class available globally -->
-<script src="https://cdn.jsdelivr.net/npm/storyblok-js-client@3.0.0/dist/index.standalone.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/storyblok-js-client@3.1.0/dist/index.standalone.js"></script>
 
 <!-- This import makes the RichTextResolver class available globally -->
-<script src="https://cdn.jsdelivr.net/npm/storyblok-js-client@3.0.0/dist/rich-text-resolver.standalone.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/storyblok-js-client@3.1.0/dist/rich-text-resolver.standalone.js"></script>
 ```
 
 If you want a bundle with Babel (for non-es6 browsers):
 
 ```html
 <!-- This import makes the StoryblokClient class available globally -->
-<script src="https://cdn.jsdelivr.net/npm/storyblok-js-client@3.0.0/dist/es5/index.standalone.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/storyblok-js-client@3.1.0/dist/es5/index.standalone.js"></script>
 
 <!-- This import makes the RichTextResolver class available globally -->
-<script src="https://cdn.jsdelivr.net/npm/storyblok-js-client@3.0.0/dist/es5/rich-text-resolver.standalone.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/storyblok-js-client@3.1.0/dist/es5/rich-text-resolver.standalone.js"></script>
 ```
 
 ### Note about use of Babel
