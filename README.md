@@ -2,32 +2,15 @@
 
 This client is a thin wrapper for the Storyblok API's to use in Node.js and the browser.
 
-The version 2 uses corejs 3. If you are looking for the version that uses corejs 2 please use [version 1.x.x](https://github.com/storyblok/storyblok-js-client/tree/v1).
-
 ## Install
 
 ```
-npm install storyblok-js-client
+npm install storyblok-js-client # yarn add storyblok-js-client
 ```
 
 ## Usage
 
-### Class `Storyblok`
-
-**Parameters**
-
-- `config` Object
-  - `accessToken` String, The preview token you can find in your space dashboard at https://app.storyblok.com
-  - `cache` Object
-    - `type` String, `none` or `memory`
-  - (`region` String, optional)
-  - (`https` Boolean, optional)
-  - (`rateLimit` Integer, optional, defaults to 3 for management api and 5 for cdn api)
-  - (`timeout` Integer, optional)
-  - (`maxRetries` Integer, optional, defaults to 5)
-- (`endpoint` String, optional)
-
-**Example for using the content deliver api**
+### Using the Content Deliver API
 
 ```javascript
 // 1. Require the Storyblok client
@@ -40,7 +23,7 @@ let Storyblok = new StoryblokClient({
 })
 ```
 
-**Example for using the content management api**
+### Using the Content Management API
 
 ```javascript
 // 1. Require the Storyblok client
@@ -57,6 +40,70 @@ Storyblok.post(`spaces/${spaceId}/stories`, {story: {name: 'xy', slug: 'xy'}})
 Storyblok.put(`spaces/${spaceId}/stories/1`, {story: {name: 'xy', slug: 'xy'}})
 Storyblok.delete(`spaces/${spaceId}/stories/1`, null)
 ```
+
+### Using the RichTextResolver separately
+
+You can import and use the `RichTextResolver` directly:
+
+```js
+import RichTextResolver from 'storyblok-js-client/dist/rich-text-resolver'
+
+const resolver = new RichTextResolver()
+
+const html = resolver.render(data)
+```
+
+### Using from the Browser directly
+
+This package has a standalone version that contains all dependencies and you can use it to import and use our package inside the browser.
+
+```html
+<!-- This import makes the StoryblokClient class available globally -->
+<script src="https://cdn.jsdelivr.net/npm/storyblok-js-client@3.0.0/dist/index.standalone.js"></script>
+
+<!-- This import makes the RichTextResolver class available globally -->
+<script src="https://cdn.jsdelivr.net/npm/storyblok-js-client@3.0.0/dist/rich-text-resolver.standalone.js"></script>
+```
+
+If you want a bundle with Babel (for non-es6 browsers):
+
+```html
+<!-- This import makes the StoryblokClient class available globally -->
+<script src="https://cdn.jsdelivr.net/npm/storyblok-js-client@3.0.0/dist/es5/index.standalone.js"></script>
+
+<!-- This import makes the RichTextResolver class available globally -->
+<script src="https://cdn.jsdelivr.net/npm/storyblok-js-client@3.0.0/dist/es5/rich-text-resolver.standalone.js"></script>
+```
+
+### Note about use of Babel
+
+This package doesn't use the Babel by default in the final bundle. So, if you want a Babel transpiled file, you need to set the `es5/` prefix on import:
+
+```js
+// for CommonJS environments (NodeJS)
+const StoryblokClient = require('storyblok-js-client/dist/es5/index.cjs')
+
+// for EsModules environments
+import StoryblokClient from 'storyblok-js-client/dist/es5/index.es'
+```
+
+## Documentation
+
+### Class `Storyblok`
+
+**Parameters**
+
+- `config` Object
+  - `accessToken` String, The preview token you can find in your space dashboard at https://app.storyblok.com
+  - `cache` Object
+    - `type` String, `none` or `memory`
+  - (`region` String, optional)
+  - (`https` Boolean, optional)
+  - (`rateLimit` Integer, optional, defaults to 3 for management api and 5 for cdn api)
+  - (`timeout` Integer, optional)
+  - (`maxRetries` Integer, optional, defaults to 5)
+  - (`richTextSchema` Object, optional - your custom schema for RichTextRenderer)
+- (`endpoint` String, optional)
 
 ### Activating request cache
 
@@ -243,9 +290,9 @@ Storyblok.setComponentResolver((component, blok) => {
 Storyblok.richTextResolver.render(blok.richtext)
 ```
 
-### Code examples
+## Code examples
 
-#### Filter by content type values and path
+### Filter by content type values and path
 
 ~~~javascript
 const StoryblokClient = require('storyblok-js-client')
@@ -287,7 +334,7 @@ client.get('cdn/stories', {
   })
 ~~~
 
-#### Download all content from Storyblok
+### Download all content from Storyblok
 
 Following a code example using the storyblok-js-client to backup all content on your local filesystem inside a 'backup' folder.
 
@@ -329,7 +376,7 @@ let getStories = (page) => {
 getStories(1)
 ~~~
 
-#### Initialize with a proxy server
+### Initialize with a proxy server
 
 ~~~javascript
 const proxy = {
@@ -351,20 +398,24 @@ const storyblok = new StoryblokClient({
 Read more about proxy settings in axios [documentation](https://github.com/axios/axios)
 
 
-#### How to define a custom schema for the rich text renderer
+### How to define a custom schema for the RichTextRenderer
 
-To define to add some classes to specific html attributes rendered by the rich text renderer. To do so you can overwrite the resolver and initialize it with your own schema definition. Copy the content of https://github.com/storyblok/storyblok-js-client/blob/master/source/schema.js to my-schema.js and overwrite richTextResolver like in the following example:
+To define how to add some classes to specific html attributes rendered by the rich text renderer, you need your own schema definition. With this new schema, you can pass it as the `richTextSchema` option when instantiate the `StoryblokClient` class. You **must** follow the [default schema](https://github.com/storyblok/storyblok-js-client/blob/master/source/schema.js) to do this.
+
+Below, you can check an example:
 
 ~~~javascript
 const StoryblokClient = require('storyblok-js-client')
-const RichTextResolver = require('storyblok-js-client/dist/richTextResolver')
+
+// the default schema copied and updated
 const MySchema = require('./my-schema')
 
 let client = new StoryblokClient({
-  accessToken: 'WcdDcNgDm59K72EbsQg8Lgtt'
+  accessToken: 'WcdDcNgDm59K72EbsQg8Lgtt',
+  richTextSchema: MySchema
 })
 
-client.richTextResolver = new RichTextResolver(MySchema)
+client.richTextResolver.render(data)
 ~~~
 
 If you just want to change the way a specific tag is rendered you can import the default schema and extend it. Following an example that will render headlines with classes:

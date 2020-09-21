@@ -1,17 +1,11 @@
 jest.setTimeout(60000)
 
-const StoryblokClient = require('../source/index')
+import StoryblokClient from '../source/index'
 
 let Storyblok = new StoryblokClient({
   accessToken: 'trB5kgOeDD22QJQDdPNCjAtt',
   cache: { type: 'memory', clear: 'auto' }
 })
-
-if (process.env.OAUTH_TOKEN) {
-  let StoryblokManagement = new StoryblokClient({
-    oauthToken: process.env.OAUTH_TOKEN
-  })
-}
 
 describe('getAll function', () => {
   test('getAll(\'cdn/stories\') should return all stories', async () => {
@@ -31,6 +25,9 @@ describe('getAll function', () => {
 
   if (process.env.OAUTH_TOKEN) {
     test('getAll(\'spaces/67647/stories\') should return all spaces', async () => {
+      let StoryblokManagement = new StoryblokClient({
+        oauthToken: process.env.OAUTH_TOKEN
+      })
       const result = await StoryblokManagement.getAll('spaces/67647/stories')
       expect(result.length).toBe(26)
     })

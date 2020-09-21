@@ -10,7 +10,7 @@ function isFinite(value) {
   return true;
 }
 
-function throttle(fn, limit, interval) {
+function throttledQueue(fn, limit, interval) {
   if (!isFinite(limit)) {
     throw new TypeError('Expected `limit` to be a finite number');
   }
@@ -82,6 +82,6 @@ function AbortError() {
   this.name = 'AbortError';
 }
 
-throttle.AbortError = AbortError;
+throttledQueue.AbortError = AbortError;
 
-module.exports = throttle;
+export default throttledQueue;

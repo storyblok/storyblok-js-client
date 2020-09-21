@@ -1,13 +1,14 @@
 'use strict'
 
-const qs = require('qs')
-const axios = require('axios')
-const throttledQueue = require('./throttlePromise')
-const RichTextResolver = require('./richTextResolver')
+import qs from  'qs'
+import axios from  'axios'
+
+import throttledQueue from './throttlePromise'
+import RichTextResolver from './richTextResolver'
+
 let memory = {}
 
-const { delay, getOptionsPage, isCDNUrl } = require('./helpers')
-
+import { delay, getOptionsPage, isCDNUrl } from './helpers'
 
 class Storyblok {
 
@@ -30,7 +31,7 @@ class Storyblok {
       rateLimit = config.rateLimit
     }
 
-    this.richTextResolver = new RichTextResolver()
+    this.richTextResolver = new RichTextResolver(config.richTextSchema)
 
     if (typeof config.componentResolver === 'function') {
       this.setComponentResolver(config.componentResolver)
@@ -259,4 +260,4 @@ class Storyblok {
   }
 }
 
-module.exports = Storyblok
+export default Storyblok

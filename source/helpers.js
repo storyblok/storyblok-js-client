@@ -27,7 +27,7 @@ const getOptionsPage = (options = {}, perPage = 25, page = 1) => {
  */
 const delay = ms => new Promise(res => setTimeout(res, ms))
 
-module.exports = {
+export {
   delay,
   isCDNUrl,
   getOptionsPage
