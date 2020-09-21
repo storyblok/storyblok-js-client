@@ -150,6 +150,8 @@ export interface StoriesParams {
   first_published_at_lt?: string
   published_at_gt?: string
   published_at_lt?: string
+  by_slugs?: string
+  excluding_slugs?: string
 }
 
 export interface StoryParams {
@@ -160,6 +162,8 @@ export interface StoryParams {
   resolve_relations?: string
   cv?: number
   from_release?: string
+  language?: string
+  fallback_lang?: string
 }
 
 export interface Richtext {
