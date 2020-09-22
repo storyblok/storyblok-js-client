@@ -4,8 +4,9 @@ This client is a thin wrapper for the Storyblok API's to use in Node.js and the 
 
 ## Install
 
-```
-npm install storyblok-js-client # yarn add storyblok-js-client
+```sh
+# as axios is a peerDependency, you should install it too
+npm install storyblok-js-client axios # yarn add storyblok-js-client axios
 ```
 
 ## Usage
