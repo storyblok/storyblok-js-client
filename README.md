@@ -47,7 +47,13 @@ Storyblok.delete(`spaces/${spaceId}/stories/1`, null)
 You can import and use the `RichTextResolver` directly:
 
 ```js
-import RichTextResolver from 'storyblok-js-client/dist/rich-text-resolver'
+// you should need to use the format when import
+// es - when you are in EsModules environment (like React, Vue apps, for example)
+// cjs - when you are in NodeJS environment
+// standalone - when you are in Browser environment directly
+
+import RichTextResolver from 'storyblok-js-client/dist/rich-text-resolver.es'
+// const RichTextResolver = require('storyblok-js-client/dist/rich-text-resolver.cjs')
 
 const resolver = new RichTextResolver()
 
