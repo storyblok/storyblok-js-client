@@ -1,4 +1,5 @@
-const defaultHtmlSerializer = require('./schema')
+import defaultHtmlSerializer from './schema'
+
 const escapeHTML = function(string) {
   const htmlEscapes = {
     '&': '&amp;',
@@ -23,8 +24,8 @@ class RichTextResolver {
       schema = defaultHtmlSerializer
     }
 
-    this.marks = schema.marks
-    this.nodes = schema.nodes
+    this.marks = schema.marks || []
+    this.nodes = schema.nodes || []
   }
 
   addNode(key, schema) {
@@ -158,4 +159,4 @@ class RichTextResolver {
   }
 }
 
-module.exports = RichTextResolver
+export default RichTextResolver

@@ -14,7 +14,7 @@ const pick = function(attrs, allowed) {
 
 const isEmailLinkType = type => type === 'email'
 
-module.exports = {
+export default {
   nodes: {
     horizontal_rule(node) {
       return {

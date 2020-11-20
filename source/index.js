@@ -1,14 +1,15 @@
 'use strict'
 
-const qs = require('qs')
-const axios = require('axios')
-const throttledQueue = require('./throttlePromise')
-const RichTextResolver = require('./richTextResolver')
+import { stringify } from 'qs'
+import axios from  'axios'
+
+import throttledQueue from './throttlePromise'
+import RichTextResolver from './richTextResolver'
+
 let memory = {}
 let cacheVersions = {}
 
-const { delay, getOptionsPage, isCDNUrl } = require('./helpers')
-
+import { delay, getOptionsPage, isCDNUrl } from './helpers'
 
 class Storyblok {
 
@@ -31,7 +32,7 @@ class Storyblok {
       rateLimit = config.rateLimit
     }
 
-    this.richTextResolver = new RichTextResolver()
+    this.richTextResolver = new RichTextResolver(config.richTextSchema)
 
     if (typeof config.componentResolver === 'function') {
       this.setComponentResolver(config.componentResolver)
@@ -236,7 +237,7 @@ class Storyblok {
     }
 
     return new Promise(async (resolve, reject) => {
-      let cacheKey = qs.stringify({ url: url, params: params }, { arrayFormat: 'brackets' })
+      let cacheKey = stringify({ url: url, params: params }, { arrayFormat: 'brackets' })
       let provider = this.cacheProvider()
 
       if (this.cache.clear === 'auto' && params.version === 'draft') {
@@ -253,7 +254,7 @@ class Storyblok {
       try {
         let res = await this.throttle('get', url, {
           params: params,
-          paramsSerializer: (params) => qs.stringify(params, { arrayFormat: 'brackets' })
+          paramsSerializer: (params) => stringify(params, { arrayFormat: 'brackets' })
         })
 
         let response = { data: res.data, headers: res.headers }
@@ -352,4 +353,4 @@ class Storyblok {
   }
 }
 
-module.exports = Storyblok
+export default Storyblok
