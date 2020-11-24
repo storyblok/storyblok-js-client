@@ -4,7 +4,6 @@ import StoryblokClient from '../source/index'
 import RichTextResolver from '../source/richTextResolver'
 
 let Storyblok = new StoryblokClient({
-  region: 'testing',
   accessToken: 'trB5kgOeDD22QJQDdPNCjAtt',
   cache: { type: 'memory', clear: 'auto' }
 })
@@ -47,27 +46,27 @@ describe('test uncached requests', () => {
 
 describe('test cached requests', () => {
   test('get(\'cdn/stories\') should be cached when is a published version', async () => {
-    const cacheVersion = Storyblok.cacheVersion
+    const cacheVersion = Storyblok.cacheVersion()
 
     await Storyblok.get('cdn/stories')
 
-    expect(cacheVersion).toBe(Storyblok.cacheVersion)
+    expect(cacheVersion).toBe(Storyblok.cacheVersion())
 
     await Storyblok.get('cdn/stories')
 
-    expect(cacheVersion).toBe(Storyblok.cacheVersion)
+    expect(cacheVersion).toBe(Storyblok.cacheVersion())
 
     await Storyblok.get('cdn/stories')
 
-    expect(cacheVersion).toBe(Storyblok.cacheVersion)
+    expect(cacheVersion).toBe(Storyblok.cacheVersion())
   })
 
   test('get(\'cdn/stories\') should be not cached when is a draft version', async () => {
-    const cacheVersion = Storyblok.cacheVersion
+    const cacheVersion = Storyblok.cacheVersion()
 
     await Storyblok.get('cdn/stories', { version: 'draft' })
 
-    expect(cacheVersion).not.toBe(Storyblok.cacheVersion)
+    expect(cacheVersion).not.toBe(Storyblok.cacheVersion())
   })
 })
 
