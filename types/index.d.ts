@@ -74,7 +74,7 @@ export interface StoryblokManagmentApiResult {
   headers: any
 }
 
-export interface StoryblokComponent<TComp extends string> { 
+export interface StoryblokComponent<TComp extends string> {
   _uid: string
   component: TComp
   _editable?: string
@@ -82,7 +82,7 @@ export interface StoryblokComponent<TComp extends string> {
 
 export interface StoryData<Content = StoryblokComponent<string> & { [index: string]: any }> {
   alternates: AlternateObject[]
-  content: Content 
+  content: Content
   created_at: string
   full_slug: string
   group_id: string
@@ -145,7 +145,7 @@ export interface StoriesParams {
   per_page?: number
   page?: string
   from_release?: string
-  fallback_language?: string
+  fallback_lang?: string
   first_published_at_gt?: string
   first_published_at_lt?: string
   published_at_gt?: string

@@ -4,8 +4,9 @@ This client is a thin wrapper for the Storyblok API's to use in Node.js and the 
 
 ## Install
 
-```
-npm install storyblok-js-client # yarn add storyblok-js-client
+```sh
+# as axios is a peerDependency, you should install it too
+npm install storyblok-js-client axios # yarn add storyblok-js-client axios
 ```
 
 ## Usage
@@ -46,7 +47,13 @@ Storyblok.delete(`spaces/${spaceId}/stories/1`, null)
 You can import and use the `RichTextResolver` directly:
 
 ```js
-import RichTextResolver from 'storyblok-js-client/dist/rich-text-resolver'
+// you should need to use the format when import
+// es - when you are in EsModules environment (like React, Vue apps, for example)
+// cjs - when you are in NodeJS environment
+// standalone - when you are in Browser environment directly
+
+import RichTextResolver from 'storyblok-js-client/dist/rich-text-resolver.es'
+// const RichTextResolver = require('storyblok-js-client/dist/rich-text-resolver.cjs')
 
 const resolver = new RichTextResolver()
 
@@ -59,20 +66,20 @@ This package has a standalone version that contains all dependencies and you can
 
 ```html
 <!-- This import makes the StoryblokClient class available globally -->
-<script src="https://cdn.jsdelivr.net/npm/storyblok-js-client@3.0.0/dist/index.standalone.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/storyblok-js-client@4.0.0/dist/index.standalone.js"></script>
 
 <!-- This import makes the RichTextResolver class available globally -->
-<script src="https://cdn.jsdelivr.net/npm/storyblok-js-client@3.0.0/dist/rich-text-resolver.standalone.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/storyblok-js-client@4.0.0/dist/rich-text-resolver.standalone.js"></script>
 ```
 
 If you want a bundle with Babel (for non-es6 browsers):
 
 ```html
 <!-- This import makes the StoryblokClient class available globally -->
-<script src="https://cdn.jsdelivr.net/npm/storyblok-js-client@3.0.0/dist/es5/index.standalone.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/storyblok-js-client@4.0.0/dist/es5/index.standalone.js"></script>
 
 <!-- This import makes the RichTextResolver class available globally -->
-<script src="https://cdn.jsdelivr.net/npm/storyblok-js-client@3.0.0/dist/es5/rich-text-resolver.standalone.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/storyblok-js-client@4.0.0/dist/es5/rich-text-resolver.standalone.js"></script>
 ```
 
 ### Note about use of Babel
