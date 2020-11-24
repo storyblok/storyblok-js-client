@@ -1,4 +1,4 @@
-const StoryblokClient = require('../source/index')
+import StoryblokClient from '../source/index'
 const spaceId = 67647
 
 let Storyblok = new StoryblokClient({

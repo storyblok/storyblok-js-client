@@ -1,9 +1,8 @@
 jest.setTimeout(60000)
 
-const StoryblokClient = require('../source/index')
+import StoryblokClient from '../source/index'
 
 let Storyblok = new StoryblokClient({
-  region: 'testing',
   accessToken: 'trB5kgOeDD22QJQDdPNCjAtt',
   cache: { type: 'memory', clear: 'auto' }
 })
