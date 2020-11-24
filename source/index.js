@@ -48,6 +48,11 @@ class Storyblok {
       headers: headers,
       proxy: (config.proxy || false)
     })
+    if (config.responseInterceptor) {
+      this.client.interceptors.response.use((res) => {
+        return config.responseInterceptor(res);
+      });
+    }
   }
 
   setComponentResolver(resolver) {
