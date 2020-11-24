@@ -142,7 +142,7 @@ let Storyblok = new StoryblokClient({
   },
   responseInterceptor: (response) => {
     // one can handle status codes and more with the response
-    if (status === 200) {
+    if (response.status === 200) {
       // handle your status here
     }
     // ALWAYS return the response
