@@ -278,7 +278,7 @@ class Storyblok {
           provider.set(cacheKey, response)
         }
 
-        if (response.data.cv && (params.version == 'draft' || (res.request._redirectable && res.request._redirectable._redirectCount === 1))) {
+        if (response.data.cv) {
           cacheVersions[params.token] = response.data.cv
 
           if (params.version == 'draft' && cacheVersions[params.token] != response.data.cv) {
