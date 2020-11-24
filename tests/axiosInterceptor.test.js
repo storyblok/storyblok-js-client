@@ -2,7 +2,7 @@ jest.setTimeout(60000)
 
 import StoryblokClient from '../source/index'
 
-describe('Axios should accept response interceptor as a function', () => {
+describe('Client should accept response interceptor as a function', () => {
   const Storyblok = new StoryblokClient({
     accessToken: 'trB5kgOeDD22QJQDdPNCjAtt',
     cache: { type: 'memory', clear: 'auto' },
@@ -19,7 +19,7 @@ describe('Axios should accept response interceptor as a function', () => {
     expect(Storyblok.client.interceptors.request.handlers.length).toBeFalsy()
   })
 })
-describe('Axios should be initialized without interceptors', () => {
+describe('Client should be initialized without interceptors', () => {
   const Storyblok = new StoryblokClient({
     accessToken: 'trB5kgOeDD22QJQDdPNCjAtt',
     cache: { type: 'memory', clear: 'auto' },
