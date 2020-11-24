@@ -161,23 +161,23 @@ class Storyblok {
   }
 
   insertRelations(story, fields) {
-    var enrich = (jtree) => {
+    let enrich = (jtree) => {
       if (jtree == null) {
         return
       }
       if (jtree.constructor === Array) {
-        for (var item = 0; item < jtree.length; item++) {
+        for (let item = 0; item < jtree.length; item++) {
           enrich(jtree[item])
         }
       } else if (jtree.constructor === Object && jtree.component && jtree._uid) {
-        for (var treeItem in jtree) {
+        for (let treeItem in jtree) {
           if (fields.indexOf(jtree.component + '.' + treeItem) > -1) {
             if (typeof jtree[treeItem] === 'string') {
               if (this.relations[jtree[treeItem]]) {
                 jtree[treeItem] = this.relations[jtree[treeItem]]
               }
             } else if (jtree[treeItem].constructor === Array) {
-              var stories = []
+              let stories = []
               jtree[treeItem].forEach(function(uuid) {
                 if (this.relations[uuid]) {
                   stories.push(this.relations[uuid])
@@ -207,7 +207,7 @@ class Storyblok {
         chunks.push(responseData.rel_uuids.slice(i, end))
       }
 
-      for (var chunkIndex = 0; chunkIndex < chunks.length; chunkIndex++) {
+      for (let chunkIndex = 0; chunkIndex < chunks.length; chunkIndex++) {
         let relationsRes = await this.getStories({per_page: chunkSize, version: params.version, by_uuids: chunks[chunkIndex]})
 
         relationsRes.data.stories.forEach((rel) => {
