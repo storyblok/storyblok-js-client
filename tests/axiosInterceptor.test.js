@@ -1,5 +1,3 @@
-jest.setTimeout(60000)
-
 import StoryblokClient from '../source/index'
 
 describe('Client should accept response interceptor as a function', () => {
