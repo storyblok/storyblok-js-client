@@ -51,7 +51,7 @@ describe('Client should throw an error if NO RESPONSE is returned by the respons
     }
     expect(error).toEqual(new TypeError('Cannot read property \'data\' of undefined'));
   })
-  it('should trhow a TypeError if NULL is returned', async () => {
+  it('should throw a TypeError if NULL is returned', async () => {
     const Storyblok = new StoryblokClient({
       accessToken: 'trB5kgOeDD22QJQDdPNCjAtt',
       cache: { type: 'memory', clear: 'auto' },
