@@ -50,7 +50,7 @@ class Storyblok {
     })
     if (config.responseInterceptor) {
       this.client.interceptors.response.use((res) => {
-        return config.responseInterceptor(res);
+        return config.responseInterceptor(res)
       });
     }
   }
