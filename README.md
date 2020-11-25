@@ -104,7 +104,7 @@ import StoryblokClient from 'storyblok-js-client/dist/es5/index.es'
   - `accessToken` String, The preview token you can find in your space dashboard at https://app.storyblok.com
   - `cache` Object
     - `type` String, `none` or `memory`
-  - (`responseInterceptor` Function, optional, You should pass a function and return the result, like axios interceptors. For security reasons, Storyblok client will deal only with response interceptors)
+  - (`responseInterceptor` Function, optional - You can pass a function and return the result, like axios' interceptors. For security reasons, Storyblok client will deal only with the response interceptor.)
   - (`region` String, optional)
   - (`https` Boolean, optional)
   - (`rateLimit` Integer, optional, defaults to 3 for management api and 5 for cdn api)
