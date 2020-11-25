@@ -1,9 +1,15 @@
 import StoryblokClient from '../source/index'
 
+const accessToken = 'trB5kgOeDD22QJQDdPNCjAtt'
+const cache = {
+  type: 'memory',
+  clear: 'auto',
+}
+
 describe('Client should accept response interceptor as a function', () => {
   const Storyblok = new StoryblokClient({
-    accessToken: 'trB5kgOeDD22QJQDdPNCjAtt',
-    cache: { type: 'memory', clear: 'auto' },
+    accessToken,
+    cache,
     responseInterceptor: (res) => {
       return res
     },
@@ -20,8 +26,8 @@ describe('Client should accept response interceptor as a function', () => {
 
 describe('Client should be initialized without interceptors', () => {
   const Storyblok = new StoryblokClient({
-    accessToken: 'trB5kgOeDD22QJQDdPNCjAtt',
-    cache: { type: 'memory', clear: 'auto' },
+    accessToken,
+    cache,
   })
   it('should RESPONSE to be FALSY', async () => {
     await Storyblok.getAll('cdn/links')
@@ -36,8 +42,8 @@ describe('Client should be initialized without interceptors', () => {
 describe('Client should throw an error if NO RESPONSE is returned by the responseInterceptor function', () => {
   it('should throw a TypeError if NOTHING is returned', async () => {
     const Storyblok = new StoryblokClient({
-      accessToken: 'trB5kgOeDD22QJQDdPNCjAtt',
-      cache: { type: 'memory', clear: 'auto' },
+      accessToken,
+      cache,
       responseInterceptor: () => {
       },
     })
@@ -51,8 +57,8 @@ describe('Client should throw an error if NO RESPONSE is returned by the respons
   })
   it('should throw a TypeError if NULL is returned', async () => {
     const Storyblok = new StoryblokClient({
-      accessToken: 'trB5kgOeDD22QJQDdPNCjAtt',
-      cache: { type: 'memory', clear: 'auto' },
+      accessToken,
+      cache,
       responseInterceptor: () => null,
     })
     let error = ''
@@ -68,8 +74,8 @@ describe('Client should throw an error if NO RESPONSE is returned by the respons
 describe('Client should throw an error if NO FUNCTION is passed AS the responseInterceptor', () => {
   it('should throw a TypeError', async () => {
     const Storyblok = new StoryblokClient({
-      accessToken: 'trB5kgOeDD22QJQDdPNCjAtt',
-      cache: { type: 'memory', clear: 'auto' },
+      accessToken,
+      cache,
       responseInterceptor: 'something else',
     })
     let error = ''
@@ -82,8 +88,8 @@ describe('Client should throw an error if NO FUNCTION is passed AS the responseI
   })
   it('should REQUEST to be FALSY if NULL is passed', async () => {
     const Storyblok = new StoryblokClient({
-      accessToken: 'trB5kgOeDD22QJQDdPNCjAtt',
-      cache: { type: 'memory', clear: 'auto' },
+      accessToken,
+      cache,
       responseInterceptor: null,
     })
     await Storyblok.getAll('cdn/links')
