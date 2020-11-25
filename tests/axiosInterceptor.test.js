@@ -34,7 +34,7 @@ describe('Client should be initialized without interceptors', () => {
 })
 
 describe('Client should throw an error if NO RESPONSE is returned by the responseInterceptor function', () => {
-  it('should trhow a TypeError if NOTHING is returned', async () => {
+  it('should throw a TypeError if NOTHING is returned', async () => {
     const Storyblok = new StoryblokClient({
       accessToken: 'trB5kgOeDD22QJQDdPNCjAtt',
       cache: { type: 'memory', clear: 'auto' },
@@ -66,7 +66,7 @@ describe('Client should throw an error if NO RESPONSE is returned by the respons
 })
 
 describe('Client should throw an error if NO FUNCTION is passed AS the responseInterceptor', () => {
-  it('should trhow a TypeError', async () => {
+  it('should throw a TypeError', async () => {
     const Storyblok = new StoryblokClient({
       accessToken: 'trB5kgOeDD22QJQDdPNCjAtt',
       cache: { type: 'memory', clear: 'auto' },
