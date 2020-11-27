@@ -40,6 +40,7 @@ export interface StoryblokConfig {
   accessToken?: string
   oauthToken?: string
   cache?: StoryblokCache
+  responseInterceptor?: (response: any) => Object
   timeout?: number
   headers?: any
   region?: string
