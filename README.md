@@ -104,6 +104,7 @@ import StoryblokClient from 'storyblok-js-client/dist/es5/index.es'
   - `accessToken` String, The preview token you can find in your space dashboard at https://app.storyblok.com
   - `cache` Object
     - `type` String, `none` or `memory`
+  - (`responseInterceptor` Function, optional - You can pass a function and return the result, like axios' interceptors. For security reasons, Storyblok client will deal only with the response interceptor.)
   - (`region` String, optional)
   - (`https` Boolean, optional)
   - (`rateLimit` Integer, optional, defaults to 3 for management api and 5 for cdn api)
@@ -125,6 +126,28 @@ let Storyblok = new StoryblokClient({
     clear: 'auto',
     type: 'memory'
   }
+})
+```
+### Passing response interceptor
+
+The Storyblok client lets you pass a function that serves as a response interceptor to axios.
+Usage:
+
+```javascript
+let Storyblok = new StoryblokClient({
+  accessToken: 'xf5dRMMjltLzKOcNgMaU9Att',
+  cache: {
+    clear: 'auto',
+    type: 'memory'
+  },
+  responseInterceptor: (response) => {
+    // one can handle status codes and more with the response
+    if (response.status === 200) {
+      // handle your status here
+    }
+    // ALWAYS return the response
+    return response
+  },
 })
 ```
 
