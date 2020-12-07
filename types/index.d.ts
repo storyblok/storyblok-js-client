@@ -8,6 +8,7 @@ declare global {
     event?: string
     story?: S
     slug?: string
+    slugChanged?: boolean
     storyId?: string
     reload?: boolean
   }
