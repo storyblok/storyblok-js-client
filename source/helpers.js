@@ -27,8 +27,51 @@ const getOptionsPage = (options = {}, perPage = 25, page = 1) => {
  */
 const delay = ms => new Promise(res => setTimeout(res, ms))
 
+/**
+ * @template R
+ * @method   arrayFrom<R>
+ * @param    {Number} length
+ * @param    {function(undefined, int, Array<undefined>):R} func
+ * @return   {Array<R>}
+ */
+const arrayFrom = (length = 0, func) => [...Array(length)].map(func)
+
+/**
+ * @method range
+ * @param  {Number} start
+ * @param  {Number} end
+ * @return {Array<Number>}
+ */
+const range = (start = 0, end = start) => {
+  const length = Math.abs(end - start) || 0
+  const step = start < end ? 1 : -1
+  return arrayFrom(length, (_, i) => i * step + start)
+}
+
+/**
+ * @template T, R
+ * @method   asyncMap<T, R>
+ * @param    {Array<T>} arr
+ * @param    {function(T, Number, Array<T>):Promise<R>} func
+ * @return   {Promise<Array<R>>}
+ */
+const asyncMap = async (arr = [], func) => Promise.all(arr.map(func))
+
+/**
+ * @template T, R
+ * @method   flatMap<T, R>
+ * @param    {Array<T>} arr
+ * @param    {function(T, Number, Array<T>):R} func
+ * @return   {Array<R>}
+ */
+const flatMap = (arr = [], func) => arr.map(func).reduce((xs, ys) => [...xs, ...ys], [])
+
 export {
   delay,
   isCDNUrl,
-  getOptionsPage
+  getOptionsPage,
+  arrayFrom,
+  range,
+  asyncMap,
+  flatMap
 }
