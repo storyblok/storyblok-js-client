@@ -157,8 +157,8 @@ With this method you can get single or multiple items. The multiple items are pa
 
 **Parameters**
 - `[return]` Promise, Object `response`
-- `path` String, Path (can be `cdn/stories`, `cdn/stories/*`, `cdn/tags`, `cdn/datasources`, `cdn/links`)
-- `options` Object, Options can be found in the [API documentation](https://www.storyblok.com/docs/Delivery-Api/get-a-story).
+- `path` String, Path (can be `cdn/stories`, `cdn/tags`, `cdn/datasources`, `cdn/links`)
+- `options` Object, Options can be found in the [API documentation](https://www.storyblok.com/docs/api/content-delivery).
 
 **Example**
 
@@ -181,8 +181,8 @@ With this method you can get all items at once.
 
 **Parameters**
 - `[return]` Promise, Array of entities
-- `path` String, Path (can be `cdn/stories`, `cdn/stories/*`, `cdn/tags`, `cdn/datasources`, `cdn/links`)
-- `options` Object, Options can be found in the [API documentation](https://www.storyblok.com/docs/Delivery-Api/get-a-story).
+- `path` String, Path (can be `cdn/stories`, `cdn/tags`, `cdn/datasources`, `cdn/links`)
+- `options` Object, Options can be found in the [API documentation](https://www.storyblok.com/docs/api/content-delivery).
 - `entity` String, Storyblok entity like stories, links or datasource. It's optional.
 
 **Example**
