@@ -8,6 +8,7 @@ declare global {
     event?: string
     story?: S
     slug?: string
+    slugChanged?: boolean
     storyId?: string
     reload?: boolean
   }
@@ -40,6 +41,7 @@ export interface StoryblokConfig {
   accessToken?: string
   oauthToken?: string
   cache?: StoryblokCache
+  responseInterceptor?: (response: any) => any
   timeout?: number
   headers?: any
   region?: string
@@ -191,8 +193,10 @@ declare class Storyblok {
   getStory(slug: string, params?: StoryParams): Promise<Story>
   setToken(token: string): void
   getToken(): string
+  setCacheVersion(cv: string): void
   cacheResponse(url: string, params: any): Promise<StoryblokResult>
-  newVersion(): number
+  cacheVersions(): {[key: string]: string}
+  cacheVersion(): string
   cacheProvider(): StoryblokCacheProvider
   flushCache(): Promise<this>
   setComponentResolver(renderFunction: (component: string, data: any) => void): void
