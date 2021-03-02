@@ -42,6 +42,7 @@ class Storyblok {
     this.throttle = throttledQueue(this.throttledRequest, rateLimit, 1000)
     this.accessToken = config.accessToken
     this.relations = {}
+    this.links = {}
     this.cache = (config.cache || { clear: 'manual' })
     this.client = axios.create({
       baseURL: endpoint,
@@ -160,7 +161,35 @@ class Storyblok {
     return this.accessToken
   }
 
-  insertRelations(story, fields) {
+  _insertLinks(jtree, treeItem) {
+    const node = jtree[treeItem]
+
+    if (node.fieldtype == 'multilink' &&
+        node.linktype == 'story' &&
+        typeof node.id === 'string') {
+      node.story = this.links[node.id] || {}
+    }
+  }
+
+  _insertRelations(jtree, treeItem, fields) {
+    if (fields.indexOf(jtree.component + '.' + treeItem) > -1) {
+      if (typeof jtree[treeItem] === 'string') {
+        if (this.relations[jtree[treeItem]]) {
+          jtree[treeItem] = this.relations[jtree[treeItem]]
+        }
+      } else if (jtree[treeItem].constructor === Array) {
+        let stories = []
+        jtree[treeItem].forEach(function(uuid) {
+          if (this.relations[uuid]) {
+            stories.push(this.relations[uuid])
+          }
+        })
+        jtree[treeItem] = stories
+      }
+    }
+  }
+
+  iterateTree(story, fields) {
     let enrich = (jtree) => {
       if (jtree == null) {
         return
@@ -171,27 +200,44 @@ class Storyblok {
         }
       } else if (jtree.constructor === Object && jtree.component && jtree._uid) {
         for (let treeItem in jtree) {
-          if (fields.indexOf(jtree.component + '.' + treeItem) > -1) {
-            if (typeof jtree[treeItem] === 'string') {
-              if (this.relations[jtree[treeItem]]) {
-                jtree[treeItem] = this.relations[jtree[treeItem]]
-              }
-            } else if (jtree[treeItem].constructor === Array) {
-              let stories = []
-              jtree[treeItem].forEach(function(uuid) {
-                if (this.relations[uuid]) {
-                  stories.push(this.relations[uuid])
-                }
-              })
-              jtree[treeItem] = stories
-            }
-          }
+          this._insertRelations(jtree, treeItem, fields)
+          this._insertLinks(jtree, treeItem)
+
           enrich(jtree[treeItem])
         }
       }
     }
 
     enrich(story.content)
+  }
+
+  async resolveLinks(responseData, params) {
+    let links = []
+
+    if (responseData.link_uuids) {
+      const relSize = responseData.link_uuids.length
+      let chunks = []
+      const chunkSize = 50
+
+      for (let i = 0; i < relSize; i += chunkSize) {
+        const end = Math.min(relSize, i + chunkSize)
+        chunks.push(responseData.link_uuids.slice(i, end))
+      }
+
+      for (let chunkIndex = 0; chunkIndex < chunks.length; chunkIndex++) {
+        let linksRes = await this.getStories({per_page: chunkSize, version: params.version, by_uuids: chunks[chunkIndex]})
+
+        linksRes.data.stories.forEach((rel) => {
+          links.push(rel)
+        })
+      }
+    } else {
+      links = responseData.links
+    }
+
+    links.forEach((story) => {
+      this.links[story.uuid] = story
+    })
   }
 
   async resolveRelations(responseData, params) {
@@ -221,12 +267,25 @@ class Storyblok {
     relations.forEach((story) => {
       this.relations[story.uuid] = story
     })
+  }
+
+  async resolveStories(responseData, params) {
+    let relationParams = []
+
+    if (typeof params.resolve_relations !== 'undefined' && params.resolve_relations.length > 0) {
+      relationParams = params.resolve_relations.split(',')
+      await this.resolveRelations(responseData, params)
+    }
+
+    if (['1', 'story', 'url'].indexOf(params.resolve_links) > -1) {
+      await this.resolveLinks(responseData, params)
+    }
 
     if (responseData.story) {
-      this.insertRelations(responseData.story, params.resolve_relations.split(','))
+      this.iterateTree(responseData.story, relationParams)
     } else {
       responseData.stories.forEach((story) => {
-        this.insertRelations(story, params.resolve_relations.split(','))
+        this.iterateTree(story, relationParams)
       })
     }
   }
@@ -270,8 +329,8 @@ class Storyblok {
           return reject(res)
         }
 
-        if (typeof params.resolve_relations !== 'undefined' && params.resolve_relations.length > 0) {
-          await this.resolveRelations(response.data, params)
+        if (response.data.story || response.data.stories) {
+          await this.resolveStories(response.data, params)
         }
 
         if (params.version === 'published' && url != '/cdn/spaces/me') {
