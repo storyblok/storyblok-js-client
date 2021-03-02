@@ -9,7 +9,7 @@ import RichTextResolver from './richTextResolver'
 let memory = {}
 let cacheVersions = {}
 
-import { delay, getOptionsPage, isCDNUrl } from './helpers'
+import { delay, getOptionsPage, isCDNUrl, asyncMap, range, flatMap } from './helpers'
 
 class Storyblok {
 
@@ -50,6 +50,11 @@ class Storyblok {
       headers: headers,
       proxy: (config.proxy || false)
     })
+    if (config.responseInterceptor) {
+      this.client.interceptors.response.use((res) => {
+        return config.responseInterceptor(res)
+      })
+    }
   }
 
   setComponentResolver(resolver) {
@@ -108,26 +113,19 @@ class Storyblok {
 
   async getAll(slug, params = {}, entity) {
     const perPage = params.per_page || 25
-    let page = 1
-    let url = `/${slug}`
+    const url = `/${slug}`
     const urlParts = url.split('/')
     entity = entity || urlParts[urlParts.length - 1]
 
-    let res = await this.makeRequest(url, params, perPage, page)
-    let all = Object.values(res.data[entity])
-    let total = res.total
-    let lastPage = Math.ceil((total / perPage))
+    const firstPage = 1
+    const firstRes = await this.makeRequest(url, params, perPage, firstPage)
+    const lastPage = Math.ceil(firstRes.total / perPage)
 
-    while (page < lastPage) {
-      page++
-      res = await this.makeRequest(url, params, perPage, page)
-      all = [
-        ...all,
-        ...Object.values(res.data[entity])
-      ]
-    }
+    const restRes = await asyncMap(range(firstPage, lastPage), async (i) => {
+      return this.makeRequest(url, params, perPage, i + 1)
+    })
 
-    return all
+    return flatMap([firstRes, ...restRes], (res) => Object.values(res.data[entity]))
   }
 
   post(slug, params) {

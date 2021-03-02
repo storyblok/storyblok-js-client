@@ -8,6 +8,7 @@ declare global {
     event?: string
     story?: S
     slug?: string
+    slugChanged?: boolean
     storyId?: string
     reload?: boolean
   }
@@ -40,6 +41,7 @@ export interface StoryblokConfig {
   accessToken?: string
   oauthToken?: string
   cache?: StoryblokCache
+  responseInterceptor?: (response: any) => any
   timeout?: number
   headers?: any
   region?: string
