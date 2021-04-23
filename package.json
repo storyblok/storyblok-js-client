@@ -21,7 +21,7 @@
     "build:es6": "rollup --config",
     "build:standalone:es5": "STANDALONE=yes ENABLE_BABEL=yes rollup --config",
     "build:standalone:es6": "STANDALONE=yes rollup --config",
-    "test": "NODE_ENV='test' jest --silent",
+    "test": "NODE_ENV='test' jest",
     "prepare": "npm run build"
   },
   "repository": {

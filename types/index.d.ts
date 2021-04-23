@@ -193,8 +193,10 @@ declare class Storyblok {
   getStory(slug: string, params?: StoryParams): Promise<Story>
   setToken(token: string): void
   getToken(): string
+  setCacheVersion(cv: string): void
   cacheResponse(url: string, params: any): Promise<StoryblokResult>
-  newVersion(): number
+  cacheVersions(): {[key: string]: string}
+  cacheVersion(): string
   cacheProvider(): StoryblokCacheProvider
   flushCache(): Promise<this>
   setComponentResolver(renderFunction: (component: string, data: any) => void): void

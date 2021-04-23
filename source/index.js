@@ -7,6 +7,7 @@ import throttledQueue from './throttlePromise'
 import RichTextResolver from './richTextResolver'
 
 let memory = {}
+let cacheVersions = {}
 
 import { delay, getOptionsPage, isCDNUrl, asyncMap, range, flatMap } from './helpers'
 
@@ -16,7 +17,7 @@ class Storyblok {
     if (!endpoint) {
       let region = config.region ? `-${config.region}` : ''
       let protocol = config.https === false ? 'http' : 'https'
-      endpoint = `${protocol}://api${region}.storyblok.com/v1`
+      endpoint = `${protocol}://api${region}.storyblok.com/v2`
     }
 
     let headers = Object.assign({}, config.headers)
@@ -39,8 +40,9 @@ class Storyblok {
 
     this.maxRetries = config.maxRetries || 5
     this.throttle = throttledQueue(this.throttledRequest, rateLimit, 1000)
-    this.cacheVersion = (this.cacheVersion || this.newVersion())
     this.accessToken = config.accessToken
+    this.relations = {}
+    this.links = {}
     this.cache = (config.cache || { clear: 'manual' })
     this.client = axios.create({
       baseURL: endpoint,
@@ -74,12 +76,12 @@ class Storyblok {
       params.version = 'published'
     }
 
-    if (!params.cv) {
-      params.cv = this.cacheVersion
-    }
-
     if (!params.token) {
       params.token = this.getToken()
+    }
+
+    if (!params.cv) {
+      params.cv = cacheVersions[params.token]
     }
 
     return params
@@ -157,6 +159,135 @@ class Storyblok {
     return this.accessToken
   }
 
+  _insertLinks(jtree, treeItem) {
+    const node = jtree[treeItem]
+
+    if (node.fieldtype == 'multilink' &&
+        node.linktype == 'story' &&
+        typeof node.id === 'string') {
+      node.story = this.links[node.id] || {}
+    }
+  }
+
+  _insertRelations(jtree, treeItem, fields) {
+    if (fields.indexOf(jtree.component + '.' + treeItem) > -1) {
+      if (typeof jtree[treeItem] === 'string') {
+        if (this.relations[jtree[treeItem]]) {
+          jtree[treeItem] = this.relations[jtree[treeItem]]
+        }
+      } else if (jtree[treeItem].constructor === Array) {
+        let stories = []
+        jtree[treeItem].forEach(function(uuid) {
+          if (this.relations[uuid]) {
+            stories.push(this.relations[uuid])
+          }
+        })
+        jtree[treeItem] = stories
+      }
+    }
+  }
+
+  iterateTree(story, fields) {
+    let enrich = (jtree) => {
+      if (jtree == null) {
+        return
+      }
+      if (jtree.constructor === Array) {
+        for (let item = 0; item < jtree.length; item++) {
+          enrich(jtree[item])
+        }
+      } else if (jtree.constructor === Object && jtree.component && jtree._uid) {
+        for (let treeItem in jtree) {
+          this._insertRelations(jtree, treeItem, fields)
+          this._insertLinks(jtree, treeItem)
+
+          enrich(jtree[treeItem])
+        }
+      }
+    }
+
+    enrich(story.content)
+  }
+
+  async resolveLinks(responseData, params) {
+    let links = []
+
+    if (responseData.link_uuids) {
+      const relSize = responseData.link_uuids.length
+      let chunks = []
+      const chunkSize = 50
+
+      for (let i = 0; i < relSize; i += chunkSize) {
+        const end = Math.min(relSize, i + chunkSize)
+        chunks.push(responseData.link_uuids.slice(i, end))
+      }
+
+      for (let chunkIndex = 0; chunkIndex < chunks.length; chunkIndex++) {
+        let linksRes = await this.getStories({per_page: chunkSize, version: params.version, by_uuids: chunks[chunkIndex]})
+
+        linksRes.data.stories.forEach((rel) => {
+          links.push(rel)
+        })
+      }
+    } else {
+      links = responseData.links
+    }
+
+    links.forEach((story) => {
+      this.links[story.uuid] = story
+    })
+  }
+
+  async resolveRelations(responseData, params) {
+    let relations = []
+
+    if (responseData.rel_uuids) {
+      const relSize = responseData.rel_uuids.length
+      let chunks = []
+      const chunkSize = 50
+
+      for (let i = 0; i < relSize; i += chunkSize) {
+        const end = Math.min(relSize, i + chunkSize)
+        chunks.push(responseData.rel_uuids.slice(i, end))
+      }
+
+      for (let chunkIndex = 0; chunkIndex < chunks.length; chunkIndex++) {
+        let relationsRes = await this.getStories({per_page: chunkSize, version: params.version, by_uuids: chunks[chunkIndex]})
+
+        relationsRes.data.stories.forEach((rel) => {
+          relations.push(rel)
+        })
+      }
+    } else {
+      relations = responseData.rels
+    }
+
+    relations.forEach((story) => {
+      this.relations[story.uuid] = story
+    })
+  }
+
+  async resolveStories(responseData, params) {
+    let relationParams = []
+
+    if (typeof params.resolve_relations !== 'undefined' && params.resolve_relations.length > 0) {
+      relationParams = params.resolve_relations.split(',')
+      await this.resolveRelations(responseData, params)
+    }
+
+    if (['1', 'story', 'url'].indexOf(params.resolve_links) > -1) {
+      await this.resolveLinks(responseData, params)
+    }
+
+    if (responseData.story) {
+      this.iterateTree(responseData.story, relationParams)
+    } else {
+      responseData.stories.forEach((story) => {
+        this.iterateTree(story, relationParams)
+      })
+    }
+  }
+
   cacheResponse(url, params, retries) {
     if (typeof retries === 'undefined') {
       retries = 0
@@ -182,6 +313,7 @@ class Storyblok {
           params: params,
           paramsSerializer: (params) => stringify(params, { arrayFormat: 'brackets' })
         })
+
         let response = { data: res.data, headers: res.headers }
 
         if (res.headers['per-page']) {
@@ -195,9 +327,22 @@ class Storyblok {
           return reject(res)
         }
 
+        if (response.data.story || response.data.stories) {
+          await this.resolveStories(response.data, params)
+        }
+
         if (params.version === 'published' && url != '/cdn/spaces/me') {
           provider.set(cacheKey, response)
         }
+
+        if (response.data.cv) {
+          if (params.version == 'draft' && cacheVersions[params.token] != response.data.cv) {
+            this.flushCache()
+          }
+
+          cacheVersions[params.token] = response.data.cv
+        }
+
         resolve(response)
       } catch (error) {
         if (error.response && error.response.status === 429) {
@@ -218,8 +363,18 @@ class Storyblok {
     return this.client[type](url, params)
   }
 
-  newVersion() {
-    return new Date().getTime()
+  cacheVersions() {
+    return cacheVersions
+  }
+
+  cacheVersion() {
+    return cacheVersions[this.accessToken]
+  }
+
+  setCacheVersion(cv) {
+    if (this.accessToken) {
+      cacheVersions[this.accessToken] = cv
+    }
   }
 
   cacheProvider() {
@@ -240,8 +395,6 @@ class Storyblok {
           }
         }
       default:
-        this.cacheVersion = this.newVersion()
-
         return {
           get() {},
           getAll() {},
@@ -252,7 +405,6 @@ class Storyblok {
   }
 
   async flushCache() {
-    this.cacheVersion = this.newVersion()
     await this.cacheProvider().flush()
     return this
   }
