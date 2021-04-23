@@ -66,20 +66,20 @@ This package has a standalone version that contains all dependencies and you can
 
 ```html
 <!-- This import makes the StoryblokClient class available globally -->
-<script src="https://cdn.jsdelivr.net/npm/storyblok-js-client@3.1.0/dist/index.standalone.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/storyblok-js-client@4.0.0/dist/index.standalone.js"></script>
 
 <!-- This import makes the RichTextResolver class available globally -->
-<script src="https://cdn.jsdelivr.net/npm/storyblok-js-client@3.1.0/dist/rich-text-resolver.standalone.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/storyblok-js-client@4.0.0/dist/rich-text-resolver.standalone.js"></script>
 ```
 
 If you want a bundle with Babel (for non-es6 browsers):
 
 ```html
 <!-- This import makes the StoryblokClient class available globally -->
-<script src="https://cdn.jsdelivr.net/npm/storyblok-js-client@3.1.0/dist/es5/index.standalone.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/storyblok-js-client@4.0.0/dist/es5/index.standalone.js"></script>
 
 <!-- This import makes the RichTextResolver class available globally -->
-<script src="https://cdn.jsdelivr.net/npm/storyblok-js-client@3.1.0/dist/es5/rich-text-resolver.standalone.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/storyblok-js-client@4.0.0/dist/es5/rich-text-resolver.standalone.js"></script>
 ```
 
 ### Note about use of Babel
@@ -104,6 +104,7 @@ import StoryblokClient from 'storyblok-js-client/dist/es5/index.es'
   - `accessToken` String, The preview token you can find in your space dashboard at https://app.storyblok.com
   - `cache` Object
     - `type` String, `none` or `memory`
+  - (`responseInterceptor` Function, optional - You can pass a function and return the result, like axios' interceptors. For security reasons, Storyblok client will deal only with the response interceptor.)
   - (`region` String, optional)
   - (`https` Boolean, optional)
   - (`rateLimit` Integer, optional, defaults to 3 for management api and 5 for cdn api)
@@ -127,6 +128,28 @@ let Storyblok = new StoryblokClient({
   }
 })
 ```
+### Passing response interceptor
+
+The Storyblok client lets you pass a function that serves as a response interceptor to axios.
+Usage:
+
+```javascript
+let Storyblok = new StoryblokClient({
+  accessToken: 'xf5dRMMjltLzKOcNgMaU9Att',
+  cache: {
+    clear: 'auto',
+    type: 'memory'
+  },
+  responseInterceptor: (response) => {
+    // one can handle status codes and more with the response
+    if (response.status === 200) {
+      // handle your status here
+    }
+    // ALWAYS return the response
+    return response
+  },
+})
+```
 
 ### Method `Storyblok#get`
 
@@ -134,8 +157,8 @@ With this method you can get single or multiple items. The multiple items are pa
 
 **Parameters**
 - `[return]` Promise, Object `response`
-- `path` String, Path (can be `cdn/stories`, `cdn/stories/*`, `cdn/tags`, `cdn/datasources`, `cdn/links`)
-- `options` Object, Options can be found in the [API documentation](https://www.storyblok.com/docs/Delivery-Api/get-a-story).
+- `path` String, Path (can be `cdn/stories`, `cdn/tags`, `cdn/datasources`, `cdn/links`)
+- `options` Object, Options can be found in the [API documentation](https://www.storyblok.com/docs/api/content-delivery).
 
 **Example**
 
@@ -158,8 +181,8 @@ With this method you can get all items at once.
 
 **Parameters**
 - `[return]` Promise, Array of entities
-- `path` String, Path (can be `cdn/stories`, `cdn/stories/*`, `cdn/tags`, `cdn/datasources`, `cdn/links`)
-- `options` Object, Options can be found in the [API documentation](https://www.storyblok.com/docs/Delivery-Api/get-a-story).
+- `path` String, Path (can be `cdn/stories`, `cdn/tags`, `cdn/datasources`, `cdn/links`)
+- `options` Object, Options can be found in the [API documentation](https://www.storyblok.com/docs/api/content-delivery).
 - `entity` String, Storyblok entity like stories, links or datasource. It's optional.
 
 **Example**

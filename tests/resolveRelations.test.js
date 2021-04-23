@@ -21,7 +21,7 @@ describe('test resolvingRelations', () => {
         {uuid: 'e101b4fc-3736-4f82-8c8e-788e38d5d286', name: 'Joe Doe'}
       ]
     }
-    await Storyblok.resolveRelations(singleStory, {version: 'published', resolve_relations: 'news.author'})
+    await Storyblok.resolveStories(singleStory, {version: 'published', resolve_relations: 'news.author'})
 
     expect(singleStory.story.content.author.name).toBe('Joe Doe')
   })
@@ -39,7 +39,7 @@ describe('test resolvingRelations', () => {
         {uuid: 'e101b4fc-3736-4f82-8c8e-788e38d5d286', name: 'Joe Doe'}
       ]
     }
-    await Storyblok.resolveRelations(singleStory, {version: 'published', resolve_relations: 'news.author'})
+    await Storyblok.resolveStories(singleStory, {version: 'published', resolve_relations: 'news.author'})
 
     expect(singleStory.stories[0].content.author.name).toBe('Joe Doe')
   })
@@ -57,7 +57,7 @@ describe('test resolvingRelations', () => {
         'e101b4fc-3736-4f82-8c8e-788e38d5d286'
       ]
     }
-    await Storyblok.resolveRelations(singleStory, {version: 'published', resolve_relations: 'news.author'})
+    await Storyblok.resolveStories(singleStory, {version: 'published', resolve_relations: 'news.author'})
 
     expect(singleStory.stories[0].content.author.name).toBe('Testcontent 24')
   })
@@ -77,7 +77,7 @@ describe('test resolvingRelations', () => {
       }],
       rel_uuids: uuids
     }
-    await Storyblok.resolveRelations(singleStory, {version: 'published', resolve_relations: 'news.author'})
+    await Storyblok.resolveStories(singleStory, {version: 'published', resolve_relations: 'news.author'})
 
     expect(singleStory.stories[0].content.author.name).toBe('Testcontent 24')
   })
