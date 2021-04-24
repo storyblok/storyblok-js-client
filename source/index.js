@@ -177,7 +177,7 @@ class Storyblok {
         }
       } else if (jtree[treeItem].constructor === Array) {
         let stories = []
-        jtree[treeItem].forEach(function(uuid) {
+        jtree[treeItem].forEach((uuid) => {
           if (this.relations[uuid]) {
             stories.push(this.relations[uuid])
           }
