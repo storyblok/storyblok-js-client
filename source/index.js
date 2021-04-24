@@ -279,6 +279,10 @@ class Storyblok {
       await this.resolveLinks(responseData, params)
     }
 
+    for (const relUuid in this.relations) {
+      this.iterateTree(this.relations[relUuid], relationParams)
+    }
+
     if (responseData.story) {
       this.iterateTree(responseData.story, relationParams)
     } else {
