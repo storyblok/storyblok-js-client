@@ -84,6 +84,11 @@ class Storyblok {
       params.cv = cacheVersions[params.token]
     }
 
+    if (typeof params.resolve_relations !== 'undefined' &&
+        params.resolve_relations.constructor === Array) {
+      params.resolve_relations = params.resolve_relations.join(',')
+    }
+
     return params
   }
 
