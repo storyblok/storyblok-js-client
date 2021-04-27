@@ -163,13 +163,18 @@ class Storyblok {
     return this.accessToken
   }
 
+  _cleanCopy(value) {
+    return JSON.parse(JSON.stringify(value))
+  }
+
   _insertLinks(jtree, treeItem) {
     const node = jtree[treeItem]
 
     if (node.fieldtype == 'multilink' &&
         node.linktype == 'story' &&
-        typeof node.id === 'string') {
-      node.story = this.links[node.id] || {}
+        typeof node.id === 'string' &&
+        this.links[node.id]) {
+      node.story = this._cleanCopy(this.links[node.id])
     }
   }
 
@@ -177,13 +182,13 @@ class Storyblok {
     if (fields.indexOf(jtree.component + '.' + treeItem) > -1) {
       if (typeof jtree[treeItem] === 'string') {
         if (this.relations[jtree[treeItem]]) {
-          jtree[treeItem] = this.relations[jtree[treeItem]]
+          jtree[treeItem] = this._cleanCopy(this.relations[jtree[treeItem]])
         }
       } else if (jtree[treeItem].constructor === Array) {
         let stories = []
         jtree[treeItem].forEach((uuid) => {
           if (this.relations[uuid]) {
-            stories.push(this.relations[uuid])
+            stories.push(this._cleanCopy(this.relations[uuid]))
           }
         })
         jtree[treeItem] = stories
