@@ -170,7 +170,7 @@ class Storyblok {
   _insertLinks(jtree, treeItem) {
     const node = jtree[treeItem]
 
-    if (node.fieldtype == 'multilink' &&
+    if (node && node.fieldtype == 'multilink' &&
         node.linktype == 'story' &&
         typeof node.id === 'string' &&
         this.links[node.id]) {
