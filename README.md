@@ -3,6 +3,7 @@
 
 This client is a thin wrapper for the Storyblok API's to use in Node.js and the browser.
 
+
 ## Install
 
 ```sh
