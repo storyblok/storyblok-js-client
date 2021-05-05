@@ -25,7 +25,7 @@ class Storyblok {
     }
 
     let headers = Object.assign({}, config.headers)
-    let rateLimit = 5 // per second for cdn api
+    let rateLimit = 5 // per second for cdn api 
 
     if (typeof config.oauthToken !== 'undefined') {
       headers['Authorization'] = config.oauthToken
