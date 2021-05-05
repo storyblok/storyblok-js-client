@@ -17,18 +17,22 @@ class Storyblok {
     if (!endpoint) {
       let region = config.region ? `-${config.region}` : ''
       let protocol = config.https === false ? 'http' : 'https'
-      endpoint = `${protocol}://api${region}.storyblok.com/v2`
+      if (typeof config.oauthToken === 'undefined') {
+        endpoint = `${protocol}://api${region}.storyblok.com/v2`
+      } else {
+        endpoint = `${protocol}://mpi${region}.storyblok.com/v1`
+      }
     }
 
     let headers = Object.assign({}, config.headers)
     let rateLimit = 5 // per second for cdn api
 
-    if (typeof config.oauthToken != 'undefined') {
+    if (typeof config.oauthToken !== 'undefined') {
       headers['Authorization'] = config.oauthToken
       rateLimit = 3 // per second for management api
     }
 
-    if (typeof config.rateLimit != 'undefined') {
+    if (typeof config.rateLimit !== 'undefined') {
       rateLimit = config.rateLimit
     }
 
