@@ -20,7 +20,7 @@ class Storyblok {
       if (typeof config.oauthToken === 'undefined') {
         endpoint = `${protocol}://api${region}.storyblok.com/v2`
       } else {
-        endpoint = `${protocol}://mpi${region}.storyblok.com/v1`
+        endpoint = `${protocol}://api${region}.storyblok.com/v1`
       }
     }
 
