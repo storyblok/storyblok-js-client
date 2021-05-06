@@ -178,7 +178,6 @@ export interface RichtextInstance {
 
 declare class Storyblok {
   throttle: any
-  cacheVersion: number
   accessToken: string
   cache: StoryblokCache
   client: AxiosInstance
