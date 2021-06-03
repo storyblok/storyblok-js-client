@@ -179,6 +179,9 @@ class Storyblok {
         typeof node.id === 'string' &&
         this.links[node.id]) {
       node.story = this._cleanCopy(this.links[node.id])
+    } else if(node && node.linktype === 'story' &&
+      typeof node.uuid === 'string' && this.links[node.uuid]) {
+      node.story = this._cleanCopy(this.links[node.uuid])
     }
   }
 
@@ -209,11 +212,12 @@ class Storyblok {
         for (let item = 0; item < jtree.length; item++) {
           enrich(jtree[item])
         }
-      } else if (jtree.constructor === Object && jtree.component && jtree._uid) {
+      } else if (jtree.constructor === Object) {
         for (let treeItem in jtree) {
-          this._insertRelations(jtree, treeItem, fields)
-          this._insertLinks(jtree, treeItem)
-
+          if((jtree.component && jtree._uid) || jtree.type === 'link') {
+            this._insertRelations(jtree, treeItem, fields)
+            this._insertLinks(jtree, treeItem)
+          }
           enrich(jtree[treeItem])
         }
       }
