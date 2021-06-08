@@ -59,6 +59,7 @@ class Storyblok {
         return config.responseInterceptor(res)
       })
     }
+    this.depth = config.depth || 5
   }
 
   setComponentResolver(resolver) {
@@ -204,13 +205,13 @@ class Storyblok {
   }
 
   iterateTree(story, fields) {
-    let enrich = (jtree) => {
+    let enrich = (jtree, level) => {
       if (jtree == null) {
         return
       }
       if (jtree.constructor === Array) {
         for (let item = 0; item < jtree.length; item++) {
-          enrich(jtree[item])
+          enrich(jtree[item], level + 1)
         }
       } else if (jtree.constructor === Object) {
         for (let treeItem in jtree) {
@@ -218,12 +219,16 @@ class Storyblok {
             this._insertRelations(jtree, treeItem, fields)
             this._insertLinks(jtree, treeItem)
           }
-          enrich(jtree[treeItem])
+
+          if (level < this.depth) {
+            enrich(jtree[treeItem], level + 1)
+          }
+
         }
       }
     }
 
-    enrich(story.content)
+    enrich(story.content, 0)
   }
 
   async resolveLinks(responseData, params) {
