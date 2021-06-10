@@ -213,8 +213,11 @@ class Storyblok {
           enrich(jtree[item])
         }
       } else if (jtree.constructor === Object) {
+        if (jtree._stopResolve) {
+          return
+        }
         for (let treeItem in jtree) {
-          if((jtree.component && jtree._uid) || jtree.type === 'link') {
+          if ((jtree.component && jtree._uid) || jtree.type === 'link') {
             this._insertRelations(jtree, treeItem, fields)
             this._insertLinks(jtree, treeItem)
           }
@@ -251,7 +254,7 @@ class Storyblok {
     }
 
     links.forEach((story) => {
-      this.links[story.uuid] = story
+      this.links[story.uuid] = {...story, ...{_stopResolve: true}}
     })
   }
 
@@ -280,7 +283,7 @@ class Storyblok {
     }
 
     relations.forEach((story) => {
-      this.relations[story.uuid] = story
+      this.relations[story.uuid] = {...story, ...{_stopResolve: true}}
     })
   }
 
