@@ -206,7 +206,6 @@ class Storyblok {
 
   iterateTree(story, fields) {
     let enrich = (jtree, depth) => {
-      console.log(depth)
       if (jtree == null) {
         return
       }
