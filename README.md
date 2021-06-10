@@ -113,7 +113,7 @@ import StoryblokClient from 'storyblok-js-client/dist/es5/index.es'
   - (`timeout` Integer, optional)
   - (`maxRetries` Integer, optional, defaults to 5)
   - (`richTextSchema` Object, optional - your custom schema for RichTextRenderer)
-  - (`maxResolveDepth` Integer, optional, defaults to 3 - you can set a limit to the nesting of resolved objects in links or relations)
+  - (`maxResolveDepth` Integer, optional, defaults to 6 - you can set a limit to the nesting of resolved objects in links or relations)
 - (`endpoint` String, optional)
 
 ### Activating request cache

@@ -48,7 +48,7 @@ class Storyblok {
     this.relations = {}
     this.links = {}
     this.cache = (config.cache || { clear: 'manual' })
-    this.maxResolveDepth = config.maxResolveDepth || 3
+    this.maxResolveDepth = config.maxResolveDepth || 6
     this.client = axios.create({
       baseURL: endpoint,
       timeout: (config.timeout || 0),
