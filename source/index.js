@@ -48,6 +48,7 @@ class Storyblok {
     this.relations = {}
     this.links = {}
     this.cache = (config.cache || { clear: 'manual' })
+    this.maxResolveDepth = config.maxResolveDepth || 3
     this.client = axios.create({
       baseURL: endpoint,
       timeout: (config.timeout || 0),
@@ -204,13 +205,16 @@ class Storyblok {
   }
 
   iterateTree(story, fields) {
-    let enrich = (jtree) => {
+    let enrich = (jtree, depth) => {
+      console.log(depth)
       if (jtree == null) {
         return
       }
       if (jtree.constructor === Array) {
         for (let item = 0; item < jtree.length; item++) {
-          enrich(jtree[item])
+          if(depth < this.maxResolveDepth) {
+            enrich(jtree[item], depth + 1)
+          }
         }
       } else if (jtree.constructor === Object) {
         for (let treeItem in jtree) {
@@ -218,12 +222,14 @@ class Storyblok {
             this._insertRelations(jtree, treeItem, fields)
             this._insertLinks(jtree, treeItem)
           }
-          enrich(jtree[treeItem])
+          if(depth < this.maxResolveDepth) {
+            enrich(jtree[treeItem], depth + 1)
+          }
         }
       }
     }
 
-    enrich(story.content)
+    enrich(story.content, 0)
   }
 
   async resolveLinks(responseData, params) {
