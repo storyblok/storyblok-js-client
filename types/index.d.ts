@@ -147,6 +147,7 @@ export interface StoriesParams {
   per_page?: number
   page?: string
   from_release?: string
+  language?: string
   fallback_lang?: string
   first_published_at_gt?: string
   first_published_at_lt?: string
