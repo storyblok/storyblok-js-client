@@ -52,7 +52,8 @@ class Storyblok {
       baseURL: endpoint,
       timeout: (config.timeout || 0),
       headers: headers,
-      proxy: (config.proxy || false)
+      proxy: ((config.httpsAgent && config.https) ? false : config.proxy || false),
+      httpsAgent: ((config.httpsAgent && config.https) ? config.httpsAgent : undefined)
     })
     if (config.responseInterceptor) {
       this.client.interceptors.response.use((res) => {
