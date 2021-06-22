@@ -49,6 +49,7 @@ export interface StoryblokConfig {
   https?: boolean
   rateLimit?: number
   proxy?: AxiosProxyConfig
+  httpsAgent?: any
   componentResolver?: (component: string, data: any) => void
   richTextSchema?: RichTextSchema
 }
