@@ -273,7 +273,7 @@ class Storyblok {
       }
 
       for (let chunkIndex = 0; chunkIndex < chunks.length; chunkIndex++) {
-        let relationsRes = await this.getStories({per_page: chunkSize, version: params.version, by_uuids: chunks[chunkIndex].join(',')})
+        let relationsRes = await this.getStories({per_page: chunkSize, language: params.language || 'default', version: params.version, by_uuids: chunks[chunkIndex].join(',')})
 
         relationsRes.data.stories.forEach((rel) => {
           relations.push(rel)
