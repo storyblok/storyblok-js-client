@@ -235,7 +235,7 @@ Storyblok
 
 ```javascript
 Storyblok
-  .put('spaces/12345/stories', {
+  .put('spaces/12345/stories/1', {
     story: {name 'xy', slug: 'xy'}
   })
   .then((response) => {
@@ -257,7 +257,7 @@ Storyblok
 
 ```javascript
 Storyblok
-  .delete('spaces/12345/stories', null)
+  .delete('spaces/12345/stories/1', null)
   .then((response) => {
     console.log(response);
   })
