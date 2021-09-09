@@ -153,6 +153,7 @@ export interface StoriesParams {
   fallback_lang?: string
   first_published_at_gt?: string
   first_published_at_lt?: string
+  level?: number
   published_at_gt?: string
   published_at_lt?: string
   by_slugs?: string
