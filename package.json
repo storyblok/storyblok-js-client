@@ -57,9 +57,7 @@
   "peerDependencies": {
     "axios": "^0.21.1"
   },
-  "dependencies": {
-    "qs": "^6.9.4"
-  },
+  "dependencies": {},
   "release": {
     "branches": [
       "master",
