@@ -80,7 +80,7 @@ const stringify = (obj, prefix, isArray) => {
       continue
     }
     const value = obj[key]
-    const enkey = isArray ? '' : encodeURIComponent(key) // no index array
+    const enkey = isArray ? '' : encodeURIComponent(key)
     let pair
     if (typeof value === 'object') {
       pair = stringify(
