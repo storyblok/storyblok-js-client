@@ -114,18 +114,18 @@ export interface AlternateObject {
   parent_id: number;
 }
 
-export interface Stories {
+export interface Stories<T> {
   data: {
-    stories: StoryData[]
+    stories: StoryData<T>[]
   }
   perPage: number
   total: number
   headers: any
 }
 
-export interface Story {
+export interface Story<T> {
   data: {
-    story: StoryData
+    story: StoryData<T>
   }
   headers: any
 }
@@ -192,8 +192,8 @@ declare class Storyblok {
   post(slug: string, params?: any): Promise<StoryblokManagmentApiResult>
   put(slug: string, params?: any): Promise<StoryblokManagmentApiResult>
   delete(slug: string, params?: any): Promise<StoryblokManagmentApiResult>
-  getStories(params?: StoriesParams): Promise<Stories>
-  getStory(slug: string, params?: StoryParams): Promise<Story>
+  getStories<T = any>(params?: StoriesParams): Promise<Stories<T>>
+  getStory<T = any>(slug: string, params?: StoryParams): Promise<Story<T>>
   setToken(token: string): void
   getToken(): string
   setCacheVersion(cv: string): void
