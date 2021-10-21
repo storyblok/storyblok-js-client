@@ -3,7 +3,7 @@ jest.setTimeout(60000)
 import StoryblokClient from '../source/index'
 
 let Storyblok = new StoryblokClient({
-  accessToken: 'trB5kgOeDD22QJQDdPNCjAtt',
+  accessToken: 'w0yFvs04aKF2rpz6F8OfIQtt',
   cache: { type: 'memory', clear: 'auto' }
 })
 

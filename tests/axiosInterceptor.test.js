@@ -1,6 +1,6 @@
 import StoryblokClient from '../source/index'
 
-const accessToken = 'trB5kgOeDD22QJQDdPNCjAtt'
+const accessToken = 'w0yFvs04aKF2rpz6F8OfIQtt'
 const cache = {
   type: 'memory',
   clear: 'auto',
