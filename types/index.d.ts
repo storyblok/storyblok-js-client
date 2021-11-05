@@ -71,7 +71,7 @@ export interface StoryblokResult {
   headers: any
 }
 
-export interface StoryblokManagmentApiResult {
+export interface StoryblokManagementApiResult {
   data: any
   headers: any
 }
@@ -189,9 +189,9 @@ declare class Storyblok {
   constructor(config: StoryblokConfig, endpoint?: string)
   get(slug: string, params?: any): Promise<StoryblokResult>
   getAll(slug: string, params?: any, entity?: string): Promise<any[]>
-  post(slug: string, params?: any): Promise<StoryblokManagmentApiResult>
-  put(slug: string, params?: any): Promise<StoryblokManagmentApiResult>
-  delete(slug: string, params?: any): Promise<StoryblokManagmentApiResult>
+  post(slug: string, params?: any): Promise<StoryblokManagementApiResult>
+  put(slug: string, params?: any): Promise<StoryblokManagementApiResult>
+  delete(slug: string, params?: any): Promise<StoryblokManagementApiResult>
   getStories(params?: StoriesParams): Promise<Stories>
   getStory(slug: string, params?: StoryParams): Promise<Story>
   setToken(token: string): void
