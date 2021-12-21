@@ -180,6 +180,159 @@ export interface RichtextInstance {
   render: (data: Richtext) => string
 }
 
+/**
+ * @see https://www.storyblok.com/docs/api/content-delivery#core-resources/spaces/the-space-object
+ */
+ export interface Space {
+  id: number;
+  name: string;
+  domain: string;
+  version: number;
+  language_codes: string[];
+}
+
+export interface Dimension {
+  id: number;
+  entry_value: string;
+  name: string;
+}
+
+/**
+ * @see https://www.storyblok.com/docs/api/content-delivery#core-resources/datasources/the-datasource-object
+ * @see https://www.storyblok.com/docs/api/management#core-resources/datasources/the-datasource-object
+ */
+export interface Datasource {
+  id: number;
+  name: string;
+  slug: string;
+  dimensions: Dimension[];
+}
+
+/**
+ * @see https://www.storyblok.com/docs/api/content-delivery#core-resources/datasource-entries/the-datasource-entry-object
+ * @see https://www.storyblok.com/docs/api/management#core-resources/datasource-entries/the-datasource-entry-object
+ */
+export interface DatasourceEntry {
+  id: number;
+  name: string;
+  value: string;
+  dimension_value?: string | null;
+  datasource_id?: number | null;
+}
+
+/**
+ * @see https://www.storyblok.com/docs/api/content-delivery#core-resources/links/the-link-object
+ */
+export interface Link {
+  id: number;
+  slug: string;
+  name: string;
+  is_folder: boolean;
+  parent_id: number;
+  published: boolean;
+  position: number;
+  uuid: string;
+  is_startpage: boolean;
+}
+
+/**
+ * @see https://www.storyblok.com/docs/api/content-delivery#core-resources/tags/the-tag-object
+ */
+export interface Tag {
+  name: string;
+  taggings_count: number;
+}
+
+/**
+ * @see https://www.storyblok.com/docs/api/management#core-resources/components/possible-field-types
+ */
+export enum ComponentFieldType {
+  bloks = 'bloks',
+  text = 'text',
+  textarea = 'textarea',
+  markdown = 'markdown',
+  number = 'number',
+  datetime = 'datetime',
+  boolean = 'boolean',
+  options = 'options',
+  option = 'option',
+  image = 'image',
+  file = 'file',
+  multiasset = 'multiasset',
+  multilink = 'multilink',
+  section = 'section',
+  custom = 'custom',
+}
+
+/**
+ * @see https://www.storyblok.com/docs/api/management#core-resources/components/the-component-field-object
+ */
+export interface ComponentField {
+  id: number;
+  type: ComponentFieldType;
+  pos: number;
+  translatable: boolean;
+  required: boolean;
+  regex: string;
+  description: string;
+  default_value: string;
+  can_sync: boolean;
+  rtl: boolean;
+  no_translate: boolean;
+}
+
+/**
+ * @see https://www.storyblok.com/docs/api/management#core-resources/components/the-component-object
+ */
+export interface Component {
+  id: number;
+  name: string;
+  display_name: string;
+  created_at: string;
+  is_root: boolean;
+  is_nestable: boolean;
+  real_name: string;
+  component_group_uuid: string;
+  schema: Record<string, ComponentField>;
+}
+
+/**
+ * @see https://www.storyblok.com/docs/api/management#core-resources/component-groups/the-component-group-object
+ */
+export interface ComponentGroup {
+  id: number;
+  name: string;
+  uuid: string;
+}
+
+/**
+ * @see https://www.storyblok.com/docs/api/management#core-resources/assets/the-asset-object
+ */
+export interface Asset {
+  id: number;
+  filename: string;
+  space_id: number;
+  created_at: string;
+  updated_at: string;
+  deleted_at?: string | null;
+  file: {
+    url?: string | null;
+  };
+  asset_folder_id?: string | null;
+  short_filename: string;
+  content_type: string;
+  content_length: number;
+}
+
+/**
+ * @see https://www.storyblok.com/docs/api/management#core-resources/asset-folders/the-asset-folder-object
+ */
+export interface AssetFolder {
+  id: number;
+  name: string;
+  parent_id?: number | null;
+}
+
 declare class Storyblok {
   throttle: any
   accessToken: string
