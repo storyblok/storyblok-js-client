@@ -8,7 +8,7 @@ updates:
       interval: "daily"
     # Raise pull requests for version updates
     # to pip against the `develop` branch
-    target-branch: "fix/check-dependabots-alert-INT-122"
+    target-branch: "master"
     # Labels on pull requests for version updates only
     labels:
       - "pip dependencies"
