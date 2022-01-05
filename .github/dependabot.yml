@@ -16,9 +16,9 @@ updates:
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "daily"
       # Check for npm updates on Sundays
-      day: "sunday"
+      # day: "sunday"
     # Labels on pull requests for security and version updates
     labels:
       - "npm dependencies"
