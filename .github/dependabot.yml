@@ -3,7 +3,7 @@
 version: 2
 updates:
   - package-ecosystem: "pip"
-    directory: "/"
+    directory: "./"
     schedule:
       interval: "daily"
     # Raise pull requests for version updates
@@ -14,7 +14,7 @@ updates:
       - "pip dependencies"
 
   - package-ecosystem: "npm"
-    directory: "/"
+    directory: "./"
     schedule:
       interval: "daily"
       # Check for npm updates on Sundays
