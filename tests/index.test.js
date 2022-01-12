@@ -4,14 +4,14 @@ import StoryblokClient from '../source/index'
 import RichTextResolver from '../source/richTextResolver'
 
 let Storyblok = new StoryblokClient({
-  accessToken: 'trB5kgOeDD22QJQDdPNCjAtt',
+  accessToken: 'w0yFvs04aKF2rpz6F8OfIQtt',
   cache: { type: 'memory', clear: 'auto' }
 })
 
 describe('getAll function', () => {
   test('getAll(\'cdn/stories\') should return all stories', async () => {
     const result = await Storyblok.getAll('cdn/stories')
-    expect(result.length).toBe(26)
+    expect(result.length).toBe(28)
   })
 
   test('getAll(\'cdn/stories\') should return all stories with filtered results', async () => {
@@ -19,9 +19,28 @@ describe('getAll function', () => {
     expect(result.length).toBe(1)
   })
 
+  test('getAll(\'cdn/stories\', filter_query: { __or: [{ category: { any_in_array: \'Category 1\' } }, { category: { any_in_array: \'Category 2\' } }]}) should return all stories with the specific filter applied', async () => {
+    const result = await Storyblok.getAll('cdn/stories', {
+      filter_query: {
+        __or: [
+          { category: { any_in_array: 'Category 1' } },
+          { category: { any_in_array: 'Category 2' } }
+        ]
+      }
+    })
+    expect(result.length).toBe(4)
+  })
+
+  test('getAll(\'cdn/stories\', {by_slugs: \'folder/*\'}) should return all stories with the specific filter applied', async () => {
+    const result = await Storyblok.getAll('cdn/stories', {
+      by_slugs: 'folder/*'
+    })
+    expect(result.length).toBe(2)
+  })
+
   test('getAll(\'cdn/links\') should return all links', async () => {
     const result = await Storyblok.getAll('cdn/links')
-    expect(result.length).toBe(26)
+    expect(result.length).toBe(29)
   })
 
   if (process.env.OAUTH_TOKEN) {
@@ -30,7 +49,7 @@ describe('getAll function', () => {
         oauthToken: process.env.OAUTH_TOKEN
       })
       const result = await StoryblokManagement.getAll('spaces/67647/stories')
-      expect(result.length).toBe(26)
+      expect(result.length).toBe(29)
     })
   }
 })

@@ -1,4 +1,4 @@
-const TOKEN = 'trB5kgOeDD22QJQDdPNCjAtt'
+const TOKEN = 'w0yFvs04aKF2rpz6F8OfIQtt'
 
 import StoryblokClient from '../source/index'
 import customSchema from './customSchema'
