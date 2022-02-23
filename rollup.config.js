@@ -91,7 +91,7 @@ export default [
     ],
     plugins,
     // when standalone, put all external libraries into final code
-    external: enableStandalone ? [] : ['qs', 'axios']
+    external: enableStandalone ? [] : ['qs', 'axios', 'unfetch']
   },
 
   // Richtext

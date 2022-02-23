@@ -9,6 +9,7 @@ let memory = {}
 let cacheVersions = {}
 
 import { stringify, delay, getOptionsPage, isCDNUrl, asyncMap, range, flatMap } from './helpers'
+import SbFetch from './sbFetch'
 
 class Storyblok {
 
@@ -53,6 +54,14 @@ class Storyblok {
       headers: headers,
       proxy: (config.proxy || false)
     })
+
+    this.clientFetch = new SbFetch({
+      baseURL: endpoint,
+      timeout: (config.timeout || 0),
+      headers: headers,
+      proxy: (config.proxy || false)
+    })
+
     if (config.responseInterceptor) {
       this.client.interceptors.response.use((res) => {
         return config.responseInterceptor(res)
@@ -111,9 +120,11 @@ class Storyblok {
     return this.cacheResponse(url, options)
   }
 
-  get(slug, params) {
+  async get(slug, params) {
     let url = `/${slug}`
     const query = this.factoryParamOptions(url, params)
+
+    await this.clientFetch.get(slug, query)
 
     return this.cacheResponse(url, query)
   }
@@ -336,6 +347,7 @@ class Storyblok {
           params: params,
           paramsSerializer: (params) => stringify(params)
         })
+        console.log('res =>', res)
 
         let response = { data: res.data, headers: res.headers }
 
