@@ -1,20 +1,14 @@
 module.exports = {
   verbose: true,
-  moduleFileExtensions: [
-    'js',
-    'jsx',
-    'json'
-  ],
+  moduleFileExtensions: ["js", "jsx", "json"],
   transform: {
-    '^.+\\.(js|jsx)?$': 'babel-jest'
+    "^.+\\.(js|jsx)?$": "babel-jest",
   },
-  transformIgnorePatterns: [
-    '/node_modules/'
-  ],
+  transformIgnorePatterns: ["/node_modules/"],
   moduleNameMapper: {
-    '^@/(.*)$': '<rootDir>/lib/$1'
+    "^@/(.*)$": "<rootDir>/lib/$1",
   },
   testMatch: [
-    '**/tests/**/*.test.(js|jsx|ts|tsx)|**/__tests__/*.(js|jsx|ts|tsx)'
-  ]
-}
+    "**/tests/**/*.test.(js|jsx|ts|tsx)|**/__tests__/*.(js|jsx|ts|tsx)",
+  ],
+};

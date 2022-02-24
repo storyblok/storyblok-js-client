@@ -7,19 +7,21 @@ module.exports = {
     // without mailto information when is an e-mail
     // and use % instead # in anchor links
     link(node) {
-      const attrs = { ...node.attrs }
+      const attrs = { ...node.attrs };
 
       if (attrs.anchor) {
-        attrs.href = `${attrs.href}%${attrs.anchor}`
-        delete attrs.anchor
+        attrs.href = `${attrs.href}%${attrs.anchor}`;
+        delete attrs.anchor;
       }
 
       return {
-        tag: [{
-          tag: 'a',
-          attrs: attrs
-        }]
-      }
-    }
-  }
-}
+        tag: [
+          {
+            tag: "a",
+            attrs: attrs,
+          },
+        ],
+      };
+    },
+  },
+};
