@@ -1,7 +1,5 @@
 'use strict'
 
-import axios from  'axios'
-
 import throttledQueue from './throttlePromise'
 import RichTextResolver from './richTextResolver'
 
@@ -48,25 +46,19 @@ class Storyblok {
     this.relations = {}
     this.links = {}
     this.cache = (config.cache || { clear: 'manual' })
-    this.client = axios.create({
+
+    this.client = new SbFetch({
       baseURL: endpoint,
       timeout: (config.timeout || 0),
       headers: headers,
       proxy: (config.proxy || false)
     })
 
-    this.clientFetch = new SbFetch({
-      baseURL: endpoint,
-      timeout: (config.timeout || 0),
-      headers: headers,
-      proxy: (config.proxy || false)
-    })
-
-    if (config.responseInterceptor) {
-      this.client.interceptors.response.use((res) => {
-        return config.responseInterceptor(res)
-      })
-    }
+    // if (config.responseInterceptor) {
+    //   this.client.interceptors.response.use((res) => {
+    //     return config.responseInterceptor(res)
+    //   })
+    // }
   }
 
   setComponentResolver(resolver) {
@@ -123,8 +115,6 @@ class Storyblok {
   async get(slug, params) {
     let url = `/${slug}`
     const query = this.factoryParamOptions(url, params)
-
-    await this.clientFetch.get(slug, query)
 
     return this.cacheResponse(url, query)
   }
@@ -343,11 +333,7 @@ class Storyblok {
       }
 
       try {
-        let res = await this.throttle('get', url, {
-          params: params,
-          paramsSerializer: (params) => stringify(params)
-        })
-        console.log('res =>', res)
+        let res = await this.throttle('get', url, params)
 
         let response = { data: res.data, headers: res.headers }
 

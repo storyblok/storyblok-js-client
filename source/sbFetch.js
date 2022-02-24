@@ -10,14 +10,54 @@ class SbFetch {
   }
 
   async get($u, $p) {
-    const url = new URL(`${this.baseURL}/${$u}`)
+    const url = new URL(`${this.baseURL}${$u}`)
     url.search = stringify($p)
+
     const response = await fetch(url, {
       method: 'get',
       headers: this.headers,
     })
 
     return this.assertResponse(response)
+  }
+
+  async post($u, $p) {
+    const url = new URL(`${this.baseURL}${$u}`)
+    const body = JSON.stringify($p)
+
+    const response = await fetch(url, {
+      method: 'post',
+      headers: this.headers,
+      body,
+    })
+
+    return response
+  }
+
+  async put($u, $p) {
+    const url = new URL(`${this.baseURL}${$u}`)
+    const body = JSON.stringify($p)
+
+    const response = await fetch(url, {
+      method: 'put',
+      headers: this.headers,
+      body,
+    })
+
+    return response
+  }
+
+  async delete($u, $p) {
+    const url = new URL(`${this.baseURL}${$u}`)
+    const body = JSON.stringify($p)
+
+    const response = await fetch(url, {
+      method: 'delete',
+      headers: this.headers,
+      body,
+    })
+
+    return response
   }
 
   assertResponse($r) {
