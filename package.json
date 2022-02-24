@@ -63,7 +63,8 @@
     "axios": "^0.21.1"
   },
   "dependencies": {
-    "rollup-plugin-mjs-entry": "^0.1.1"
+    "rollup-plugin-mjs-entry": "^0.1.1",
+    "prettier": "^2.5.1"
   },
   "release": {
     "branches": [
@@ -101,8 +102,5 @@
     "tabWidth": 2,
     "semi": true,
     "singleQuote": false
-  },
-  "dependencies": {
-    "prettier": "^2.5.1"
   }
 }
