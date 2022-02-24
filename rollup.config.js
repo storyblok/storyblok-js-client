@@ -59,7 +59,7 @@ const plugins = [
   mjsEntry(),
 
   // to resolve correctly non-esmodules packages
-  rollupResolve({ jsnext: true, preferBuiltins: true, browser: true, modulesOnly: true }),
+  rollupResolve({ jsnext: true, preferBuiltins: true, browser: true}),
 
   // to include, when not external, non-esmodules packages (axios and qs e.g)
   rollupCommonjs(),
