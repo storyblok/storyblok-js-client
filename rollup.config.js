@@ -1,9 +1,9 @@
-import babel from '@rollup/plugin-babel'
-import { terser } from 'rollup-plugin-terser'
-import rollupResolve from '@rollup/plugin-node-resolve'
-import rollupJson from '@rollup/plugin-json'
-import rollupCommonjs from '@rollup/plugin-commonjs'
-import mjsEntry from 'rollup-plugin-mjs-entry'
+import babel from "@rollup/plugin-babel";
+import { terser } from "rollup-plugin-terser";
+import rollupResolve from "@rollup/plugin-node-resolve";
+import rollupJson from "@rollup/plugin-json";
+import rollupCommonjs from "@rollup/plugin-commonjs";
+import mjsEntry from "rollup-plugin-mjs-entry";
 
 const pkg = require("./package.json");
 
@@ -30,12 +30,12 @@ const richtextBanner = `/*!
  * (c) ${yearString} Stobylok Team
  */`;
 
-const makeFileName = (format, file = 'index') => {
-  if (format === 'standalone') {
-    return getDistFolder(`${file}.${format}.js`)
+const makeFileName = (format, file = "index") => {
+  if (format === "standalone") {
+    return getDistFolder(`${file}.${format}.js`);
   }
-  return getDistFolder(`${file}.js`)
-}
+  return getDistFolder(`${file}.js`);
+};
 
 const factoryOutputObject = (format) => {
   return {
@@ -88,15 +88,12 @@ const factoryRichTextOutput = (format) => {
 };
 
 export default [
-
   // StoryblokClient
   {
-    input: 'source/index.js',
-    output: enableStandalone ? [
-      factoryOutputStandalone()
-    ] : [
-      factoryOutputObject('cjs')
-    ],
+    input: "source/index.js",
+    output: enableStandalone
+      ? [factoryOutputStandalone()]
+      : [factoryOutputObject("cjs")],
     plugins,
     // when standalone, put all external libraries into final code
     external: enableStandalone ? [] : ["qs", "axios"],
@@ -104,15 +101,15 @@ export default [
 
   // Richtext
   {
-    input: 'source/richTextResolver.js',
-    output: enableStandalone ? [
-      {
-        ...factoryRichTextOutput('standalone'),
-        format: 'iife'
-      }
-    ] : [
-      factoryRichTextOutput('cjs')
-    ],
-    plugins
-  }
-]
+    input: "source/richTextResolver.js",
+    output: enableStandalone
+      ? [
+          {
+            ...factoryRichTextOutput("standalone"),
+            format: "iife",
+          },
+        ]
+      : [factoryRichTextOutput("cjs")],
+    plugins,
+  },
+];

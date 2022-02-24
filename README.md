@@ -80,7 +80,7 @@ You can import and use the `RichTextResolver` directly:
 // es - when you are in NodeJS environment
 // standalone - when you are in Browser environment directly
 
-import RichTextResolver from 'storyblok-js-client/dist/rich-text-resolver.mjs'
+import RichTextResolver from "storyblok-js-client/dist/rich-text-resolver.mjs";
 // const RichTextResolver = require('storyblok-js-client/dist/rich-text-resolver.es')
 
 const resolver = new RichTextResolver();
@@ -116,10 +116,10 @@ This package doesn't use the Babel by default in the final bundle. So, if you wa
 
 ```js
 // for CommonJS environments (NodeJS)
-const StoryblokClient = require('storyblok-js-client/dist/es5/index.js')
+const StoryblokClient = require("storyblok-js-client/dist/es5/index.js");
 
 // for EsModules environments
-import StoryblokClient from 'storyblok-js-client/dist/es5/index.mjs'
+import StoryblokClient from "storyblok-js-client/dist/es5/index.mjs";
 ```
 
 ### Documentation
