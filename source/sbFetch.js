@@ -4,19 +4,27 @@ import { stringify } from './helpers'
 class SbFetch {
   constructor($c) {
     this.baseURL = $c.baseURL,
-    this.timeout = ($c.timeout || 0),
+    this.timeout = $c.timeout ? $c.timeout * 1000 : 0,
     this.headers = $c.headers,
-    this.proxy = ($c.proxy || false)
+    this.proxy = $c.proxy || false
   }
 
   async get($u, $p) {
     const url = new URL(`${this.baseURL}${$u}`)
     url.search = stringify($p)
 
+    const controller = new AbortController()
+    const { signal } = controller
+
+    const timeout = setTimeout(() => controller.abort(), this.timeout)
+
     const response = await fetch(url, {
       method: 'get',
       headers: this.headers,
+      signal
     })
+    
+    clearTimeout(timeout)
 
     return this.assertResponse(response)
   }
@@ -25,11 +33,19 @@ class SbFetch {
     const url = new URL(`${this.baseURL}${$u}`)
     const body = JSON.stringify($p)
 
+    const controller = new AbortController()
+    const { signal } = controller
+
+    const timeout = setTimeout(() => controller.abort(), this.timeout)
+
     const response = await fetch(url, {
       method: 'post',
       headers: this.headers,
       body,
+      signal,
     })
+
+    clearTimeout(timeout)
 
     return response
   }
@@ -38,11 +54,19 @@ class SbFetch {
     const url = new URL(`${this.baseURL}${$u}`)
     const body = JSON.stringify($p)
 
+    const controller = new AbortController()
+    const { signal } = controller
+
+    const timeout = setTimeout(() => controller.abort(), this.timeout)
+
     const response = await fetch(url, {
       method: 'put',
       headers: this.headers,
       body,
+      signal,
     })
+
+    clearTimeout(timeout)
 
     return response
   }
@@ -51,11 +75,19 @@ class SbFetch {
     const url = new URL(`${this.baseURL}${$u}`)
     const body = JSON.stringify($p)
 
+    const controller = new AbortController()
+    const { signal } = controller
+
+    const timeout = setTimeout(() => controller.abort(), this.timeout)
+
     const response = await fetch(url, {
       method: 'delete',
       headers: this.headers,
       body,
+      signal,
     })
+
+    clearTimeout(timeout)
 
     return response
   }
