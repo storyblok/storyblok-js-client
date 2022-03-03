@@ -6,90 +6,24 @@ class SbFetch {
     this.baseURL = $c.baseURL,
     this.timeout = $c.timeout ? $c.timeout * 1000 : 0,
     this.headers = $c.headers,
-    this.proxy = $c.proxy || false
+    this.proxy = $c.proxy || false,
+    this.responseInterceptor = $c.responseInterceptor
   }
 
-  async get($u, $p) {
-    const url = new URL(`${this.baseURL}${$u}`)
-    url.search = stringify($p)
-
-    const controller = new AbortController()
-    const { signal } = controller
-
-    const timeout = setTimeout(() => controller.abort(), this.timeout)
-
-    const response = await fetch(url, {
-      method: 'get',
-      headers: this.headers,
-      signal
-    })
-    
-    clearTimeout(timeout)
-
-    return this.assertResponse(response)
+  get($u, $p) {
+    return this.resolveByMethod($u, $p, 'get')
   }
 
-  async post($u, $p) {
-    const url = new URL(`${this.baseURL}${$u}`)
-    const body = JSON.stringify($p)
-
-    const controller = new AbortController()
-    const { signal } = controller
-
-    const timeout = setTimeout(() => controller.abort(), this.timeout)
-
-    const response = await fetch(url, {
-      method: 'post',
-      headers: this.headers,
-      body,
-      signal,
-    })
-
-    clearTimeout(timeout)
-
-    return response
+  post($u, $p) {
+    return this.resolveByMethod($u, $p, 'post')
   }
 
-  async put($u, $p) {
-    const url = new URL(`${this.baseURL}${$u}`)
-    const body = JSON.stringify($p)
-
-    const controller = new AbortController()
-    const { signal } = controller
-
-    const timeout = setTimeout(() => controller.abort(), this.timeout)
-
-    const response = await fetch(url, {
-      method: 'put',
-      headers: this.headers,
-      body,
-      signal,
-    })
-
-    clearTimeout(timeout)
-
-    return response
+  put($u, $p) {
+    return this.resolveByMethod($u, $p, 'put')
   }
 
-  async delete($u, $p) {
-    const url = new URL(`${this.baseURL}${$u}`)
-    const body = JSON.stringify($p)
-
-    const controller = new AbortController()
-    const { signal } = controller
-
-    const timeout = setTimeout(() => controller.abort(), this.timeout)
-
-    const response = await fetch(url, {
-      method: 'delete',
-      headers: this.headers,
-      body,
-      signal,
-    })
-
-    clearTimeout(timeout)
-
-    return response
+  delete($u, $p) {
+    return this.resolveByMethod($u, $p, 'delete')
   }
 
   assertResponse($r) {
@@ -108,6 +42,47 @@ class SbFetch {
     response.statusText = $r.statusText
 
     return response
+  }
+
+  async resolveByMethod($u, $p, method) {
+    const url = new URL(`${this.baseURL}${$u}`)
+    let body = null
+
+    if(method === 'get') {
+      url.search = stringify($p)
+    } else {
+      body = JSON.stringify($p)
+    }
+
+    const controller = new AbortController()
+    const { signal } = controller
+
+    const timeout = setTimeout(() => controller.abort(), this.timeout)
+
+    try {
+      const response = await fetch(url, {
+        method,
+        headers: this.headers,
+        body,
+        signal,
+      })
+  
+      clearTimeout(timeout)
+  
+      if(this.responseInterceptor) {
+        if (method === 'get') {
+          return this.responseInterceptor(this.assertResponse(response))
+        }
+        return this.responseInterceptor(response)
+      } else {
+        if (method === 'get') {
+          return this.assertResponse(response)
+        }
+        return response
+      }
+    } catch ($e) {
+      return $e
+    }
   }
 }
 
