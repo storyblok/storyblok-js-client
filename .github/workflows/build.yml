@@ -12,8 +12,7 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         node-version: 14.x
-    - run: yarn install --frozen-lockfile
-    - run: yarn run lint:prettier
-    - run: yarn run lint
-    - run: yarn run test
-    - run: yarn run build
+    - run: npm install --frozen-lockfile
+    - run: npm run lint
+    - run: npm run test
+    - run: npm run build
