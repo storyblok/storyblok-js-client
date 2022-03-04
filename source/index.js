@@ -54,12 +54,6 @@ class Storyblok {
       proxy: (config.proxy || false),
       responseInterceptor: config.responseInterceptor
     })
-
-    // if (config.responseInterceptor) {
-    //   this.client.interceptors.response.use((res) => {
-    //     return config.responseInterceptor(res)
-    //   })
-    // }
   }
 
   setComponentResolver(resolver) {
@@ -166,6 +160,10 @@ class Storyblok {
 
   getToken() {
     return this.accessToken
+  }
+
+  ejectInterceptor() {
+    this.client.eject()
   }
 
   _cleanCopy(value) {

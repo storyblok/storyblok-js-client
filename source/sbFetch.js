@@ -8,28 +8,39 @@ class SbFetch {
     this.headers = $c.headers,
     this.proxy = $c.proxy || false,
     this.responseInterceptor = $c.responseInterceptor
+    this.ejectInterceptor = false
+    this.url = ''
+    this.parameters = {}
   }
 
   get($u, $p) {
-    return this.resolveByMethod($u, $p, 'get')
+    this.url = $u
+    this.parameters = $p
+    return this.methodHandler('get')
   }
 
   post($u, $p) {
-    return this.resolveByMethod($u, $p, 'post')
+    this.url = $u
+    this.parameters = $p
+    return this.methodHandler('post')
   }
 
   put($u, $p) {
-    return this.resolveByMethod($u, $p, 'put')
+    this.url = $u
+    this.parameters = $p
+    return this.methodHandler('put')
   }
 
   delete($u, $p) {
-    return this.resolveByMethod($u, $p, 'delete')
+    this.url = $u
+    this.parameters = $p
+    return this.methodHandler('delete')
   }
 
-  assertResponse($r) {
+  responseHandler($r) {
     const response = {}
 
-    Promise.resolve($r.json()).then((res) => response.data = res)
+    $r.json().then((res) => response.data = res)
 
     const headers = {}
 
@@ -44,14 +55,14 @@ class SbFetch {
     return response
   }
 
-  async resolveByMethod($u, $p, method) {
-    const url = new URL(`${this.baseURL}${$u}`)
+  async methodHandler(method) {
+    const url = new URL(`${this.baseURL}${this.url}`)
     let body = null
 
     if(method === 'get') {
-      url.search = stringify($p)
+      url.search = stringify(this.parameters)
     } else {
-      body = JSON.stringify($p)
+      body = JSON.stringify(this.parameters)
     }
 
     const controller = new AbortController()
@@ -69,20 +80,36 @@ class SbFetch {
   
       clearTimeout(timeout)
   
-      if(this.responseInterceptor) {
+      if(this.responseInterceptor && !this.ejectInterceptor) {
         if (method === 'get') {
-          return this.responseInterceptor(this.assertResponse(response))
+          return this.statusHandler(this.responseInterceptor(this.responseHandler(response)))
         }
-        return this.responseInterceptor(response)
+        return this.statusHandler(this.responseInterceptor(response))
       } else {
         if (method === 'get') {
-          return this.assertResponse(response)
+          return this.statusHandler(this.responseHandler(response))
         }
-        return response
+        return this.statusHandler(response)
       }
     } catch ($e) {
       return $e
     }
+  }
+
+  eject() {
+    this.ejectInterceptor = true
+  }
+
+  statusHandler($r) {
+    const statusOk = /20[01]/g
+
+    if (statusOk.test($r.status)) {
+      return $r
+    }
+    
+    const error = new Error($r.statusText || `status: ${$r.status}`)
+    error.response = $r
+    return Promise.reject(error)
   }
 }
 
