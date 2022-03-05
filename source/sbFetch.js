@@ -1,4 +1,3 @@
-import fetch from 'unfetch'
 import { stringify } from './helpers'
 
 class SbFetch {
@@ -16,36 +15,37 @@ class SbFetch {
   get($u, $p) {
     this.url = $u
     this.parameters = $p
-    return this.methodHandler('get')
+    return this._methodHandler('get')
   }
 
   post($u, $p) {
     this.url = $u
     this.parameters = $p
-    return this.methodHandler('post')
+    return this._methodHandler('post')
   }
 
   put($u, $p) {
     this.url = $u
     this.parameters = $p
-    return this.methodHandler('put')
+    return this._methodHandler('put')
   }
 
   delete($u, $p) {
     this.url = $u
     this.parameters = $p
-    return this.methodHandler('delete')
+    return this._methodHandler('delete')
   }
 
-  responseHandler($r) {
+  async _responseHandler($r) {
     const response = {}
-
-    $r.json().then((res) => response.data = res)
-
     const headers = {}
 
-    for (let i = 0; i < $r.headers.entries().length; i++) {
-      headers[$r.headers.entries()[i][0]] = $r.headers.entries()[i][1]
+    await $r.json().then((res) => {
+      response.data = res
+    })
+
+    for (let pair of $r.headers.entries()) {
+      headers[pair[0]] = pair[1]
     }
 
     response.headers = { ...headers }
@@ -55,7 +55,7 @@ class SbFetch {
     return response
   }
 
-  async methodHandler(method) {
+  async _methodHandler(method) {
     const url = new URL(`${this.baseURL}${this.url}`)
     let body = null
 
@@ -80,16 +80,12 @@ class SbFetch {
   
       clearTimeout(timeout)
   
+      const res = await this._responseHandler(response)
+
       if(this.responseInterceptor && !this.ejectInterceptor) {
-        if (method === 'get') {
-          return this.statusHandler(this.responseInterceptor(this.responseHandler(response)))
-        }
-        return this.statusHandler(this.responseInterceptor(response))
+        return this._statusHandler(this.responseInterceptor(res))
       } else {
-        if (method === 'get') {
-          return this.statusHandler(this.responseHandler(response))
-        }
-        return this.statusHandler(response)
+        return this._statusHandler(res)
       }
     } catch ($e) {
       return $e
@@ -100,7 +96,7 @@ class SbFetch {
     this.ejectInterceptor = true
   }
 
-  statusHandler($r) {
+  _statusHandler($r) {
     const statusOk = /20[01]/g
 
     if (statusOk.test($r.status)) {
