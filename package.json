@@ -15,6 +15,12 @@
     "types",
     "test"
   ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
   "scripts": {
     "clean": "rimraf dist/",
     "build": "run-s clean build:**",
