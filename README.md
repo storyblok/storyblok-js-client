@@ -7,8 +7,7 @@ This client is a thin wrapper for the Storyblok API's to use in Node.js and the 
 ## Install
 
 ```sh
-# as axios is a peerDependency, you should install it too
-npm install storyblok-js-client axios # yarn add storyblok-js-client axios
+npm install storyblok-js-client # yarn add storyblok-js-client
 ```
 
 ## Usage
@@ -96,6 +95,11 @@ const StoryblokClient = require('storyblok-js-client/dist/es5/index.cjs')
 import StoryblokClient from 'storyblok-js-client/dist/es5/index.es'
 ```
 
+### Axios removal
+
+We removed our dependency on axios on version 4.3.0. If you want to continue using our SDK with axios, please refer to version @4.2.1.
+The proxy feature was also removed in this version.
+
 ## Documentation
 
 ### Class `Storyblok`
@@ -106,7 +110,7 @@ import StoryblokClient from 'storyblok-js-client/dist/es5/index.es'
   - `accessToken` String, The preview token you can find in your space dashboard at https://app.storyblok.com
   - `cache` Object
     - `type` String, `none` or `memory`
-  - (`responseInterceptor` Function, optional - You can pass a function and return the result, like axios' interceptors. For security reasons, Storyblok client will deal only with the response interceptor.)
+  - (`responseInterceptor` Function, optional - You can pass a function and return the result. For security reasons, Storyblok client will deal only with the response interceptor.)
   - (`region` String, optional)
   - (`https` Boolean, optional)
   - (`rateLimit` Integer, optional, defaults to 3 for management api and 5 for cdn api)
@@ -132,7 +136,7 @@ let Storyblok = new StoryblokClient({
 ```
 ### Passing response interceptor
 
-The Storyblok client lets you pass a function that serves as a response interceptor to axios.
+The Storyblok client lets you pass a function that serves as a response interceptor to it.
 Usage:
 
 ```javascript
@@ -151,6 +155,14 @@ let Storyblok = new StoryblokClient({
     return response
   },
 })
+```
+
+### Removing response interceptor
+
+One can remove the reponseInterceptor at any time, by calling the function `ejectInterceptor` as shown below:
+
+```javascript
+Storyblok.ejectInterceptor()
 ```
 
 ### Method `Storyblok#get`
@@ -407,28 +419,6 @@ let getStories = (page) => {
 
 getStories(1)
 ~~~
-
-### Initialize with a proxy server
-
-~~~javascript
-const proxy = {
-  host: host,
-  port: port,
-  auth: {
-    username: 'username',
-    password: 'password'
-  }
-}
-
-const storyblok = new StoryblokClient({
-  ...
-  https: false,
-  proxy: proxy
-})
-~~~
-
-Read more about proxy settings in axios [documentation](https://github.com/axios/axios)
-
 
 ### How to define a custom schema for the RichTextRenderer
 
