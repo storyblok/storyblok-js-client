@@ -3,6 +3,7 @@ import { terser } from 'rollup-plugin-terser'
 import rollupResolve from '@rollup/plugin-node-resolve'
 import rollupJson from '@rollup/plugin-json'
 import rollupCommonjs from '@rollup/plugin-commonjs'
+import mjsEntry from 'rollup-plugin-mjs-entry'
 
 const pkg = require('./package.json')
 
@@ -30,7 +31,10 @@ const banner = `/*!
  */`
 
 const makeFileName = (format, file = 'index') => {
-  return getDistFolder(`${file}.${format}.js`)
+  if (format === 'standalone') {
+    return getDistFolder(`${file}.${format}.js`)
+  }
+  return getDistFolder(`${file}.js`)
 }
 
 const factoryOutputObject = format => {
@@ -51,8 +55,11 @@ const factoryOutputStandalone = () => {
 }
 
 const plugins = [
+  // to generate file with .mjs extension
+  mjsEntry(),
+
   // to resolve correctly non-esmodules packages
-  rollupResolve({ jsnext: true, preferBuiltins: true, browser: true }),
+  rollupResolve({ jsnext: true, preferBuiltins: true, browser: true}),
 
   // to include, when not external, non-esmodules packages (axios and qs e.g)
   rollupCommonjs(),
@@ -80,13 +87,13 @@ const factoryRichTextOutput = format => {
 }
 
 export default [
+
   // StoryblokClient
   {
     input: 'source/index.js',
     output: enableStandalone ? [
       factoryOutputStandalone()
     ] : [
-      factoryOutputObject('es'),
       factoryOutputObject('cjs')
     ],
     plugins,
@@ -101,7 +108,6 @@ export default [
         format: 'iife'
       }
     ] : [
-      factoryRichTextOutput('es'),
       factoryRichTextOutput('cjs')
     ],
     plugins
