@@ -5,7 +5,6 @@ class SbFetch {
     this.baseURL = $c.baseURL,
     this.timeout = $c.timeout ? $c.timeout * 1000 : 1000,
     this.headers = $c.headers,
-    this.proxy = $c.proxy || false,
     this.responseInterceptor = $c.responseInterceptor
     this.ejectInterceptor = false
     this.url = ''
