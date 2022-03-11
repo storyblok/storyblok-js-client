@@ -76,7 +76,7 @@ You can import and use the `RichTextResolver` directly:
 // es - when you are in NodeJS environment
 // standalone - when you are in Browser environment directly
 
-import RichTextResolver from 'storyblok-js-client/dist/rich-text-resolver.mjs'
+import RichTextResolver from 'storyblok-js-client/dist/rich-text-resolver.cjs'
 // const RichTextResolver = require('storyblok-js-client/dist/rich-text-resolver.es')
 
 const resolver = new RichTextResolver()
