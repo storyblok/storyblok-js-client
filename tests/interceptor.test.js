@@ -25,7 +25,7 @@ describe('Client should be initialized without interceptors', () => {
     accessToken,
     cache,
   })
-  it.only('should RESPONSE function DO NOT EXIST', async () => {
+  it('should RESPONSE function DO NOT EXIST', async () => {
     await Storyblok.getAll('cdn/links')
     expect(Storyblok.client.responseInterceptor).toBeFalsy()
   })
