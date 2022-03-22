@@ -289,7 +289,7 @@ class Storyblok {
   async resolveStories(responseData, params) {
     let relationParams = []
 
-    if (typeof params.resolve_relations !== 'undefined' && params.resolve_relations.length > 0 && responseData.rels) {
+    if (typeof params.resolve_relations !== 'undefined' && params.resolve_relations.length > 0 && responseData.rels && responseData.links) {
       relationParams = params.resolve_relations.split(',')
       await this.resolveRelations(responseData, params)
     }
