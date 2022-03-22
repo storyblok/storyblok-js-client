@@ -14,13 +14,9 @@ describe('Client should accept response interceptor as a function', () => {
       return res
     },
   })
-  it('should RESPONSE to be TRUTHY', async () => {
+  it('should RESPONSE function DO EXIST', async () => {
     await Storyblok.getAll('cdn/links')
-    expect(Storyblok.client.interceptors.response.handlers.length).toBeTruthy()
-  })
-  it('should REQUEST to be FALSY', async () => {
-    await Storyblok.getAll('cdn/links')
-    expect(Storyblok.client.interceptors.request.handlers.length).toBeFalsy()
+    expect(Storyblok.client.responseInterceptor).toBeTruthy()
   })
 })
 
@@ -29,13 +25,9 @@ describe('Client should be initialized without interceptors', () => {
     accessToken,
     cache,
   })
-  it('should RESPONSE to be FALSY', async () => {
+  it.only('should RESPONSE function DO NOT EXIST', async () => {
     await Storyblok.getAll('cdn/links')
-    expect(Storyblok.client.interceptors.response.handlers.length).toBeFalsy()
-  })
-  it('should REQUEST to be FALSY', async () => {
-    await Storyblok.getAll('cdn/links')
-    expect(Storyblok.client.interceptors.request.handlers.length).toBeFalsy()
+    expect(Storyblok.client.responseInterceptor).toBeFalsy()
   })
 })
 

@@ -1,4 +1,5 @@
 import { stringify } from './helpers'
+import fetch from 'unfetch'
 
 class SbFetch {
   constructor($c) {
