@@ -259,6 +259,7 @@ class Storyblok {
   }
 
   async resolveRelations(responseData, params) {
+    // console.log('resolveRelations =>', responseData)
     let relations = []
 
     if (responseData.rel_uuids) {
@@ -282,6 +283,8 @@ class Storyblok {
       relations = responseData.rels
     }
 
+    console.log('relations =>', relations)
+
     relations.forEach((story) => {
       this.relations[story.uuid] = {...story, ...{_stopResolving: true}}
     })
@@ -290,7 +293,7 @@ class Storyblok {
   async resolveStories(responseData, params) {
     let relationParams = []
 
-    if (typeof params.resolve_relations !== 'undefined' && params.resolve_relations.length > 0) {
+    if (typeof params.resolve_relations !== 'undefined' && params.resolve_relations.length > 0 && responseData.rels ) {
       relationParams = params.resolve_relations.split(',')
       await this.resolveRelations(responseData, params)
     }
