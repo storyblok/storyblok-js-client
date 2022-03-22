@@ -124,7 +124,7 @@ The proxy feature was also removed in this version.
 
 ### Unfetch
 
-As we removed Axios, some developers would want to use the SDK under node environment. So we added unfetch to deal with fetch until Node brings the fetch API nativelly.
+As we removed Axios, some developers would want to use the SDK under node environment. So we added unfetch to deal with fetch until Node brings the fetch API natively.
 
 ## Documentation
 
