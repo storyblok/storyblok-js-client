@@ -72,12 +72,12 @@ You can import and use the `RichTextResolver` directly:
 
 ```js
 // you should need to use the format when import
-// mjs - when you are in EsModules environment (like React, Vue apps, for example)
-// es - when you are in NodeJS environment
+// es - when you are in EsModules environment (like React, Vue apps, for example)
+// cjs - when you are in NodeJS environment
 // standalone - when you are in Browser environment directly
 
-import RichTextResolver from 'storyblok-js-client/dist/rich-text-resolver.mjs'
-// const RichTextResolver = require('storyblok-js-client/dist/rich-text-resolver.es')
+import RichTextResolver from 'storyblok-js-client/dist/rich-text-resolver.es'
+// const RichTextResolver = require('storyblok-js-client/dist/rich-text-resolver.cjs')
 
 const resolver = new RichTextResolver()
 
@@ -112,10 +112,10 @@ This package doesn't use the Babel by default in the final bundle. So, if you wa
 
 ```js
 // for CommonJS environments (NodeJS)
-const StoryblokClient = require('storyblok-js-client/dist/es5/index.js')
+const StoryblokClient = require('storyblok-js-client/dist/es5/index.cjs')
 
 // for EsModules environments
-import StoryblokClient from 'storyblok-js-client/dist/es5/index.mjs'
+import StoryblokClient from 'storyblok-js-client/dist/es5/index.es'
 ```
 
 ### Documentation
