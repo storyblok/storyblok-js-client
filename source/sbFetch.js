@@ -1,5 +1,4 @@
 import { stringify } from './helpers'
-import fetch from 'unfetch'
 
 class SbFetch {
   constructor($c) {
@@ -71,12 +70,21 @@ class SbFetch {
     const timeout = setTimeout(() => controller.abort(), this.timeout)
 
     try {
-      const response = await fetch(url, {
+      let response = null
+
+      const options = {
         method,
         headers: this.headers,
         body,
         signal,
-      })
+      }
+
+      if (typeof window === 'undefined') {
+        const nodeFetch = await import('node-fetch')
+        response = await nodeFetch(url, options)
+      } else {
+        response = await fetch(url, options)
+      }
   
       clearTimeout(timeout)
   

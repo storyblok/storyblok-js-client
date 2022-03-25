@@ -39,7 +39,8 @@ const factoryOutputObject = format => {
     banner,
     exports: 'default',
     name: 'StoryblokClient',
-    file: makeFileName(format)
+    file: makeFileName(format),
+    inlineDynamicImports: true,
   }
 }
 
@@ -93,6 +94,8 @@ export default [
       factoryOutputObject('cjs')
     ],
     plugins,
+    // when standalone, put all external libraries into final code
+    external: enableStandalone ? [] : ['node-fetch']
   },
 
   // Richtext

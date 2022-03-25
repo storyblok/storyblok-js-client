@@ -106,7 +106,7 @@ class Storyblok {
     return this.cacheResponse(url, options)
   }
 
-  async get(slug, params) {
+  get(slug, params) {
     let url = `/${slug}`
     const query = this.factoryParamOptions(url, params)
 
@@ -114,7 +114,7 @@ class Storyblok {
   }
 
   async getAll(slug, params = {}, entity) {
-    const perPage = params.per_page || 25
+    const perPage = params?.per_page || 25
     const url = `/${slug}`
     const urlParts = url.split('/')
     entity = entity || urlParts[urlParts.length - 1]
@@ -370,7 +370,6 @@ class Storyblok {
           retries = retries + 1
 
           if (retries < this.maxRetries) {
-            console.log(`Hit rate limit. Retrying in ${retries} seconds.`)
             await delay(1000 * retries)
             return this.cacheResponse(url, params, retries).then(resolve).catch(reject)
           }

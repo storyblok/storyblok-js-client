@@ -55,8 +55,8 @@
   },
   "peerDependencies": {},
   "dependencies": {
-    "rollup-plugin-mjs-entry": "^0.1.1",
-    "unfetch": "^4.2.0"
+    "node-fetch": "2.6.7",
+    "rollup-plugin-mjs-entry": "^0.1.1"
   },
   "release": {
     "branches": [

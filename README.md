@@ -119,12 +119,13 @@ import StoryblokClient from 'storyblok-js-client/dist/es5/index.es'
 
 ### Axios removal
 
-We removed our dependency on axios on version 4.3.0. If you want to continue using our SDK with axios, please refer to version @4.2.1.
+We removed our dependency on axios on version 4.4.0. If you want to continue using our SDK with axios, please refer to version @4.2.1.
 The proxy feature was also removed in this version.
 
-### Unfetch
+### Node fetch
 
-As we removed Axios, some developers would want to use the SDK under node environment. So we added unfetch to deal with fetch until Node brings the fetch API natively.
+As we removed Axios, some developers would want to use the SDK under Node's environment. So we added [node-fetch](https://www.npmjs.com/package/node-fetch) to deal with fetch, AbortController and XMLHttpRequest until Node brings the fetch API natively.
+As a part of our efforts to make the SDK more lightweight to web users, under the hood, the import of node-fetch is conditional depending either the app is under Node's environment or not.
 
 ## Documentation
 
