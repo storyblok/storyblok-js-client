@@ -297,8 +297,10 @@ class Storyblok {
       await this.resolveLinks(responseData, params)
     }
 
-    for (const relUuid in this.relations) {
-      this.iterateTree(this.relations[relUuid], relationParams)
+    if (this.resolveNestedRelations) {
+      for (const relUuid in this.relations) {
+        this.iterateTree(this.relations[relUuid], relationParams)
+      }
     }
 
     if (responseData.story) {
