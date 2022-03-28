@@ -1,9 +1,8 @@
-import babel from "@rollup/plugin-babel";
-import { terser } from "rollup-plugin-terser";
-import rollupResolve from "@rollup/plugin-node-resolve";
-import rollupJson from "@rollup/plugin-json";
-import rollupCommonjs from "@rollup/plugin-commonjs";
-import mjsEntry from "rollup-plugin-mjs-entry";
+import babel from '@rollup/plugin-babel'
+import { terser } from 'rollup-plugin-terser'
+import rollupResolve from '@rollup/plugin-node-resolve'
+import rollupJson from '@rollup/plugin-json'
+import rollupCommonjs from '@rollup/plugin-commonjs'
 
 const pkg = require("./package.json");
 
@@ -30,12 +29,9 @@ const richtextBanner = `/*!
  * (c) ${yearString} Stobylok Team
  */`;
 
-const makeFileName = (format, file = "index") => {
-  if (format === "standalone") {
-    return getDistFolder(`${file}.${format}.js`);
-  }
-  return getDistFolder(`${file}.js`);
-};
+const makeFileName = (format, file = 'index') => {
+  return getDistFolder(`${file}.${format}.js`)
+}
 
 const factoryOutputObject = (format) => {
   return {
@@ -56,10 +52,9 @@ const factoryOutputStandalone = () => {
 
 const plugins = [
   // to generate file with .mjs extension
-  mjsEntry(),
 
   // to resolve correctly non-esmodules packages
-  rollupResolve({ jsnext: true, preferBuiltins: true, browser: true }),
+  rollupResolve({ jsnext: true, preferBuiltins: true, browser: true}),
 
   // to include, when not external, non-esmodules packages (axios and qs e.g)
   rollupCommonjs(),
@@ -90,13 +85,16 @@ const factoryRichTextOutput = (format) => {
 export default [
   // StoryblokClient
   {
-    input: "source/index.js",
-    output: enableStandalone
-      ? [factoryOutputStandalone()]
-      : [factoryOutputObject("cjs")],
+    input: 'source/index.js',
+    output: enableStandalone ? [
+      factoryOutputStandalone()
+    ] : [
+      factoryOutputObject('es'),
+      factoryOutputObject('cjs')
+    ],
     plugins,
     // when standalone, put all external libraries into final code
-    external: enableStandalone ? [] : ["qs", "axios"],
+    external: enableStandalone ? [] : ['axios']
   },
 
   // Richtext

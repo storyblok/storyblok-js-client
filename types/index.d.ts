@@ -158,34 +158,55 @@ export interface Story {
   headers: any;
 }
 
+/**
+ * @see https://www.storyblok.com/docs/api/content-delivery#filter-queries/overview for documentation and examples
+ */
+export interface FilterQueryOperations {
+  all_in_array?: string;
+  gt_date?: string;
+  gt_float?: number;
+  gt_int?: number;
+  /** Comma-separated list */
+  in?: string;
+  /** Comma-separated list */
+  in_array?: string;
+  like?: string;
+  lt_date?: string;
+  lt_float?: number;
+  lt_int?: number;
+  /** Comma-separated list */
+  not_in?: string;
+  not_like?: string;
+}
+
 export interface StoriesParams {
-  token?: string;
-  with_tag?: string;
-  is_startpage?: 0 | 1;
-  starts_with?: string;
-  by_uuids?: string;
-  by_uuids_ordered?: string;
-  excluding_ids?: string;
-  excluding_fields?: string;
-  resolve_links?: "url" | "story" | "0" | "1";
-  version?: "draft" | "published";
-  resolve_relations?: string;
-  cv?: number;
-  sort_by?: string;
-  search_term?: string;
-  filter_query?: any;
-  per_page?: number;
-  page?: string;
-  from_release?: string;
-  language?: string;
-  fallback_lang?: string;
-  first_published_at_gt?: string;
-  first_published_at_lt?: string;
-  level?: number;
-  published_at_gt?: string;
-  published_at_lt?: string;
-  by_slugs?: string;
-  excluding_slugs?: string;
+  token?: string
+  with_tag?: string
+  is_startpage?: 0 | 1
+  starts_with?: string
+  by_uuids?: string
+  by_uuids_ordered?: string
+  excluding_ids?: string
+  excluding_fields?: string
+  resolve_links?: 'url' | 'story' | '0' | '1'
+  version?: 'draft' | 'published'
+  resolve_relations?: string
+  cv?: number
+  sort_by?: string
+  search_term?: string
+  filter_query?: Record<string, FilterQueryOperations>
+  per_page?: number
+  page?: string
+  from_release?: string
+  language?: string
+  fallback_lang?: string
+  first_published_at_gt?: string
+  first_published_at_lt?: string
+  level?: number
+  published_at_gt?: string
+  published_at_lt?: string
+  by_slugs?: string
+  excluding_slugs?: string
 }
 
 export interface StoryParams {
