@@ -39,31 +39,35 @@ npm install storyblok-js-client axios # yarn add storyblok-js-client axios
 
 ```javascript
 // 1. Require the Storyblok client
-const StoryblokClient = require('storyblok-js-client')
+const StoryblokClient = require("storyblok-js-client");
 
 // 2. Initialize the client with the preview token
 // from your space dashboard at https://app.storyblok.com
 let Storyblok = new StoryblokClient({
-  accessToken: 'xf5dRMMjltLzKOcNgMaU9Att'
-})
+  accessToken: "xf5dRMMjltLzKOcNgMaU9Att",
+});
 ```
 
 #### Using the Content Management API
 
 ```javascript
 // 1. Require the Storyblok client
-const StoryblokClient = require('storyblok-js-client')
-const spaceId = 12345
+const StoryblokClient = require("storyblok-js-client");
+const spaceId = 12345;
 
 // 2. Initialize the client with the oauth token
 // from the my account area at https://app.storyblok.com
 let Storyblok = new StoryblokClient({
-  oauthToken: 'YOUR_OAUTH_TOKEN'
-})
+  oauthToken: "YOUR_OAUTH_TOKEN",
+});
 
-Storyblok.post(`spaces/${spaceId}/stories`, {story: {name: 'xy', slug: 'xy'}})
-Storyblok.put(`spaces/${spaceId}/stories/1`, {story: {name: 'xy', slug: 'xy'}})
-Storyblok.delete(`spaces/${spaceId}/stories/1`, null)
+Storyblok.post(`spaces/${spaceId}/stories`, {
+  story: { name: "xy", slug: "xy" },
+});
+Storyblok.put(`spaces/${spaceId}/stories/1`, {
+  story: { name: "xy", slug: "xy" },
+});
+Storyblok.delete(`spaces/${spaceId}/stories/1`, null);
 ```
 
 #### Using the RichTextResolver separately
@@ -79,9 +83,9 @@ You can import and use the `RichTextResolver` directly:
 import RichTextResolver from 'storyblok-js-client/dist/rich-text-resolver.es'
 // const RichTextResolver = require('storyblok-js-client/dist/rich-text-resolver.cjs')
 
-const resolver = new RichTextResolver()
+const resolver = new RichTextResolver();
 
-const html = resolver.render(data)
+const html = resolver.render(data);
 ```
 
 #### Using from the Browser directly
@@ -145,13 +149,14 @@ To clear the cache you can call `Storyblok.flushCache()` or activate the automat
 
 ```javascript
 let Storyblok = new StoryblokClient({
-  accessToken: 'xf5dRMMjltLzKOcNgMaU9Att',
+  accessToken: "xf5dRMMjltLzKOcNgMaU9Att",
   cache: {
-    clear: 'auto',
-    type: 'memory'
-  }
-})
+    clear: "auto",
+    type: "memory",
+  },
+});
 ```
+
 #### Passing response interceptor
 
 The Storyblok client lets you pass a function that serves as a response interceptor to axios.
@@ -159,10 +164,10 @@ Usage:
 
 ```javascript
 let Storyblok = new StoryblokClient({
-  accessToken: 'xf5dRMMjltLzKOcNgMaU9Att',
+  accessToken: "xf5dRMMjltLzKOcNgMaU9Att",
   cache: {
-    clear: 'auto',
-    type: 'memory'
+    clear: "auto",
+    type: "memory",
   },
   responseInterceptor: (response) => {
     // one can handle status codes and more with the response
@@ -170,9 +175,9 @@ let Storyblok = new StoryblokClient({
       // handle your status here
     }
     // ALWAYS return the response
-    return response
+    return response;
   },
-})
+});
 ```
 
 #### Method `Storyblok#get`
@@ -180,6 +185,7 @@ let Storyblok = new StoryblokClient({
 With this method you can get single or multiple items. The multiple items are paginated and you will receive 25 items per page by default. If you want to get all items at once use the `getAll` method.
 
 **Parameters**
+
 - `[return]` Promise, Object `response`
 - `path` String, Path (can be `cdn/stories`, `cdn/tags`, `cdn/datasources`, `cdn/links`)
 - `options` Object, Options can be found in the [API documentation](https://www.storyblok.com/docs/api/content-delivery?utm_source=github.com&utm_medium=readme&utm_campaign=storyblok-js-client).
@@ -187,16 +193,15 @@ With this method you can get single or multiple items. The multiple items are pa
 **Example**
 
 ```javascript
-Storyblok
-  .get('cdn/stories/home', {
-    version: 'draft'
-  })
+Storyblok.get("cdn/stories/home", {
+  version: "draft",
+})
   .then((response) => {
     console.log(response);
   })
   .catch((error) => {
     console.log(error);
-  })
+  });
 ```
 
 #### Method `Storyblok#getAll`
@@ -204,6 +209,7 @@ Storyblok
 With this method you can get all items at once.
 
 **Parameters**
+
 - `[return]` Promise, Array of entities
 - `path` String, Path (can be `cdn/stories`, `cdn/tags`, `cdn/datasources`, `cdn/links`)
 - `options` Object, Options can be found in the [API documentation](https://www.storyblok.com/docs/api/content-delivery?utm_source=github.com&utm_medium=readme&utm_campaign=storyblok-js-client).
@@ -212,21 +218,21 @@ With this method you can get all items at once.
 **Example**
 
 ```javascript
-Storyblok
-  .getAll('cdn/stories', {
-    version: 'draft'
-  })
+Storyblok.getAll("cdn/stories", {
+  version: "draft",
+})
   .then((stories) => {
     console.log(stories); // an array
   })
   .catch((error) => {
     console.log(error);
-  })
+  });
 ```
 
 #### Method `Storyblok#post` (only management api)
 
 **Parameters**
+
 - `[return]` Promise, Object `response`
 - `path` String, Path (`spaces/*`, ... see more at https://www.storyblok.com/docs/management-api/authentication?utm_source=github.com&utm_medium=readme&utm_campaign=storyblok-js-client)
 - `payload` Object
@@ -249,6 +255,7 @@ Storyblok
 #### Method `Storyblok#put` (only management api)
 
 **Parameters**
+
 - `[return]` Promise, Object `response`
 - `path` String, Path (`spaces/*`, ... see more at https://www.storyblok.com/docs/management-api/authentication?utm_source=github.com&utm_medium=readme&utm_campaign=storyblok-js-client)
 - `payload` Object
@@ -271,6 +278,7 @@ Storyblok
 #### Method `Storyblok#delete` (only management api)
 
 **Parameters**
+
 - `[return]` Promise, Object `response`
 - `path` String, Path (`spaces/*`, ... see more at https://www.storyblok.com/docs/management-api/authentication)
 - `payload` Object
@@ -278,14 +286,13 @@ Storyblok
 **Example**
 
 ```javascript
-Storyblok
-  .delete('spaces/12345/stories/1', null)
+Storyblok.delete("spaces/12345/stories/1", null)
   .then((response) => {
     console.log(response);
   })
   .catch((error) => {
     console.log(error);
-  })
+  });
 ```
 
 #### Method `Storyblok#flushCache`
@@ -297,7 +304,7 @@ Storyblok
 **Example**
 
 ```javascript
-Storyblok.flushCache()
+Storyblok.flushCache();
 ```
 
 #### Method `Storyblok#setComponentResolver`
@@ -310,17 +317,17 @@ Option 1: Use a switch case definition to render different components:
 
 ```javascript
 Storyblok.setComponentResolver((component, blok) => {
-  switch(component) {
-    case 'my-custom-component':
-      return `<div class="my-component-class">${blok.text}</div>`
+  switch (component) {
+    case "my-custom-component":
+      return `<div class="my-component-class">${blok.text}</div>`;
       break;
-    case 'my-header':
-      return `<h1 class="my-class">${blok.title}</h1>`
+    case "my-header":
+      return `<h1 class="my-class">${blok.title}</h1>`;
       break;
     default:
-      return 'Resolver not defined'
+      return "Resolver not defined";
   }
-})
+});
 ```
 
 Option 2: Dynamically render a component (Example in Vue.js):
@@ -328,111 +335,123 @@ Option 2: Dynamically render a component (Example in Vue.js):
 ```javascript
 Storyblok.setComponentResolver((component, blok) => {
   return `<component :blok='${JSON.stringify(blok)}'
-                     is="${component}"></component>`
-})
+                     is="${component}"></component>`;
+});
 ```
 
 #### Method `Storyblok#richTextResolver.render`
 
 **Parameters**
+
 - `[return]` String, Rendered html of a richtext field
 - `data` Richtext object, An object with a `content` (an array of nodes) field.
 
 **Example**
 
 ```javascript
-Storyblok.richTextResolver.render(blok.richtext)
+Storyblok.richTextResolver.render(blok.richtext);
 ```
 
 ### Code examples
 
 #### Filter by content type values and path
 
-~~~javascript
-const StoryblokClient = require('storyblok-js-client')
+```javascript
+const StoryblokClient = require("storyblok-js-client");
 
 let client = new StoryblokClient({
-  accessToken: 'zlRONoLBKrilxkz2k6fYuwtt'
-})
+  accessToken: "zlRONoLBKrilxkz2k6fYuwtt",
+});
 
 // Filter by boolean value in content type
-client.get('cdn/stories', {
-    version: 'draft',
+client
+  .get("cdn/stories", {
+    version: "draft",
     filter_query: {
       is_featured: {
-        in: true
-      }
-    }
-  }).then((res) => {
-    console.log(res.data.stories)
+        in: true,
+      },
+    },
   })
+  .then((res) => {
+    console.log(res.data.stories);
+  });
 
 // Get all news and author contents
-client.get('cdn/stories', {
-    version: 'draft',
+client
+  .get("cdn/stories", {
+    version: "draft",
     filter_query: {
       component: {
-        in: 'news,author'
-      }
-    }
-  }).then((res) => {
-    console.log(res.data.stories)
+        in: "news,author",
+      },
+    },
   })
+  .then((res) => {
+    console.log(res.data.stories);
+  });
 
 // Get all content from the news folder
-client.get('cdn/stories', {
-    version: 'draft',
-    starts_with: 'news/'
-  }).then((res) => {
-    console.log(res.data.stories)
+client
+  .get("cdn/stories", {
+    version: "draft",
+    starts_with: "news/",
   })
-~~~
+  .then((res) => {
+    console.log(res.data.stories);
+  });
+```
 
 #### Download all content from Storyblok
 
 Following a code example using the storyblok-js-client to backup all content on your local filesystem inside a 'backup' folder.
 
-~~~javascript
-const StoryblokClient = require('storyblok-js-client')
-const fs = require('fs')
+```javascript
+const StoryblokClient = require("storyblok-js-client");
+const fs = require("fs");
 
 let client = new StoryblokClient({
-  accessToken: 'WcdDcNgDm59K72EbsQg8Lgtt'
-})
+  accessToken: "WcdDcNgDm59K72EbsQg8Lgtt",
+});
 
-let lastPage = 1
+let lastPage = 1;
 let getStories = (page) => {
-  client.get('cdn/stories', {
-      version: 'draft',
+  client
+    .get("cdn/stories", {
+      version: "draft",
       per_page: 25,
-      page: page
-    }).then((res) => {
-
-    let stories = res.data.stories
-    stories.forEach((story) => {
-      fs.writeFile('./backup/' + story.id + '.json', JSON.stringify(story), (err) => {
-        if (err) throw err
-
-        console.log(story.full_slug + ' backed up')
-      })
+      page: page,
     })
+    .then((res) => {
+      let stories = res.data.stories;
+      stories.forEach((story) => {
+        fs.writeFile(
+          "./backup/" + story.id + ".json",
+          JSON.stringify(story),
+          (err) => {
+            if (err) throw err;
 
-    let total = res.total
-    lastPage = Math.ceil((res.total / res.perPage))
+            console.log(story.full_slug + " backed up");
+          }
+        );
+      });
 
-    if (page <= lastPage) {
-      page++
-      getStories(page)
-    }
-  })
-}
+      let total = res.total;
+      lastPage = Math.ceil(res.total / res.perPage);
 
-getStories(1)
-~~~
+      if (page <= lastPage) {
+        page++;
+        getStories(page);
+      }
+    });
+};
+
+getStories(1);
+```
 
 #### Initialize with a proxy server
 
-~~~javascript
+```javascript
 const proxy = {
   host: host,
   port: port,
@@ -447,10 +466,9 @@ const storyblok = new StoryblokClient({
   https: false,
   proxy: proxy
 })
-~~~
+```
 
 Read more about proxy settings in axios [documentation](https://github.com/axios/axios)
-
 
 #### How to define a custom schema for the RichTextRenderer
 
@@ -458,101 +476,104 @@ To define how to add some classes to specific html attributes rendered by the ri
 
 Below, you can check an example:
 
-~~~javascript
-const StoryblokClient = require('storyblok-js-client')
+```javascript
+const StoryblokClient = require("storyblok-js-client");
 
 // the default schema copied and updated
-const MySchema = require('./my-schema')
+const MySchema = require("./my-schema");
 
 let client = new StoryblokClient({
-  accessToken: 'WcdDcNgDm59K72EbsQg8Lgtt',
-  richTextSchema: MySchema
-})
+  accessToken: "WcdDcNgDm59K72EbsQg8Lgtt",
+  richTextSchema: MySchema,
+});
 
-client.richTextResolver.render(data)
-~~~
+client.richTextResolver.render(data);
+```
 
 If you just want to change the way a specific tag is rendered you can import the default schema and extend it. Following an example that will render headlines with classes:
 
 Instead of `<p>Normal headline</p><h3><span class="margin-bottom-fdsafdsada">Styled headline</span></h3>` it will render `<p>Normal headline</p><h3 class="margin-bottom-fdsafdsada">Styled headline</h3>`.
 
-~~~javascript
+```javascript
+const RichTextResolver = require("storyblok-js-client/dist/richTextResolver");
+const MySchema = require("storyblok-js-client/dist/schema");
 
-const RichTextResolver = require('storyblok-js-client/dist/richTextResolver')
-const MySchema = require('storyblok-js-client/dist/schema')
+MySchema.nodes.heading = function (node) {
+  let attrs = {};
 
-MySchema.nodes.heading = function(node) {
-  let attrs = {}
-
-  if (node.content &&
-      node.content.length === 1 &&
-      node.content[0].marks &&
-      node.content[0].marks.length === 1 &&
-      node.content[0].marks[0].type === 'styled') {
-    attrs = node.content[0].marks[0].attrs
-    delete node.content[0].marks
+  if (
+    node.content &&
+    node.content.length === 1 &&
+    node.content[0].marks &&
+    node.content[0].marks.length === 1 &&
+    node.content[0].marks[0].type === "styled"
+  ) {
+    attrs = node.content[0].marks[0].attrs;
+    delete node.content[0].marks;
   }
 
   return {
-    tag: [{
-      tag: `h${node.attrs.level}`,
-      attrs: attrs
-    }]
-  }
-}
+    tag: [
+      {
+        tag: `h${node.attrs.level}`,
+        attrs: attrs,
+      },
+    ],
+  };
+};
 
-let rteResolver = new RichTextResolver(MySchema)
+let rteResolver = new RichTextResolver(MySchema);
 let rendered = rteResolver.render({
-  "content": [
+  content: [
     {
-      "content": [
+      content: [
         {
-          "text": "Normal headline",
-          "type": "text"
-        }
+          text: "Normal headline",
+          type: "text",
+        },
       ],
-      "type": "paragraph"
+      type: "paragraph",
     },
     {
-      "attrs": {
-        "level": 3
+      attrs: {
+        level: 3,
       },
-      "content": [
+      content: [
         {
-          "marks": [
+          marks: [
             {
-              "attrs": {
-                "class": "margin-bottom-fdsafdsada"
+              attrs: {
+                class: "margin-bottom-fdsafdsada",
               },
-              "type": "styled"
-            }
+              type: "styled",
+            },
           ],
-          "text": "Styled headline",
-          "type": "text"
-        }
+          text: "Styled headline",
+          type: "text",
+        },
       ],
-      "type": "heading"
-    }
+      type: "heading",
+    },
   ],
-  "type": "doc"
-})
+  type: "doc",
+});
 
-console.log(rendered)
-~~~
+console.log(rendered);
+```
 
 ## 🔗 Related Links
 
-* **[Storyblok & Javascript on GitHub](https://github.com/search?q=org%3Astoryblok+topic%3Ajavascript)**: Check all of our Javascript open source repos;
-* **[Technology Hub](https://www.storyblok.com/technologies?utm_source=github.com&utm_medium=readme&utm_campaign=storyblok-js-client)**: We prepared technology hubs so that you can find selected beginner tutorials, videos, boilerplates, and even cheatsheets all in one place;
-* **[Storyblok CLI](https://github.com/storyblok/storyblok)**: A simple CLI for scaffolding Storyblok projects and fieldtypes.
+- **[Storyblok & Javascript on GitHub](https://github.com/search?q=org%3Astoryblok+topic%3Ajavascript)**: Check all of our Javascript open source repos;
+- **[Technology Hub](https://www.storyblok.com/technologies?utm_source=github.com&utm_medium=readme&utm_campaign=storyblok-js-client)**: We prepared technology hubs so that you can find selected beginner tutorials, videos, boilerplates, and even cheatsheets all in one place;
+- **[Storyblok CLI](https://github.com/storyblok/storyblok)**: A simple CLI for scaffolding Storyblok projects and fieldtypes.
 
 ## ℹ️ More Resources
 
 ### Support
 
-* Bugs or Feature Requests? [Submit an issue](../../../issues/new);
+- Bugs or Feature Requests? [Submit an issue](../../../issues/new);
 
-* Do you have questions about Storyblok or you need help? [Join our Discord Community](https://discord.gg/jKrbAMz).
+- Do you have questions about Storyblok or you need help? [Join our Discord Community](https://discord.gg/jKrbAMz).
 
 ### Contributing
 
