@@ -40,7 +40,6 @@ const factoryOutputObject = (format) => {
     exports: 'default',
     name: 'StoryblokClient',
     file: makeFileName(format),
-    inlineDynamicImports: true,
   }
 }
 
