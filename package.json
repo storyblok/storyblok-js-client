@@ -55,7 +55,7 @@
   },
   "peerDependencies": {},
   "dependencies": {
-    "node-fetch": "2.6.7",
+    "isomorphic-fetch": "^3.0.0",
     "rollup-plugin-mjs-entry": "^0.1.1"
   },
   "release": {

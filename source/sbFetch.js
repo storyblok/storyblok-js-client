@@ -1,5 +1,7 @@
 import { stringify } from './helpers'
 
+import fetch from 'isomorphic-fetch'
+
 class SbFetch {
   constructor($c) {
     this.baseURL = $c.baseURL,
@@ -70,21 +72,12 @@ class SbFetch {
     const timeout = setTimeout(() => controller.abort(), this.timeout)
 
     try {
-      let response = null
-
-      const options = {
+      const response = await fetch(url, {
         method,
         headers: this.headers,
         body,
         signal,
-      }
-
-      if (typeof window === 'undefined') {
-        const nodeFetch = await import('node-fetch')
-        response = await nodeFetch(url, options)
-      } else {
-        response = await fetch(url, options)
-      }
+      })
   
       clearTimeout(timeout)
   

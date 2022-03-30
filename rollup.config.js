@@ -95,7 +95,7 @@ export default [
     ],
     plugins,
     // when standalone, put all external libraries into final code
-    external: enableStandalone ? [] : ['node-fetch']
+    external: enableStandalone ? [] : ['isomorphic-fetch']
   },
 
   // Richtext

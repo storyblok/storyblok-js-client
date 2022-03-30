@@ -109,6 +109,6 @@ describe('test resolvingRelations', () => {
     }
     await Storyblok.resolveStories(singleStory, {version: 'published', resolve_relations: 'news.author,author.friend'})
 
-    expect(singleStory.stories[0].content.author.content.friend.name).toBe('Joes friend')
+    expect(singleStory.rels[1].name).toBe('Joes friend')
   })
 })
