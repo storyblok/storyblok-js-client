@@ -1,5 +1,5 @@
 function isFinite(value) {
-  if (typeof value !== 'number') {
+  if (typeof value !== "number") {
     return false;
   }
 
@@ -12,11 +12,11 @@ function isFinite(value) {
 
 function throttledQueue(fn, limit, interval) {
   if (!isFinite(limit)) {
-    throw new TypeError('Expected `limit` to be a finite number');
+    throw new TypeError("Expected `limit` to be a finite number");
   }
 
   if (!isFinite(interval)) {
-    throw new TypeError('Expected `interval` to be a finite number');
+    throw new TypeError("Expected `interval` to be a finite number");
   }
 
   var queue = [];
@@ -55,7 +55,7 @@ function throttledQueue(fn, limit, interval) {
         resolve: resolve,
         reject: reject,
         args: args,
-        self: that
+        self: that,
       });
 
       if (activeCount < limit) {
@@ -78,8 +78,8 @@ function throttledQueue(fn, limit, interval) {
 }
 
 function AbortError() {
-  Error.call(this, 'Throttled function aborted');
-  this.name = 'AbortError';
+  Error.call(this, "Throttled function aborted");
+  this.name = "AbortError";
 }
 
 throttledQueue.AbortError = AbortError;
