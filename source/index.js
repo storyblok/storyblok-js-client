@@ -364,7 +364,6 @@ class Storyblok {
     for (const story of response.stories) {
       this.iterateTree(story, assets)
     }
-
   }
 
   cacheResponse(url, params, retries) {
