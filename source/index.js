@@ -223,7 +223,6 @@ class Storyblok {
     fields.forEach(($f) => {
       if (jtree.id === $f.id) {
         jtree.original = $f
-        jtree._stopResolving = true
       }
     })
   }
