@@ -219,7 +219,7 @@ class Storyblok {
     }
   }
 
-  _insertAssetsRelations(jtree, treeItem, fields) {
+  _insertAssetsRelations(jtree, fields) {
     fields.forEach(($f) => {
       if (jtree.id === $f.id) {
         jtree.original = $f
@@ -246,7 +246,7 @@ class Storyblok {
             this._insertRelations(jtree, treeItem, fields);
             this._insertLinks(jtree, treeItem);
           } else if (jtree.fieldtype === "asset") {
-            this._insertAssetsRelations(jtree, treeItem, fields);
+            this._insertAssetsRelations(jtree, fields);
           }
           enrich(jtree[treeItem]);
         }
