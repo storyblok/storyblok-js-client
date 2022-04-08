@@ -219,6 +219,15 @@ class Storyblok {
     }
   }
 
+  _insertAssetsRelations(jtree, treeItem, fields) {
+    fields.forEach(($f) => {
+      if (jtree.id === $f.id) {
+        jtree.original = $f
+        jtree._stopResolving = true
+      }
+    })
+  }
+
   iterateTree(story, fields) {
     let enrich = (jtree) => {
       if (jtree == null) {
@@ -236,6 +245,8 @@ class Storyblok {
           if ((jtree.component && jtree._uid) || jtree.type === "link") {
             this._insertRelations(jtree, treeItem, fields);
             this._insertLinks(jtree, treeItem);
+          } else if (jtree.fieldtype === "asset") {
+            this._insertAssetsRelations(jtree, treeItem, fields);
           }
           enrich(jtree[treeItem]);
         }
@@ -343,6 +354,19 @@ class Storyblok {
     }
   }
 
+  resolveAssets(response) {
+    const assets = []
+
+    for (const asset of response.assets) {
+      assets.push(asset)
+    }
+
+    for (const story of response.stories) {
+      this.iterateTree(story, assets)
+    }
+
+  }
+
   cacheResponse(url, params, retries) {
     if (typeof retries === "undefined") {
       retries = 0;
@@ -370,6 +394,10 @@ class Storyblok {
         });
 
         let response = { data: res.data, headers: res.headers };
+
+        if (response.data.assets?.length) {
+          this.resolveAssets(response.data)
+        }
 
         if (res.headers["per-page"]) {
           response = Object.assign({}, response, {
