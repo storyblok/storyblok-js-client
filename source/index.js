@@ -354,9 +354,9 @@ class Storyblok {
   }
 
   resolveAssetsRelations(response) {
-    const { assets } = response
+    const { assets, stories } = response
 
-    for (const story of response.stories) {
+    for (const story of stories) {
       this.iterateTree(story, assets)
     }
   }
