@@ -354,7 +354,7 @@ class Storyblok {
     }
   }
 
-  resolveAssets(response) {
+  resolveAssetsRelations(response) {
     const assets = []
 
     for (const asset of response.assets) {
@@ -395,7 +395,7 @@ class Storyblok {
         let response = { data: res.data, headers: res.headers };
 
         if (response.data.assets?.length) {
-          this.resolveAssets(response.data)
+          this.resolveAssetsRelations(response.data)
         }
 
         if (res.headers["per-page"]) {
