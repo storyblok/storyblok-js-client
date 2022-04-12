@@ -226,9 +226,6 @@ class Storyblok {
         jtree.original.filename = jtree.filename
         jtree.original.filename = jtree.original.filename.replace('https://', 'https://s3.amazonaws.com/')
         delete jtree.original['s3_filename']
-        if (jtree.original.focus === null) {
-          jtree.original.focus = ''
-        }
       }
     })
   }
