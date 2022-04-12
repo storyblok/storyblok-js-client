@@ -395,7 +395,7 @@ class Storyblok {
 
         let response = { data: res.data, headers: res.headers };
 
-        if (response.data.assets?.length) {
+        if (response.data.assets && response.data.assets.length) {
           this.resolveAssetsRelations(response.data)
         }
 
