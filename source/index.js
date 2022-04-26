@@ -219,6 +219,19 @@ class Storyblok {
     }
   }
 
+  _insertAssetsRelations(jtree, fields) {
+    fields.forEach(($f) => {
+      if (jtree.id === $f.id) {
+        jtree.original = $f
+        jtree.original.filename = jtree.filename
+        jtree.original.filename = jtree.original.filename.includes('https://s3.amazonaws.com/') ?
+          jtree.original.filename :
+          jtree.original.filename.replace('https://', 'https://s3.amazonaws.com/')
+        delete jtree.original['s3_filename']
+      }
+    })
+  }
+
   iterateTree(story, fields) {
     let enrich = (jtree) => {
       if (jtree == null) {
@@ -236,6 +249,8 @@ class Storyblok {
           if ((jtree.component && jtree._uid) || jtree.type === "link") {
             this._insertRelations(jtree, treeItem, fields);
             this._insertLinks(jtree, treeItem);
+          } else if (jtree.fieldtype === "asset") {
+            this._insertAssetsRelations(jtree, fields);
           }
           enrich(jtree[treeItem]);
         }
@@ -343,6 +358,18 @@ class Storyblok {
     }
   }
 
+  resolveAssetsRelations(response) {
+    const { assets, stories, story } = response
+
+    if (stories) {
+      for (const $s of stories) {
+        this.iterateTree($s, assets)
+      }
+    } else {
+      this.iterateTree(story, assets)
+    }
+  }
+
   cacheResponse(url, params, retries) {
     if (typeof retries === "undefined") {
       retries = 0;
@@ -370,6 +397,10 @@ class Storyblok {
         });
 
         let response = { data: res.data, headers: res.headers };
+
+        if (response.data.assets && response.data.assets.length) {
+          this.resolveAssetsRelations(response.data)
+        }
 
         if (res.headers["per-page"]) {
           response = Object.assign({}, response, {
