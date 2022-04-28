@@ -336,7 +336,7 @@ class Storyblok {
       await this.resolveRelations(responseData, params)
     }
 
-    if (['1', 'story', 'url'].indexOf(params.resolve_links) > -1 && responseData.links || responseData.rels) {
+    if (['1', 'story', 'url'].indexOf(params.resolve_links) > -1 && (responseData.links || responseData.rels)) {
       await this.resolveLinks(responseData, params)
     }
 
