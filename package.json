@@ -1,11 +1,10 @@
 {
   "name": "storyblok-js-client",
-  "type": "module",
   "version": "0.0.0-development",
   "description": "Universal JavaScript SDK for Storyblok's API",
   "types": "./types/index.d.ts",
-  "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
+  "main": "./dist/index.cjs.js",
+  "module": "./dist/index.es.js",
   "unpkg": "./dist/index.standalone.js",
   "jsdelivr": "./dist/index.standalone.js",
   "source": "source/index.js",
@@ -15,14 +14,10 @@
     "types",
     "test"
   ],
-  "exports": {
-    ".": {
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
-    }
-  },
   "scripts": {
     "clean": "rimraf dist/",
+    "lint": "eslint --max-warnings=0 'source/**/*.{ts,js}'",
+    "prettier": "prettier './**/*.js' './**/*.ts' './**/*.md' --write",
     "build": "run-s clean build:**",
     "build:es5": "ENABLE_BABEL=yes rollup --config",
     "build:es6": "rollup --config",
@@ -39,7 +34,6 @@
     "storyblok"
   ],
   "author": "Alexander Feiglstorfer <delooks@gmail.com>",
-  "license": "MIT",
   "bugs": {
     "url": "https://github.com/storyblok/storyblok-js-client/issues"
   },
@@ -48,6 +42,8 @@
     "@babel/core": "^7.11.6",
     "@babel/plugin-transform-runtime": "^7.11.5",
     "@babel/preset-env": "^7.11.5",
+    "@commitlint/cli": "^16.2.1",
+    "@commitlint/config-conventional": "^16.2.1",
     "@rollup/plugin-babel": "^5.2.1",
     "@rollup/plugin-commonjs": "^15.0.0",
     "@rollup/plugin-json": "^4.1.0",
@@ -55,6 +51,9 @@
     "axios": "^0.21.1",
     "babel-jest": "^26.3.0",
     "core-js": "^3.6.5",
+    "eslint": "^8.9.0",
+    "eslint-config-prettier": "^8.4.0",
+    "husky": "^7.0.4",
     "jest": "^26.4.2",
     "npm-run-all": "^4.1.5",
     "rimraf": "^3.0.2",
@@ -65,6 +64,7 @@
     "axios": "^0.21.1"
   },
   "dependencies": {
+    "prettier": "^2.5.1",
     "rollup-plugin-mjs-entry": "^0.1.1"
   },
   "release": {
@@ -79,5 +79,34 @@
         "prerelease": true
       }
     ]
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "eslintConfig": {
+    "env": {
+      "node": true
+    },
+    "parserOptions": {
+      "ecmaVersion": "latest",
+      "sourceType": "module"
+    },
+    "extends": [
+      "eslint:recommended",
+      "prettier"
+    ],
+    "ignorePatterns": "dist/",
+    "rules": {
+      "no-undef": 0,
+      "no-async-promise-executor": 0
+    }
+  },
+  "prettier": {
+    "trailingComma": "es5",
+    "tabWidth": 2,
+    "semi": true,
+    "singleQuote": false
   }
 }
