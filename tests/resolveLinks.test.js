@@ -60,7 +60,7 @@ describe("test resolvingLinks", () => {
     });
 
     expect(singleStory.stories[0].content.author.story.name).toBe(
-      "Testcontent 24"
+      "Joe Doe"
     );
   });
 });
