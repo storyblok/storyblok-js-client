@@ -14,7 +14,7 @@ describe("test resolvingRelations", () => {
         content: {
           component: "news",
           _uid: "567",
-          author: { uuid: "e101b4fc-3736-4f82-8c8e-788e38d5d286", name: "Joe Doe" },
+          author: "e101b4fc-3736-4f82-8c8e-788e38d5d286",
         },
       },
       rels: [{ uuid: "e101b4fc-3736-4f82-8c8e-788e38d5d286", name: "Joe Doe" }],
@@ -34,7 +34,7 @@ describe("test resolvingRelations", () => {
           content: {
             component: "news",
             _uid: "567",
-            author: { uuid: "e101b4fc-3736-4f82-8c8e-788e38d5d286", name: "Joe Doe" },
+            author: "e101b4fc-3736-4f82-8c8e-788e38d5d286",
           },
         },
       ],
@@ -55,7 +55,7 @@ describe("test resolvingRelations", () => {
           content: {
             component: "news",
             _uid: "567",
-            author: { uuid: "e101b4fc-3736-4f82-8c8e-788e38d5d286", name: "Joe Doe" },
+            author: "e101b4fc-3736-4f82-8c8e-788e38d5d286",
           },
         },
       ],
@@ -66,7 +66,7 @@ describe("test resolvingRelations", () => {
       resolve_relations: "news.author",
     });
 
-    expect(singleStory.stories[0].content.author.name).toBe("Joe Doe");
+    expect(singleStory.stories[0].content.author.name).toBe("Testcontent 24");
   });
 
   test("resolveRelations should insert relations of multiple stories with 2 extra api calls", async () => {
@@ -80,7 +80,7 @@ describe("test resolvingRelations", () => {
           content: {
             component: "news",
             _uid: "567",
-            author: { uuid: "e101b4fc-3736-4f82-8c8e-788e38d5d286", name: "Joe Doe" },
+            author: "e101b4fc-3736-4f82-8c8e-788e38d5d286",
           },
         },
       ],
@@ -91,7 +91,7 @@ describe("test resolvingRelations", () => {
       resolve_relations: "news.author",
     });
 
-    expect(singleStory.stories[0].content.author.name).toBe("Joe Doe");
+    expect(singleStory.stories[0].content.author.name).toBe("Testcontent 24");
   });
 
   test("resolveRelations should insert relations of relations", async () => {
@@ -126,7 +126,7 @@ describe("test resolvingRelations", () => {
       resolve_relations: "news.author,author.friend",
     });
 
-    expect(singleStory.rels[1].name).toBe(
+    expect(singleStory.stories[0].content.author.content.friend.name).toBe(
       "Joes friend"
     );
   });
