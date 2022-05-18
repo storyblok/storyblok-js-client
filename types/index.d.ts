@@ -127,6 +127,8 @@ export interface StoryData<
     name: string | null;
     lang: StoryData["lang"];
   }[];
+  /** only present with translated_slugs */
+  default_full_slug?: string;
   sort_by_date: string | null;
   tag_list: string[];
   uuid: string;
