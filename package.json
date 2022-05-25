@@ -20,9 +20,9 @@
     "prettier": "prettier './**/*.js' './**/*.ts' './**/*.md' --write",
     "build": "run-s clean tsc build:**",
     "build:es5": "ENABLE_BABEL=yes rollup --config",
-    "build:es6": "ENABLE_BABEL=yes rollup --config",
+    "build:es6": "ENABLE_BABEL=yes ES6=yes rollup --config",
     "build:standalone:es5": "STANDALONE=yes ENABLE_BABEL=yes rollup --config",
-    "build:standalone:es6": "STANDALONE=yes ENABLE_BABEL=yes rollup --config",
+    "build:standalone:es6": "STANDALONE=yes ENABLE_BABEL=yes ES6=yes rollup --config",
     "test": "NODE_ENV='test' jest",
     "tsc": "tsc",
     "prepare": "npm run build"

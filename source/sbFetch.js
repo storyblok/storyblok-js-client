@@ -12,8 +12,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const helpers_1 = require("helpers");
 const isomorphic_fetch_1 = __importDefault(require("isomorphic-fetch"));
+const sbHelpers_1 = require("./sbHelpers");
 var Method;
 (function (Method) {
     Method["GET"] = "get";
@@ -77,7 +77,8 @@ class SbFetch {
             const url = new URL(`${this.baseURL}${this.url}`);
             let body = null;
             if (method === 'get') {
-                url.search = (0, helpers_1.stringify)(this.parameters);
+                const helper = new sbHelpers_1.Helpers();
+                url.search = helper.stringify(this.parameters);
             }
             else {
                 body = JSON.stringify(this.parameters);
@@ -102,7 +103,8 @@ class SbFetch {
                 }
             }
             catch ($e) {
-                return $e;
+                const error = $e;
+                return error;
             }
         });
     }

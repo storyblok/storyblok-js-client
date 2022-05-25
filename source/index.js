@@ -354,51 +354,54 @@ class Storyblok {
 			}
 
 			try {
-				let res = this.throttle('get', url, params)
+				(async () => {
+					let res = await this.throttle('get', url, params)
 
-				let response = { data: res.data, headers: res.headers }
-
-				if (res.headers['per-page']) {
-					response = Object.assign({}, response, {
-						perPage: parseInt(res.headers['per-page']),
-						total: parseInt(res.headers['total']),
-					})
-				}
-
-				if (res.status != 200) {
-					return reject(res)
-				}
-
-				if (response.data.story || response.data.stories) {
-					this.resolveStories(response.data, params)
-				}
-
-				if (params.version === 'published' && url != '/cdn/spaces/me') {
-					provider.set(cacheKey, response)
-				}
-
-				if (response.data.cv) {
-					if (
-						params.version == 'draft' &&
-            cacheVersions[params.token] != response.data.cv
-					) {
-						this.flushCache()
+					let response = { data: res.data, headers: res.headers }
+  
+					if (res.headers['per-page']) {
+						response = Object.assign({}, response, {
+							perPage: parseInt(res.headers['per-page']),
+							total: parseInt(res.headers['total']),
+						})
 					}
-
-					cacheVersions[params.token] = response.data.cv
-				}
-
-				resolve(response)
+  
+					if (res.status != 200) {
+						return reject(res)
+					}
+  
+					if (response.data.story || response.data.stories) {
+						await this.resolveStories(response.data, params)
+					}
+  
+					if (params.version === 'published' && url != '/cdn/spaces/me') {
+						provider.set(cacheKey, response)
+					}
+  
+					if (response.data.cv) {
+						if (
+							params.version == 'draft' &&
+              cacheVersions[params.token] != response.data.cv
+						) {
+							this.flushCache()
+						}
+  
+						cacheVersions[params.token] = response.data.cv
+					}
+  
+					resolve(response)
+				})()
 			} catch (error) {
-				if (error.response && error.response.status === 429) {
-					retries = retries + 1
+				(async () => {
+					if (error.response && error.response.status === 429) {
+						retries = retries + 1
 
-					if (retries < this.maxRetries) {
-						delay(1000 * retries)
-						return this.cacheResponse(url, params, retries).then(resolve).catch(reject)
+						if (retries < this.maxRetries) {
+							await delay(1000 * retries)
+							return this.cacheResponse(url, params, retries).then(resolve).catch(reject)
+						}
 					}
-				}
-				reject(error.message)
+					reject(error.message)})
 			}
 		})
 	}

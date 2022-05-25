@@ -4,110 +4,115 @@ import rollupResolve from '@rollup/plugin-node-resolve'
 import rollupJson from '@rollup/plugin-json'
 import rollupCommonjs from '@rollup/plugin-commonjs'
 
-const pkg = require("./package.json");
+const pkg = require('./package.json')
 
-const enableBabel = process.env.ENABLE_BABEL === "yes";
-const enableStandalone = process.env.STANDALONE === "yes";
+const enableBabel = process.env.ENABLE_BABEL === 'yes'
+const isEs6 = process.env.ES6 === 'yes'
+const enableStandalone = process.env.STANDALONE === 'yes'
 
-const getDistFolder = (fileName = "") => {
-  return `dist/${enableBabel ? "es5/" : ""}${fileName}`;
-};
+const getDistFolder = (fileName = '') => {
+	if (isEs6) {
+		return `dist/${fileName}`
+	}
+	return `dist/${enableBabel ? 'es5/' : ''}${fileName}`
+}
 
-const year = new Date().getFullYear();
+const year = new Date().getFullYear()
 
-const yearString = year === 2020 ? "2020" : `2020-${year}`;
+const yearString = year === 2020 ? '2020' : `2020-${year}`
 
 const banner = `/*!
  * ${pkg.name} v${pkg.version}
  * ${pkg.description}
  * (c) ${yearString} Stobylok Team
- */`;
+ */`
 
 const richtextBanner = `/*!
  * RichTextResolver v${pkg.version}
  * ${pkg.description}
  * (c) ${yearString} Stobylok Team
- */`;
+ */`
+
 
 const makeFileName = (format, file = 'index') => {
-  return getDistFolder(`${file}.${format}.js`)
+	return getDistFolder(`${file}.${format}.js`)
 }
 
 const factoryOutputObject = (format) => {
-  return {
-    format,
-    banner,
-    exports: 'default',
-    name: 'StoryblokClient',
-    file: makeFileName(format),
-  }
+	return {
+		format,
+		banner,
+		exports: 'default',
+		name: 'StoryblokClient',
+		file: makeFileName(format),
+	}
 }
 
 const factoryOutputStandalone = () => {
-  return {
-    ...factoryOutputObject("standalone"),
-    format: "iife",
-  };
-};
+	return {
+		...factoryOutputObject('standalone'),
+		format: 'iife',
+	}
+}
 
 const plugins = [
-  // to generate file with .mjs extension
+	// to generate file with .mjs extension
 
-  // to resolve correctly non-esmodules packages
-  rollupResolve({ jsnext: true, preferBuiltins: true, browser: true}),
+	// to resolve correctly non-esmodules packages
+	rollupResolve({ jsnext: true, preferBuiltins: true, browser: true}),
 
-  // to include, when not external, non-esmodules packages (axios and qs e.g)
-  rollupCommonjs(),
+	// to include, when not external, non-esmodules packages (axios and qs e.g)
+	rollupCommonjs(),
 
-  enableStandalone && rollupJson(),
+	enableStandalone && rollupJson(),
 
-  // to minify the code
-  terser(),
+	// to minify the code
+	terser(),
 
-  // to run babel
-  enableBabel &&
+	// to run babel
+	enableBabel &&
     babel({
-      babelHelpers: "runtime",
-      exclude: "node_modules/**", // only transpile our source code
+    	babelHelpers: 'runtime',
+    	exclude: 'node_modules/**', // only transpile our source code
     }),
-].filter(Boolean);
+].filter(Boolean)
 
 const factoryRichTextOutput = (format) => {
-  return {
-    format,
-    banner: richtextBanner,
-    exports: "default",
-    name: "RichTextResolver",
-    file: makeFileName(format, "rich-text-resolver"),
-  };
-};
+	return {
+		format,
+		banner: richtextBanner,
+		exports: 'default',
+		name: 'RichTextResolver',
+		file: makeFileName(format, 'rich-text-resolver'),
+	}
+}
 
 export default [
-  // StoryblokClient
-  {
-    input: 'source/index.js',
-    output: enableStandalone ? [
-      factoryOutputStandalone()
-    ] : [
-      factoryOutputObject('es'),
-      factoryOutputObject('cjs')
-    ],
-    plugins,
-    // when standalone, put all external libraries into final code
-    external: enableStandalone ? [] : ['isomorphic-fetch']
-  },
+	// StoryblokClient
+	{
+		input: 'source/index.js',
+		output: enableStandalone ? [
+			factoryOutputStandalone()
+		] : [
+			factoryOutputObject('es'),
+			factoryOutputObject('cjs')
+		],
+		plugins,
+		// when standalone, put all external libraries into final code
+		external: enableStandalone ? [] : ['isomorphic-fetch']
+	},
 
-  // Richtext
-  {
-    input: "source/richTextResolver.js",
-    output: enableStandalone
-      ? [
-          {
-            ...factoryRichTextOutput("standalone"),
-            format: "iife",
-          },
-        ]
-      : [factoryRichTextOutput("cjs")],
-    plugins,
-  },
-];
+	// Richtext
+	{
+		input: 'source/richTextResolver.js',
+		output: enableStandalone
+			? [
+				{
+					...factoryRichTextOutput('standalone'),
+					format: 'iife',
+				},
+			]
+			: [factoryRichTextOutput('cjs')],
+		plugins,
+	},
+]

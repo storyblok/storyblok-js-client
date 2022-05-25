@@ -1,6 +1,5 @@
-import { stringify } from 'helpers'
-
 import fetch from 'isomorphic-fetch'
+import { Helpers } from './sbHelpers'
 
 interface ISbFetch {
   baseURL: string,
@@ -33,7 +32,7 @@ class SbFetch {
   responseInterceptor?: Function
   ejectInterceptor: boolean
   url: string
-  parameters: Object
+  parameters: object
 
   private constructor($c: ISbFetch) {
     this.baseURL = $c.baseURL,
@@ -45,25 +44,25 @@ class SbFetch {
     this.parameters = {}
   }
 
-  public get(url: string, param: Object) {
+  public get(url: string, param: object) {
     this.url = url
     this.parameters = param
     return this._methodHandler(Method.GET)
   }
 
-  public post(url: string, param: Object) {
+  public post(url: string, param: object) {
     this.url = url
     this.parameters = param
     return this._methodHandler(Method.POST)
   }
 
-  public put(url: string, param: Object) {
+  public put(url: string, param: object) {
     this.url = url
     this.parameters = param
     return this._methodHandler(Method.PUT)
   }
 
-  public delete(url: string, param: Object) {
+  public delete(url: string, param: object) {
     this.url = url
     this.parameters = param
     return this._methodHandler(Method.DELETE)
@@ -93,12 +92,13 @@ class SbFetch {
     return response
   }
 
-  private async _methodHandler(method: Method) {
+  private async _methodHandler(method: Method): Promise<IResponse | Error> {
     const url = new URL(`${this.baseURL}${this.url}`)
     let body = null
 
     if(method === 'get') {
-      url.search = stringify(this.parameters)
+      const helper = new Helpers()
+      url.search = helper.stringify(this.parameters)
     } else {
       body = JSON.stringify(this.parameters)
     }
@@ -125,8 +125,9 @@ class SbFetch {
       } else {
         return this._statusHandler(res)
       }
-    } catch ($e) {
-      return $e
+    } catch ($e: TypeError | RangeError | EvalError | any) {
+      const error: Error = $e
+      return error
     }
   }
 
