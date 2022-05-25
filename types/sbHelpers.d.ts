@@ -1,7 +1,7 @@
 interface IParam extends Object {
     [key: string]: any;
 }
-export declare class Helpers {
+export declare class SbHelpers {
     /**
         * @method stringify
         * @param  {Object} obj

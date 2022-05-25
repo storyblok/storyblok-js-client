@@ -1,5 +1,5 @@
 import fetch from 'isomorphic-fetch'
-import { Helpers } from './sbHelpers'
+import { SbHelpers } from './sbHelpers'
 
 interface ISbFetch {
   baseURL: string,
@@ -97,7 +97,7 @@ class SbFetch {
     let body = null
 
     if(method === 'get') {
-      const helper = new Helpers()
+      const helper = new SbHelpers()
       url.search = helper.stringify(this.parameters)
     } else {
       body = JSON.stringify(this.parameters)

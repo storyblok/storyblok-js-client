@@ -3,7 +3,7 @@ interface IParam extends Object {
 	[key: string]: any
 }
 
-export class Helpers {
+export class SbHelpers {
 
 	/**
 		* @method stringify

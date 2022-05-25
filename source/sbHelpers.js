@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Helpers = void 0;
-class Helpers {
+exports.SbHelpers = void 0;
+class SbHelpers {
     /**
         * @method stringify
         * @param  {Object} obj
@@ -32,4 +32,4 @@ class Helpers {
         return pairs.join('&');
     }
 }
-exports.Helpers = Helpers;
+exports.SbHelpers = SbHelpers;

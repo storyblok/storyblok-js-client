@@ -77,7 +77,7 @@ class SbFetch {
             const url = new URL(`${this.baseURL}${this.url}`);
             let body = null;
             if (method === 'get') {
-                const helper = new sbHelpers_1.Helpers();
+                const helper = new sbHelpers_1.SbHelpers();
                 url.search = helper.stringify(this.parameters);
             }
             else {
