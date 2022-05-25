@@ -5,7 +5,7 @@ import fetch from 'isomorphic-fetch'
 interface ISbFetch {
   baseURL: string,
   timeout?: number,
-  headers?: HeadersInit,
+  headers: HeadersInit,
   responseInterceptor?: Function,
 }
 
