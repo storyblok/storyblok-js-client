@@ -132,6 +132,11 @@ As we removed Axios, some developers would want to use the SDK under Node's envi
 As a part of our efforts to make the SDK more lightweight to web users, under the hood, the import of node-fetch is conditional depending either the app is under Node's environment or not.
 
 ## Documentation
+#### Assets structure compatibility
+
+We added retro-compatibility when using `resolve_assets: 1` parameter under V2. Now, if you are using our V2 client, you should receive the assets structure just the same as V1.
+
+### Documentation
 
 #### Class `Storyblok`
 
