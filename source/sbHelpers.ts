@@ -1,4 +1,4 @@
-interface IParam extends Object {
+interface IParams extends Object {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	[key: string]: any
 }
@@ -7,18 +7,18 @@ export class SbHelpers {
 
 	/**
 		* @method stringify
-		* @param  {Object} obj
+		* @param  {Object} params
 		* @param  {String} prefix
 		* @param  {Boolean} isArray
 		* @return {String} Stringified object
 		*/
-	public stringify(obj: IParam, prefix?: string, isArray?: boolean): string {
+	public stringify(params: IParams, prefix?: string, isArray?: boolean): string {
 		const pairs = []
-		for (const key in obj) {
-			if (!Object.prototype.hasOwnProperty.call(obj, key)) {
+		for (const key in params) {
+			if (!Object.prototype.hasOwnProperty.call(params, key)) {
 				continue
 			}
-			const value = obj[key]
+			const value = params[key]
 			const enkey = isArray ? '' : encodeURIComponent(key)
 			let pair
 			if (typeof value === 'object') {

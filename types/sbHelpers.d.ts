@@ -1,14 +1,14 @@
-interface IParam extends Object {
+interface IParams extends Object {
     [key: string]: any;
 }
 export declare class SbHelpers {
     /**
         * @method stringify
-        * @param  {Object} obj
+        * @param  {Object} params
         * @param  {String} prefix
         * @param  {Boolean} isArray
         * @return {String} Stringified object
         */
-    stringify(obj: IParam, prefix?: string, isArray?: boolean): string;
+    stringify(params: IParams, prefix?: string, isArray?: boolean): string;
 }
 export {};
