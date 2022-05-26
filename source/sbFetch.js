@@ -31,24 +31,24 @@ class SbFetch {
         this.url = '';
         this.parameters = {};
     }
-    get(url, param) {
+    get(url, params) {
         this.url = url;
-        this.parameters = param;
+        this.parameters = params;
         return this._methodHandler(Method.GET);
     }
-    post(url, param) {
+    post(url, params) {
         this.url = url;
-        this.parameters = param;
+        this.parameters = params;
         return this._methodHandler(Method.POST);
     }
-    put(url, param) {
+    put(url, params) {
         this.url = url;
-        this.parameters = param;
+        this.parameters = params;
         return this._methodHandler(Method.PUT);
     }
-    delete(url, param) {
+    delete(url, params) {
         this.url = url;
-        this.parameters = param;
+        this.parameters = params;
         return this._methodHandler(Method.DELETE);
     }
     _responseHandler(res) {

@@ -18,7 +18,7 @@ interface IResponse {
   statusText: string,
 }
 
-interface IParam {
+interface IParams {
   version: string,
   filter_query?: object,
   resolve_assets?: number,
@@ -40,12 +40,12 @@ enum Method {
 
 class SbFetch {
   baseURL: string
-  timeout: number
+  timeout?: number
   headers: HeadersInit
   responseInterceptor?: Function
-  ejectInterceptor: boolean
+  ejectInterceptor?: boolean
   url: string
-  parameters: IParam
+  parameters: IParams
 
   private constructor($c: ISbFetch) {
     this.baseURL = $c.baseURL,
@@ -54,30 +54,30 @@ class SbFetch {
     this.responseInterceptor = $c.responseInterceptor
     this.ejectInterceptor = false
     this.url = ''
-    this.parameters = {} as IParam
+    this.parameters = {} as IParams
   }
 
-  public get(url: string, param: IParam) {
+  public get(url: string, params: IParams) {
     this.url = url
-    this.parameters = param
+    this.parameters = params
     return this._methodHandler(Method.GET)
   }
 
-  public post(url: string, param: IParam) {
+  public post(url: string, params: IParams) {
     this.url = url
-    this.parameters = param
+    this.parameters = params
     return this._methodHandler(Method.POST)
   }
 
-  public put(url: string, param: IParam) {
+  public put(url: string, params: IParams) {
     this.url = url
-    this.parameters = param
+    this.parameters = params
     return this._methodHandler(Method.PUT)
   }
 
-  public delete(url: string, param: IParam) {
+  public delete(url: string, params: IParams) {
     this.url = url
-    this.parameters = param
+    this.parameters = params
     return this._methodHandler(Method.DELETE)
   }
 

@@ -2,7 +2,7 @@ interface IResponse {
     status: number;
     statusText: string;
 }
-interface IParam {
+interface IParams {
     version: string;
     filter_query?: object;
     resolve_assets?: number;
@@ -16,17 +16,17 @@ interface IParam {
 }
 declare class SbFetch {
     baseURL: string;
-    timeout: number;
+    timeout?: number;
     headers: HeadersInit;
     responseInterceptor?: Function;
-    ejectInterceptor: boolean;
+    ejectInterceptor?: boolean;
     url: string;
-    parameters: IParam;
+    parameters: IParams;
     private constructor();
-    get(url: string, param: IParam): Promise<Error | IResponse>;
-    post(url: string, param: IParam): Promise<Error | IResponse>;
-    put(url: string, param: IParam): Promise<Error | IResponse>;
-    delete(url: string, param: IParam): Promise<Error | IResponse>;
+    get(url: string, params: IParams): Promise<Error | IResponse>;
+    post(url: string, params: IParams): Promise<Error | IResponse>;
+    put(url: string, params: IParams): Promise<Error | IResponse>;
+    delete(url: string, params: IParams): Promise<Error | IResponse>;
     private _responseHandler;
     private _methodHandler;
     eject(): void;
