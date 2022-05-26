@@ -4,137 +4,141 @@ import { SbHelpers } from './sbHelpers'
 import { IResponse, IError, IParams } from '../types/commomInterfaces'
 import { Method } from '../types/commomEnum'
 
+type ResponseFn = {
+  (arg?: IResponse | any): any
+}
+
 interface ISbFetch {
   baseURL: string,
   timeout?: number,
   headers: HeadersInit,
-  responseInterceptor?: Function,
+  responseInterceptor?: ResponseFn,
 }
 
 class SbFetch {
-  private baseURL: string
-  private timeout?: number
-  private headers: HeadersInit
-  private responseInterceptor?: Function
-  private ejectInterceptor?: boolean
-  private url: string
-  private parameters: IParams
+	private baseURL: string
+	private timeout?: number
+	private headers: HeadersInit
+	private responseInterceptor?: ResponseFn
+	private ejectInterceptor?: boolean
+	private url: string
+	private parameters: IParams
 
-  public constructor($c: ISbFetch) {
-    this.baseURL = $c.baseURL,
-    this.timeout = $c.timeout ? $c.timeout * 1000 : 1000,
-    this.headers = $c.headers || [],
-    this.responseInterceptor = $c.responseInterceptor
-    this.ejectInterceptor = false
-    this.url = ''
-    this.parameters = {} as IParams
-  }
+	public constructor($c: ISbFetch) {
+		this.baseURL = $c.baseURL,
+		this.timeout = $c.timeout ? $c.timeout * 1000 : 1000,
+		this.headers = $c.headers || [],
+		this.responseInterceptor = $c.responseInterceptor
+		this.ejectInterceptor = false
+		this.url = ''
+		this.parameters = {} as IParams
+	}
 
-  public get(url: string, params: IParams) {
-    this.url = url
-    this.parameters = params
-    return this._methodHandler(Method.GET)
-  }
+	public get(url: string, params: IParams) {
+		this.url = url
+		this.parameters = params
+		return this._methodHandler(Method.GET)
+	}
 
-  public post(url: string, params: IParams) {
-    this.url = url
-    this.parameters = params
-    return this._methodHandler(Method.POST)
-  }
+	public post(url: string, params: IParams) {
+		this.url = url
+		this.parameters = params
+		return this._methodHandler(Method.POST)
+	}
 
-  public put(url: string, params: IParams) {
-    this.url = url
-    this.parameters = params
-    return this._methodHandler(Method.PUT)
-  }
+	public put(url: string, params: IParams) {
+		this.url = url
+		this.parameters = params
+		return this._methodHandler(Method.PUT)
+	}
 
-  public delete(url: string, params: IParams) {
-    this.url = url
-    this.parameters = params
-    return this._methodHandler(Method.DELETE)
-  }
+	public delete(url: string, params: IParams) {
+		this.url = url
+		this.parameters = params
+		return this._methodHandler(Method.DELETE)
+	}
 
-  private async _responseHandler(res: Response) {
-    const headers: string[] = []
-    const response = {
-      data: {},
-      headers: {},
-      status: 0,
-      statusText: '',
-    }
+	private async _responseHandler(res: Response) {
+		const headers: string[] = []
+		const response = {
+			data: {},
+			headers: {},
+			status: 0,
+			statusText: '',
+		}
 
-    await res.json().then(($r) => {
-      response.data = $r
-    })
+		await res.json().then(($r) => {
+			response.data = $r
+		})
 
-    for (let pair of res.headers.entries()) {
-      headers[pair[0] as any] = pair[1]
-    }
+		for (const pair of res.headers.entries()) {
+			headers[pair[0] as any] = pair[1]
+		}
 
-    response.headers = { ...headers }
-    response.status = res.status
-    response.statusText = res.statusText
+		response.headers = { ...headers }
+		response.status = res.status
+		response.statusText = res.statusText
 
-    return response
-  }
+		return response
+	}
 
-  private async _methodHandler(method: Method): Promise<IResponse | Error> {
-    const url = new URL(`${this.baseURL}${this.url}`)
-    let body = null
+	private async _methodHandler(method: Method): Promise<IResponse | Error> {
+		const url = new URL(`${this.baseURL}${this.url}`)
+		let body = null
 
-    if(method === 'get') {
-      const helper = new SbHelpers()
-      url.search = helper.stringify(this.parameters)
-    } else {
-      body = JSON.stringify(this.parameters)
-    }
+		if(method === 'get') {
+			const helper = new SbHelpers()
+			url.search = helper.stringify(this.parameters)
+		} else {
+			body = JSON.stringify(this.parameters)
+		}
 
-    const controller = new AbortController()
-    const { signal } = controller
+		const controller = new AbortController()
+		const { signal } = controller
 
-    const timeout = setTimeout(() => controller.abort(), this.timeout)
+		const timeout = setTimeout(() => controller.abort(), this.timeout)
 
-    try {
-      const response = await fetch(`${url}`, {
-        method,
-        headers: this.headers,
-        body,
-        signal,
-      })
+		try {
+			const response = await fetch(`${url}`, {
+				method,
+				headers: this.headers,
+				body,
+				signal,
+			})
   
-      clearTimeout(timeout)
+			clearTimeout(timeout)
   
-      const res = await this._responseHandler(response) as IResponse
+			const res = await this._responseHandler(response) as IResponse
 
-      if(this.responseInterceptor && !this.ejectInterceptor) {
-        return this._statusHandler(this.responseInterceptor(res))
-      } else {
-        return this._statusHandler(res)
-      }
-    } catch ($e: TypeError | RangeError | EvalError | any) {
-      const error: Error = $e
-      return error
-    }
-  }
+			if(this.responseInterceptor && !this.ejectInterceptor) {
+				return this._statusHandler(this.responseInterceptor(res))
+			} else {
+				return this._statusHandler(res)
+			}
+		} catch ($e: TypeError | RangeError | EvalError | any) {
+			const error: Error = $e
+			return error
+		}
+	}
 
-  public eject() {
-    this.ejectInterceptor = true
-  }
+	public eject() {
+		this.ejectInterceptor = true
+	}
 
-  private _statusHandler(res: IResponse) {
-    const statusOk = /20[01]/g
+	private _statusHandler(res: IResponse) {
+		const statusOk = /20[01]/g
 
-    if (statusOk.test(`${res.status}`)) {
-      return res
-    }
+		if (statusOk.test(`${res.status}`)) {
+			return res
+		}
     
-    const error: IError = {
-      message: new Error(res.statusText || `status: ${res.status}`),
-      response: res,
-    }
+		const error: IError = {
+			message: new Error(res.statusText || `status: ${res.status}`),
+			response: res,
+		}
 
-    throw error
-  }
+		throw error
+	}
 }
 
 export default SbFetch

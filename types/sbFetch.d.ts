@@ -1,8 +1,11 @@
+declare type ResponseFn = {
+    (arg?: IResponse | any): any;
+};
 interface ISbFetch {
     baseURL: string;
     timeout?: number;
     headers: HeadersInit;
-    responseInterceptor?: Function;
+    responseInterceptor?: ResponseFn;
 }
 interface IResponse {
     status: number;
@@ -29,10 +32,10 @@ declare class SbFetch {
     private url;
     private parameters;
     constructor($c: ISbFetch);
-    get(url: string, params: IParams): Promise<Error | IResponse>;
-    post(url: string, params: IParams): Promise<Error | IResponse>;
-    put(url: string, params: IParams): Promise<Error | IResponse>;
-    delete(url: string, params: IParams): Promise<Error | IResponse>;
+    get(url: string, params: IParams): Promise<IResponse | Error>;
+    post(url: string, params: IParams): Promise<IResponse | Error>;
+    put(url: string, params: IParams): Promise<IResponse | Error>;
+    delete(url: string, params: IParams): Promise<IResponse | Error>;
     private _responseHandler;
     private _methodHandler;
     eject(): void;
