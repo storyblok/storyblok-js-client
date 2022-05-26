@@ -2,8 +2,8 @@ import fetch from 'isomorphic-fetch'
 import { SbHelpers } from './sbHelpers'
 
 
-interface ResponseFn extends IResponse {
-  (arg?: any): any
+type ResponseFn = {
+  (arg?: IResponse | any): any
 }
 
 interface ISbFetch {

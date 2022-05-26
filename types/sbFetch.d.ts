@@ -1,6 +1,6 @@
-interface ResponseFn extends IResponse {
-    (arg?: any): any;
-}
+declare type ResponseFn = {
+    (arg?: IResponse | any): any;
+};
 interface ISbFetch {
     baseURL: string;
     timeout?: number;
