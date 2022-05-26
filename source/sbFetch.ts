@@ -1,41 +1,14 @@
 import fetch from 'isomorphic-fetch'
 import { SbHelpers } from './sbHelpers'
 
+import { IResponse, IError, IParams } from '../types/commomInterfaces'
+import { Method } from '../types/commomEnum'
+
 interface ISbFetch {
   baseURL: string,
   timeout?: number,
   headers: HeadersInit,
   responseInterceptor?: Function,
-}
-
-interface IError {
-  message: Error,
-  response: IResponse,
-}
-
-interface IResponse {
-  status: number,
-  statusText: string,
-}
-
-interface IParams {
-  version: string,
-  filter_query?: object,
-  resolve_assets?: number,
-  resolve_links?: string,
-  resolve_relations?: string,
-  token: string,
-  cv?: number,
-  page?: number,
-  per_page?: number
-  sort_by?: string,
-}
-
-enum Method {
-  GET = 'get',
-  DELETE = 'delete',
-  POST = 'post',
-  PUT = 'put'
 }
 
 class SbFetch {
