@@ -9,7 +9,7 @@ type ResponseFn = {
 interface ISbFetch {
   baseURL: string,
   timeout?: number,
-  headers: HeadersInit,
+  headers: Headers,
   responseInterceptor?: ResponseFn,
 }
 
@@ -46,7 +46,7 @@ enum Method {
 class SbFetch {
 	private baseURL: string
 	private timeout?: number
-	private headers: HeadersInit
+	private headers: Headers
 	private responseInterceptor?: ResponseFn
 	private ejectInterceptor?: boolean
 	private url: string

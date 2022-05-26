@@ -4,7 +4,7 @@ declare type ResponseFn = {
 interface ISbFetch {
     baseURL: string;
     timeout?: number;
-    headers: HeadersInit;
+    headers: Headers;
     responseInterceptor?: ResponseFn;
 }
 interface IResponse {
