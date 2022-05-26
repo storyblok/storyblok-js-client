@@ -18,10 +18,12 @@ type ResponseFn = {
 type ThrottleFn = {
   (arg?: any): any
 }
+
 interface IStoryblok {
 	accessToken: string,
 	oauthToken?: string,
 	cache: ICache,
+	headers: Headers,
 	responseInterceptor?: ResponseFn,
 	region?: string,
 	https?: boolean,
