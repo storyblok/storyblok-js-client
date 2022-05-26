@@ -63,7 +63,7 @@ class SbFetch {
             yield res.json().then(($r) => {
                 response.data = $r;
             });
-            for (let pair of res.headers.entries()) {
+            for (const pair of res.headers.entries()) {
                 headers[pair[0]] = pair[1];
             }
             response.headers = Object.assign({}, headers);
