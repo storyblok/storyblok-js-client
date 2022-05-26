@@ -47,7 +47,7 @@ class SbFetch {
   url: string
   parameters: IParams
 
-  private constructor($c: ISbFetch) {
+  public constructor($c: ISbFetch) {
     this.baseURL = $c.baseURL,
     this.timeout = $c.timeout ? $c.timeout * 1000 : 1000,
     this.headers = $c.headers || [],
