@@ -14,8 +14,11 @@ const pick = function (attrs, allowed: string) {
 
 const isEmailLinkType = (type) => type === 'email'
 
+type NodeFunction = {
+	(node?: string): boolean
+}
 export interface ISchema {
-	nodes: {
+	nodes: Function {
 		horizontal_rule() {
 			return {
 				singleTag: 'hr',
