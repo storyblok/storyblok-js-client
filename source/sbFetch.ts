@@ -39,13 +39,13 @@ enum Method {
 }
 
 class SbFetch {
-  baseURL: string
-  timeout?: number
-  headers: HeadersInit
-  responseInterceptor?: Function
-  ejectInterceptor?: boolean
-  url: string
-  parameters: IParams
+  private baseURL: string
+  private timeout?: number
+  private headers: HeadersInit
+  private responseInterceptor?: Function
+  private ejectInterceptor?: boolean
+  private url: string
+  private parameters: IParams
 
   public constructor($c: ISbFetch) {
     this.baseURL = $c.baseURL,
