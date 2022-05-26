@@ -1,12 +1,12 @@
 'use strict'
 
-import throttledQueue from './throttlePromise'
+import throttledQueue from '../source/throttlePromise'
 import RichTextResolver from './richTextResolver'
-import { stringify, delay, getOptionsPage, isCDNUrl, asyncMap, range, flatMap } from './helpers'
-import SbFetch from './sbFetch'
+import { stringify, delay, getOptionsPage, isCDNUrl, asyncMap, range, flatMap } from '../source/helpers'
+import SbFetch from '../source/sbFetch'
 
-import { IResponse } from '../types/commomInterfaces'
-import { Method } from '../types/commomEnum'
+import { IResponse } from './commomInterfaces'
+import { Method } from './commomEnum'
 
 let memory = {}
 const cacheVersions = {}
@@ -19,21 +19,31 @@ type ThrottleFn = {
   (arg?: any): any
 }
 
+type ComponentResolverFn = {
+  (arg?: any): any
+}
+
 interface IStoryblok {
 	accessToken: string,
 	oauthToken?: string,
 	cache: ICache,
-	headers: Headers,
+	headers: ISbHeaders,
 	responseInterceptor?: ResponseFn,
 	region?: string,
-	https?: boolean,
+	https: boolean | false,
 	rateLimit?: number,
 	timeout?: number,
 	maxRetries?: number,
 	richTextSchema?: object,
+	componentResolver?: ComponentResolverFn
 }
 
-interface ICache extends Object {
+interface ISbHeaders extends Headers {
+	[key: string]: unknown
+}
+
+interface ICache {
+	clear: 'auto' | 'manual'
 	type: 'none' | 'memory'
 }
 
@@ -42,16 +52,17 @@ class Storyblok {
 	private maxRetries?: number | 5
 	private throttle: ThrottleFn
 	private richTextResolver: any
-	accessToken: any
-	relations: {}
-	links: {}
-	cache: any
+	private accessToken: string
+	private relations: object
+	private links: object
+	private cache: ICache
 
-	constructor(config: IStoryblok, endpoint: string) {
+	public constructor(config: IStoryblok, endpoint?: string) {
 		if (!endpoint) {
 			const region = config.region ? `-${config.region}` : ''
-			const protocol = config.https === false ? 'http' : 'https'
-			if (typeof config.oauthToken === 'undefined') {
+			const protocol = !config.https ? 'http' : 'https'
+
+			if (!config.oauthToken) {
 				endpoint = `${protocol}://api${region}.storyblok.com/v2`
 			} else {
 				endpoint = `${protocol}://api${region}.storyblok.com/v1`
@@ -61,18 +72,18 @@ class Storyblok {
 		const headers = Object.assign({}, config.headers)
 		let rateLimit = 5 // per second for cdn api
 
-		if (typeof config.oauthToken !== 'undefined') {
+		if (config.oauthToken) {
 			headers['Authorization'] = config.oauthToken
 			rateLimit = 3 // per second for management api
 		}
 
-		if (typeof config.rateLimit !== 'undefined') {
+		if (config.rateLimit) {
 			rateLimit = config.rateLimit
 		}
 
 		this.richTextResolver = new RichTextResolver(config.richTextSchema)
 
-		if (typeof config.componentResolver === 'function') {
+		if (config.componentResolver) {
 			this.setComponentResolver(config.componentResolver)
 		}
 
