@@ -1,3 +1,9 @@
+interface ISbFetch {
+    baseURL: string;
+    timeout?: number;
+    headers: HeadersInit;
+    responseInterceptor?: Function;
+}
 interface IResponse {
     status: number;
     statusText: string;
@@ -15,14 +21,14 @@ interface IParams {
     sort_by?: string;
 }
 declare class SbFetch {
-    baseURL: string;
-    timeout?: number;
-    headers: HeadersInit;
-    responseInterceptor?: Function;
-    ejectInterceptor?: boolean;
-    url: string;
-    parameters: IParams;
-    private constructor();
+    private baseURL;
+    private timeout?;
+    private headers;
+    private responseInterceptor?;
+    private ejectInterceptor?;
+    private url;
+    private parameters;
+    constructor($c: ISbFetch);
     get(url: string, params: IParams): Promise<Error | IResponse>;
     post(url: string, params: IParams): Promise<Error | IResponse>;
     put(url: string, params: IParams): Promise<Error | IResponse>;
