@@ -5,16 +5,24 @@ import RichTextResolver from './richTextResolver'
 import { stringify, delay, getOptionsPage, isCDNUrl, asyncMap, range, flatMap } from './helpers'
 import SbFetch from './sbFetch'
 
+import { IResponse } from '../types/commomInterfaces'
 import { Method } from '../types/commomEnum'
 
 let memory = {}
 const cacheVersions = {}
 
+type ResponseFn = {
+  (arg?: IResponse | any): any
+}
+
+type ThrottleFn = {
+  (arg?: any): any
+}
 interface IStoryblok {
 	accessToken: string,
 	oauthToken?: string,
 	cache: ICache,
-	responseInterceptor?: Function,
+	responseInterceptor?: ResponseFn,
 	region?: string,
 	https?: boolean,
 	rateLimit?: number,
@@ -30,7 +38,7 @@ interface ICache extends Object {
 class Storyblok {
 	private client: SbFetch
 	private maxRetries?: number | 5
-	private throttle: Function
+	private throttle: ThrottleFn
 	private richTextResolver: any
 	accessToken: any
 	relations: {}
