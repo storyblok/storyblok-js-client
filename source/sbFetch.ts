@@ -18,6 +18,19 @@ interface IResponse {
   statusText: string,
 }
 
+interface IParam {
+  version: string,
+  filter_query?: object,
+  resolve_assets?: number,
+  resolve_links?: string,
+  resolve_relations?: string,
+  token: string,
+  cv?: number,
+  page?: number,
+  per_page?: number
+  sort_by?: string,
+}
+
 enum Method {
   GET = 'get',
   DELETE = 'delete',
@@ -32,7 +45,7 @@ class SbFetch {
   responseInterceptor?: Function
   ejectInterceptor: boolean
   url: string
-  parameters: object
+  parameters: IParam
 
   private constructor($c: ISbFetch) {
     this.baseURL = $c.baseURL,
@@ -41,28 +54,28 @@ class SbFetch {
     this.responseInterceptor = $c.responseInterceptor
     this.ejectInterceptor = false
     this.url = ''
-    this.parameters = {}
+    this.parameters = {} as IParam
   }
 
-  public get(url: string, param: object) {
+  public get(url: string, param: IParam) {
     this.url = url
     this.parameters = param
     return this._methodHandler(Method.GET)
   }
 
-  public post(url: string, param: object) {
+  public post(url: string, param: IParam) {
     this.url = url
     this.parameters = param
     return this._methodHandler(Method.POST)
   }
 
-  public put(url: string, param: object) {
+  public put(url: string, param: IParam) {
     this.url = url
     this.parameters = param
     return this._methodHandler(Method.PUT)
   }
 
-  public delete(url: string, param: object) {
+  public delete(url: string, param: IParam) {
     this.url = url
     this.parameters = param
     return this._methodHandler(Method.DELETE)
