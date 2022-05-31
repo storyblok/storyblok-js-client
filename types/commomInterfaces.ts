@@ -40,3 +40,20 @@ export type NodeSchema = {
 export type MarkSchema = {
 	(node: INode): object
 }
+
+export interface ISchema {
+	nodes: any,
+	marks: any,
+	(arg: IRichtext): any
+}
+
+export interface IRichtext {
+  content: []
+  marks: []
+  text: string
+  type: string
+}
+
+export type ThrottleFn = {
+  (...args: any): any
+}

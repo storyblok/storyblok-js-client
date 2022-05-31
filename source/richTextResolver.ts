@@ -1,4 +1,5 @@
 import defaultHtmlSerializer from './schema'
+import { ISchema, IRichtext } from '../types/commomInterfaces'
 
 type HtmlEscapes = {
 	[key: string]: string,
@@ -21,21 +22,8 @@ const escapeHTML = function (string: string) {
 		: string
 }
 
-interface ISchema {
-	nodes: any,
-	marks: any,
-	(arg: IRichtext): any
-}
-
 interface ITag extends Element {
 	[key: string]: any
-}
-
-interface IRichtext {
-  content: []
-  marks: []
-  text: string
-  type: string
 }
 
 interface INode {

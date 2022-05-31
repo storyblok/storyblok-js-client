@@ -1,21 +1,14 @@
-'use strict'
-
 import throttledQueue from './throttlePromise'
 import RichTextResolver from './richTextResolver'
-import { stringify, delay, getOptionsPage, isCDNUrl, asyncMap, range, flatMap } from './helpers'
+import { SbHelpers } from './sbHelpers'
 import SbFetch from './sbFetch'
 
-import { INode } from '../types/commomInterfaces'
+import { INode, ThrottleFn } from '../types/commomInterfaces'
 import { Method } from '../types/commomEnum'
-import { StoriesParams, StoryblokCache, StoryblokConfig, StoryblokResult } from '../../../../node_modules/storyblok-js-client/types/index'
-import Storyblok from '../../../../node_modules/storyblok-js-client/types/index'
+import { IStoriesParams, IStoryblokCache, IStoryblokConfig, IStoryblokResult } from '../types/interfaces'
 
 let memory = {}
 const cacheVersions = {} as CachedVersions
-
-type ThrottleFn = {
-  (...args: any): any
-}
 
 type ComponentResolverFn = {
   (...args: any): any
@@ -34,7 +27,7 @@ enum Version {
 	V2 = 'v2'
 }
 
-class Sb extends Storyblok {
+class Storyblok {
 	private client: SbFetch
 	private maxRetries?: number | 5
 	private throttle: ThrottleFn
@@ -42,15 +35,15 @@ class Sb extends Storyblok {
 	private accessToken: string
 	private relations: object
 	private links: object
-	private cache: StoryblokCache
+	private cache: IStoryblokCache
+	private helpers: SbHelpers
 
 	/**
 	 * 
 	 * @param config IStoryblok interface
 	 * @param endpoint string, optional
 	 */
-	public constructor(config: StoryblokConfig, endpoint?: string) {
-		super(config)
+	public constructor(config: IStoryblokConfig, endpoint?: string) {
 		if (!endpoint) {
 			const region = config.region ? `-${config.region}` : ''
 			const protocol = !config.https ? 'http' : 'https'
@@ -88,6 +81,7 @@ class Sb extends Storyblok {
 		this.relations = {}
 		this.links = {}
 		this.cache = (config.cache || { clear: 'manual' })
+		this.helpers = new SbHelpers()
 
 		this.client = new SbFetch({
 			baseURL: endpoint,
@@ -111,7 +105,7 @@ class Sb extends Storyblok {
 		})
 	}
 
-	parseParams(params: StoriesParams) {
+	parseParams(params: IStoriesParams) {
 		if (!params.version) {
 			params.version = 'published'
 		}
@@ -131,69 +125,69 @@ class Sb extends Storyblok {
 		return params
 	}
 
-	factoryParamOptions(url: string, params: StoriesParams) {
-		if (isCDNUrl(url)) {
+	factoryParamOptions(url: string, params: IStoriesParams) {
+		if (this.helpers.isCDNUrl(url)) {
 			return this.parseParams(params)
 		}
 
 		return params
 	}
 
-	makeRequest(url: string, params: StoriesParams, per_page: number, page: string) {
+	makeRequest(url: string, params: IStoriesParams, per_page: number, page: number) {
 		const options = this.factoryParamOptions(
 			url,
-			getOptionsPage(params, per_page, page)
+			this.helpers.getOptionsPage(params, per_page, page)
 		)
 
 		return this.cacheResponse(url, options)
 	}
 
-	get(slug: string, params: StoriesParams) {
+	public get(slug: string, params: IStoriesParams) {
 		const url = `/${slug}`
 		const query = this.factoryParamOptions(url, params)
 
 		return this.cacheResponse(url, query)
 	}
 
-	async getAll(slug: string, params: StoriesParams, entity?: string) {
+	public async getAll(slug: string, params: IStoriesParams, entity?: string) {
 		const perPage = params?.per_page || 25
 		const url = `/${slug}`
 		const urlParts = url.split('/')
 		const e = entity || urlParts[urlParts.length - 1]
 
-		const firstPage = '1'
+		const firstPage = 1
 		const firstRes = await this.makeRequest(url, params, perPage, firstPage)
 		const lastPage = Math.ceil(firstRes.total / perPage)
 
-		const restRes = await asyncMap(range(firstPage, lastPage), async (i: number) => {
-			return this.makeRequest(url, params, perPage, `${i + 1}`)
+		const restRes = await this.helpers.asyncMap(this.helpers.range(firstPage, lastPage), async (i: number) => {
+			return this.makeRequest(url, params, perPage, i + 1)
 		})
 
-		return flatMap([firstRes, ...restRes], (res: FlatMapped) =>
+		return this.helpers.flatMap([firstRes, ...restRes], (res: FlatMapped) =>
 			Object.values(res.data[e])
 		)
 	}
 
-	post(slug: string, params: StoriesParams) {
+	public post(slug: string, params: IStoriesParams) {
 		const url = `/${slug}`
 		return this.throttle('post', url, params)
 	}
 
-	put(slug: string, params: StoriesParams) {
+	public put(slug: string, params: IStoriesParams) {
 		const url = `/${slug}`
 		return this.throttle('put', url, params)
 	}
 
-	delete(slug: string, params: StoriesParams) {
+	public delete(slug: string, params: IStoriesParams) {
 		const url = `/${slug}`
 		return this.throttle('delete', url, params)
 	}
 
-	getStories(params: StoriesParams) {
+	getStories(params: IStoriesParams) {
 		return this.get('cdn/stories', params)
 	}
 
-	getStory(slug: string, params: StoriesParams) {
+	getStory(slug: string, params: IStoriesParams) {
 		return this.get(`cdn/stories/${slug}`, params)
 	}
 
@@ -376,13 +370,13 @@ class Sb extends Storyblok {
 		}
 	}
 
-	cacheResponse(url: string, params: StoriesParams, retries?: number): Promise<StoryblokResult> {
+	cacheResponse(url: string, params: IStoriesParams, retries?: number): Promise<IStoryblokResult> {
 		if (typeof retries === 'undefined') {
 			retries = 0
 		}
 
 		return new Promise((resolve, reject) => {
-			const cacheKey = stringify({ url: url, params: params })
+			const cacheKey = this.helpers.stringify({ url: url, params: params })
 			const provider = this.cacheProvider()
 
 			if (this.cache.clear === 'auto' && params.version === 'draft') {
@@ -400,7 +394,7 @@ class Sb extends Storyblok {
 				(async () => {
 					const res = await this.throttle('get', url, params)
 
-					let response = { data: res.data, headers: res.headers } as StoryblokResult
+					let response = { data: res.data, headers: res.headers } as IStoryblokResult
   
 					if (res.headers['per-page']) {
 						response = Object.assign({}, response, {
@@ -440,7 +434,7 @@ class Sb extends Storyblok {
 						retries = retries + 1
 
 						if (retries < this.maxRetries) {
-							await delay(1000 * retries)
+							await this.helpers.delay(1000 * retries)
 							return this.cacheResponse(url, params, retries).then(resolve).catch(reject)
 						}
 					}
@@ -508,4 +502,4 @@ class Sb extends Storyblok {
 	}
 }
 
-export default Sb as Storyblok
+export default Storyblok
