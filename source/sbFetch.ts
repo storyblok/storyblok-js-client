@@ -34,6 +34,12 @@ class SbFetch {
 		this.parameters = {} as IParams
 	}
 
+	/**
+	 * 
+	 * @param url string
+	 * @param params IParams 
+	 * @returns Promise<IResponse | Error>
+	 */
 	public get(url: string, params: IParams) {
 		this.url = url
 		this.parameters = params

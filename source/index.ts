@@ -1,53 +1,40 @@
 'use strict'
 
-import throttledQueue from '../source/throttlePromise'
+import throttledQueue from './throttlePromise'
 import RichTextResolver from './richTextResolver'
-import { stringify, delay, getOptionsPage, isCDNUrl, asyncMap, range, flatMap } from '../source/helpers'
-import SbFetch from '../source/sbFetch'
+import { stringify, delay, getOptionsPage, isCDNUrl, asyncMap, range, flatMap } from './helpers'
+import SbFetch from './sbFetch'
 
-import { IResponse } from './commomInterfaces'
-import { Method } from './commomEnum'
+import { INode } from '../types/commomInterfaces'
+import { Method } from '../types/commomEnum'
+import { StoriesParams, StoryblokCache, StoryblokConfig, StoryblokResult } from '../../../../node_modules/storyblok-js-client/types/index'
+import Storyblok from '../../../../node_modules/storyblok-js-client/types/index'
 
 let memory = {}
-const cacheVersions = {}
-
-type ResponseFn = {
-  (arg?: IResponse | any): any
-}
+const cacheVersions = {} as CachedVersions
 
 type ThrottleFn = {
-  (arg?: any): any
+  (...args: any): any
 }
 
 type ComponentResolverFn = {
-  (arg?: any): any
+  (...args: any): any
 }
 
-interface IStoryblok {
-	accessToken: string,
-	oauthToken?: string,
-	cache: ICache,
-	headers: ISbHeaders,
-	responseInterceptor?: ResponseFn,
-	region?: string,
-	https: boolean | false,
-	rateLimit?: number,
-	timeout?: number,
-	maxRetries?: number,
-	richTextSchema?: object,
-	componentResolver?: ComponentResolverFn
+type CachedVersions = {
+	[key: string]: number
 }
 
-interface ISbHeaders extends Headers {
-	[key: string]: unknown
+interface FlatMapped {
+	data: any
 }
 
-interface ICache {
-	clear: 'auto' | 'manual'
-	type: 'none' | 'memory'
+enum Version {
+	V1 = 'v1',
+	V2 = 'v2'
 }
 
-class Storyblok {
+class Sb extends Storyblok {
 	private client: SbFetch
 	private maxRetries?: number | 5
 	private throttle: ThrottleFn
@@ -55,17 +42,23 @@ class Storyblok {
 	private accessToken: string
 	private relations: object
 	private links: object
-	private cache: ICache
+	private cache: StoryblokCache
 
-	public constructor(config: IStoryblok, endpoint?: string) {
+	/**
+	 * 
+	 * @param config IStoryblok interface
+	 * @param endpoint string, optional
+	 */
+	public constructor(config: StoryblokConfig, endpoint?: string) {
+		super(config)
 		if (!endpoint) {
 			const region = config.region ? `-${config.region}` : ''
 			const protocol = !config.https ? 'http' : 'https'
 
 			if (!config.oauthToken) {
-				endpoint = `${protocol}://api${region}.storyblok.com/v2`
+				endpoint = `${protocol}://api${region}.storyblok.com/${Version.V2}`
 			} else {
-				endpoint = `${protocol}://api${region}.storyblok.com/v1`
+				endpoint = `${protocol}://api${region}.storyblok.com/${Version.V1}`
 			}
 		}
 
@@ -81,7 +74,9 @@ class Storyblok {
 			rateLimit = config.rateLimit
 		}
 
-		this.richTextResolver = new RichTextResolver(config.richTextSchema)
+		if (config.richTextSchema) {
+			this.richTextResolver = new RichTextResolver(config.richTextSchema)
+		}
 
 		if (config.componentResolver) {
 			this.setComponentResolver(config.componentResolver)
@@ -89,7 +84,7 @@ class Storyblok {
 
 		this.maxRetries = config.maxRetries
 		this.throttle = throttledQueue(this.throttledRequest, rateLimit, 1000)
-		this.accessToken = config.accessToken
+		this.accessToken = config.accessToken || ''
 		this.relations = {}
 		this.links = {}
 		this.cache = (config.cache || { clear: 'manual' })
@@ -102,8 +97,8 @@ class Storyblok {
 		})
 	}
 
-	setComponentResolver(resolver) {
-		this.richTextResolver.addNode('blok', (node) => {
+	setComponentResolver(resolver: ComponentResolverFn) {
+		this.richTextResolver.addNode('blok', (node: INode) => {
 			let html = ''
 
 			node.attrs.body.forEach((blok) => {
@@ -116,7 +111,7 @@ class Storyblok {
 		})
 	}
 
-	parseParams(params = {}) {
+	parseParams(params: StoriesParams) {
 		if (!params.version) {
 			params.version = 'published'
 		}
@@ -136,7 +131,7 @@ class Storyblok {
 		return params
 	}
 
-	factoryParamOptions(url, params = {}) {
+	factoryParamOptions(url: string, params: StoriesParams) {
 		if (isCDNUrl(url)) {
 			return this.parseParams(params)
 		}
@@ -144,7 +139,7 @@ class Storyblok {
 		return params
 	}
 
-	makeRequest(url, params, per_page, page) {
+	makeRequest(url: string, params: StoriesParams, per_page: number, page: string) {
 		const options = this.factoryParamOptions(
 			url,
 			getOptionsPage(params, per_page, page)
@@ -153,56 +148,56 @@ class Storyblok {
 		return this.cacheResponse(url, options)
 	}
 
-	get(slug, params) {
-		let url = `/${slug}`
+	get(slug: string, params: StoriesParams) {
+		const url = `/${slug}`
 		const query = this.factoryParamOptions(url, params)
 
 		return this.cacheResponse(url, query)
 	}
 
-	async getAll(slug, params = {}, entity) {
+	async getAll(slug: string, params: StoriesParams, entity?: string) {
 		const perPage = params?.per_page || 25
 		const url = `/${slug}`
 		const urlParts = url.split('/')
-		entity = entity || urlParts[urlParts.length - 1]
+		const e = entity || urlParts[urlParts.length - 1]
 
-		const firstPage = 1
+		const firstPage = '1'
 		const firstRes = await this.makeRequest(url, params, perPage, firstPage)
 		const lastPage = Math.ceil(firstRes.total / perPage)
 
-		const restRes = await asyncMap(range(firstPage, lastPage), async (i) => {
-			return this.makeRequest(url, params, perPage, i + 1)
+		const restRes = await asyncMap(range(firstPage, lastPage), async (i: number) => {
+			return this.makeRequest(url, params, perPage, `${i + 1}`)
 		})
 
-		return flatMap([firstRes, ...restRes], (res) =>
-			Object.values(res.data[entity])
+		return flatMap([firstRes, ...restRes], (res: FlatMapped) =>
+			Object.values(res.data[e])
 		)
 	}
 
-	post(slug, params) {
-		let url = `/${slug}`
+	post(slug: string, params: StoriesParams) {
+		const url = `/${slug}`
 		return this.throttle('post', url, params)
 	}
 
-	put(slug, params) {
-		let url = `/${slug}`
+	put(slug: string, params: StoriesParams) {
+		const url = `/${slug}`
 		return this.throttle('put', url, params)
 	}
 
-	delete(slug, params) {
-		let url = `/${slug}`
+	delete(slug: string, params: StoriesParams) {
+		const url = `/${slug}`
 		return this.throttle('delete', url, params)
 	}
 
-	getStories(params) {
+	getStories(params: StoriesParams) {
 		return this.get('cdn/stories', params)
 	}
 
-	getStory(slug, params) {
+	getStory(slug: string, params: StoriesParams) {
 		return this.get(`cdn/stories/${slug}`, params)
 	}
 
-	setToken(token) {
+	setToken(token: string) {
 		this.accessToken = token
 	}
 
@@ -288,7 +283,7 @@ class Storyblok {
 
 		if (responseData.link_uuids) {
 			const relSize = responseData.link_uuids.length
-			let chunks = []
+			const chunks = []
 			const chunkSize = 50
 
 			for (let i = 0; i < relSize; i += chunkSize) {
@@ -381,14 +376,14 @@ class Storyblok {
 		}
 	}
 
-	cacheResponse(url, params, retries) {
+	cacheResponse(url: string, params: StoriesParams, retries?: number): Promise<StoryblokResult> {
 		if (typeof retries === 'undefined') {
 			retries = 0
 		}
 
 		return new Promise((resolve, reject) => {
-			let cacheKey = stringify({ url: url, params: params })
-			let provider = this.cacheProvider()
+			const cacheKey = stringify({ url: url, params: params })
+			const provider = this.cacheProvider()
 
 			if (this.cache.clear === 'auto' && params.version === 'draft') {
 				this.flushCache()
@@ -403,9 +398,9 @@ class Storyblok {
 
 			try {
 				(async () => {
-					let res = await this.throttle('get', url, params)
+					const res = await this.throttle('get', url, params)
 
-					let response = { data: res.data, headers: res.headers }
+					let response = { data: res.data, headers: res.headers } as StoryblokResult
   
 					if (res.headers['per-page']) {
 						response = Object.assign({}, response, {
@@ -426,7 +421,7 @@ class Storyblok {
 						provider.set(cacheKey, response)
 					}
   
-					if (response.data.cv) {
+					if (response.data.cv && params.token) {
 						if (
 							params.version == 'draft' &&
               cacheVersions[params.token] != response.data.cv
@@ -513,4 +508,4 @@ class Storyblok {
 	}
 }
 
-export default Storyblok
+export default Sb as Storyblok

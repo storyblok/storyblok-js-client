@@ -1,13 +1,17 @@
 import defaultHtmlSerializer from './schema'
 
-const escapeHTML = function (string) {
+type HtmlEscapes = {
+	[key: string]: string,
+}
+
+const escapeHTML = function (string: string) {
 	const htmlEscapes = {
 		'&': '&amp;',
 		'<': '&lt;',
 		'>': '&gt;',
 		'"': '&quot;',
 		'\'': '&#39;',
-	}
+	} as HtmlEscapes
 
 	const reUnescapedHtml = /[&<>"']/g
 	const reHasUnescapedHtml = RegExp(reUnescapedHtml.source)
@@ -17,28 +21,49 @@ const escapeHTML = function (string) {
 		: string
 }
 
-class RichTextResolver {
-	private marks: any
-	private nodes: any
+interface ISchema {
+	nodes: any,
+	marks: any,
+	(arg: IRichtext): any
+}
 
-	public constructor(schema) {
+interface ITag extends Element {
+	[key: string]: any
+}
+
+interface IRichtext {
+  content: []
+  marks: []
+  text: string
+  type: string
+}
+
+interface INode {
+	[key: string]: ISchema
+}
+
+class RichTextResolver {
+	private marks: INode
+	private nodes: INode
+
+	public constructor(schema: ISchema) {
 		if (!schema) {
-			schema = defaultHtmlSerializer
+			schema = defaultHtmlSerializer as ISchema
 		}
 
-		this.marks = schema.marks || []
-		this.nodes = schema.nodes || []
+		this.marks = schema.marks
+		this.nodes = schema.nodes
 	}
 
-	addNode(key, schema) {
+	addNode(key: string, schema: ISchema) {
 		this.nodes[key] = schema
 	}
 
-	addMark(key, schema) {
+	addMark(key: string, schema: ISchema) {
 		this.marks[key] = schema
 	}
 
-	render(data = {}) {
+	render(data: IRichtext) {
 		if (data.content && Array.isArray(data.content)) {
 			let html = ''
 
@@ -55,7 +80,7 @@ class RichTextResolver {
 		return ''
 	}
 
-	renderNode(item) {
+	renderNode(item: IRichtext) {
 		const html = []
 
 		if (item.marks) {
@@ -106,7 +131,7 @@ class RichTextResolver {
 		return html.join('')
 	}
 
-	renderTag(tags, ending) {
+	renderTag(tags: ITag[], ending: string) {
 		if (tags.constructor === String) {
 			return `<${tags}${ending}>`
 		}
@@ -131,11 +156,11 @@ class RichTextResolver {
 		return all.join('')
 	}
 
-	renderOpeningTag(tags) {
+	renderOpeningTag(tags: ITag[]) {
 		return this.renderTag(tags, '')
 	}
 
-	renderClosingTag(tags) {
+	renderClosingTag(tags: ITag[]) {
 		if (tags.constructor === String) {
 			return `</${tags}>`
 		}
@@ -154,16 +179,16 @@ class RichTextResolver {
 		return all.join('')
 	}
 
-	getMatchingNode(item) {
+	getMatchingNode(item: IRichtext) {
 		if (typeof this.nodes[item.type] !== 'function') {
 			return
 		}
 		return this.nodes[item.type](item)
 	}
 
-	getMatchingMark(item) {
-		if (typeof this.marks[item.type] !== 'function') {
-			return
+	getMatchingMark(item: IRichtext) {
+		if (typeof this.marks[item.type] === 'function') {
+			return this.marks[item.type](item)
 		}
 		return this.marks[item.type](item)
 	}

@@ -1,3 +1,5 @@
+import { StoryblokComponent } from '../../../../node_modules/storyblok-js-client/types/index'
+
 export interface IResponse {
   status: number,
   statusText: string,
@@ -19,4 +21,22 @@ export interface IParams {
   page?: number,
   per_page?: number
   sort_by?: string,
+}
+
+export interface INode extends Element {
+	attrs: {
+		anchor?: string,
+    body: Array<StoryblokComponent<any>>,
+		href?: string,
+		level?: number,
+		linktype?: string,
+	},
+}
+
+export type NodeSchema = {
+	(node: INode): object
+}
+
+export type MarkSchema = {
+	(node: INode): object
 }
