@@ -18,12 +18,12 @@ class Storyblok {
     client;
     maxRetries;
     throttle;
-    richTextResolver;
     accessToken;
-    relations;
-    links;
     cache;
     helpers;
+    relations;
+    links;
+    richTextResolver;
     resolveNestedRelations;
     /**
      *
@@ -147,9 +147,6 @@ class Storyblok {
     }
     getStory(slug, params) {
         return this.get(`cdn/stories/${slug}`, params);
-    }
-    setToken(token) {
-        this.accessToken = token;
     }
     getToken() {
         return this.accessToken;
