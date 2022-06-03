@@ -1,27 +1,12 @@
+import { IResponse, IStoriesParams } from './interfaces';
 declare type ResponseFn = {
     (arg?: IResponse | any): any;
 };
 interface ISbFetch {
     baseURL: string;
     timeout?: number;
-    headers: HeadersInit;
+    headers: Headers;
     responseInterceptor?: ResponseFn;
-}
-interface IResponse {
-    status: number;
-    statusText: string;
-}
-interface IParams {
-    version: string;
-    filter_query?: object;
-    resolve_assets?: number;
-    resolve_links?: string;
-    resolve_relations?: string;
-    token: string;
-    cv?: number;
-    page?: number;
-    per_page?: number;
-    sort_by?: string;
 }
 declare class SbFetch {
     private baseURL;
@@ -32,10 +17,16 @@ declare class SbFetch {
     private url;
     private parameters;
     constructor($c: ISbFetch);
-    get(url: string, params: IParams): Promise<IResponse | Error>;
-    post(url: string, params: IParams): Promise<IResponse | Error>;
-    put(url: string, params: IParams): Promise<IResponse | Error>;
-    delete(url: string, params: IParams): Promise<IResponse | Error>;
+    /**
+     *
+     * @param url string
+     * @param params IStoriesParams
+     * @returns Promise<IResponse | Error>
+     */
+    get(url: string, params: IStoriesParams): Promise<IResponse | Error>;
+    post(url: string, params: IStoriesParams): Promise<IResponse | Error>;
+    put(url: string, params: IStoriesParams): Promise<IResponse | Error>;
+    delete(url: string, params: IStoriesParams): Promise<IResponse | Error>;
     private _responseHandler;
     private _methodHandler;
     eject(): void;

@@ -1,4 +1,4 @@
-import { ThrottleFn } from '../types/commomInterfaces'
+import { ThrottleFn } from './interfaces'
 
 type Shifted = {
 	args: any

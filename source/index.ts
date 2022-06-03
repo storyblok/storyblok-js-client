@@ -3,11 +3,18 @@ import RichTextResolver from './richTextResolver'
 import { SbHelpers } from './sbHelpers'
 import SbFetch from './sbFetch'
 
-import { INode, ThrottleFn } from '../types/commomInterfaces'
-import { Method } from '../types/commomEnum'
-import { IStoriesParams, IStoryblokCache, IStoryblokConfig, IStoryblokResult } from '../types/interfaces'
+import { Method } from './enum'
+import {
+	IStoriesParams,
+	IStoryblokCache,
+	IStoryblokConfig,
+	IStoryblokResult,
+	IStoryData,
+	INode,
+	ThrottleFn
+} from './interfaces'
 
-let memory = {}
+let memory: MemoryType = {}
 const cacheVersions = {} as CachedVersions
 
 type ComponentResolverFn = {
@@ -18,8 +25,29 @@ type CachedVersions = {
 	[key: string]: number
 }
 
+type LinksType = {
+	[key: string]: any
+}
+
+type RelationsType = {
+	[key: string]: any
+}
+
+type MemoryType = {
+	[key: string]: any
+}
+
 interface FlatMapped {
 	data: any
+}
+
+interface ResponseData {
+	link_uuids: string[]
+	links: string[]
+	rel_uuids: string[]
+	rels: any
+	story: IStoryData
+	stories: Array<IStoryData>
 }
 
 enum Version {
@@ -31,12 +59,13 @@ class Storyblok {
 	private client: SbFetch
 	private maxRetries?: number | 5
 	private throttle: ThrottleFn
-	private richTextResolver: any
+	public richTextResolver: any
 	private accessToken: string
-	private relations: object
-	private links: object
+	private relations: RelationsType
+	private links: LinksType
 	private cache: IStoryblokCache
 	private helpers: SbHelpers
+	private resolveNestedRelations: boolean
 
 	/**
 	 * 
@@ -69,6 +98,8 @@ class Storyblok {
 
 		if (config.richTextSchema) {
 			this.richTextResolver = new RichTextResolver(config.richTextSchema)
+		} else {
+			this.richTextResolver = new RichTextResolver()
 		}
 
 		if (config.componentResolver) {
@@ -78,10 +109,11 @@ class Storyblok {
 		this.maxRetries = config.maxRetries
 		this.throttle = throttledQueue(this.throttledRequest, rateLimit, 1000)
 		this.accessToken = config.accessToken || ''
-		this.relations = {}
-		this.links = {}
+		this.relations = {} as RelationsType
+		this.links = {} as LinksType
 		this.cache = (config.cache || { clear: 'manual' })
 		this.helpers = new SbHelpers()
+		this.resolveNestedRelations = false
 
 		this.client = new SbFetch({
 			baseURL: endpoint,
@@ -142,7 +174,8 @@ class Storyblok {
 		return this.cacheResponse(url, options)
 	}
 
-	public get(slug: string, params: IStoriesParams) {
+	public get(slug: string, params?: IStoriesParams) {
+		if (!params) params = {} as IStoriesParams
 		const url = `/${slug}`
 		const query = this.factoryParamOptions(url, params)
 
@@ -159,7 +192,7 @@ class Storyblok {
 		const firstRes = await this.makeRequest(url, params, perPage, firstPage)
 		const lastPage = Math.ceil(firstRes.total / perPage)
 
-		const restRes = await this.helpers.asyncMap(this.helpers.range(firstPage, lastPage), async (i: number) => {
+		const restRes: any = await this.helpers.asyncMap(this.helpers.range(firstPage, lastPage), (i: number) => {
 			return this.makeRequest(url, params, perPage, i + 1)
 		})
 
@@ -203,11 +236,11 @@ class Storyblok {
 		this.client.eject()
 	}
 
-	_cleanCopy(value) {
+	_cleanCopy(value: LinksType): JSON {
 		return JSON.parse(JSON.stringify(value))
 	}
 
-	_insertLinks(jtree, treeItem) {
+	_insertLinks(jtree: IStoriesParams, treeItem: keyof IStoriesParams) {
 		const node = jtree[treeItem]
 
 		if (
@@ -228,15 +261,15 @@ class Storyblok {
 		}
 	}
 
-	_insertRelations(jtree, treeItem, fields) {
-		if (fields.indexOf(jtree.component + '.' + treeItem) > -1) {
+	_insertRelations(jtree:IStoriesParams, treeItem: keyof IStoriesParams, fields: string | Array<string>) {
+		if (fields.indexOf(`${jtree.component}.${treeItem}`) > -1) {
 			if (typeof jtree[treeItem] === 'string') {
 				if (this.relations[jtree[treeItem]]) {
 					jtree[treeItem] = this._cleanCopy(this.relations[jtree[treeItem]])
 				}
 			} else if (jtree[treeItem].constructor === Array) {
-				let stories = []
-				jtree[treeItem].forEach((uuid) => {
+				const stories: JSON[] = []
+				jtree[treeItem].forEach((uuid: string) => {
 					if (this.relations[uuid]) {
 						stories.push(this._cleanCopy(this.relations[uuid]))
 					}
@@ -246,8 +279,8 @@ class Storyblok {
 		}
 	}
 
-	iterateTree(story, fields) {
-		let enrich = (jtree) => {
+	iterateTree(story: IStoryData, fields: string | Array<string>) {
+		const enrich = (jtree: IStoriesParams | any) => {
 			if (jtree == null) {
 				return
 			}
@@ -259,10 +292,10 @@ class Storyblok {
 				if (jtree._stopResolving) {
 					return
 				}
-				for (let treeItem in jtree) {
+				for (const treeItem in jtree) {
 					if ((jtree.component && jtree._uid) || jtree.type === 'link') {
-						this._insertRelations(jtree, treeItem, fields)
-						this._insertLinks(jtree, treeItem)
+						this._insertRelations(jtree, treeItem as keyof IStoriesParams, fields)
+						this._insertLinks(jtree, treeItem as keyof IStoriesParams)
 					}
 					enrich(jtree[treeItem])
 				}
@@ -272,8 +305,8 @@ class Storyblok {
 		enrich(story.content)
 	}
 
-	async resolveLinks(responseData, params) {
-		let links = []
+	async resolveLinks(responseData: ResponseData, params: IStoriesParams) {
+		let links: string[] = []
 
 		if (responseData.link_uuids) {
 			const relSize = responseData.link_uuids.length
@@ -286,14 +319,14 @@ class Storyblok {
 			}
 
 			for (let chunkIndex = 0; chunkIndex < chunks.length; chunkIndex++) {
-				let linksRes = await this.getStories({
+				const linksRes = await this.getStories({
 					per_page: chunkSize,
 					language: params.language,
 					version: params.version,
 					by_uuids: chunks[chunkIndex].join(','),
 				})
 
-				linksRes.data.stories.forEach((rel) => {
+				linksRes.data.stories.forEach((rel: string) => {
 					links.push(rel)
 				})
 			}
@@ -301,17 +334,17 @@ class Storyblok {
 			links = responseData.links
 		}
 
-		links.forEach((story) => {
+		links.forEach((story: IStoryData | any) => {
 			this.links[story.uuid] = { ...story, ...{ _stopResolving: true } }
 		})
 	}
 
-	async resolveRelations(responseData, params) {
+	async resolveRelations(responseData: ResponseData, params: IStoriesParams) {
 		let relations = []
 
 		if (responseData.rel_uuids) {
 			const relSize = responseData.rel_uuids.length
-			let chunks = []
+			const chunks = []
 			const chunkSize = 50
 
 			for (let i = 0; i < relSize; i += chunkSize) {
@@ -320,14 +353,14 @@ class Storyblok {
 			}
 
 			for (let chunkIndex = 0; chunkIndex < chunks.length; chunkIndex++) {
-				let relationsRes = await this.getStories({
+				const relationsRes = await this.getStories({
 					per_page: chunkSize,
 					language: params.language,
 					version: params.version,
 					by_uuids: chunks[chunkIndex].join(','),
 				})
 
-				relationsRes.data.stories.forEach((rel) => {
+				relationsRes.data.stories.forEach((rel: string) => {
 					relations.push(rel)
 				})
 			}
@@ -335,13 +368,13 @@ class Storyblok {
 			relations = responseData.rels
 		}
 
-		relations.forEach((story) => {
+		relations.forEach((story: IStoryData) => {
 			this.relations[story.uuid] = { ...story, ...{ _stopResolving: true } }
 		})
 	}
 
-	async resolveStories(responseData, params) {
-		let relationParams = []
+	async resolveStories(responseData: ResponseData, params: IStoriesParams) {
+		let relationParams: string[] = []
 
 		if (
 			typeof params.resolve_relations !== 'undefined' &&
@@ -351,7 +384,7 @@ class Storyblok {
 			await this.resolveRelations(responseData, params)
 		}
 
-		if (['1', 'story', 'url'].indexOf(params.resolve_links) > -1) {
+		if (params.resolve_links && ['1', 'story', 'url'].indexOf(params.resolve_links) > -1) {
 			await this.resolveLinks(responseData, params)
 		}
 
@@ -364,14 +397,14 @@ class Storyblok {
 		if (responseData.story) {
 			this.iterateTree(responseData.story, relationParams)
 		} else {
-			responseData.stories.forEach((story) => {
+			responseData.stories.forEach((story: IStoryData) => {
 				this.iterateTree(story, relationParams)
 			})
 		}
 	}
 
 	cacheResponse(url: string, params: IStoriesParams, retries?: number): Promise<IStoryblokResult> {
-		if (typeof retries === 'undefined') {
+		if (typeof retries === 'undefined' || !retries) {
 			retries = 0
 		}
 
@@ -428,12 +461,12 @@ class Storyblok {
   
 					resolve(response)
 				})()
-			} catch (error) {
+			} catch (error: Error | any) {
 				(async () => {
 					if (error.response && error.response.status === 429) {
-						retries = retries + 1
+						retries = retries ? retries + 1 : 0
 
-						if (retries < this.maxRetries) {
+						if (this.maxRetries && retries < this.maxRetries) {
 							await this.helpers.delay(1000 * retries)
 							return this.cacheResponse(url, params, retries).then(resolve).catch(reject)
 						}
@@ -443,7 +476,7 @@ class Storyblok {
 		})
 	}
 
-	throttledRequest(type: Method, url, params) {
+	throttledRequest(type: Method, url: string, params: IStoriesParams) {
 		return this.client[type](url, params)
 	}
 
@@ -455,7 +488,7 @@ class Storyblok {
 		return cacheVersions[this.accessToken]
 	}
 
-	setCacheVersion(cv) {
+	setCacheVersion(cv: number) {
 		if (this.accessToken) {
 			cacheVersions[this.accessToken] = cv
 		}
@@ -465,13 +498,13 @@ class Storyblok {
 		switch (this.cache.type) {
 		case 'memory':
 			return {
-				get(key) {
+				get(key: string) {
 					return memory[key]
 				},
 				getAll() {
 					return memory
 				},
-				set(key, content) {
+				set(key: string, content: IStoryblokResult) {
 					memory[key] = content
 				},
 				flush() {

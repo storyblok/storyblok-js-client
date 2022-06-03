@@ -1,145 +1,159 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 const pick = function (attrs, allowed) {
-	if (!attrs) {
-		return null
-	}
-	let h = {}
-	for (let key in attrs) {
-		let value = attrs[key]
-		if (allowed.indexOf(key) > -1 && value !== null) {
-			h[key] = value
-		}
-	}
-	return h
-}
-
-const isEmailLinkType = (type) => type === 'email'
-
-export default {
-	nodes: {
-		horizontal_rule() {
-			return {
-				singleTag: 'hr',
-			}
-		},
-		blockquote() {
-			return {
-				tag: 'blockquote',
-			}
-		},
-		bullet_list() {
-			return {
-				tag: 'ul',
-			}
-		},
-		code_block(node) {
-			return {
-				tag: [
-					'pre',
-					{
-						tag: 'code',
-						attrs: node.attrs,
-					},
-				],
-			}
-		},
-		hard_break() {
-			return {
-				singleTag: 'br',
-			}
-		},
-		heading(node) {
-			return {
-				tag: `h${node.attrs.level}`,
-			}
-		},
-		image(node) {
-			return {
-				singleTag: [
-					{
-						tag: 'img',
-						attrs: pick(node.attrs, ['src', 'alt', 'title']),
-					},
-				],
-			}
-		},
-		list_item() {
-			return {
-				tag: 'li',
-			}
-		},
-		ordered_list() {
-			return {
-				tag: 'ol',
-			}
-		},
-		paragraph() {
-			return {
-				tag: 'p',
-			}
-		},
-	},
-	marks: {
-		bold() {
-			return {
-				tag: 'b',
-			}
-		},
-		strike() {
-			return {
-				tag: 'strike',
-			}
-		},
-		underline() {
-			return {
-				tag: 'u',
-			}
-		},
-		strong() {
-			return {
-				tag: 'strong',
-			}
-		},
-		code() {
-			return {
-				tag: 'code',
-			}
-		},
-		italic() {
-			return {
-				tag: 'i',
-			}
-		},
-		link(node) {
-			const attrs = { ...node.attrs }
-			const { linktype = 'url' } = node.attrs
-
-			if (isEmailLinkType(linktype)) {
-				attrs.href = `mailto:${attrs.href}`
-			}
-
-			if (attrs.anchor) {
-				attrs.href = `${attrs.href}#${attrs.anchor}`
-				delete attrs.anchor
-			}
-
-			return {
-				tag: [
-					{
-						tag: 'a',
-						attrs: attrs,
-					},
-				],
-			}
-		},
-		styled(node) {
-			return {
-				tag: [
-					{
-						tag: 'span',
-						attrs: node.attrs,
-					},
-				],
-			}
-		},
-	},
-}
+    const h = {};
+    for (const key in attrs) {
+        const value = attrs[key];
+        if (allowed.indexOf(key) > -1 && value !== null) {
+            h[key] = value;
+        }
+    }
+    return h;
+};
+const isEmailLinkType = (type) => type === 'email';
+// nodes
+const horizontal_rule = () => {
+    return {
+        singleTag: 'hr',
+    };
+};
+const blockquote = () => {
+    return {
+        tag: 'blockquote',
+    };
+};
+const bullet_list = () => {
+    return {
+        tag: 'ul',
+    };
+};
+const code_block = (node) => {
+    return {
+        tag: [
+            'pre',
+            {
+                tag: 'code',
+                attrs: node.attrs,
+            },
+        ],
+    };
+};
+const hard_break = () => {
+    return {
+        singleTag: 'br',
+    };
+};
+const heading = (node) => {
+    return {
+        tag: `h${node.attrs.level}`,
+    };
+};
+const image = (node) => {
+    return {
+        singleTag: [
+            {
+                tag: 'img',
+                attrs: pick(node.attrs, ['src', 'alt', 'title']),
+            },
+        ],
+    };
+};
+const list_item = () => {
+    return {
+        tag: 'li',
+    };
+};
+const ordered_list = () => {
+    return {
+        tag: 'ol',
+    };
+};
+const paragraph = () => {
+    return {
+        tag: 'p',
+    };
+};
+// marks
+const bold = () => {
+    return {
+        tag: 'b',
+    };
+};
+const strike = () => {
+    return {
+        tag: 'strike',
+    };
+};
+const underline = () => {
+    return {
+        tag: 'u',
+    };
+};
+const strong = () => {
+    return {
+        tag: 'strong',
+    };
+};
+const code = () => {
+    return {
+        tag: 'code',
+    };
+};
+const italic = () => {
+    return {
+        tag: 'i',
+    };
+};
+const link = (node) => {
+    const attrs = { ...node.attrs };
+    const { linktype = 'url' } = node.attrs;
+    if (isEmailLinkType(linktype)) {
+        attrs.href = `mailto:${attrs.href}`;
+    }
+    if (attrs.anchor) {
+        attrs.href = `${attrs.href}#${attrs.anchor}`;
+        delete attrs.anchor;
+    }
+    return {
+        tag: [
+            {
+                tag: 'a',
+                attrs: attrs,
+            },
+        ],
+    };
+};
+const styled = (node) => {
+    return {
+        tag: [
+            {
+                tag: 'span',
+                attrs: node.attrs,
+            },
+        ],
+    };
+};
+exports.default = {
+    nodes: {
+        horizontal_rule,
+        blockquote,
+        bullet_list,
+        code_block,
+        hard_break,
+        heading,
+        image,
+        list_item,
+        ordered_list,
+        paragraph,
+    },
+    marks: {
+        bold,
+        strike,
+        underline,
+        strong,
+        code,
+        italic,
+        link,
+        styled,
+    },
+};

@@ -1,5 +1,5 @@
 import defaultHtmlSerializer from './schema'
-import { ISchema, IRichtext } from '../types/commomInterfaces'
+import { ISchema, IRichtext } from './interfaces'
 
 type HtmlEscapes = {
 	[key: string]: string,
@@ -34,7 +34,7 @@ class RichTextResolver {
 	private marks: INode
 	private nodes: INode
 
-	public constructor(schema: ISchema) {
+	public constructor(schema?: ISchema) {
 		if (!schema) {
 			schema = defaultHtmlSerializer as ISchema
 		}
@@ -51,8 +51,8 @@ class RichTextResolver {
 		this.marks[key] = schema
 	}
 
-	render(data: IRichtext) {
-		if (data.content && Array.isArray(data.content)) {
+	render(data?: IRichtext) {
+		if (data && data.content && Array.isArray(data.content)) {
 			let html = ''
 
 			data.content.forEach((node) => {

@@ -1,8 +1,8 @@
 import fetch from 'isomorphic-fetch'
 import { SbHelpers } from './sbHelpers'
 
-import { IResponse, IError, IParams } from '../types/commomInterfaces'
-import { Method } from '../types/commomEnum'
+import { IResponse, IError, IStoriesParams } from './interfaces'
+import { Method } from './enum'
 
 type ResponseFn = {
   (arg?: IResponse | any): any
@@ -22,7 +22,7 @@ class SbFetch {
 	private responseInterceptor?: ResponseFn
 	private ejectInterceptor?: boolean
 	private url: string
-	private parameters: IParams
+	private parameters: IStoriesParams
 
 	public constructor($c: ISbFetch) {
 		this.baseURL = $c.baseURL,
@@ -31,34 +31,34 @@ class SbFetch {
 		this.responseInterceptor = $c.responseInterceptor
 		this.ejectInterceptor = false
 		this.url = ''
-		this.parameters = {} as IParams
+		this.parameters = {} as IStoriesParams
 	}
 
 	/**
 	 * 
 	 * @param url string
-	 * @param params IParams 
+	 * @param params IStoriesParams 
 	 * @returns Promise<IResponse | Error>
 	 */
-	public get(url: string, params: IParams) {
+	public get(url: string, params: IStoriesParams) {
 		this.url = url
 		this.parameters = params
 		return this._methodHandler(Method.GET)
 	}
 
-	public post(url: string, params: IParams) {
+	public post(url: string, params: IStoriesParams) {
 		this.url = url
 		this.parameters = params
 		return this._methodHandler(Method.POST)
 	}
 
-	public put(url: string, params: IParams) {
+	public put(url: string, params: IStoriesParams) {
 		this.url = url
 		this.parameters = params
 		return this._methodHandler(Method.PUT)
 	}
 
-	public delete(url: string, params: IParams) {
+	public delete(url: string, params: IStoriesParams) {
 		this.url = url
 		this.parameters = params
 		return this._methodHandler(Method.DELETE)

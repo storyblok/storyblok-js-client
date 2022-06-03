@@ -1,5 +1,4 @@
-import { INode, NodeSchema, MarkSchema } from '../types/commomInterfaces'
-import { StoryblokComponent } from '../../../../node_modules/storyblok-js-client/types/index'
+import { INode, NodeSchema, MarkSchema, IStoryblokComponent } from './interfaces'
 
 const pick = function (attrs: Attrs, allowed: string[]) {
 	const h = {} as Attrs
@@ -16,7 +15,7 @@ const pick = function (attrs: Attrs, allowed: string[]) {
 const isEmailLinkType = (type: string) => type === 'email'
 
 type Attrs = {
-	[key: string]: string | number | Array<StoryblokComponent<any>>
+	[key: string]: string | number | Array<IStoryblokComponent<any>>
 }
 
 // nodes

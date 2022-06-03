@@ -1,15 +1,13 @@
-import { IStoriesParams  } from '../types/interfaces'
-interface IParams extends Object {
+import { IStoriesParams, IStoryblokResult, AsyncFn } from './interfaces'
+interface IParams extends IStoriesParams {
 	[key: string]: any
 }
 
 type ArrayFn = (...args: any) => void
 
-type FlatMapFn = (...args: any) => []
+type FlatMapFn = (...args: any) => [] | any
 
-type AsyncFn = (...args: any) => []
-
-type RangeFn = (...args: any) => void
+type RangeFn = (...args: any) => []
 
 export class SbHelpers {
 	public isCDNUrl = (url = '') => url.indexOf('/cdn/') > -1
@@ -26,7 +24,7 @@ export class SbHelpers {
 	
 	public arrayFrom = (length = 0, func: ArrayFn) => [...Array(length)].map(func)
 	
-	public range = (start = 0, end = start) => {
+	public range = (start = 0, end = start): Array<any> => {
 		const length = Math.abs(end - start) || 0
 		const step = start < end ? 1 : -1
 		return this.arrayFrom(length, (_, i: number) => i * step + start)
@@ -34,7 +32,7 @@ export class SbHelpers {
 	
 	public asyncMap = async (arr: RangeFn[], func: AsyncFn) => Promise.all(arr.map(func))
 	
-	public flatMap = (arr = [], func: FlatMapFn) =>
+	public flatMap = (arr:IStoryblokResult[] = [], func: FlatMapFn) =>
 		arr.map(func).reduce((xs, ys) => [...xs, ...ys], [])
 
 	/**
