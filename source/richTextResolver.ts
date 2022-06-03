@@ -43,15 +43,15 @@ class RichTextResolver {
 		this.nodes = schema.nodes
 	}
 
-	addNode(key: string, schema: ISchema) {
+	public addNode(key: string, schema: ISchema) {
 		this.nodes[key] = schema
 	}
 
-	addMark(key: string, schema: ISchema) {
+	public addMark(key: string, schema: ISchema) {
 		this.marks[key] = schema
 	}
 
-	render(data?: IRichtext) {
+	public render(data?: IRichtext) {
 		if (data && data.content && Array.isArray(data.content)) {
 			let html = ''
 
@@ -68,7 +68,7 @@ class RichTextResolver {
 		return ''
 	}
 
-	renderNode(item: IRichtext) {
+	private renderNode(item: IRichtext) {
 		const html = []
 
 		if (item.marks) {
@@ -119,7 +119,7 @@ class RichTextResolver {
 		return html.join('')
 	}
 
-	renderTag(tags: ITag[], ending: string) {
+	private renderTag(tags: ITag[], ending: string) {
 		if (tags.constructor === String) {
 			return `<${tags}${ending}>`
 		}
@@ -144,11 +144,11 @@ class RichTextResolver {
 		return all.join('')
 	}
 
-	renderOpeningTag(tags: ITag[]) {
+	private renderOpeningTag(tags: ITag[]) {
 		return this.renderTag(tags, '')
 	}
 
-	renderClosingTag(tags: ITag[]) {
+	private renderClosingTag(tags: ITag[]) {
 		if (tags.constructor === String) {
 			return `</${tags}>`
 		}
@@ -167,14 +167,14 @@ class RichTextResolver {
 		return all.join('')
 	}
 
-	getMatchingNode(item: IRichtext) {
+	private getMatchingNode(item: IRichtext) {
 		if (typeof this.nodes[item.type] !== 'function') {
 			return
 		}
 		return this.nodes[item.type](item)
 	}
 
-	getMatchingMark(item: IRichtext) {
+	private getMatchingMark(item: IRichtext) {
 		if (typeof this.marks[item.type] === 'function') {
 			return this.marks[item.type](item)
 		}
