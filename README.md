@@ -121,6 +121,10 @@ const StoryblokClient = require('storyblok-js-client/dist/es5/index.cjs')
 import StoryblokClient from 'storyblok-js-client/dist/es5/index.es'
 ```
 
+### Adding TypeScript
+
+We added TypeScript to our codebase, improving our code quality and assuring the correct implementation from the client's side. This change will probably break your code, because your Storyblok client's current implementation is possibly sending the wrong types to the source.
+All the types are declared under `source/types`. If you use an IDE to code, you'll be able to hover the problematic cause and see what is being expected from the type. You also can use the last version without TypeScript.
 ### Axios removal
 
 We removed our dependency on axios on version 4.4.0. If you want to continue using our SDK with axios, please refer to version @4.2.1.
