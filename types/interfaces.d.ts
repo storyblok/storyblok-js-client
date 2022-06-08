@@ -118,6 +118,13 @@ export declare type NodeSchema = {
 export declare type MarkSchema = {
     (node: INode): object;
 };
+export interface IContentMangmntAPI {
+    story: {
+        name: string;
+        slug: string;
+        [key: string]: any;
+    };
+}
 export interface ISchema {
     nodes: any;
     marks: any;

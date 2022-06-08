@@ -1,4 +1,4 @@
-import { IStoriesParams, IStoryblokConfig, IStoryblokResult, IStoryData } from './interfaces';
+import { IStoriesParams, IStoryblokConfig, IStoryblokResult, IContentMangmntAPI } from './interfaces';
 declare type ComponentResolverFn = {
     (...args: any): any;
 };
@@ -34,9 +34,9 @@ declare class Storyblok {
     private makeRequest;
     get(slug: string, params?: IStoriesParams): Promise<IStoryblokResult>;
     getAll(slug: string, params: IStoriesParams, entity?: string): Promise<any>;
-    post(slug: string, params: IStoriesParams | IStoryData): any;
-    put(slug: string, params: IStoriesParams | IStoryData): any;
-    delete(slug: string, params: IStoriesParams | IStoryData): any;
+    post(slug: string, params: IStoriesParams | IContentMangmntAPI): any;
+    put(slug: string, params: IStoriesParams | IContentMangmntAPI): any;
+    delete(slug: string, params: IStoriesParams | IContentMangmntAPI): any;
     getStories(params: IStoriesParams): Promise<IStoryblokResult>;
     getStory(slug: string, params: IStoriesParams): Promise<IStoryblokResult>;
     private getToken;

@@ -10,6 +10,7 @@ import {
 	IStoryblokConfig,
 	IStoryblokResult,
 	IStoryData,
+	IContentMangmntAPI,
 	INode,
 	ThrottleFn
 } from './interfaces'
@@ -202,17 +203,17 @@ class Storyblok {
 		)
 	}
 
-	public post(slug: string, params: IStoriesParams | IStoryData) {
+	public post(slug: string, params: IStoriesParams | IContentMangmntAPI) {
 		const url = `/${slug}`
 		return this.throttle('post', url, params)
 	}
 
-	public put(slug: string, params: IStoriesParams | IStoryData) {
+	public put(slug: string, params: IStoriesParams | IContentMangmntAPI) {
 		const url = `/${slug}`
 		return this.throttle('put', url, params)
 	}
 
-	public delete(slug: string, params: IStoriesParams | IStoryData) {
+	public delete(slug: string, params: IStoriesParams | IContentMangmntAPI) {
 		const url = `/${slug}`
 		return this.throttle('delete', url, params)
 	}
