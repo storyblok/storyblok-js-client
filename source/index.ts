@@ -202,17 +202,17 @@ class Storyblok {
 		)
 	}
 
-	public post(slug: string, params: IStoriesParams) {
+	public post(slug: string, params: IStoriesParams | IStoryData) {
 		const url = `/${slug}`
 		return this.throttle('post', url, params)
 	}
 
-	public put(slug: string, params: IStoriesParams) {
+	public put(slug: string, params: IStoriesParams | IStoryData) {
 		const url = `/${slug}`
 		return this.throttle('put', url, params)
 	}
 
-	public delete(slug: string, params: IStoriesParams) {
+	public delete(slug: string, params: IStoriesParams | IStoryData) {
 		const url = `/${slug}`
 		return this.throttle('delete', url, params)
 	}
