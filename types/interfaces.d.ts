@@ -120,8 +120,6 @@ export declare type MarkSchema = {
 };
 export interface IContentMangmntAPI {
     story: {
-        name: string;
-        slug: string;
         [key: string]: any;
     };
 }
