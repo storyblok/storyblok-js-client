@@ -118,10 +118,32 @@ export declare type NodeSchema = {
 export declare type MarkSchema = {
     (node: INode): object;
 };
-export interface IContentMangmntAPI {
+declare type FirstPublished = `${number}-${number}-${number} ${number}:${number}`;
+export interface IContentMangmntAPI<Content = IStoryblokComponent<string> & {
+    [index: string]: any;
+}> {
     story: {
-        [key: string]: any;
+        name: string;
+        slug: string;
+        content?: Content;
+        default_root?: boolean;
+        is_folder?: boolean;
+        parent_id?: string;
+        disble_fe_editor?: boolean;
+        path?: string;
+        is_startpage?: boolean;
+        position?: number;
+        first_published_at?: FirstPublished;
+        translated_slugs_attributes?: {
+            path: string;
+            name: string | null;
+            lang: IContentMangmntAPI['lang'];
+        }[];
     };
+    force_update?: '1' | unknown;
+    release_id?: number;
+    publish?: '1' | unknown;
+    lang?: string;
 }
 export interface ISchema {
     nodes: any;
@@ -139,3 +161,4 @@ export declare type ThrottleFn = {
 };
 export declare type AsyncFn = (...args: any) => [] | Promise<IStoryblokResult>;
 export declare type ArrayFn = (...args: any) => void;
+export {};
