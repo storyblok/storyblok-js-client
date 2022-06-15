@@ -27,7 +27,7 @@ class Storyblok {
     resolveNestedRelations;
     /**
      *
-     * @param config IStoryblok interface
+     * @param config IStoryblokConfig interface
      * @param endpoint string, optional
      */
     constructor(config, endpoint) {

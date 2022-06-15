@@ -71,7 +71,7 @@ class Storyblok {
 
 	/**
 	 * 
-	 * @param config IStoryblok interface
+	 * @param config IStoryblokConfig interface
 	 * @param endpoint string, optional
 	 */
 	public constructor(config: IStoryblokConfig, endpoint?: string) {
