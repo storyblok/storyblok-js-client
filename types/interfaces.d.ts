@@ -8,7 +8,7 @@ export interface IStoriesParams {
     excluding_ids?: string;
     excluding_fields?: string;
     version?: 'draft' | 'published';
-    resolve_links?: 'url' | 'story' | '0' | '1';
+    resolve_links?: 'url' | 'story' | '0' | '1' | 'link';
     resolve_relations?: string;
     resolve_assets?: number;
     cv?: number;

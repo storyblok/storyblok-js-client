@@ -19,7 +19,7 @@ export declare class SbHelpers {
         excluding_ids?: string | undefined;
         excluding_fields?: string | undefined;
         version?: "draft" | "published" | undefined;
-        resolve_links?: "url" | "story" | "0" | "1" | undefined;
+        resolve_links?: "url" | "story" | "0" | "1" | "link" | undefined;
         resolve_relations?: string | undefined;
         resolve_assets?: number | undefined;
         cv?: number | undefined;
