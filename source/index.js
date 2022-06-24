@@ -365,8 +365,10 @@ class Storyblok {
       for (const $s of stories) {
         this.iterateTree($s, assets)
       }
-    } else {
+    } else if (story) {
       this.iterateTree(story, assets)
+    } else {
+      return response
     }
   }
 
