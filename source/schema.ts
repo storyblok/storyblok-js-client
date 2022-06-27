@@ -1,4 +1,4 @@
-import { INode, NodeSchema, MarkSchema, IStoryblokComponent } from './interfaces'
+import { ISbNode, NodeSchema, MarkSchema, ISbComponentType } from './interfaces'
 
 const pick = function (attrs: Attrs, allowed: string[]) {
 	const h = {} as Attrs
@@ -15,7 +15,7 @@ const pick = function (attrs: Attrs, allowed: string[]) {
 const isEmailLinkType = (type: string) => type === 'email'
 
 type Attrs = {
-	[key: string]: string | number | Array<IStoryblokComponent<any>>
+	[key: string]: string | number | Array<ISbComponentType<any>>
 }
 
 // nodes
@@ -34,7 +34,7 @@ const bullet_list: NodeSchema = () => {
 		tag: 'ul',
 	}
 }
-const code_block: NodeSchema = (node: INode) => {
+const code_block: NodeSchema = (node: ISbNode) => {
 	return {
 		tag: [
 			'pre',
@@ -50,12 +50,12 @@ const hard_break: NodeSchema = () => {
 		singleTag: 'br',
 	}
 }
-const heading: NodeSchema = (node: INode) => {
+const heading: NodeSchema = (node: ISbNode) => {
 	return {
 		tag: `h${node.attrs.level}`,
 	}
 }
-const image: NodeSchema = (node: INode) => {
+const image: NodeSchema = (node: ISbNode) => {
 	return {
 		singleTag: [
 			{
@@ -112,7 +112,7 @@ const italic: MarkSchema = () => {
 		tag: 'i',
 	}
 }
-const link: MarkSchema = (node :INode) => {
+const link: MarkSchema = (node :ISbNode) => {
 	const attrs = { ...node.attrs }
 	const { linktype = 'url' } = node.attrs
 
@@ -134,7 +134,7 @@ const link: MarkSchema = (node :INode) => {
 		],
 	}
 }
-const styled: MarkSchema = (node :INode) => {
+const styled: MarkSchema = (node :ISbNode) => {
 	return {
 		tag: [
 			{

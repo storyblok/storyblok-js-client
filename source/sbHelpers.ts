@@ -1,5 +1,5 @@
-import { IStoriesParams, IStoryblokResult, AsyncFn } from './interfaces'
-interface IParams extends IStoriesParams {
+import { ISbStoriesParams, ISbResult, AsyncFn } from './interfaces'
+interface ISbParams extends ISbStoriesParams {
 	[key: string]: any
 }
 
@@ -12,7 +12,7 @@ type RangeFn = (...args: any) => []
 export class SbHelpers {
 	public isCDNUrl = (url = '') => url.indexOf('/cdn/') > -1
 
-	public getOptionsPage = (options: IStoriesParams = {}, perPage = 25, page = 1) => {
+	public getOptionsPage = (options: ISbStoriesParams = {}, perPage = 25, page = 1) => {
 		return {
 			...options,
 			per_page: perPage,
@@ -32,7 +32,7 @@ export class SbHelpers {
 	
 	public asyncMap = async (arr: RangeFn[], func: AsyncFn) => Promise.all(arr.map(func))
 	
-	public flatMap = (arr:IStoryblokResult[] = [], func: FlatMapFn) =>
+	public flatMap = (arr:ISbResult[] = [], func: FlatMapFn) =>
 		arr.map(func).reduce((xs, ys) => [...xs, ...ys], [])
 
 	/**
@@ -42,7 +42,7 @@ export class SbHelpers {
 		* @param  {Boolean} isArray
 		* @return {String} Stringified object
 		*/
-	public stringify (params: IParams, prefix?: string, isArray?: boolean): string {
+	public stringify (params: ISbParams, prefix?: string, isArray?: boolean): string {
 		const pairs = []
 		for (const key in params) {
 			if (!Object.prototype.hasOwnProperty.call(params, key)) {

@@ -26,8 +26,8 @@ class SbFetch {
     /**
      *
      * @param url string
-     * @param params IStoriesParams
-     * @returns Promise<IResponse | Error>
+     * @param params ISbStoriesParams
+     * @returns Promise<ISbResponse | Error>
      */
     get(url, params) {
         this.url = url;

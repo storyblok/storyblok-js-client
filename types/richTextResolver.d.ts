@@ -1,11 +1,11 @@
-import { ISchema, IRichtext } from './interfaces';
+import { ISbSchema, ISbRichtext } from './interfaces';
 declare class RichTextResolver {
     private marks;
     private nodes;
-    constructor(schema?: ISchema);
-    addNode(key: string, schema: ISchema): void;
-    addMark(key: string, schema: ISchema): void;
-    render(data?: IRichtext): string;
+    constructor(schema?: ISbSchema);
+    addNode(key: string, schema: ISbSchema): void;
+    addMark(key: string, schema: ISbSchema): void;
+    render(data?: ISbRichtext): string;
     private renderNode;
     private renderTag;
     private renderOpeningTag;

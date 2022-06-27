@@ -1,5 +1,5 @@
-import { IStoriesParams, IStoryblokResult, AsyncFn } from './interfaces';
-interface IParams extends IStoriesParams {
+import { ISbStoriesParams, ISbResult, AsyncFn } from './interfaces';
+interface ISbParams extends ISbStoriesParams {
     [key: string]: any;
 }
 declare type ArrayFn = (...args: any) => void;
@@ -7,7 +7,7 @@ declare type FlatMapFn = (...args: any) => [] | any;
 declare type RangeFn = (...args: any) => [];
 export declare class SbHelpers {
     isCDNUrl: (url?: string) => boolean;
-    getOptionsPage: (options?: IStoriesParams, perPage?: number, page?: number) => {
+    getOptionsPage: (options?: ISbStoriesParams, perPage?: number, page?: number) => {
         per_page: number;
         page: number;
         token?: string | undefined;
@@ -42,8 +42,8 @@ export declare class SbHelpers {
     delay: (ms: number) => Promise<unknown>;
     arrayFrom: (length: number | undefined, func: ArrayFn) => void[];
     range: (start?: number, end?: number) => Array<any>;
-    asyncMap: (arr: RangeFn[], func: AsyncFn) => Promise<(IStoryblokResult | [])[]>;
-    flatMap: (arr: IStoryblokResult[] | undefined, func: FlatMapFn) => any;
+    asyncMap: (arr: RangeFn[], func: AsyncFn) => Promise<(ISbResult | [])[]>;
+    flatMap: (arr: ISbResult[] | undefined, func: FlatMapFn) => any;
     /**
         * @method stringify
         * @param  {Object} params
@@ -51,6 +51,6 @@ export declare class SbHelpers {
         * @param  {Boolean} isArray
         * @return {String} Stringified object
         */
-    stringify(params: IParams, prefix?: string, isArray?: boolean): string;
+    stringify(params: ISbParams, prefix?: string, isArray?: boolean): string;
 }
 export {};

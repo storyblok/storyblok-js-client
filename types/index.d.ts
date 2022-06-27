@@ -1,4 +1,4 @@
-import { IStoriesParams, IStoryblokConfig, IStoryblokResult, IContentMangmntAPI } from './interfaces';
+import { ISbStoriesParams, ISbConfig, ISbResult, ISbContentMangmntAPI } from './interfaces';
 declare type ComponentResolverFn = {
     (...args: any): any;
 };
@@ -24,21 +24,21 @@ declare class Storyblok {
     resolveNestedRelations: boolean;
     /**
      *
-     * @param config IStoryblokConfig interface
+     * @param config ISbConfig interface
      * @param endpoint string, optional
      */
-    constructor(config: IStoryblokConfig, endpoint?: string);
+    constructor(config: ISbConfig, endpoint?: string);
     setComponentResolver(resolver: ComponentResolverFn): void;
     private parseParams;
     private factoryParamOptions;
     private makeRequest;
-    get(slug: string, params?: IStoriesParams): Promise<IStoryblokResult>;
-    getAll(slug: string, params: IStoriesParams, entity?: string): Promise<any>;
-    post(slug: string, params: IStoriesParams | IContentMangmntAPI): any;
-    put(slug: string, params: IStoriesParams | IContentMangmntAPI): any;
-    delete(slug: string, params: IStoriesParams | IContentMangmntAPI): any;
-    getStories(params: IStoriesParams): Promise<IStoryblokResult>;
-    getStory(slug: string, params: IStoriesParams): Promise<IStoryblokResult>;
+    get(slug: string, params?: ISbStoriesParams): Promise<ISbResult>;
+    getAll(slug: string, params: ISbStoriesParams, entity?: string): Promise<any>;
+    post(slug: string, params: ISbStoriesParams | ISbContentMangmntAPI): any;
+    put(slug: string, params: ISbStoriesParams | ISbContentMangmntAPI): any;
+    delete(slug: string, params: ISbStoriesParams | ISbContentMangmntAPI): any;
+    getStories(params: ISbStoriesParams): Promise<ISbResult>;
+    getStory(slug: string, params: ISbStoriesParams): Promise<ISbResult>;
     private getToken;
     ejectInterceptor(): void;
     private _cleanCopy;

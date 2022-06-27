@@ -5,11 +5,11 @@ declare type Queue = {
     args: any[];
     self: any;
 };
-interface IThrottle {
+interface ISbThrottle {
     abort: () => any;
     (args: []): Promise<Queue>;
     name: string;
     AbortError?: () => void;
 }
-declare function throttledQueue(fn: ThrottleFn, limit: number, interval: number): IThrottle;
+declare function throttledQueue(fn: ThrottleFn, limit: number, interval: number): ISbThrottle;
 export default throttledQueue;

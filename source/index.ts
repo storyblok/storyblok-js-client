@@ -5,13 +5,13 @@ import SbFetch from './sbFetch'
 
 import { Method } from './enum'
 import {
-	IStoriesParams,
-	IStoryblokCache,
-	IStoryblokConfig,
-	IStoryblokResult,
-	IStoryData,
-	IContentMangmntAPI,
-	INode,
+	ISbStoriesParams,
+	ISbCache,
+	ISbConfig,
+	ISbResult,
+	ISbStoryData,
+	ISbContentMangmntAPI,
+	ISbNode,
 	ThrottleFn
 } from './interfaces'
 
@@ -38,17 +38,17 @@ type MemoryType = {
 	[key: string]: any
 }
 
-interface FlatMapped {
+interface ISbFlatMapped {
 	data: any
 }
 
-interface ResponseData {
+interface ISbResponseData {
 	link_uuids: string[]
 	links: string[]
 	rel_uuids: string[]
 	rels: any
-	story: IStoryData
-	stories: Array<IStoryData>
+	story: ISbStoryData
+	stories: Array<ISbStoryData>
 }
 
 enum Version {
@@ -61,7 +61,7 @@ class Storyblok {
 	private maxRetries?: number | 5
 	private throttle: ThrottleFn
 	private accessToken: string
-	private cache: IStoryblokCache
+	private cache: ISbCache
 	private helpers: SbHelpers
 
 	public relations: RelationsType
@@ -71,10 +71,10 @@ class Storyblok {
 
 	/**
 	 * 
-	 * @param config IStoryblokConfig interface
+	 * @param config ISbConfig interface
 	 * @param endpoint string, optional
 	 */
-	public constructor(config: IStoryblokConfig, endpoint?: string) {
+	public constructor(config: ISbConfig, endpoint?: string) {
 		if (!endpoint) {
 			const region = config.region ? `-${config.region}` : ''
 			const protocol = !config.https ? 'http' : 'https'
@@ -126,7 +126,7 @@ class Storyblok {
 	}
 
 	public setComponentResolver(resolver: ComponentResolverFn) {
-		this.richTextResolver.addNode('blok', (node: INode) => {
+		this.richTextResolver.addNode('blok', (node: ISbNode) => {
 			let html = ''
 
 			node.attrs.body.forEach((blok) => {
@@ -139,7 +139,7 @@ class Storyblok {
 		})
 	}
 
-	private parseParams(params: IStoriesParams) {
+	private parseParams(params: ISbStoriesParams) {
 		if (!params.version) {
 			params.version = 'published'
 		}
@@ -159,7 +159,7 @@ class Storyblok {
 		return params
 	}
 
-	private factoryParamOptions(url: string, params: IStoriesParams) {
+	private factoryParamOptions(url: string, params: ISbStoriesParams) {
 		if (this.helpers.isCDNUrl(url)) {
 			return this.parseParams(params)
 		}
@@ -167,7 +167,7 @@ class Storyblok {
 		return params
 	}
 
-	private makeRequest(url: string, params: IStoriesParams, per_page: number, page: number) {
+	private makeRequest(url: string, params: ISbStoriesParams, per_page: number, page: number) {
 		const options = this.factoryParamOptions(
 			url,
 			this.helpers.getOptionsPage(params, per_page, page)
@@ -176,15 +176,15 @@ class Storyblok {
 		return this.cacheResponse(url, options)
 	}
 
-	public get(slug: string, params?: IStoriesParams) {
-		if (!params) params = {} as IStoriesParams
+	public get(slug: string, params?: ISbStoriesParams) {
+		if (!params) params = {} as ISbStoriesParams
 		const url = `/${slug}`
 		const query = this.factoryParamOptions(url, params)
 
 		return this.cacheResponse(url, query)
 	}
 
-	public async getAll(slug: string, params: IStoriesParams, entity?: string) {
+	public async getAll(slug: string, params: ISbStoriesParams, entity?: string) {
 		const perPage = params?.per_page || 25
 		const url = `/${slug}`
 		const urlParts = url.split('/')
@@ -198,31 +198,31 @@ class Storyblok {
 			return this.makeRequest(url, params, perPage, i + 1)
 		})
 
-		return this.helpers.flatMap([firstRes, ...restRes], (res: FlatMapped) =>
+		return this.helpers.flatMap([firstRes, ...restRes], (res: ISbFlatMapped) =>
 			Object.values(res.data[e])
 		)
 	}
 
-	public post(slug: string, params: IStoriesParams | IContentMangmntAPI) {
+	public post(slug: string, params: ISbStoriesParams | ISbContentMangmntAPI) {
 		const url = `/${slug}`
 		return this.throttle('post', url, params)
 	}
 
-	public put(slug: string, params: IStoriesParams | IContentMangmntAPI) {
+	public put(slug: string, params: ISbStoriesParams | ISbContentMangmntAPI) {
 		const url = `/${slug}`
 		return this.throttle('put', url, params)
 	}
 
-	public delete(slug: string, params: IStoriesParams | IContentMangmntAPI) {
+	public delete(slug: string, params: ISbStoriesParams | ISbContentMangmntAPI) {
 		const url = `/${slug}`
 		return this.throttle('delete', url, params)
 	}
 
-	public getStories(params: IStoriesParams) {
+	public getStories(params: ISbStoriesParams) {
 		return this.get('cdn/stories', params)
 	}
 
-	public getStory(slug: string, params: IStoriesParams) {
+	public getStory(slug: string, params: ISbStoriesParams) {
 		return this.get(`cdn/stories/${slug}`, params)
 	}
 
@@ -238,7 +238,7 @@ class Storyblok {
 		return JSON.parse(JSON.stringify(value))
 	}
 
-	private _insertLinks(jtree: IStoriesParams, treeItem: keyof IStoriesParams) {
+	private _insertLinks(jtree: ISbStoriesParams, treeItem: keyof ISbStoriesParams) {
 		const node = jtree[treeItem]
 
 		if (
@@ -259,7 +259,7 @@ class Storyblok {
 		}
 	}
 
-	private _insertRelations(jtree:IStoriesParams, treeItem: keyof IStoriesParams, fields: string | Array<string>) {
+	private _insertRelations(jtree:ISbStoriesParams, treeItem: keyof ISbStoriesParams, fields: string | Array<string>) {
 		if (fields.indexOf(`${jtree.component}.${treeItem}`) > -1) {
 			if (typeof jtree[treeItem] === 'string') {
 				if (this.relations[jtree[treeItem]]) {
@@ -277,8 +277,8 @@ class Storyblok {
 		}
 	}
 
-	private iterateTree(story: IStoryData, fields: string | Array<string>) {
-		const enrich = (jtree: IStoriesParams | any) => {
+	private iterateTree(story: ISbStoryData, fields: string | Array<string>) {
+		const enrich = (jtree: ISbStoriesParams | any) => {
 			if (jtree == null) {
 				return
 			}
@@ -292,8 +292,8 @@ class Storyblok {
 				}
 				for (const treeItem in jtree) {
 					if ((jtree.component && jtree._uid) || jtree.type === 'link') {
-						this._insertRelations(jtree, treeItem as keyof IStoriesParams, fields)
-						this._insertLinks(jtree, treeItem as keyof IStoriesParams)
+						this._insertRelations(jtree, treeItem as keyof ISbStoriesParams, fields)
+						this._insertLinks(jtree, treeItem as keyof ISbStoriesParams)
 					}
 					enrich(jtree[treeItem])
 				}
@@ -303,7 +303,7 @@ class Storyblok {
 		enrich(story.content)
 	}
 
-	private async resolveLinks(responseData: ResponseData, params: IStoriesParams) {
+	private async resolveLinks(responseData: ISbResponseData, params: ISbStoriesParams) {
 		let links: string[] = []
 
 		if (responseData.link_uuids) {
@@ -332,12 +332,12 @@ class Storyblok {
 			links = responseData.links
 		}
 
-		links.forEach((story: IStoryData | any) => {
+		links.forEach((story: ISbStoryData | any) => {
 			this.links[story.uuid] = { ...story, ...{ _stopResolving: true } }
 		})
 	}
 
-	private async resolveRelations(responseData: ResponseData, params: IStoriesParams) {
+	private async resolveRelations(responseData: ISbResponseData, params: ISbStoriesParams) {
 		let relations = []
 
 		if (responseData.rel_uuids) {
@@ -366,12 +366,12 @@ class Storyblok {
 			relations = responseData.rels
 		}
 
-		relations.forEach((story: IStoryData) => {
+		relations.forEach((story: ISbStoryData) => {
 			this.relations[story.uuid] = { ...story, ...{ _stopResolving: true } }
 		})
 	}
 
-	private async resolveStories(responseData: ResponseData, params: IStoriesParams) {
+	private async resolveStories(responseData: ISbResponseData, params: ISbStoriesParams) {
 		let relationParams: string[] = []
 
 		if (
@@ -395,13 +395,13 @@ class Storyblok {
 		if (responseData.story) {
 			this.iterateTree(responseData.story, relationParams)
 		} else {
-			responseData.stories.forEach((story: IStoryData) => {
+			responseData.stories.forEach((story: ISbStoryData) => {
 				this.iterateTree(story, relationParams)
 			})
 		}
 	}
 
-	private cacheResponse(url: string, params: IStoriesParams, retries?: number): Promise<IStoryblokResult> {
+	private cacheResponse(url: string, params: ISbStoriesParams, retries?: number): Promise<ISbResult> {
 		if (typeof retries === 'undefined' || !retries) {
 			retries = 0
 		}
@@ -425,7 +425,7 @@ class Storyblok {
 				(async () => {
 					const res = await this.throttle('get', url, params)
 
-					let response = { data: res.data, headers: res.headers } as IStoryblokResult
+					let response = { data: res.data, headers: res.headers } as ISbResult
   
 					if (res.headers['per-page']) {
 						response = Object.assign({}, response, {
@@ -474,7 +474,7 @@ class Storyblok {
 		})
 	}
 
-	private throttledRequest(type: Method, url: string, params: IStoriesParams) {
+	private throttledRequest(type: Method, url: string, params: ISbStoriesParams) {
 		return this.client[type](url, params)
 	}
 
@@ -502,7 +502,7 @@ class Storyblok {
 				getAll() {
 					return memory
 				},
-				set(key: string, content: IStoryblokResult) {
+				set(key: string, content: ISbResult) {
 					memory[key] = content
 				},
 				flush() {

@@ -1,5 +1,5 @@
 import defaultHtmlSerializer from './schema'
-import { ISchema, IRichtext } from './interfaces'
+import { ISbSchema, ISbRichtext } from './interfaces'
 
 type HtmlEscapes = {
 	[key: string]: string,
@@ -22,36 +22,36 @@ const escapeHTML = function (string: string) {
 		: string
 }
 
-interface ITag extends Element {
+interface ISbTag extends Element {
 	[key: string]: any
 }
 
-interface INode {
-	[key: string]: ISchema
+interface ISbNode {
+	[key: string]: ISbSchema
 }
 
 class RichTextResolver {
-	private marks: INode
-	private nodes: INode
+	private marks: ISbNode
+	private nodes: ISbNode
 
-	public constructor(schema?: ISchema) {
+	public constructor(schema?: ISbSchema) {
 		if (!schema) {
-			schema = defaultHtmlSerializer as ISchema
+			schema = defaultHtmlSerializer as ISbSchema
 		}
 
 		this.marks = schema.marks
 		this.nodes = schema.nodes
 	}
 
-	public addNode(key: string, schema: ISchema) {
+	public addNode(key: string, schema: ISbSchema) {
 		this.nodes[key] = schema
 	}
 
-	public addMark(key: string, schema: ISchema) {
+	public addMark(key: string, schema: ISbSchema) {
 		this.marks[key] = schema
 	}
 
-	public render(data?: IRichtext) {
+	public render(data?: ISbRichtext) {
 		if (data && data.content && Array.isArray(data.content)) {
 			let html = ''
 
@@ -68,7 +68,7 @@ class RichTextResolver {
 		return ''
 	}
 
-	private renderNode(item: IRichtext) {
+	private renderNode(item: ISbRichtext) {
 		const html = []
 
 		if (item.marks) {
@@ -119,7 +119,7 @@ class RichTextResolver {
 		return html.join('')
 	}
 
-	private renderTag(tags: ITag[], ending: string) {
+	private renderTag(tags: ISbTag[], ending: string) {
 		if (tags.constructor === String) {
 			return `<${tags}${ending}>`
 		}
@@ -144,11 +144,11 @@ class RichTextResolver {
 		return all.join('')
 	}
 
-	private renderOpeningTag(tags: ITag[]) {
+	private renderOpeningTag(tags: ISbTag[]) {
 		return this.renderTag(tags, '')
 	}
 
-	private renderClosingTag(tags: ITag[]) {
+	private renderClosingTag(tags: ISbTag[]) {
 		if (tags.constructor === String) {
 			return `</${tags}>`
 		}
@@ -167,14 +167,14 @@ class RichTextResolver {
 		return all.join('')
 	}
 
-	private getMatchingNode(item: IRichtext) {
+	private getMatchingNode(item: ISbRichtext) {
 		if (typeof this.nodes[item.type] !== 'function') {
 			return
 		}
 		return this.nodes[item.type](item)
 	}
 
-	private getMatchingMark(item: IRichtext) {
+	private getMatchingMark(item: ISbRichtext) {
 		if (typeof this.marks[item.type] === 'function') {
 			return this.marks[item.type](item)
 		}

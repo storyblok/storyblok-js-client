@@ -13,7 +13,7 @@ type Queue = {
 	self: any,
 }
 
-interface IThrottle {
+interface ISbThrottle {
 	abort: () => any
 	(args: []): Promise<Queue>
 	name: string
@@ -64,7 +64,7 @@ function throttledQueue(fn: ThrottleFn, limit: number, interval: number) {
 		x.resolve(fn.apply(x.self, x.args))
 	}
 
-	const throttled: IThrottle = function (this: IThrottle, ...args: []): Promise<Queue> {
+	const throttled: ISbThrottle = function (this: ISbThrottle, ...args: []): Promise<Queue> {
 		// eslint-disable-next-line @typescript-eslint/no-this-alias
 		const self = this
 
@@ -87,7 +87,7 @@ function throttledQueue(fn: ThrottleFn, limit: number, interval: number) {
 		timeouts = []
 
 		queue.forEach(function (x) {
-			x.reject(function (this: IThrottle) {
+			x.reject(function (this: ISbThrottle) {
 				Error.call(this, 'Throttled function aborted')
 				this.name = 'AbortError'
 			})

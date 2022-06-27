@@ -1,4 +1,4 @@
-export interface IStoriesParams {
+export interface ISbStoriesParams {
   token?: string
   with_tag?: string
   is_startpage?: 0 | 1
@@ -31,14 +31,14 @@ export interface IStoriesParams {
   component?: string
 }
 
-export interface IStoryblokComponent<T extends string> {
+export interface ISbComponentType<T extends string> {
   _uid?: string
   component?: T
   _editable?: string
 }
 
-export interface IStoryData<Content = IStoryblokComponent<string> & { [index: string]: any }> {
-  alternates: IAlternateObject[]
+export interface ISbStoryData<Content = ISbComponentType<string> & { [index: string]: any }> {
+  alternates: ISbAlternateObject[]
   content: Content
   created_at: string
   full_slug: string
@@ -53,13 +53,13 @@ export interface IStoryData<Content = IStoryblokComponent<string> & { [index: st
   first_published_at: string | null
   slug: string
   lang: string
-  translated_slugs?: {path: string, name: string|null, lang: IStoryData['lang']}[]
+  translated_slugs?: {path: string, name: string|null, lang: ISbStoryData['lang']}[]
   sort_by_date: string | null
   tag_list: string[]
   uuid: string
 }
 
-export interface IAlternateObject {
+export interface ISbAlternateObject {
   id: number;
   name: string;
   slug: string;
@@ -69,15 +69,15 @@ export interface IAlternateObject {
   parent_id: number;
 }
 
-export interface IStoryblokCache {
+export interface ISbCache {
   type?: 'none' | 'memory'
   clear?: 'auto' | 'manual'
 }
 
-export interface IStoryblokConfig {
+export interface ISbConfig {
   accessToken?: string
   oauthToken?: string
-  cache?: IStoryblokCache
+  cache?: ISbCache
   responseInterceptor?: (response: any) => any
   timeout?: number
   headers?: any
@@ -86,30 +86,30 @@ export interface IStoryblokConfig {
   https?: boolean
   rateLimit?: number
   componentResolver?: (component: string, data: any) => void
-  richTextSchema?: ISchema
+  richTextSchema?: ISbSchema
 }
 
-export interface IStoryblokResult {
+export interface ISbResult {
   data: any
   perPage: number
   total: number
   headers: Headers
 }
 
-export interface IResponse {
+export interface ISbResponse {
   status: number,
   statusText: string,
 }
 
-export interface IError {
+export interface ISbError {
   message: Error,
-  response: IResponse,
+  response: ISbResponse,
 }
 
-export interface INode extends Element {
+export interface ISbNode extends Element {
 	attrs: {
 		anchor?: string,
-    body: Array<IStoryblokComponent<any>>,
+    body: Array<ISbComponentType<any>>,
 		href?: string,
 		level?: number,
 		linktype?: string,
@@ -117,15 +117,15 @@ export interface INode extends Element {
 }
 
 export type NodeSchema = {
-	(node: INode): object
+	(node: ISbNode): object
 }
 
 export type MarkSchema = {
-	(node: INode): object
+	(node: ISbNode): object
 }
 
 type FirstPublished = `${number}-${number}-${number} ${number}:${number}`
-export interface IContentMangmntAPI<Content = IStoryblokComponent<string> & { [index: string]: any }> {
+export interface ISbContentMangmntAPI<Content = ISbComponentType<string> & { [index: string]: any }> {
   story: {
     name: string
     slug: string
@@ -138,7 +138,7 @@ export interface IContentMangmntAPI<Content = IStoryblokComponent<string> & { [i
     is_startpage?: boolean
     position?: number
     first_published_at?: FirstPublished
-    translated_slugs_attributes?: {path: string, name: string|null, lang: IContentMangmntAPI['lang']}[]
+    translated_slugs_attributes?: {path: string, name: string|null, lang: ISbContentMangmntAPI['lang']}[]
   }
   force_update?: '1' | unknown
   release_id?: number
@@ -146,13 +146,13 @@ export interface IContentMangmntAPI<Content = IStoryblokComponent<string> & { [i
   lang?: string
 }
 
-export interface ISchema {
+export interface ISbSchema {
 	nodes: any,
 	marks: any,
-	(arg: IRichtext): any
+	(arg: ISbRichtext): any
 }
 
-export interface IRichtext {
+export interface ISbRichtext {
   content: []
   marks: []
   text: string
@@ -163,6 +163,6 @@ export type ThrottleFn = {
   (...args: any): any
 }
 
-export type AsyncFn = (...args: any) => [] | Promise<IStoryblokResult>
+export type AsyncFn = (...args: any) => [] | Promise<ISbResult>
 
 export type ArrayFn = (...args: any) => void
