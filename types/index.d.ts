@@ -12,7 +12,7 @@ declare global {
       | "unpublished"
       | "enterEditmode";
     event?: string;
-    story?: S;
+    story?: StoryData<S>;
     slug?: string;
     slugChanged?: boolean;
     storyId?: string;
