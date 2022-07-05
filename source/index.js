@@ -249,7 +249,7 @@ class Storyblok {
           if ((jtree.component && jtree._uid) || jtree.type === "link") {
             this._insertRelations(jtree, treeItem, fields);
             this._insertLinks(jtree, treeItem);
-          } else if (jtree.fieldtype === "asset") {
+          } else if ('id' in jtree && jtree.fieldtype === "asset") {
             this._insertAssetsRelations(jtree, fields);
           }
           enrich(jtree[treeItem]);
