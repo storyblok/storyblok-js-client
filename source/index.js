@@ -331,15 +331,12 @@ class Storyblok {
   async resolveStories(responseData, params) {
     let relationParams = [];
 
-    if (
-      typeof params.resolve_relations !== "undefined" &&
-      params.resolve_relations.length > 0
-    ) {
-      relationParams = params.resolve_relations.split(",");
-      await this.resolveRelations(responseData, params);
+    if (typeof params.resolve_relations !== 'undefined' && params.resolve_relations.length > 0 && (responseData.rels || responseData.rel_uuids)) {
+      relationParams = params.resolve_relations.split(',')
+      await this.resolveRelations(responseData, params)
     }
 
-    if (["1", "story", "url"].indexOf(params.resolve_links) > -1) {
+    if (["1", "story", "url"].indexOf(params.resolve_links) > -1 && (responseData.links || responseData.link_uuids)) {
       await this.resolveLinks(responseData, params);
     }
 
