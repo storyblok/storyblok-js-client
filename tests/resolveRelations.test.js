@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 jest.setTimeout(60000)
 
-import StoryblokClient from '../source/index'
+import StoryblokClient from '../dist/index'
 
 let Storyblok = new StoryblokClient({
 	accessToken: 'w0yFvs04aKF2rpz6F8OfIQtt',

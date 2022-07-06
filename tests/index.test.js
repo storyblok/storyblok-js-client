@@ -1,8 +1,8 @@
 /* eslint-disable no-undef */
 jest.setTimeout(60000)
 
-import StoryblokClient from '../source/index'
-import RichTextResolver from '../source/richTextResolver'
+import StoryblokClient from '../dist/index'
+import RichTextResolver from '../dist/richTextResolver'
 
 let Storyblok = new StoryblokClient({
 	accessToken: 'w0yFvs04aKF2rpz6F8OfIQtt',

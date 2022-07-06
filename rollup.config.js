@@ -90,7 +90,7 @@ const factoryRichTextOutput = (format) => {
 export default [
 	// StoryblokClient
 	{
-		input: 'source/index.js',
+		input: 'dist/index.js',
 		output: enableStandalone ? [
 			factoryOutputStandalone()
 		] : [
@@ -104,7 +104,7 @@ export default [
 
 	// Richtext
 	{
-		input: 'source/richTextResolver.js',
+		input: 'dist/richTextResolver.js',
 		output: enableStandalone
 			? [
 				{

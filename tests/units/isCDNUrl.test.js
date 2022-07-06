@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import { SbHelpers } from '../../source/sbHelpers'
+import { SbHelpers } from '../../dist/sbHelpers'
 
 const isCDNUrl = new SbHelpers()
 

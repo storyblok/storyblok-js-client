@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 const TOKEN = 'w0yFvs04aKF2rpz6F8OfIQtt'
 
-import StoryblokClient from '../source/index'
+import StoryblokClient from '../dist/index'
 import customSchema from './customSchema'
 
 let client = new StoryblokClient({

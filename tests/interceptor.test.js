@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import StoryblokClient from '../source/index'
+import StoryblokClient from '../dist/index'
 
 const accessToken = 'w0yFvs04aKF2rpz6F8OfIQtt'
 const cache = {
