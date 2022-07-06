@@ -29,8 +29,7 @@
 ### Install
 
 ```sh
-# as axios is a peerDependency, you should install it too
-npm install storyblok-js-client axios # yarn add storyblok-js-client axios
+npm install storyblok-js-client # yarn add storyblok-js-client
 ```
 
 ### How to use it
@@ -122,6 +121,22 @@ const StoryblokClient = require('storyblok-js-client/dist/es5/index.cjs')
 import StoryblokClient from 'storyblok-js-client/dist/es5/index.es'
 ```
 
+### Added TypeScript
+
+We added TypeScript to our codebase, improving our code quality and assuring the correct implementation from the client's side. This change will probably break your code, because your Storyblok client's current implementation is possibly sending the wrong types to the source.
+All the types are declared under `source/types`. If you use an IDE to code, you'll be able to hover the problematic cause and see what is being expected from the type. You also can use the last version without TypeScript.
+
+### Axios removal
+
+We removed our dependency on axios on version 4.4.0. If you want to continue using our SDK with axios, please refer to version @4.2.1.
+The proxy feature was also removed in this version.
+
+### Isomorphic fetch
+
+As we removed Axios, some developers would want to use the SDK under Node's environment. So we added [isomorphic-fetch](https://www.npmjs.com/package/isomorphic-fetch) to deal with fetch, AbortController and XMLHttpRequest until Node don't bring the fetch API natively.
+As a part of our efforts to make the SDK more lightweight to web users, under the hood, the import of node-fetch is conditional depending either the app is under Node's environment or not.
+
+## Documentation
 #### Assets structure compatibility
 
 We added retro-compatibility when using `resolve_assets: 1` parameter under V2. Now, if you are using our V2 client, you should receive the assets structure just the same as V1.
@@ -136,7 +151,7 @@ We added retro-compatibility when using `resolve_assets: 1` parameter under V2. 
   - `accessToken` String, The preview token you can find in your space dashboard at https://app.storyblok.com
   - `cache` Object
     - `type` String, `none` or `memory`
-  - (`responseInterceptor` Function, optional - You can pass a function and return the result, like axios' interceptors. For security reasons, Storyblok client will deal only with the response interceptor.)
+  - (`responseInterceptor` Function, optional - You can pass a function and return the result. For security reasons, Storyblok client will deal only with the response interceptor.)
   - (`region` String, optional)
   - (`https` Boolean, optional)
   - (`rateLimit` Integer, optional, defaults to 3 for management api and 5 for cdn api)
@@ -163,7 +178,7 @@ let Storyblok = new StoryblokClient({
 
 #### Passing response interceptor
 
-The Storyblok client lets you pass a function that serves as a response interceptor to axios.
+The Storyblok client lets you pass a function that serves as a response interceptor to it.
 Usage:
 
 ```javascript
@@ -184,7 +199,15 @@ let Storyblok = new StoryblokClient({
 });
 ```
 
-#### Method `Storyblok#get`
+### Removing response interceptor
+
+One can remove the reponseInterceptor at any time, by calling the function `ejectInterceptor` as shown below:
+
+```javascript
+Storyblok.ejectInterceptor()
+```
+
+### Method `Storyblok#get`
 
 With this method you can get single or multiple items. The multiple items are paginated and you will receive 25 items per page by default. If you want to get all items at once use the `getAll` method.
 
