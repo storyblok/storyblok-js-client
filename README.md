@@ -124,7 +124,7 @@ import StoryblokClient from 'storyblok-js-client/dist/es5/index.es'
 ### Added TypeScript
 
 We added TypeScript to our codebase, improving our code quality and assuring the correct implementation from the client's side. This change will probably break your code, because your Storyblok client's current implementation is possibly sending the wrong types to the source.
-All the types are declared under `source/types`. If you use an IDE to code, you'll be able to hover the problematic cause and see what is being expected from the type. You also can use the last version without TypeScript.
+All the types are declared under `src/types`. If you use an IDE to code, you'll be able to hover the problematic cause and see what is being expected from the type. You also can use the last version without TypeScript.
 
 ### Axios removal
 
