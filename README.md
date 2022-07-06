@@ -128,7 +128,7 @@ All the types are declared under `src/types`. If you use an IDE to code, you'll 
 
 ### Axios removal
 
-We removed our dependency on axios on version x.x.x. If you want to continue using our SDK with axios, please refer to version @5.x.x.
+We removed our dependency on axios on version x.y.z. If you want to continue using our SDK with axios, please refer to version @5.y.z.
 The proxy feature was also removed in this version.
 
 ### Isomorphic fetch
