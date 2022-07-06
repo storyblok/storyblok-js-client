@@ -1,27 +1,12 @@
+import { ISbResponse, ISbStoriesParams } from './interfaces';
 declare type ResponseFn = {
-    (arg?: IResponse | any): any;
+    (arg?: ISbResponse | any): any;
 };
 interface ISbFetch {
     baseURL: string;
     timeout?: number;
     headers: Headers;
     responseInterceptor?: ResponseFn;
-}
-interface IResponse {
-    status: number;
-    statusText: string;
-}
-interface IParams {
-    version: string;
-    filter_query?: object;
-    resolve_assets?: number;
-    resolve_links?: string;
-    resolve_relations?: string;
-    token: string;
-    cv?: number;
-    page?: number;
-    per_page?: number;
-    sort_by?: string;
 }
 declare class SbFetch {
     private baseURL;
@@ -32,10 +17,16 @@ declare class SbFetch {
     private url;
     private parameters;
     constructor($c: ISbFetch);
-    get(url: string, params: IParams): Promise<IResponse | Error>;
-    post(url: string, params: IParams): Promise<IResponse | Error>;
-    put(url: string, params: IParams): Promise<IResponse | Error>;
-    delete(url: string, params: IParams): Promise<IResponse | Error>;
+    /**
+     *
+     * @param url string
+     * @param params ISbStoriesParams
+     * @returns Promise<ISbResponse | Error>
+     */
+    get(url: string, params: ISbStoriesParams): Promise<ISbResponse | Error>;
+    post(url: string, params: ISbStoriesParams): Promise<ISbResponse | Error>;
+    put(url: string, params: ISbStoriesParams): Promise<ISbResponse | Error>;
+    delete(url: string, params: ISbStoriesParams): Promise<ISbResponse | Error>;
     private _responseHandler;
     private _methodHandler;
     eject(): void;

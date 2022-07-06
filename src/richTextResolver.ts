@@ -1,13 +1,18 @@
 import defaultHtmlSerializer from './schema'
+import { ISbSchema, ISbRichtext } from './interfaces'
 
-const escapeHTML = function (string) {
+type HtmlEscapes = {
+	[key: string]: string,
+}
+
+const escapeHTML = function (string: string) {
 	const htmlEscapes = {
 		'&': '&amp;',
 		'<': '&lt;',
 		'>': '&gt;',
 		'"': '&quot;',
 		'\'': '&#39;',
-	}
+	} as HtmlEscapes
 
 	const reUnescapedHtml = /[&<>"']/g
 	const reHasUnescapedHtml = RegExp(reUnescapedHtml.source)
@@ -17,26 +22,37 @@ const escapeHTML = function (string) {
 		: string
 }
 
+interface ISbTag extends Element {
+	[key: string]: any
+}
+
+interface ISbNode {
+	[key: string]: ISbSchema
+}
+
 class RichTextResolver {
-	constructor(schema) {
+	private marks: ISbNode
+	private nodes: ISbNode
+
+	public constructor(schema?: ISbSchema) {
 		if (!schema) {
-			schema = defaultHtmlSerializer
+			schema = defaultHtmlSerializer as ISbSchema
 		}
 
-		this.marks = schema.marks || []
-		this.nodes = schema.nodes || []
+		this.marks = schema.marks
+		this.nodes = schema.nodes
 	}
 
-	addNode(key, schema) {
+	public addNode(key: string, schema: ISbSchema) {
 		this.nodes[key] = schema
 	}
 
-	addMark(key, schema) {
+	public addMark(key: string, schema: ISbSchema) {
 		this.marks[key] = schema
 	}
 
-	render(data = {}) {
-		if (data.content && Array.isArray(data.content)) {
+	public render(data?: ISbRichtext) {
+		if (data && data.content && Array.isArray(data.content)) {
 			let html = ''
 
 			data.content.forEach((node) => {
@@ -52,8 +68,8 @@ class RichTextResolver {
 		return ''
 	}
 
-	renderNode(item) {
-		let html = []
+	private renderNode(item: ISbRichtext) {
+		const html = []
 
 		if (item.marks) {
 			item.marks.forEach((m) => {
@@ -103,7 +119,7 @@ class RichTextResolver {
 		return html.join('')
 	}
 
-	renderTag(tags, ending) {
+	private renderTag(tags: ISbTag[], ending: string) {
 		if (tags.constructor === String) {
 			return `<${tags}${ending}>`
 		}
@@ -114,8 +130,8 @@ class RichTextResolver {
 			} else {
 				let h = `<${tag.tag}`
 				if (tag.attrs) {
-					for (let key in tag.attrs) {
-						let value = tag.attrs[key]
+					for (const key in tag.attrs) {
+						const value = tag.attrs[key]
 						if (value !== null) {
 							h += ` ${key}="${value}"`
 						}
@@ -128,11 +144,11 @@ class RichTextResolver {
 		return all.join('')
 	}
 
-	renderOpeningTag(tags) {
+	private renderOpeningTag(tags: ISbTag[]) {
 		return this.renderTag(tags, '')
 	}
 
-	renderClosingTag(tags) {
+	private renderClosingTag(tags: ISbTag[]) {
 		if (tags.constructor === String) {
 			return `</${tags}>`
 		}
@@ -151,16 +167,16 @@ class RichTextResolver {
 		return all.join('')
 	}
 
-	getMatchingNode(item) {
+	private getMatchingNode(item: ISbRichtext) {
 		if (typeof this.nodes[item.type] !== 'function') {
 			return
 		}
 		return this.nodes[item.type](item)
 	}
 
-	getMatchingMark(item) {
-		if (typeof this.marks[item.type] !== 'function') {
-			return
+	private getMatchingMark(item: ISbRichtext) {
+		if (typeof this.marks[item.type] === 'function') {
+			return this.marks[item.type](item)
 		}
 		return this.marks[item.type](item)
 	}

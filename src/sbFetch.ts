@@ -1,9 +1,11 @@
 import fetch from 'isomorphic-fetch'
 import { SbHelpers } from './sbHelpers'
 
+import { ISbResponse, ISbError, ISbStoriesParams } from './interfaces'
+import { Method } from './enum'
 
 type ResponseFn = {
-  (arg?: IResponse | any): any
+  (arg?: ISbResponse | any): any
 }
 
 interface ISbFetch {
@@ -13,36 +15,6 @@ interface ISbFetch {
   responseInterceptor?: ResponseFn,
 }
 
-interface IError {
-  message: Error,
-  response: IResponse,
-}
-
-interface IResponse {
-  status: number,
-  statusText: string,
-}
-
-interface IParams {
-  version: string,
-  filter_query?: object,
-  resolve_assets?: number,
-  resolve_links?: string,
-  resolve_relations?: string,
-  token: string,
-  cv?: number,
-  page?: number,
-  per_page?: number
-  sort_by?: string,
-}
-
-enum Method {
-  GET = 'get',
-  DELETE = 'delete',
-  POST = 'post',
-  PUT = 'put'
-}
-
 class SbFetch {
 	private baseURL: string
 	private timeout?: number
@@ -50,7 +22,7 @@ class SbFetch {
 	private responseInterceptor?: ResponseFn
 	private ejectInterceptor?: boolean
 	private url: string
-	private parameters: IParams
+	private parameters: ISbStoriesParams
 
 	public constructor($c: ISbFetch) {
 		this.baseURL = $c.baseURL,
@@ -59,28 +31,34 @@ class SbFetch {
 		this.responseInterceptor = $c.responseInterceptor
 		this.ejectInterceptor = false
 		this.url = ''
-		this.parameters = {} as IParams
+		this.parameters = {} as ISbStoriesParams
 	}
 
-	public get(url: string, params: IParams) {
+	/**
+	 * 
+	 * @param url string
+	 * @param params ISbStoriesParams 
+	 * @returns Promise<ISbResponse | Error>
+	 */
+	public get(url: string, params: ISbStoriesParams) {
 		this.url = url
 		this.parameters = params
 		return this._methodHandler(Method.GET)
 	}
 
-	public post(url: string, params: IParams) {
+	public post(url: string, params: ISbStoriesParams) {
 		this.url = url
 		this.parameters = params
 		return this._methodHandler(Method.POST)
 	}
 
-	public put(url: string, params: IParams) {
+	public put(url: string, params: ISbStoriesParams) {
 		this.url = url
 		this.parameters = params
 		return this._methodHandler(Method.PUT)
 	}
 
-	public delete(url: string, params: IParams) {
+	public delete(url: string, params: ISbStoriesParams) {
 		this.url = url
 		this.parameters = params
 		return this._methodHandler(Method.DELETE)
@@ -110,7 +88,7 @@ class SbFetch {
 		return response
 	}
 
-	private async _methodHandler(method: Method): Promise<IResponse | Error> {
+	private async _methodHandler(method: Method): Promise<ISbResponse | Error> {
 		const url = new URL(`${this.baseURL}${this.url}`)
 		let body = null
 
@@ -136,7 +114,7 @@ class SbFetch {
   
 			clearTimeout(timeout)
   
-			const res = await this._responseHandler(response) as IResponse
+			const res = await this._responseHandler(response) as ISbResponse
 
 			if(this.responseInterceptor && !this.ejectInterceptor) {
 				return this._statusHandler(this.responseInterceptor(res))
@@ -153,14 +131,14 @@ class SbFetch {
 		this.ejectInterceptor = true
 	}
 
-	private _statusHandler(res: IResponse) {
+	private _statusHandler(res: ISbResponse) {
 		const statusOk = /20[01]/g
 
 		if (statusOk.test(`${res.status}`)) {
 			return res
 		}
     
-		const error: IError = {
+		const error: ISbError = {
 			message: new Error(res.statusText || `status: ${res.status}`),
 			response: res,
 		}
