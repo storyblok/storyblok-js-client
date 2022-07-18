@@ -1,11 +1,19 @@
 const TOKEN = "w0yFvs04aKF2rpz6F8OfIQtt";
 
+<<<<<<< HEAD:tests/unit/richTextResolver.test.js
 import StoryblokClient from "../../source/index";
+=======
+import StoryblokClient from "../source/index";
+>>>>>>> master:tests/richTextResolver.test.js
 import customSchema from "./customSchema";
 
 let client = new StoryblokClient({
   accessToken: TOKEN,
+<<<<<<< HEAD:tests/unit/richTextResolver.test.js
   cache: { type: "memory", clear: "auto" }
+=======
+  cache: { type: "memory", clear: "auto" },
+>>>>>>> master:tests/richTextResolver.test.js
 });
 
 // get the resolver function from StoryblokClient
@@ -35,12 +43,21 @@ test("styled mark to add span with red class", () => {
           {
             type: "styled",
             attrs: {
+<<<<<<< HEAD:tests/unit/richTextResolver.test.js
               class: "red"
             }
           }
         ]
       }
     ]
+=======
+              class: "red",
+            },
+          },
+        ],
+      },
+    ],
+>>>>>>> master:tests/richTextResolver.test.js
   };
 
   expect(resolver.render(doc)).toBe('<span class="red">red text</span>');
@@ -51,9 +68,15 @@ test("horizontal_rule to generate hr tag", () => {
     type: "doc",
     content: [
       {
+<<<<<<< HEAD:tests/unit/richTextResolver.test.js
         type: "horizontal_rule"
       }
     ]
+=======
+        type: "horizontal_rule",
+      },
+    ],
+>>>>>>> master:tests/richTextResolver.test.js
   };
 
   expect(resolver.render(doc)).toBe("<hr />");
@@ -64,9 +87,15 @@ test("hard_break to generate br tag", () => {
     type: "doc",
     content: [
       {
+<<<<<<< HEAD:tests/unit/richTextResolver.test.js
         type: "hard_break"
       }
     ]
+=======
+        type: "hard_break",
+      },
+    ],
+>>>>>>> master:tests/richTextResolver.test.js
   };
 
   expect(resolver.render(doc)).toBe("<br />");
@@ -79,10 +108,17 @@ test("image to generate img tag", () => {
       {
         type: "image",
         attrs: {
+<<<<<<< HEAD:tests/unit/richTextResolver.test.js
           src: "https://asset"
         }
       }
     ]
+=======
+          src: "https://asset",
+        },
+      },
+    ],
+>>>>>>> master:tests/richTextResolver.test.js
   };
 
   expect(resolver.render(doc)).toBe('<img src="https://asset" />');
@@ -101,12 +137,21 @@ test("link to generate a tag", () => {
             attrs: {
               href: "/link",
               target: "_blank",
+<<<<<<< HEAD:tests/unit/richTextResolver.test.js
               uuid: "300aeadc-c82d-4529-9484-f3f8f09cf9f5"
             }
           }
         ]
       }
     ]
+=======
+              uuid: "300aeadc-c82d-4529-9484-f3f8f09cf9f5",
+            },
+          },
+        ],
+      },
+    ],
+>>>>>>> master:tests/richTextResolver.test.js
   };
   const result = resolver.render(doc);
   const expected =
@@ -129,12 +174,21 @@ test("link to generate a tag with an email", () => {
               href: "email@client.com",
               target: "_blank",
               uuid: null,
+<<<<<<< HEAD:tests/unit/richTextResolver.test.js
               linktype: "email"
             }
           }
         ]
       }
     ]
+=======
+              linktype: "email",
+            },
+          },
+        ],
+      },
+    ],
+>>>>>>> master:tests/richTextResolver.test.js
   };
 
   const result = resolver.render(doc);
@@ -153,11 +207,19 @@ test("code_block to generate a pre and code tag", () => {
         content: [
           {
             text: "code",
+<<<<<<< HEAD:tests/unit/richTextResolver.test.js
             type: "text"
           }
         ]
       }
     ]
+=======
+            type: "text",
+          },
+        ],
+      },
+    ],
+>>>>>>> master:tests/richTextResolver.test.js
   };
 
   expect(resolver.render(doc)).toBe("<pre><code>code</code></pre>");
@@ -172,9 +234,15 @@ test("escape html marks from text", () => {
         content: [
           {
             text: "Simple phrases to test escapes:",
+<<<<<<< HEAD:tests/unit/richTextResolver.test.js
             type: "text"
           }
         ]
+=======
+            type: "text",
+          },
+        ],
+>>>>>>> master:tests/richTextResolver.test.js
       },
       {
         type: "bullet_list",
@@ -187,11 +255,19 @@ test("escape html marks from text", () => {
                 content: [
                   {
                     text: "A dummy apostrophe's test",
+<<<<<<< HEAD:tests/unit/richTextResolver.test.js
                     type: "text"
                   }
                 ]
               }
             ]
+=======
+                    type: "text",
+                  },
+                ],
+              },
+            ],
+>>>>>>> master:tests/richTextResolver.test.js
           },
           {
             type: "list_item",
@@ -201,11 +277,19 @@ test("escape html marks from text", () => {
                 content: [
                   {
                     text: "<p>Just a tag</p>",
+<<<<<<< HEAD:tests/unit/richTextResolver.test.js
                     type: "text"
                   }
                 ]
               }
             ]
+=======
+                    type: "text",
+                  },
+                ],
+              },
+            ],
+>>>>>>> master:tests/richTextResolver.test.js
           },
           {
             type: "list_item",
@@ -215,6 +299,7 @@ test("escape html marks from text", () => {
                 content: [
                   {
                     text: "<p>Dummy & test</p>",
+<<<<<<< HEAD:tests/unit/richTextResolver.test.js
                     type: "text"
                   }
                 ]
@@ -224,6 +309,17 @@ test("escape html marks from text", () => {
         ]
       }
     ]
+=======
+                    type: "text",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+>>>>>>> master:tests/richTextResolver.test.js
   };
 
   expect(resolver.render(doc)).toBe(
@@ -245,12 +341,21 @@ test("link to generate a tag with achor", () => {
               href: "/link",
               target: "_blank",
               uuid: "300aeadc-c82d-4529-9484-f3f8f09cf9f5",
+<<<<<<< HEAD:tests/unit/richTextResolver.test.js
               anchor: "anchor-text"
             }
           }
         ]
       }
     ]
+=======
+              anchor: "anchor-text",
+            },
+          },
+        ],
+      },
+    ],
+>>>>>>> master:tests/richTextResolver.test.js
   };
 
   const result = resolver.render(doc);
@@ -272,52 +377,58 @@ test("Complex and immutability test", () => {
             type: "text",
             marks: [
               {
-                type: "bold"
-              }
-            ]
+                type: "bold",
+              },
+            ],
           },
           {
             text: " ipsum, ",
-            type: "text"
+            type: "text",
           },
           {
             text: "dolor",
             type: "text",
             marks: [
               {
-                type: "strike"
-              }
-            ]
+                type: "strike",
+              },
+            ],
           },
           {
             text: " sit amet ",
-            type: "text"
+            type: "text",
           },
           {
             text: "consectetur",
             type: "text",
             marks: [
               {
-                type: "underline"
-              }
-            ]
+                type: "underline",
+              },
+            ],
           },
           {
             text: " adipisicing elit. ",
-            type: "text"
+            type: "text",
           },
           {
             text: "Eos architecto",
             type: "text",
             marks: [
               {
+<<<<<<< HEAD:tests/unit/richTextResolver.test.js
                 type: "code"
               }
             ]
+=======
+                type: "code",
+              },
+            ],
+>>>>>>> master:tests/richTextResolver.test.js
           },
           {
             text: " asperiores temporibus ",
-            type: "text"
+            type: "text",
           },
           {
             text: "suscipit harum ",
@@ -330,14 +441,14 @@ test("Complex and immutability test", () => {
                   uuid: "931e04b7-f701-4fe4-8ec0-78be0bee8809",
                   anchor: "anchor-text",
                   target: "_blank",
-                  linktype: "story"
-                }
-              }
-            ]
+                  linktype: "story",
+                },
+              },
+            ],
           },
           {
             text: "ut, fugit, cumque ",
-            type: "text"
+            type: "text",
           },
           {
             text: "molestiae ",
@@ -350,27 +461,33 @@ test("Complex and immutability test", () => {
                   uuid: null,
                   anchor: null,
                   target: "_blank",
-                  linktype: "url"
-                }
-              }
-            ]
+                  linktype: "url",
+                },
+              },
+            ],
           },
           {
             text: "ratione non adipisci, ",
-            type: "text"
+            type: "text",
           },
           {
             text: "facilis",
             type: "text",
             marks: [
               {
+<<<<<<< HEAD:tests/unit/richTextResolver.test.js
                 type: "italic"
               }
             ]
+=======
+                type: "italic",
+              },
+            ],
+>>>>>>> master:tests/richTextResolver.test.js
           },
           {
             text: " inventore optio dolores. Rem, perspiciatis ",
-            type: "text"
+            type: "text",
           },
           {
             text: "deserunt!",
@@ -383,18 +500,26 @@ test("Complex and immutability test", () => {
                   uuid: "fc6a453f-9aa6-4a00-a22d-49c5878f7983",
                   anchor: null,
                   target: "_self",
-                  linktype: "story"
-                }
-              }
-            ]
+                  linktype: "story",
+                },
+              },
+            ],
           },
           {
             text: " Esse, maiores!",
+<<<<<<< HEAD:tests/unit/richTextResolver.test.js
             type: "text"
           }
         ]
       }
     ]
+=======
+            type: "text",
+          },
+        ],
+      },
+    ],
+>>>>>>> master:tests/richTextResolver.test.js
   };
 
   const result = resolver.render(doc);
@@ -406,7 +531,11 @@ test("Complex and immutability test", () => {
 test("test with a custom schema from StoryblokRich", () => {
   const internalClient = new StoryblokClient({
     accessToken: TOKEN,
+<<<<<<< HEAD:tests/unit/richTextResolver.test.js
     richTextSchema: customSchema
+=======
+    richTextSchema: customSchema,
+>>>>>>> master:tests/richTextResolver.test.js
   });
 
   const doc = {
@@ -422,12 +551,21 @@ test("test with a custom schema from StoryblokRich", () => {
               href: "/link",
               target: "_blank",
               uuid: "300aeadc-c82d-4529-9484-f3f8f09cf9f5",
+<<<<<<< HEAD:tests/unit/richTextResolver.test.js
               anchor: "anchor-text"
             }
           }
         ]
       }
     ]
+=======
+              anchor: "anchor-text",
+            },
+          },
+        ],
+      },
+    ],
+>>>>>>> master:tests/richTextResolver.test.js
   };
 
   const result = internalClient.richTextResolver.render(doc);
