@@ -4,7 +4,7 @@ import StoryblokClient from "../../source/index";
 
 let Storyblok = new StoryblokClient({
   accessToken: "w0yFvs04aKF2rpz6F8OfIQtt",
-  cache: { type: "memory", clear: "auto" }
+  cache: { type: "memory", clear: "auto" },
 });
 
 describe("test cache version", () => {

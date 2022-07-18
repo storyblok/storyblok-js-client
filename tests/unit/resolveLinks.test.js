@@ -4,7 +4,7 @@ import StoryblokClient from "../../source/index";
 
 let Storyblok = new StoryblokClient({
   accessToken: "w0yFvs04aKF2rpz6F8OfIQtt",
-  cache: { type: "memory", clear: "auto" }
+  cache: { type: "memory", clear: "auto" },
 });
 
 describe("test resolvingLinks", () => {
@@ -17,15 +17,17 @@ describe("test resolvingLinks", () => {
           author: {
             fieldtype: "multilink",
             linktype: "story",
-            id: "e101b4fc-3736-4f82-8c8e-788e38d5d286"
-          }
-        }
+            id: "e101b4fc-3736-4f82-8c8e-788e38d5d286",
+          },
+        },
       },
-      links: [{ uuid: "e101b4fc-3736-4f82-8c8e-788e38d5d286", name: "Joe Doe" }]
+      links: [
+        { uuid: "e101b4fc-3736-4f82-8c8e-788e38d5d286", name: "Joe Doe" },
+      ],
     };
     await Storyblok.resolveStories(singleStory, {
       version: "published",
-      resolve_links: "story"
+      resolve_links: "story",
     });
 
     expect(singleStory.story.content.author.story.name).toBe("Joe Doe");
@@ -45,16 +47,16 @@ describe("test resolvingLinks", () => {
             author: {
               fieldtype: "multilink",
               linktype: "story",
-              id: "e101b4fc-3736-4f82-8c8e-788e38d5d286"
-            }
-          }
-        }
+              id: "e101b4fc-3736-4f82-8c8e-788e38d5d286",
+            },
+          },
+        },
       ],
-      link_uuids: uuids
+      link_uuids: uuids,
     };
     await Storyblok.resolveStories(singleStory, {
       version: "published",
-      resolve_links: "story"
+      resolve_links: "story",
     });
 
     expect(singleStory.stories[0].content.author.story.name).toBe(

@@ -5,7 +5,7 @@ import RichTextResolver from "../../source/richTextResolver";
 
 let Storyblok = new StoryblokClient({
   accessToken: "w0yFvs04aKF2rpz6F8OfIQtt",
-  cache: { type: "memory", clear: "auto" }
+  cache: { type: "memory", clear: "auto" },
 });
 
 describe("getAll function", () => {
@@ -16,7 +16,7 @@ describe("getAll function", () => {
 
   test("getAll('cdn/stories') should return all stories with filtered results", async () => {
     const result = await Storyblok.getAll("cdn/stories", {
-      starts_with: "testcontent-0"
+      starts_with: "testcontent-0",
     });
     expect(result.length).toBe(1);
   });
@@ -26,16 +26,16 @@ describe("getAll function", () => {
       filter_query: {
         __or: [
           { category: { any_in_array: "Category 1" } },
-          { category: { any_in_array: "Category 2" } }
-        ]
-      }
+          { category: { any_in_array: "Category 2" } },
+        ],
+      },
     });
     expect(result.length).toBe(4);
   });
 
   test("getAll('cdn/stories', {by_slugs: 'folder/*'}) should return all stories with the specific filter applied", async () => {
     const result = await Storyblok.getAll("cdn/stories", {
-      by_slugs: "folder/*"
+      by_slugs: "folder/*",
     });
     expect(result.length).toBe(2);
   });
@@ -48,7 +48,7 @@ describe("getAll function", () => {
   if (process.env.OAUTH_TOKEN) {
     test("getAll('spaces/67647/stories') should return all spaces", async () => {
       let StoryblokManagement = new StoryblokClient({
-        oauthToken: process.env.OAUTH_TOKEN
+        oauthToken: process.env.OAUTH_TOKEN,
       });
       const result = await StoryblokManagement.getAll("spaces/67647/stories");
       expect(result.length).toBe(29);

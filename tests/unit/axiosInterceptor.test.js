@@ -3,7 +3,7 @@ import StoryblokClient from "../../source/index";
 const accessToken = "w0yFvs04aKF2rpz6F8OfIQtt";
 const cache = {
   type: "memory",
-  clear: "auto"
+  clear: "auto",
 };
 
 describe("Client should accept response interceptor as a function", () => {
@@ -12,7 +12,7 @@ describe("Client should accept response interceptor as a function", () => {
     cache,
     responseInterceptor: (res) => {
       return res;
-    }
+    },
   });
   it("should RESPONSE to be TRUTHY", async () => {
     await Storyblok.getAll("cdn/links");
@@ -27,7 +27,7 @@ describe("Client should accept response interceptor as a function", () => {
 describe("Client should be initialized without interceptors", () => {
   const Storyblok = new StoryblokClient({
     accessToken,
-    cache
+    cache,
   });
   it("should RESPONSE to be FALSY", async () => {
     await Storyblok.getAll("cdn/links");

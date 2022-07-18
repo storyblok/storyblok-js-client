@@ -3,7 +3,7 @@ import {
   arrayFrom,
   range,
   asyncMap,
-  flatMap
+  flatMap,
 } from "../../../source/helpers";
 
 describe("arrayFrom function", () => {

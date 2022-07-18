@@ -4,7 +4,7 @@ import StoryblokClient from "../../source/index";
 
 let Storyblok = new StoryblokClient({
   accessToken: "w0yFvs04aKF2rpz6F8OfIQtt",
-  cache: { type: "memory", clear: "auto" }
+  cache: { type: "memory", clear: "auto" },
 });
 
 describe("test resolvingRelations", () => {
@@ -14,14 +14,14 @@ describe("test resolvingRelations", () => {
         content: {
           component: "news",
           _uid: "567",
-          author: "e101b4fc-3736-4f82-8c8e-788e38d5d286"
-        }
+          author: "e101b4fc-3736-4f82-8c8e-788e38d5d286",
+        },
       },
-      rels: [{ uuid: "e101b4fc-3736-4f82-8c8e-788e38d5d286", name: "Joe Doe" }]
+      rels: [{ uuid: "e101b4fc-3736-4f82-8c8e-788e38d5d286", name: "Joe Doe" }],
     };
     await Storyblok.resolveStories(singleStory, {
       version: "published",
-      resolve_relations: "news.author"
+      resolve_relations: "news.author",
     });
 
     expect(singleStory.story.content.author.name).toBe("Joe Doe");
@@ -34,15 +34,15 @@ describe("test resolvingRelations", () => {
           content: {
             component: "news",
             _uid: "567",
-            author: "e101b4fc-3736-4f82-8c8e-788e38d5d286"
-          }
-        }
+            author: "e101b4fc-3736-4f82-8c8e-788e38d5d286",
+          },
+        },
       ],
-      rels: [{ uuid: "e101b4fc-3736-4f82-8c8e-788e38d5d286", name: "Joe Doe" }]
+      rels: [{ uuid: "e101b4fc-3736-4f82-8c8e-788e38d5d286", name: "Joe Doe" }],
     };
     await Storyblok.resolveStories(singleStory, {
       version: "published",
-      resolve_relations: "news.author"
+      resolve_relations: "news.author",
     });
 
     expect(singleStory.stories[0].content.author.name).toBe("Joe Doe");
@@ -55,15 +55,15 @@ describe("test resolvingRelations", () => {
           content: {
             component: "news",
             _uid: "567",
-            author: "e101b4fc-3736-4f82-8c8e-788e38d5d286"
-          }
-        }
+            author: "e101b4fc-3736-4f82-8c8e-788e38d5d286",
+          },
+        },
       ],
-      rel_uuids: ["e101b4fc-3736-4f82-8c8e-788e38d5d286"]
+      rel_uuids: ["e101b4fc-3736-4f82-8c8e-788e38d5d286"],
     };
     await Storyblok.resolveStories(singleStory, {
       version: "published",
-      resolve_relations: "news.author"
+      resolve_relations: "news.author",
     });
 
     expect(singleStory.stories[0].content.author.name).toBe("Testcontent 24");
@@ -80,15 +80,15 @@ describe("test resolvingRelations", () => {
           content: {
             component: "news",
             _uid: "567",
-            author: "e101b4fc-3736-4f82-8c8e-788e38d5d286"
-          }
-        }
+            author: "e101b4fc-3736-4f82-8c8e-788e38d5d286",
+          },
+        },
       ],
-      rel_uuids: uuids
+      rel_uuids: uuids,
     };
     await Storyblok.resolveStories(singleStory, {
       version: "published",
-      resolve_relations: "news.author"
+      resolve_relations: "news.author",
     });
 
     expect(singleStory.stories[0].content.author.name).toBe("Testcontent 24");
@@ -101,9 +101,9 @@ describe("test resolvingRelations", () => {
           content: {
             component: "news",
             _uid: "567",
-            author: "e101b4fc-3736-4f82-8c8e-788e38d5d286"
-          }
-        }
+            author: "e101b4fc-3736-4f82-8c8e-788e38d5d286",
+          },
+        },
       ],
       rels: [
         {
@@ -112,18 +112,18 @@ describe("test resolvingRelations", () => {
           content: {
             component: "author",
             _uid: "5676",
-            friend: "e101b4fc-3736-4f82-8c8e-788e38d5d210"
-          }
+            friend: "e101b4fc-3736-4f82-8c8e-788e38d5d210",
+          },
         },
         {
           uuid: "e101b4fc-3736-4f82-8c8e-788e38d5d210",
-          name: "Joes friend"
-        }
-      ]
+          name: "Joes friend",
+        },
+      ],
     };
     await Storyblok.resolveStories(singleStory, {
       version: "published",
-      resolve_relations: "news.author,author.friend"
+      resolve_relations: "news.author,author.friend",
     });
 
     expect(singleStory.stories[0].content.author.content.friend.name).toBe(
