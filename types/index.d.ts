@@ -172,6 +172,7 @@ export interface FilterQueryOperations {
   in?: string;
   /** Comma-separated list */
   in_array?: string;
+  is?: string;
   like?: string;
   lt_date?: string;
   lt_float?: number;
