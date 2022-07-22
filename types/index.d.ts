@@ -231,6 +231,18 @@ export interface RichtextInstance {
   render: (data: Richtext) => string;
 }
 
+export interface Table {
+  fieldtype: "table";
+  thead: (StoryblokComponent<string> & {
+    value: string;
+  })[];
+  tbody: (StoryblokComponent<string> & {
+    body: (StoryblokComponent<string> & {
+      value: string;
+    })[];
+  })[];
+}
+
 declare class Storyblok {
   throttle: any;
   accessToken: string;
