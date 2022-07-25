@@ -7,7 +7,7 @@ declare type FlatMapFn = (...args: any) => [] | any;
 declare type RangeFn = (...args: any) => [];
 export declare class SbHelpers {
     isCDNUrl: (url?: string) => boolean;
-    getOptionsPage: (options?: ISbStoriesParams, perPage?: number, page?: number) => {
+    getOptionsPage: (options: ISbStoriesParams, perPage?: number, page?: number) => {
         per_page: number;
         page: number;
         token?: string | undefined;

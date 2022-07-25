@@ -12,7 +12,7 @@ type RangeFn = (...args: any) => []
 export class SbHelpers {
 	public isCDNUrl = (url = '') => url.indexOf('/cdn/') > -1
 
-	public getOptionsPage = (options: ISbStoriesParams = {}, perPage = 25, page = 1) => {
+	public getOptionsPage = (options: ISbStoriesParams, perPage = 25, page = 1) => {
 		return {
 			...options,
 			per_page: perPage,
