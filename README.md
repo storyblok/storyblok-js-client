@@ -50,7 +50,7 @@ let Storyblok = new StoryblokClient({
 
 #### Using the Content Deliver API for US region
 
-You should use `region: 'us'` whenever your space was created under `US` Server Location AND the space access token.
+You should use the space access token AND `region: 'us'` whenever your space was created under `US` Server Location.
 
 ```javascript
 let Storyblok = new StoryblokClient({
