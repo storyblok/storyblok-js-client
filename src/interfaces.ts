@@ -29,6 +29,8 @@ export interface ISbStoriesParams {
   excluding_slugs?: string
   _stopResolving?: boolean
   component?: string
+  filename?: string
+  size?: string
 }
 
 export interface ISbComponentType<T extends string> {

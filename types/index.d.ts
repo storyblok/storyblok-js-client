@@ -34,9 +34,9 @@ declare class Storyblok {
     private makeRequest;
     get(slug: string, params?: ISbStoriesParams): Promise<ISbResult>;
     getAll(slug: string, params: ISbStoriesParams, entity?: string): Promise<any>;
-    post(slug: string, params: ISbStoriesParams | ISbContentMangmntAPI): any;
-    put(slug: string, params: ISbStoriesParams | ISbContentMangmntAPI): any;
-    delete(slug: string, params: ISbStoriesParams | ISbContentMangmntAPI): any;
+    post(slug: string, params: ISbStoriesParams | ISbContentMangmntAPI): Promise<any>;
+    put(slug: string, params: ISbStoriesParams | ISbContentMangmntAPI): Promise<any>;
+    delete(slug: string, params: ISbStoriesParams | ISbContentMangmntAPI): Promise<any>;
     getStories(params: ISbStoriesParams): Promise<ISbResult>;
     getStory(slug: string, params: ISbStoriesParams): Promise<ISbResult>;
     private getToken;

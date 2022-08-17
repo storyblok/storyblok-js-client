@@ -38,6 +38,8 @@ export declare class SbHelpers {
         excluding_slugs?: string | undefined;
         _stopResolving?: boolean | undefined;
         component?: string | undefined;
+        filename?: string | undefined;
+        size?: string | undefined;
     };
     delay: (ms: number) => Promise<unknown>;
     arrayFrom: (length: number | undefined, func: ArrayFn) => void[];

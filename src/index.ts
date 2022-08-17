@@ -205,17 +205,17 @@ class Storyblok {
 
 	public post(slug: string, params: ISbStoriesParams | ISbContentMangmntAPI) {
 		const url = `/${slug}`
-		return this.throttle('post', url, params)
+		return Promise.resolve(this.throttle('post', url, params))
 	}
 
 	public put(slug: string, params: ISbStoriesParams | ISbContentMangmntAPI) {
 		const url = `/${slug}`
-		return this.throttle('put', url, params)
+		return Promise.resolve(this.throttle('put', url, params))
 	}
 
 	public delete(slug: string, params: ISbStoriesParams | ISbContentMangmntAPI) {
 		const url = `/${slug}`
-		return this.throttle('delete', url, params)
+		return Promise.resolve(this.throttle('delete', url, params))
 	}
 
 	public getStories(params: ISbStoriesParams) {
