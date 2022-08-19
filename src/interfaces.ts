@@ -126,8 +126,6 @@ export type MarkSchema = {
 	(node: ISbNode): object
 }
 
-type FirstPublished = string
-
 export interface ISbContentMangmntAPI<Content = ISbComponentType<string> & { [index: string]: any }> {
   story: {
     name: string
@@ -140,7 +138,7 @@ export interface ISbContentMangmntAPI<Content = ISbComponentType<string> & { [in
     path?: string
     is_startpage?: boolean
     position?: number
-    first_published_at?: FirstPublished
+    first_published_at?: string
     translated_slugs_attributes?: {path: string, name: string|null, lang: ISbContentMangmntAPI['lang']}[]
   }
   force_update?: '1' | unknown

@@ -120,7 +120,7 @@ export declare type NodeSchema = {
 export declare type MarkSchema = {
     (node: ISbNode): object;
 };
-declare type FirstPublished = `${number}-${number}-${number} ${number}:${number}`;
+declare type FirstPublished = string;
 export interface ISbContentMangmntAPI<Content = ISbComponentType<string> & {
     [index: string]: any;
 }> {
