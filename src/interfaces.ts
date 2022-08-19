@@ -126,7 +126,8 @@ export type MarkSchema = {
 	(node: ISbNode): object
 }
 
-type FirstPublished = `${number}-${number}-${number} ${number}:${number}`
+type FirstPublished = string
+
 export interface ISbContentMangmntAPI<Content = ISbComponentType<string> & { [index: string]: any }> {
   story: {
     name: string
