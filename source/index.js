@@ -273,12 +273,12 @@ class Storyblok {
         chunks.push(responseData.link_uuids.slice(i, end));
       }
 
-      for (let chunkIndex = 0; chunkIndex < chunks.length; chunkIndex++) {
+      for (const element of chunks) {
         let linksRes = await this.getStories({
           per_page: chunkSize,
           language: params.language,
           version: params.version,
-          by_uuids: chunks[chunkIndex].join(","),
+          by_uuids: element.join(","),
         });
 
         linksRes.data.stories.forEach((rel) => {
@@ -401,12 +401,10 @@ class Storyblok {
           this.resolveAssetsRelations(response.data)
         }
 
-        if (res.headers["per-page"]) {
-          response = Object.assign({}, response, {
-            perPage: parseInt(res.headers["per-page"]),
-            total: parseInt(res.headers["total"]),
-          });
-        }
+        response = Object.assign({}, response, {
+          perPage: res.headers["per-page"] ? parseInt(res.headers["per-page"]) : null,
+          total: res.headers["per-page"] ? parseInt(res.headers["total"]): null,
+        });
 
         if (res.status != 200) {
           return reject(res);
