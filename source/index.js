@@ -134,7 +134,7 @@ class Storyblok {
 
     const firstPage = 1;
     const firstRes = await this.makeRequest(url, params, perPage, firstPage);
-    const lastPage = firstRes.total ? Math.ceil(firstRes.total / perPage) : undefined;
+    const lastPage = firstRes.total ? Math.ceil(firstRes.total / perPage) : 1;
 
     const restRes = await asyncMap(range(firstPage, lastPage), async (i) => {
       return this.makeRequest(url, params, perPage, i + 1);
