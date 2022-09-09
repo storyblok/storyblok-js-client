@@ -120,7 +120,6 @@ export declare type NodeSchema = {
 export declare type MarkSchema = {
     (node: ISbNode): object;
 };
-declare type FirstPublished = string;
 export interface ISbContentMangmntAPI<Content = ISbComponentType<string> & {
     [index: string]: any;
 }> {
@@ -135,7 +134,7 @@ export interface ISbContentMangmntAPI<Content = ISbComponentType<string> & {
         path?: string;
         is_startpage?: boolean;
         position?: number;
-        first_published_at?: FirstPublished;
+        first_published_at?: string;
         translated_slugs_attributes?: {
             path: string;
             name: string | null;
@@ -163,4 +162,3 @@ export declare type ThrottleFn = {
 };
 export declare type AsyncFn = (...args: any) => [] | Promise<ISbResult>;
 export declare type ArrayFn = (...args: any) => void;
-export {};

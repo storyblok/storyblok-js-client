@@ -1,4 +1,4 @@
-import { ISbStoriesParams, ISbConfig, ISbResult, ISbContentMangmntAPI } from './interfaces';
+import { ISbStoriesParams, ISbConfig, ISbResult, ISbStoryData, ISbContentMangmntAPI } from './interfaces';
 declare type ComponentResolverFn = {
     (...args: any): any;
 };
@@ -11,6 +11,14 @@ declare type LinksType = {
 declare type RelationsType = {
     [key: string]: any;
 };
+interface ISbResponseData {
+    link_uuids: string[];
+    links: string[];
+    rel_uuids: string[];
+    rels: any;
+    story: ISbStoryData;
+    stories: Array<ISbStoryData>;
+}
 declare class Storyblok {
     private client;
     private maxRetries?;
@@ -33,10 +41,10 @@ declare class Storyblok {
     private factoryParamOptions;
     private makeRequest;
     get(slug: string, params?: ISbStoriesParams): Promise<ISbResult>;
-    getAll(slug: string, params: ISbStoriesParams, entity?: string): Promise<any>;
-    post(slug: string, params: ISbStoriesParams | ISbContentMangmntAPI): Promise<any>;
-    put(slug: string, params: ISbStoriesParams | ISbContentMangmntAPI): Promise<any>;
-    delete(slug: string, params: ISbStoriesParams | ISbContentMangmntAPI): Promise<any>;
+    getAll(slug: string, params: ISbStoriesParams, entity?: string): Promise<ISbResult>;
+    post(slug: string, params: ISbStoriesParams | ISbContentMangmntAPI): Promise<ISbResponseData>;
+    put(slug: string, params: ISbStoriesParams | ISbContentMangmntAPI): Promise<ISbResponseData>;
+    delete(slug: string, params: ISbStoriesParams | ISbContentMangmntAPI): Promise<ISbResponseData>;
     getStories(params: ISbStoriesParams): Promise<ISbResult>;
     getStory(slug: string, params: ISbStoriesParams): Promise<ISbResult>;
     private getToken;
@@ -54,6 +62,6 @@ declare class Storyblok {
     cacheVersion(): number;
     setCacheVersion(cv: number): void;
     private cacheProvider;
-    flushCache(): this;
+    private flushCache;
 }
 export default Storyblok;
