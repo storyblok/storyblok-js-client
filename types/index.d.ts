@@ -15,7 +15,7 @@ declare global {
     story?: StoryData<S>;
     slug?: string;
     slugChanged?: boolean;
-    storyId?: string;
+    storyId?: number;
     reload?: boolean;
   }
   interface StoryblokBridge {
