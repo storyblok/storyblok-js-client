@@ -402,8 +402,8 @@ class Storyblok {
         }
 
         response = Object.assign({}, response, {
-          perPage: res.headers["per-page"] ? parseInt(res.headers["per-page"]) : null,
-          total: res.headers["per-page"] ? parseInt(res.headers["total"]): null,
+          perPage: res.headers["per-page"] ? parseInt(res.headers["per-page"]) : 0,
+          total: res.headers["per-page"] ? parseInt(res.headers["total"]): 0,
         });
 
         if (res.status != 200) {
