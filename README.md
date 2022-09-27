@@ -148,7 +148,7 @@ We added retro-compatibility when using `resolve_assets: 1` parameter under V2. 
   - `cache` Object
     - `type` String, `none` or `memory`
   - (`responseInterceptor` Function, optional - You can pass a function and return the result, like axios' interceptors. For security reasons, Storyblok client will deal only with the response interceptor.)
-  - (`region` String, optional)
+  - (`region` String, optional, defaults to `eu`, `eu`, `us` or `cn`)
   - (`https` Boolean, optional)
   - (`rateLimit` Integer, optional, defaults to 3 for management api and 5 for cdn api)
   - (`timeout` Integer, optional)

@@ -21,12 +21,20 @@ import {
 class Storyblok {
   constructor(config, endpoint) {
     if (!endpoint) {
-      let region = config.region ? `-${config.region}` : "";
+      let domain;
+      if (config.region !== "cn") {
+        const region =
+          config.region && config.region !== "eu" ? `-${config.region}` : "";
+        domain = `api${region}.storyblok.com`;
+      } else {
+        domain = "app.storyblokchina.cn";
+      }
+
       let protocol = config.https === false ? "http" : "https";
       if (typeof config.oauthToken === "undefined") {
-        endpoint = `${protocol}://api${region}.storyblok.com/v2`;
+        endpoint = `${protocol}://${domain}/v2`;
       } else {
-        endpoint = `${protocol}://api${region}.storyblok.com/v1`;
+        endpoint = `${protocol}://${domain}/v1`;
       }
     }
 

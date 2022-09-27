@@ -64,7 +64,7 @@ export interface StoryblokConfig {
   responseInterceptor?: (response: any) => any;
   timeout?: number;
   headers?: any;
-  region?: string;
+  region?: "eu" | "us" | "cn";
   maxRetries?: number;
   https?: boolean;
   rateLimit?: number;
