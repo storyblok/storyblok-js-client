@@ -138,7 +138,7 @@ The proxy feature was also removed in this version.
 
 As we removed Axios, some developers would want to use the SDK under Node's environment. So we added [isomorphic-fetch](https://www.npmjs.com/package/isomorphic-fetch) to deal with fetch, AbortController and XMLHttpRequest.
 Node already deal with those features nativelly from Version `17`, but we'll keep using isomorphic-fetch for now until Node's most recent versions become more popular and more largelly used.
-As a part of our efforts to make the SDK more lightweight to web users, under the hood, the import of node-fetch is conditional depending either the app is under Node's environment or not.
+As a part of our efforts to make the SDK more lightweight to web users, under the hood, the import of node-fetch is conditionally done depending either the app is under Node's environment or not.
 
 ## Documentation
 #### Assets structure compatibility
