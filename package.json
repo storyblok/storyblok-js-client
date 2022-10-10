@@ -1,7 +1,8 @@
 {
   "name": "storyblok-js-client",
-  "version": "4.5.2",
+  "version": "5.0.0",
   "description": "Universal JavaScript SDK for Storyblok's API",
+  "license": "MIT",
   "types": "./types/index.d.ts",
   "main": "./dist/index.cjs.js",
   "module": "./dist/index.es.js",

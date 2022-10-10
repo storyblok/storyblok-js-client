@@ -43,7 +43,7 @@ const StoryblokClient = require("storyblok-js-client");
 // 2. Initialize the client with the preview token
 // from your space dashboard at https://app.storyblok.com
 let Storyblok = new StoryblokClient({
-  accessToken: "xf5dRMMjltLzKOcNgMaU9Att",
+  accessToken: <YOUR_SPACE_ACCESS_TOKEN>,
 });
 ```
 
@@ -52,12 +52,12 @@ let Storyblok = new StoryblokClient({
 ```javascript
 // 1. Require the Storyblok client
 const StoryblokClient = require("storyblok-js-client");
-const spaceId = 12345;
+const spaceId = <YOUR_SPACE_ID>;
 
 // 2. Initialize the client with the oauth token
 // from the my account area at https://app.storyblok.com
 let Storyblok = new StoryblokClient({
-  oauthToken: "YOUR_OAUTH_TOKEN",
+  oauthToken: <YOUR_OAUTH_TOKEN>,
 });
 
 Storyblok.post(`spaces/${spaceId}/stories`, {
@@ -93,20 +93,20 @@ This package has a standalone version that contains all dependencies and you can
 
 ```html
 <!-- This import makes the StoryblokClient class available globally -->
-<script src="https://cdn.jsdelivr.net/npm/storyblok-js-client@4.0.5/dist/index.standalone.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/storyblok-js-client@5.0.0/dist/index.standalone.js"></script>
 
 <!-- This import makes the RichTextResolver class available globally -->
-<script src="https://cdn.jsdelivr.net/npm/storyblok-js-client@4.0.5/dist/rich-text-resolver.standalone.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/storyblok-js-client@5.0.0/dist/rich-text-resolver.standalone.js"></script>
 ```
 
 If you want a bundle with Babel (for non-es6 browsers):
 
 ```html
 <!-- This import makes the StoryblokClient class available globally -->
-<script src="https://cdn.jsdelivr.net/npm/storyblok-js-client@4.0.5/dist/es5/index.standalone.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/storyblok-js-client@5.0.0/dist/es5/index.standalone.js"></script>
 
 <!-- This import makes the RichTextResolver class available globally -->
-<script src="https://cdn.jsdelivr.net/npm/storyblok-js-client@4.0.5/dist/es5/rich-text-resolver.standalone.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/storyblok-js-client@5.0.0/dist/es5/rich-text-resolver.standalone.js"></script>
 ```
 
 #### Note about use of Babel
@@ -121,19 +121,22 @@ const StoryblokClient = require('storyblok-js-client/dist/es5/index.cjs')
 import StoryblokClient from 'storyblok-js-client/dist/es5/index.es'
 ```
 
-### Added TypeScript
+
+### BREAKING CHANGES - FROM VERSION 5
+### Added TypeScript - Version 5
 
 We added TypeScript to our codebase, improving our code quality and assuring the correct implementation from the client's side. This change will probably break your code, because your Storyblok client's current implementation is possibly sending the wrong types to the source.
 All the types are declared under `src/types`. If you use an IDE to code, you'll be able to hover the problematic cause and see what is being expected from the type. Yet, you can keep using our version without TypeScript.
+If you wish to continue using the non Typescript version, please use version `4`. You can install it by running `npm install https://github.com/storyblok/storyblok-js-client.git#4.x.x`.
 
-### Axios removal
+### Axios removal - Version 5
 
-We removed our dependency on axios on version x.y.z. If you want to continue using our SDK with axios, please refer to version @5.y.z.
+We removed our dependency on axios on Version `5`. If you want to continue using our SDK with axios, please use version `4`.
 The proxy feature was also removed in this version.
 
-### Isomorphic fetch
+### Isomorphic fetch - Version 5
 
-As we removed Axios, some developers would want to use the SDK under Node's environment. So we added [isomorphic-fetch](https://www.npmjs.com/package/isomorphic-fetch) to deal with fetch, AbortController and XMLHttpRequest until Node don't bring the fetch API natively.
+As we removed Axios, some developers would want to use the SDK under Node's environment. So we added [isomorphic-fetch](https://www.npmjs.com/package/isomorphic-fetch) to deal with fetch, AbortController and XMLHttpRequest. Node already deals with those features nativelly from Version `17`.
 As a part of our efforts to make the SDK more lightweight to web users, under the hood, the import of node-fetch is conditional depending either the app is under Node's environment or not.
 
 ## Documentation
@@ -168,7 +171,7 @@ To clear the cache you can call `Storyblok.flushCache()` or activate the automat
 
 ```javascript
 let Storyblok = new StoryblokClient({
-  accessToken: "xf5dRMMjltLzKOcNgMaU9Att",
+  accessToken: <YOUR_SPACE_ACCESS_TOKEN>,
   cache: {
     clear: "auto",
     type: "memory",
@@ -183,7 +186,7 @@ Usage:
 
 ```javascript
 let Storyblok = new StoryblokClient({
-  accessToken: "xf5dRMMjltLzKOcNgMaU9Att",
+  accessToken: <YOUR_SPACE_ACCESS_TOKEN>,
   cache: {
     clear: "auto",
     type: "memory",
@@ -268,7 +271,7 @@ Storyblok.getAll("cdn/stories", {
 
 ```javascript
 Storyblok
-  .post('spaces/12345/stories', {
+  .post('spaces/<YOUR_SPACE_ID>/stories', {
     story: {name 'xy', slug: 'xy'}
   })
   .then((response) => {
@@ -291,7 +294,7 @@ Storyblok
 
 ```javascript
 Storyblok
-  .put('spaces/12345/stories/1', {
+  .put('spaces/<YOUR_SPACE_ID>/stories/1', {
     story: {name 'xy', slug: 'xy'}
   })
   .then((response) => {
@@ -313,7 +316,7 @@ Storyblok
 **Example**
 
 ```javascript
-Storyblok.delete("spaces/12345/stories/1", null)
+Storyblok.delete("spaces/<YOUR_SPACE_ID>/stories/1", null)
   .then((response) => {
     console.log(response);
   })
@@ -387,7 +390,7 @@ Storyblok.richTextResolver.render(blok.richtext);
 const StoryblokClient = require("storyblok-js-client");
 
 let client = new StoryblokClient({
-  accessToken: "zlRONoLBKrilxkz2k6fYuwtt",
+  accessToken: <YOUR_SPACE_ACCESS_TOKEN>,
 });
 
 // Filter by boolean value in content type
@@ -438,7 +441,7 @@ const StoryblokClient = require("storyblok-js-client");
 const fs = require("fs");
 
 let client = new StoryblokClient({
-  accessToken: "WcdDcNgDm59K72EbsQg8Lgtt",
+  accessToken: <YOUR_SPACE_ACCESS_TOKEN>,
 });
 
 let lastPage = 1;
@@ -510,7 +513,7 @@ const StoryblokClient = require("storyblok-js-client");
 const MySchema = require("./my-schema");
 
 let client = new StoryblokClient({
-  accessToken: "WcdDcNgDm59K72EbsQg8Lgtt",
+  accessToken: <YOUR_SPACE_ACCESS_TOKEN>,
   richTextSchema: MySchema,
 });
 
