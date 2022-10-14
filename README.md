@@ -131,14 +131,14 @@ If you wish to continue using the non Typescript version, please use version `4`
 
 ### Axios removal - Version 5
 
-We removed our dependency on axios on Version `5`. If you want to continue using our SDK with axios, please use version `4`.
+We removed our dependency on axios in Version `5`. If you want to continue using our SDK with axios, please use version `4`.
 The proxy feature was also removed in this version.
 
 ### Isomorphic fetch - Version 5
 
-As we removed Axios, some developers would want to use the SDK under Node's environment. So we added [isomorphic-fetch](https://www.npmjs.com/package/isomorphic-fetch) to deal with fetch, AbortController and XMLHttpRequest.
-Node already deal with those features nativelly from Version `17`, but we'll keep using isomorphic-fetch for now until Node's most recent versions become more popular and more largelly used.
-As a part of our efforts to make the SDK more lightweight to web users, under the hood, the import of node-fetch is conditionally done depending either the app is under Node's environment or not.
+Since we removed Axios, and some developers may want to use the SDK under Node's environment, we added [isomorphic-fetch](https://www.npmjs.com/package/isomorphic-fetch) to deal with fetch, AbortController and XMLHttpRequest.
+Node already deals with those features natively from Version `17`. We'll keep using isomorphic-fetch until Node's most recent versions become more popular and more widely used.
+As part of our efforts to make the SDK more lightweight to web users, under the hood, the import of node-fetch is conditionally done depending on if the app is under the Node's environment or not.
 
 ## Documentation
 #### Assets structure compatibility
