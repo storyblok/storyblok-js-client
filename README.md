@@ -120,14 +120,16 @@ const StoryblokClient = require('storyblok-js-client/dist/es5/index.cjs')
 // for EsModules environments
 import StoryblokClient from 'storyblok-js-client/dist/es5/index.es'
 ```
-
+### NEW BRANCHES AND VERSIONS
+The old `master` branch was renamed to `main` and contains the version 5.0.0.
+If you wish to continue using the non Typescript version with `axios`, please use version `4`. You can install it by running `npm install https://github.com/storyblok/storyblok-js-client.git#4.x.y`.
+The `v4` branch will contain the current master branch, with version `4.x.y`.
 
 ### BREAKING CHANGES - FROM VERSION 5
 ### Added TypeScript - Version 5
 
 We added TypeScript to our codebase, improving our code quality and assuring the correct implementation from the client's side. This change will probably break your code, because your Storyblok client's current implementation is possibly sending the wrong types to the source.
 All the types are declared under `src/types`. If you use an IDE to code, you'll be able to hover the problematic cause and see what is being expected from the type. Yet, you can keep using our version without TypeScript.
-If you wish to continue using the non Typescript version, please use version `4`. You can install it by running `npm install https://github.com/storyblok/storyblok-js-client.git#4.x.x`.
 
 ### Axios removal - Version 5
 
