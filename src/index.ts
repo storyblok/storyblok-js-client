@@ -44,9 +44,9 @@ interface ISbFlatMapped {
 }
 
 interface ICacheProvider {
-	get: (key: string) => IMemoryType
+	get: (key: string) => IMemoryType | void
 	set: (key: string, content: ISbResult) => void
-	getAll: () => IMemoryType
+	getAll: () => IMemoryType | void
 	flush: () => void
 }
 
@@ -524,16 +524,16 @@ class Storyblok {
 		default:
 			return {
 				get() {
-					return {} as IMemoryType
+					return undefined
 				},
 				getAll() {
-					return {} as IMemoryType
+					return undefined
 				},
 				set() {
-					return {}
+					return undefined
 				},
 				flush() {
-					return {}
+					return undefined
 				},
 			}
 		}
