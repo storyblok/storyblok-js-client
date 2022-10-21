@@ -31,6 +31,26 @@ export interface ISbStoriesParams {
   component?: string
   filename?: string
   size?: string
+  datasource?: string
+  dimension?: string
+}
+
+type Dimension = {
+  id: number
+  name: string
+  entry_value: string
+  datasource_id: number
+  created_at: string
+  updated_at: string
+}
+
+/**
+ * @interface ISbDimensions
+ * @description Storyblok Dimensions Interface auxiliary interface
+ * @description One use it to handle the API response
+ */
+export interface ISbDimensions {
+  dimensions: Dimension[]
 }
 
 export interface ISbComponentType<T extends string> {
