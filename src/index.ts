@@ -200,7 +200,7 @@ class Storyblok {
 
 		const firstPage = 1
 		const firstRes = await this.makeRequest(url, params, perPage, firstPage)
-		const lastPage = Math.ceil(firstRes.total / perPage)
+		const lastPage = firstRes.total ? Math.ceil(firstRes.total / perPage) : 1
 
 		const restRes: any = await this.helpers.asyncMap(this.helpers.range(firstPage, lastPage), (i: number) => {
 			return this.makeRequest(url, params, perPage, i + 1)
@@ -441,8 +441,8 @@ class Storyblok {
   
 					if (res.headers['per-page']) {
 						response = Object.assign({}, response, {
-							perPage: parseInt(res.headers['per-page']),
-							total: parseInt(res.headers['total']),
+							perPage: res.headers['per-page'] ? parseInt(res.headers['per-page']) : 0,
+							total: res.headers['per-page'] ? parseInt(res.headers['total']): 0,
 						})
 					}
   
