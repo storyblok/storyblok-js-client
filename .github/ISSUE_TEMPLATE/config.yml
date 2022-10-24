@@ -1,13 +1,13 @@
 blank_issues_enabled: false
 contact_links:
-  - name: Storyblok Help Center/Service Desk - **Official support channel**
+  - name: Storyblok Help Center/Service Desk - Official support channel
     url: https://storyblok.atlassian.net/servicedesk/customer/portals
     about: You can raise a request for Storyblok Service Desk.
 
   - name: Feature Requests
     url: https://feedback.storyblok.com/b/feature-requests/
-    about: You can post your Feature Requests and vote for others as well.
+    about: Please review the existing FRs on the platform before posting a new one.
     
-  - name: Discord community
+  - name: Discord community - no official support is provided via Discord
     url: https://discord.gg/WmMYYQp
     about: You can reach out to Storyblok Discord community.
