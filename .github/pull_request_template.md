@@ -4,7 +4,7 @@
 
 Jira Link: [INT-](url)
 
-<!-- Please try to limit your pull request to one type, submit multiple pull requests if needed. 
+<!-- Please try to limit your pull request to one type, submit multiple pull requests if needed.
 
 Please check the type of change your PR introduces:-->
 
@@ -22,8 +22,8 @@ Please check the type of change your PR introduces:-->
 
 <!-- Please describe the behavior or changes that are being added by this PR. -->
 
-- 
-- 
-- 
+-
+-
+-
 
 ## Other information

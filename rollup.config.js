@@ -4,6 +4,7 @@ import rollupResolve from '@rollup/plugin-node-resolve'
 import rollupJson from '@rollup/plugin-json'
 import rollupCommonjs from '@rollup/plugin-commonjs'
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const pkg = require('./package.json')
 
 const enableBabel = process.env.ENABLE_BABEL === 'yes'
@@ -33,7 +34,6 @@ const richtextBanner = `/*!
  * (c) ${yearString} Stobylok Team
  */`
 
-
 const makeFileName = (format, file = 'index') => {
 	return getDistFolder(`${file}.${format}.js`)
 }
@@ -59,7 +59,7 @@ const plugins = [
 	// to generate file with .mjs extension
 
 	// to resolve correctly non-esmodules packages
-	rollupResolve({ jsnext: true, preferBuiltins: true, browser: true}),
+	rollupResolve({ jsnext: true, preferBuiltins: true, browser: true }),
 
 	// to include, when not external, non-esmodules packages (axios and qs e.g)
 	rollupCommonjs(),
@@ -71,10 +71,10 @@ const plugins = [
 
 	// to run babel
 	enableBabel &&
-    babel({
-    	babelHelpers: 'runtime',
-    	exclude: 'node_modules/**', // only transpile our source code
-    }),
+		babel({
+			babelHelpers: 'runtime',
+			exclude: 'node_modules/**', // only transpile our source code
+		}),
 ].filter(Boolean)
 
 const factoryRichTextOutput = (format) => {
@@ -91,15 +91,12 @@ export default [
 	// StoryblokClient
 	{
 		input: 'dist/index.js',
-		output: enableStandalone ? [
-			factoryOutputStandalone()
-		] : [
-			factoryOutputObject('es'),
-			factoryOutputObject('cjs')
-		],
+		output: enableStandalone
+			? [factoryOutputStandalone()]
+			: [factoryOutputObject('es'), factoryOutputObject('cjs')],
 		plugins,
 		// when standalone, put all external libraries into final code
-		external: enableStandalone ? [] : ['isomorphic-fetch', 'node-fetch']
+		external: enableStandalone ? [] : ['isomorphic-fetch', 'node-fetch'],
 	},
 
 	// Richtext
@@ -107,11 +104,11 @@ export default [
 		input: 'dist/richTextResolver.js',
 		output: enableStandalone
 			? [
-				{
-					...factoryRichTextOutput('standalone'),
-					format: 'iife',
-				},
-			]
+					{
+						...factoryRichTextOutput('standalone'),
+						format: 'iife',
+					},
+			  ]
 			: [factoryRichTextOutput('cjs')],
 		plugins,
 	},

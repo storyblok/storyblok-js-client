@@ -7,10 +7,10 @@ type Shifted = {
 }
 
 type Queue = {
-	resolve: (args: any) => any,
-	reject: (args: any) => any,
-	args: any[],
-	self: any,
+	resolve: (args: any) => any
+	reject: (args: any) => any
+	args: any[]
+	self: any
 }
 
 interface ISbThrottle {
@@ -64,7 +64,10 @@ function throttledQueue(fn: ThrottleFn, limit: number, interval: number) {
 		x.resolve(fn.apply(x.self, x.args))
 	}
 
-	const throttled: ISbThrottle = function (this: ISbThrottle, ...args: []): Promise<Queue> {
+	const throttled: ISbThrottle = function (
+		this: ISbThrottle,
+		...args: []
+	): Promise<Queue> {
 		// eslint-disable-next-line @typescript-eslint/no-this-alias
 		const self = this
 

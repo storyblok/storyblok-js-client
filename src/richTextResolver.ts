@@ -2,7 +2,7 @@ import defaultHtmlSerializer from './schema'
 import { ISbSchema, ISbRichtext } from './interfaces'
 
 type HtmlEscapes = {
-	[key: string]: string,
+	[key: string]: string
 }
 
 const escapeHTML = function (string: string) {
@@ -11,7 +11,7 @@ const escapeHTML = function (string: string) {
 		'<': '&lt;',
 		'>': '&gt;',
 		'"': '&quot;',
-		'\'': '&#39;',
+		"'": '&#39;',
 	} as HtmlEscapes
 
 	const reUnescapedHtml = /[&<>"']/g

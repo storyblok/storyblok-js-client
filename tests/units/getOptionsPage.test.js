@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 import { SbHelpers } from '../../dist/sbHelpers'
 
-const optionsPage  = new SbHelpers()
+const optionsPage = new SbHelpers()
 
 describe('getOptionsPage function', () => {
 	test('getOptionsPage() should be equal a object with default pagination options', () => {
