@@ -14,5 +14,6 @@ jobs:
         node-version: 14.x
     - run: npm install --frozen-lockfile
     - run: npm run lint
+    - run: npm run prettier -- --check
     - run: npm run test
     - run: npm run build
