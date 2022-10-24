@@ -17,7 +17,7 @@
   ],
   "scripts": {
     "clean": "rimraf dist/",
-    "lint": "eslint --max-warnings=0 'source/**/*.{ts,js}'",
+    "lint": "eslint --max-warnings=0 './**/*.{ts,js}'",
     "prettier": "prettier './**/*.js' './**/*.ts' './**/*.md' --write",
     "build": "run-s clean tsc build:**",
     "build:es5": "ENABLE_BABEL=yes rollup --config",
@@ -89,28 +89,11 @@
       "@commitlint/config-conventional"
     ]
   },
-  "eslintConfig": {
-    "env": {
-      "node": true
-    },
-    "parserOptions": {
-      "ecmaVersion": "latest",
-      "sourceType": "module"
-    },
-    "extends": [
-      "eslint:recommended",
-      "prettier"
-    ],
-    "ignorePatterns": "dist/",
-    "rules": {
-      "no-undef": 0,
-      "no-async-promise-executor": 0
-    }
-  },
   "prettier": {
-    "trailingComma": "es5",
+    "semi": false,
+    "singleQuote": true,
     "tabWidth": 2,
-    "semi": true,
-    "singleQuote": false
+    "trailingComma": "es5",
+    "useTabs": true
   }
 }
