@@ -393,7 +393,7 @@ class Storyblok {
 		if (
 			params.resolve_links &&
 			['1', 'story', 'url'].indexOf(params.resolve_links) > -1 &&
-			(responseData.links && responseData.links.length || responseData.link_uuids.length)
+			(responseData.links?.length || responseData.link_uuids?.length)
 		) {
 			await this.resolveLinks(responseData, params)
 		}
