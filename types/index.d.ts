@@ -41,7 +41,7 @@ declare class Storyblok {
     private factoryParamOptions;
     private makeRequest;
     get(slug: string, params?: ISbStoriesParams): Promise<ISbResult>;
-    getAll(slug: string, params: ISbStoriesParams, entity?: string): Promise<ISbResult>;
+    getAll(slug: string, params: ISbStoriesParams, entity?: string): Promise<ISbResult['data']>;
     post(slug: string, params: ISbStoriesParams | ISbContentMangmntAPI): Promise<ISbResponseData>;
     put(slug: string, params: ISbStoriesParams | ISbContentMangmntAPI): Promise<ISbResponseData>;
     delete(slug: string, params: ISbStoriesParams | ISbContentMangmntAPI): Promise<ISbResponseData>;
