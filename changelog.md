@@ -6,19 +6,11 @@ All notable changes to this project will be documented in this file.
  
 ## [5.0.3] - 2022-10-26
  
-### Added
-   
-### Changed
- 
 ### Fixed
 - [Storyblok-JS-client](https://github.com/storyblok/storyblok-js-client/compare/v5.0.2...v5.0.3)
 - Remove & ignore stray .DS_Store file
 
 ## [5.0.2] - 2022-10-21
- 
-### Added
-   
-### Changed
  
 ### Fixed
 - [Storyblok-JS-client](https://github.com/storyblok/storyblok-js-client/compare/v5.0.1...v5.0.2)
@@ -29,10 +21,6 @@ All notable changes to this project will be documented in this file.
 ### Added
 - [Storyblok-JS-client](https://github.com/storyblok/storyblok-js-client/compare/v5.0.0...v5.0.1)
 - Added dimensions related features to ISbStoriesParams interface.
-   
-### Changed
- 
-### Fixed
 
 ## [5.0.0] - 2022-10-17 - BREAKING CHANGE
  
