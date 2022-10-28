@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
  
 # [Unreleased]
+
+## [5.0.4] - 2022-10-28
+ 
+### Fixed
+- [Storyblok-JS-client](https://github.com/storyblok/storyblok-js-client/compare/v5.0.3...v5.0.4)
+- Ci: run prettier in CI
+- Merge conflicting ESLint + Prettier configuration
  
 ## [5.0.3] - 2022-10-26
  
