@@ -17,7 +17,7 @@ describe('arrayFrom function', () => {
 	})
 
 	test('arrayFrom(2, (v, i) => v)) should be an array with undefined values', () => {
-		expect(helpers.arrayFrom(2, (v, _) => v)).toEqual([undefined, undefined])
+		expect(helpers.arrayFrom(2, (v) => v)).toEqual([undefined, undefined])
 	})
 
 	test('arrayFrom(2, (v, i) => i) should be an array with 0 and 1', () => {
@@ -53,7 +53,9 @@ describe('range function', () => {
 
 describe('asyncMap function', () => {
 	test('asyncMap(undefined, v => v)) should be an empty array', async () => {
-		await expect(helpers.asyncMap(undefined, (v) => v)).rejects.toThrow(TypeError)
+		await expect(helpers.asyncMap(undefined, (v) => v)).rejects.toThrow(
+			TypeError
+		)
 	})
 
 	test('asyncMap([], v => v) should be an empty array', async () => {
@@ -65,7 +67,9 @@ describe('asyncMap function', () => {
 	})
 
 	test('asyncMap([delay(100), delay(200)], v => v) should be an array with undefined values', async () => {
-		await expect(helpers.asyncMap([helpers.delay(100), helpers.delay(200)], (v) => v)).rejects
+		await expect(
+			helpers.asyncMap([helpers.delay(100), helpers.delay(200)], (v) => v)
+		).rejects
 	})
 })
 

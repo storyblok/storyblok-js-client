@@ -82,9 +82,9 @@ You can import and use the `RichTextResolver` directly:
 import RichTextResolver from 'storyblok-js-client/dist/rich-text-resolver.es'
 // const RichTextResolver = require('storyblok-js-client/dist/rich-text-resolver.cjs')
 
-const resolver = new RichTextResolver();
+const resolver = new RichTextResolver()
 
-const html = resolver.render(data);
+const html = resolver.render(data)
 ```
 
 #### Using from the Browser directly
@@ -120,12 +120,15 @@ const StoryblokClient = require('storyblok-js-client/dist/es5/index.cjs')
 // for EsModules environments
 import StoryblokClient from 'storyblok-js-client/dist/es5/index.es'
 ```
+
 ### NEW BRANCHES AND VERSIONS
+
 The old master branch containing version `4.x.y` has been moved to the `v4` branch.
 We’ve renamed the `master` branch to `main` and now it contains version 5.0.0.
 If you wish to continue using the non Typescript version with `axios`, please use version `4`. You can install it by running `npm install https://github.com/storyblok/storyblok-js-client.git#4.x.x`.
 
 ### BREAKING CHANGES - FROM VERSION 5
+
 ### Added TypeScript - Version 5
 
 We added TypeScript to our codebase, improving our code quality and assuring the correct implementation from the client's side. This change will probably break your code, because your Storyblok client's current implementation is possibly sending the wrong types to the source.
@@ -143,6 +146,7 @@ Node already deals with those features natively from Version `17`. We'll keep us
 As part of our efforts to make the SDK more lightweight to web users, under the hood, the import of node-fetch is conditionally done depending on if the app is under the Node's environment or not.
 
 ## Documentation
+
 #### Assets structure compatibility
 
 We added retro-compatibility when using `resolve_assets: 1` parameter under V2. Now, if you are using our V2 client, you should receive the assets structure just the same as V1.
@@ -226,15 +230,15 @@ With this method you can get single or multiple items. The multiple items are pa
 **Example**
 
 ```javascript
-Storyblok.get("cdn/stories/home", {
-  version: "draft",
+Storyblok.get('cdn/stories/home', {
+	version: 'draft',
 })
-  .then((response) => {
-    console.log(response);
-  })
-  .catch((error) => {
-    console.log(error);
-  });
+	.then((response) => {
+		console.log(response)
+	})
+	.catch((error) => {
+		console.log(error)
+	})
 ```
 
 #### Method `Storyblok#getAll`
@@ -251,15 +255,15 @@ With this method you can get all items at once.
 **Example**
 
 ```javascript
-Storyblok.getAll("cdn/stories", {
-  version: "draft",
+Storyblok.getAll('cdn/stories', {
+	version: 'draft',
 })
-  .then((stories) => {
-    console.log(stories); // an array
-  })
-  .catch((error) => {
-    console.log(error);
-  });
+	.then((stories) => {
+		console.log(stories) // an array
+	})
+	.catch((error) => {
+		console.log(error)
+	})
 ```
 
 #### Method `Storyblok#post` (only management api)
@@ -319,13 +323,13 @@ Storyblok
 **Example**
 
 ```javascript
-Storyblok.delete("spaces/<YOUR_SPACE_ID>/stories/1", null)
-  .then((response) => {
-    console.log(response);
-  })
-  .catch((error) => {
-    console.log(error);
-  });
+Storyblok.delete('spaces/<YOUR_SPACE_ID>/stories/1', null)
+	.then((response) => {
+		console.log(response)
+	})
+	.catch((error) => {
+		console.log(error)
+	})
 ```
 
 #### Method `Storyblok#flushCache`
@@ -337,7 +341,7 @@ Storyblok.delete("spaces/<YOUR_SPACE_ID>/stories/1", null)
 **Example**
 
 ```javascript
-Storyblok.flushCache();
+Storyblok.flushCache()
 ```
 
 #### Method `Storyblok#setComponentResolver`
@@ -350,26 +354,26 @@ Option 1: Use a switch case definition to render different components:
 
 ```javascript
 Storyblok.setComponentResolver((component, blok) => {
-  switch (component) {
-    case "my-custom-component":
-      return `<div class="my-component-class">${blok.text}</div>`;
-      break;
-    case "my-header":
-      return `<h1 class="my-class">${blok.title}</h1>`;
-      break;
-    default:
-      return "Resolver not defined";
-  }
-});
+	switch (component) {
+		case 'my-custom-component':
+			return `<div class="my-component-class">${blok.text}</div>`
+			break
+		case 'my-header':
+			return `<h1 class="my-class">${blok.title}</h1>`
+			break
+		default:
+			return 'Resolver not defined'
+	}
+})
 ```
 
 Option 2: Dynamically render a component (Example in Vue.js):
 
 ```javascript
 Storyblok.setComponentResolver((component, blok) => {
-  return `<component :blok='${JSON.stringify(blok)}'
-                     is="${component}"></component>`;
-});
+	return `<component :blok='${JSON.stringify(blok)}'
+                     is="${component}"></component>`
+})
 ```
 
 #### Method `Storyblok#richTextResolver.render`
@@ -382,7 +386,7 @@ Storyblok.setComponentResolver((component, blok) => {
 **Example**
 
 ```javascript
-Storyblok.richTextResolver.render(blok.richtext);
+Storyblok.richTextResolver.render(blok.richtext)
 ```
 
 ### Code examples
@@ -528,70 +532,70 @@ If you just want to change the way a specific tag is rendered you can import the
 Instead of `<p>Normal headline</p><h3><span class="margin-bottom-fdsafdsada">Styled headline</span></h3>` it will render `<p>Normal headline</p><h3 class="margin-bottom-fdsafdsada">Styled headline</h3>`.
 
 ```javascript
-const RichTextResolver = require("storyblok-js-client/dist/richTextResolver");
-const MySchema = require("storyblok-js-client/dist/schema");
+const RichTextResolver = require('storyblok-js-client/dist/richTextResolver')
+const MySchema = require('storyblok-js-client/dist/schema')
 
 MySchema.nodes.heading = function (node) {
-  let attrs = {};
+	let attrs = {}
 
-  if (
-    node.content &&
-    node.content.length === 1 &&
-    node.content[0].marks &&
-    node.content[0].marks.length === 1 &&
-    node.content[0].marks[0].type === "styled"
-  ) {
-    attrs = node.content[0].marks[0].attrs;
-    delete node.content[0].marks;
-  }
+	if (
+		node.content &&
+		node.content.length === 1 &&
+		node.content[0].marks &&
+		node.content[0].marks.length === 1 &&
+		node.content[0].marks[0].type === 'styled'
+	) {
+		attrs = node.content[0].marks[0].attrs
+		delete node.content[0].marks
+	}
 
-  return {
-    tag: [
-      {
-        tag: `h${node.attrs.level}`,
-        attrs: attrs,
-      },
-    ],
-  };
-};
+	return {
+		tag: [
+			{
+				tag: `h${node.attrs.level}`,
+				attrs: attrs,
+			},
+		],
+	}
+}
 
-let rteResolver = new RichTextResolver(MySchema);
+let rteResolver = new RichTextResolver(MySchema)
 let rendered = rteResolver.render({
-  content: [
-    {
-      content: [
-        {
-          text: "Normal headline",
-          type: "text",
-        },
-      ],
-      type: "paragraph",
-    },
-    {
-      attrs: {
-        level: 3,
-      },
-      content: [
-        {
-          marks: [
-            {
-              attrs: {
-                class: "margin-bottom-fdsafdsada",
-              },
-              type: "styled",
-            },
-          ],
-          text: "Styled headline",
-          type: "text",
-        },
-      ],
-      type: "heading",
-    },
-  ],
-  type: "doc",
-});
+	content: [
+		{
+			content: [
+				{
+					text: 'Normal headline',
+					type: 'text',
+				},
+			],
+			type: 'paragraph',
+		},
+		{
+			attrs: {
+				level: 3,
+			},
+			content: [
+				{
+					marks: [
+						{
+							attrs: {
+								class: 'margin-bottom-fdsafdsada',
+							},
+							type: 'styled',
+						},
+					],
+					text: 'Styled headline',
+					type: 'text',
+				},
+			],
+			type: 'heading',
+		},
+	],
+	type: 'doc',
+})
 
-console.log(rendered);
+console.log(rendered)
 ```
 
 ## 🔗 Related Links

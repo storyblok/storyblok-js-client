@@ -10,19 +10,19 @@ let Storyblok = new StoryblokClient({
 })
 
 describe('getAll function', () => {
-	test('getAll(\'cdn/stories\') should return all stories', async () => {
+	test("getAll('cdn/stories') should return all stories", async () => {
 		const result = await Storyblok.getAll('cdn/stories')
 		expect(result.length).toBe(28)
 	})
 
-	test('getAll(\'cdn/stories\') should return all stories with filtered results', async () => {
+	test("getAll('cdn/stories') should return all stories with filtered results", async () => {
 		const result = await Storyblok.getAll('cdn/stories', {
 			starts_with: 'testcontent-0',
 		})
 		expect(result.length).toBe(1)
 	})
 
-	test('getAll(\'cdn/stories\', filter_query: { __or: [{ category: { any_in_array: \'Category 1\' } }, { category: { any_in_array: \'Category 2\' } }]}) should return all stories with the specific filter applied', async () => {
+	test("getAll('cdn/stories', filter_query: { __or: [{ category: { any_in_array: 'Category 1' } }, { category: { any_in_array: 'Category 2' } }]}) should return all stories with the specific filter applied", async () => {
 		const result = await Storyblok.getAll('cdn/stories', {
 			filter_query: {
 				__or: [
@@ -34,20 +34,20 @@ describe('getAll function', () => {
 		expect(result.length).toBe(4)
 	})
 
-	test('getAll(\'cdn/stories\', {by_slugs: \'folder/*\'}) should return all stories with the specific filter applied', async () => {
+	test("getAll('cdn/stories', {by_slugs: 'folder/*'}) should return all stories with the specific filter applied", async () => {
 		const result = await Storyblok.getAll('cdn/stories', {
 			by_slugs: 'folder/*',
 		})
 		expect(result.length).toBe(2)
 	})
 
-	test('getAll(\'cdn/links\') should return all links', async () => {
+	test("getAll('cdn/links') should return all links", async () => {
 		const result = await Storyblok.getAll('cdn/links')
 		expect(result.length).toBe(29)
 	})
 
 	if (process.env.OAUTH_TOKEN) {
-		test('getAll(\'spaces/67647/stories\') should return all spaces', async () => {
+		test("getAll('spaces/67647/stories') should return all spaces", async () => {
 			let StoryblokManagement = new StoryblokClient({
 				oauthToken: process.env.OAUTH_TOKEN,
 			})
@@ -58,7 +58,7 @@ describe('getAll function', () => {
 })
 
 describe('test uncached requests', () => {
-	test('get(\'cdn/spaces/me\') should not be cached', async () => {
+	test("get('cdn/spaces/me') should not be cached", async () => {
 		let provider = Storyblok.cacheProvider()
 		provider.flush()
 		await Storyblok.get('cdn/spaces/me')
@@ -67,7 +67,7 @@ describe('test uncached requests', () => {
 })
 
 describe('test cached requests', () => {
-	test('get(\'cdn/stories\') should be cached when is a published version', async () => {
+	test("get('cdn/stories') should be cached when is a published version", async () => {
 		const cacheVersion = Storyblok.cacheVersion()
 
 		await Storyblok.get('cdn/stories')
