@@ -9,7 +9,7 @@ let Storyblok = new StoryblokClient({
 })
 
 describe('test cache version', () => {
-	test('get(\'cdn/stories\') should set the cache version', async () => {
+	test("get('cdn/stories') should set the cache version", async () => {
 		const result = await Storyblok.get('cdn/stories')
 		const cacheVersion = JSON.parse(JSON.stringify(Storyblok.cacheVersions()))
 

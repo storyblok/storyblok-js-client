@@ -31,4 +31,3 @@ describe('Client should be initialized without interceptors', () => {
 		expect(Storyblok.client.responseInterceptor).toBeFalsy()
 	})
 })
-

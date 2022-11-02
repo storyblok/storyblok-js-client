@@ -5,14 +5,14 @@ import { ISbResponse, ISbError, ISbStoriesParams } from './interfaces'
 import { Method } from './enum'
 
 type ResponseFn = {
-  (arg?: ISbResponse | any): any
+	(arg?: ISbResponse | any): any
 }
 
 interface ISbFetch {
-  baseURL: string,
-  timeout?: number,
-  headers: Headers,
-  responseInterceptor?: ResponseFn,
+	baseURL: string
+	timeout?: number
+	headers: Headers
+	responseInterceptor?: ResponseFn
 }
 
 class SbFetch {
@@ -25,19 +25,19 @@ class SbFetch {
 	private parameters: ISbStoriesParams
 
 	public constructor($c: ISbFetch) {
-		this.baseURL = $c.baseURL,
-		this.timeout = $c.timeout ? $c.timeout * 1000 : 1000,
-		this.headers = $c.headers || [],
-		this.responseInterceptor = $c.responseInterceptor
+		;(this.baseURL = $c.baseURL),
+			(this.timeout = $c.timeout ? $c.timeout * 1000 : 1000),
+			(this.headers = $c.headers || []),
+			(this.responseInterceptor = $c.responseInterceptor)
 		this.ejectInterceptor = false
 		this.url = ''
 		this.parameters = {} as ISbStoriesParams
 	}
 
 	/**
-	 * 
+	 *
 	 * @param url string
-	 * @param params ISbStoriesParams 
+	 * @param params ISbStoriesParams
 	 * @returns Promise<ISbResponse | Error>
 	 */
 	public get(url: string, params: ISbStoriesParams) {
@@ -92,7 +92,7 @@ class SbFetch {
 		const url = new URL(`${this.baseURL}${this.url}`)
 		let body = null
 
-		if(method === 'get') {
+		if (method === 'get') {
 			const helper = new SbHelpers()
 			url.search = helper.stringify(this.parameters)
 		} else {
@@ -111,12 +111,12 @@ class SbFetch {
 				body,
 				signal,
 			})
-  
-			clearTimeout(timeout)
-  
-			const res = await this._responseHandler(response) as ISbResponse
 
-			if(this.responseInterceptor && !this.ejectInterceptor) {
+			clearTimeout(timeout)
+
+			const res = (await this._responseHandler(response)) as ISbResponse
+
+			if (this.responseInterceptor && !this.ejectInterceptor) {
 				return this._statusHandler(this.responseInterceptor(res))
 			} else {
 				return this._statusHandler(res)
@@ -137,7 +137,7 @@ class SbFetch {
 		if (statusOk.test(`${res.status}`)) {
 			return res
 		}
-    
+
 		const error: ISbError = {
 			message: new Error(res.statusText || `status: ${res.status}`),
 			response: res,

@@ -112,7 +112,7 @@ const italic: MarkSchema = () => {
 		tag: 'i',
 	}
 }
-const link: MarkSchema = (node :ISbNode) => {
+const link: MarkSchema = (node: ISbNode) => {
 	const attrs = { ...node.attrs }
 	const { linktype = 'url' } = node.attrs
 
@@ -134,7 +134,7 @@ const link: MarkSchema = (node :ISbNode) => {
 		],
 	}
 }
-const styled: MarkSchema = (node :ISbNode) => {
+const styled: MarkSchema = (node: ISbNode) => {
 	return {
 		tag: [
 			{

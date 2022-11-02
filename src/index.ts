@@ -12,7 +12,7 @@ import {
 	ISbStoryData,
 	ISbContentMangmntAPI,
 	ISbNode,
-	ThrottleFn
+	ThrottleFn,
 } from './interfaces'
 
 let memory: Partial<IMemoryType> = {}
@@ -20,7 +20,7 @@ let memory: Partial<IMemoryType> = {}
 const cacheVersions = {} as CachedVersions
 
 type ComponentResolverFn = {
-  (...args: any): any
+	(...args: any): any
 }
 
 type CachedVersions = {
@@ -61,7 +61,7 @@ interface ISbResponseData {
 
 enum Version {
 	V1 = 'v1',
-	V2 = 'v2'
+	V2 = 'v2',
 }
 
 class Storyblok {
@@ -78,7 +78,7 @@ class Storyblok {
 	public resolveNestedRelations: boolean
 
 	/**
-	 * 
+	 *
 	 * @param config ISbConfig interface
 	 * @param endpoint string, optional
 	 */
@@ -121,7 +121,7 @@ class Storyblok {
 		this.accessToken = config.accessToken || ''
 		this.relations = {} as RelationsType
 		this.links = {} as LinksType
-		this.cache = (config.cache || { clear: 'manual' })
+		this.cache = config.cache || { clear: 'manual' }
 		this.helpers = new SbHelpers()
 		this.resolveNestedRelations = false
 
@@ -129,7 +129,7 @@ class Storyblok {
 			baseURL: endpoint,
 			timeout: config.timeout || 0,
 			headers: headers,
-			responseInterceptor: config.responseInterceptor
+			responseInterceptor: config.responseInterceptor,
 		})
 	}
 
@@ -167,7 +167,10 @@ class Storyblok {
 		return params
 	}
 
-	private factoryParamOptions(url: string, params: ISbStoriesParams): ISbStoriesParams {
+	private factoryParamOptions(
+		url: string,
+		params: ISbStoriesParams
+	): ISbStoriesParams {
 		if (this.helpers.isCDNUrl(url)) {
 			return this.parseParams(params)
 		}
@@ -175,7 +178,12 @@ class Storyblok {
 		return params
 	}
 
-	private makeRequest(url: string, params: ISbStoriesParams, per_page: number, page: number): Promise<ISbResult> {
+	private makeRequest(
+		url: string,
+		params: ISbStoriesParams,
+		per_page: number,
+		page: number
+	): Promise<ISbResult> {
 		const options = this.factoryParamOptions(
 			url,
 			this.helpers.getOptionsPage(params, per_page, page)
@@ -192,7 +200,11 @@ class Storyblok {
 		return this.cacheResponse(url, query)
 	}
 
-	public async getAll(slug: string, params: ISbStoriesParams, entity?: string): Promise<ISbResult> {
+	public async getAll(
+		slug: string,
+		params: ISbStoriesParams,
+		entity?: string
+	): Promise<ISbResult> {
 		const perPage = params?.per_page || 25
 		const url = `/${slug}`
 		const urlParts = url.split('/')
@@ -202,26 +214,38 @@ class Storyblok {
 		const firstRes = await this.makeRequest(url, params, perPage, firstPage)
 		const lastPage = firstRes.total ? Math.ceil(firstRes.total / perPage) : 1
 
-		const restRes: any = await this.helpers.asyncMap(this.helpers.range(firstPage, lastPage), (i: number) => {
-			return this.makeRequest(url, params, perPage, i + 1)
-		})
+		const restRes: any = await this.helpers.asyncMap(
+			this.helpers.range(firstPage, lastPage),
+			(i: number) => {
+				return this.makeRequest(url, params, perPage, i + 1)
+			}
+		)
 
 		return this.helpers.flatMap([firstRes, ...restRes], (res: ISbFlatMapped) =>
 			Object.values(res.data[e])
 		)
 	}
 
-	public post(slug: string, params: ISbStoriesParams | ISbContentMangmntAPI): Promise<ISbResponseData> {
+	public post(
+		slug: string,
+		params: ISbStoriesParams | ISbContentMangmntAPI
+	): Promise<ISbResponseData> {
 		const url = `/${slug}`
 		return Promise.resolve(this.throttle('post', url, params))
 	}
 
-	public put(slug: string, params: ISbStoriesParams | ISbContentMangmntAPI): Promise<ISbResponseData> {
+	public put(
+		slug: string,
+		params: ISbStoriesParams | ISbContentMangmntAPI
+	): Promise<ISbResponseData> {
 		const url = `/${slug}`
 		return Promise.resolve(this.throttle('put', url, params))
 	}
 
-	public delete(slug: string, params: ISbStoriesParams | ISbContentMangmntAPI): Promise<ISbResponseData> {
+	public delete(
+		slug: string,
+		params: ISbStoriesParams | ISbContentMangmntAPI
+	): Promise<ISbResponseData> {
 		const url = `/${slug}`
 		return Promise.resolve(this.throttle('delete', url, params))
 	}
@@ -246,28 +270,35 @@ class Storyblok {
 		return JSON.parse(JSON.stringify(value))
 	}
 
-	private _insertLinks(jtree: ISbStoriesParams, treeItem: keyof ISbStoriesParams): void {
+	private _insertLinks(
+		jtree: ISbStoriesParams,
+		treeItem: keyof ISbStoriesParams
+	): void {
 		const node = jtree[treeItem]
 
 		if (
 			node &&
-      node.fieldtype == 'multilink' &&
-      node.linktype == 'story' &&
-      typeof node.id === 'string' &&
-      this.links[node.id]
+			node.fieldtype == 'multilink' &&
+			node.linktype == 'story' &&
+			typeof node.id === 'string' &&
+			this.links[node.id]
 		) {
 			node.story = this._cleanCopy(this.links[node.id])
 		} else if (
 			node &&
-      node.linktype === 'story' &&
-      typeof node.uuid === 'string' &&
-      this.links[node.uuid]
+			node.linktype === 'story' &&
+			typeof node.uuid === 'string' &&
+			this.links[node.uuid]
 		) {
 			node.story = this._cleanCopy(this.links[node.uuid])
 		}
 	}
 
-	private _insertRelations(jtree:ISbStoriesParams, treeItem: keyof ISbStoriesParams, fields: string | Array<string>): void {
+	private _insertRelations(
+		jtree: ISbStoriesParams,
+		treeItem: keyof ISbStoriesParams,
+		fields: string | Array<string>
+	): void {
 		if (fields.indexOf(`${jtree.component}.${treeItem}`) > -1) {
 			if (typeof jtree[treeItem] === 'string') {
 				if (this.relations[jtree[treeItem]]) {
@@ -285,7 +316,10 @@ class Storyblok {
 		}
 	}
 
-	private iterateTree(story: ISbStoryData, fields: string | Array<string>): void {
+	private iterateTree(
+		story: ISbStoryData,
+		fields: string | Array<string>
+	): void {
 		const enrich = (jtree: ISbStoriesParams | any) => {
 			if (jtree == null) {
 				return
@@ -300,7 +334,11 @@ class Storyblok {
 				}
 				for (const treeItem in jtree) {
 					if ((jtree.component && jtree._uid) || jtree.type === 'link') {
-						this._insertRelations(jtree, treeItem as keyof ISbStoriesParams, fields)
+						this._insertRelations(
+							jtree,
+							treeItem as keyof ISbStoriesParams,
+							fields
+						)
 						this._insertLinks(jtree, treeItem as keyof ISbStoriesParams)
 					}
 					enrich(jtree[treeItem])
@@ -311,7 +349,10 @@ class Storyblok {
 		enrich(story.content)
 	}
 
-	private async resolveLinks(responseData: ISbResponseData, params: ISbStoriesParams): Promise<void> {
+	private async resolveLinks(
+		responseData: ISbResponseData,
+		params: ISbStoriesParams
+	): Promise<void> {
 		let links: string[] = []
 
 		if (responseData.link_uuids) {
@@ -345,7 +386,10 @@ class Storyblok {
 		})
 	}
 
-	private async resolveRelations(responseData: ISbResponseData, params: ISbStoriesParams): Promise<void> {
+	private async resolveRelations(
+		responseData: ISbResponseData,
+		params: ISbStoriesParams
+	): Promise<void> {
 		let relations = []
 
 		if (responseData.rel_uuids) {
@@ -379,12 +423,15 @@ class Storyblok {
 		})
 	}
 
-	private async resolveStories(responseData: ISbResponseData, params: ISbStoriesParams): Promise<void> {
+	private async resolveStories(
+		responseData: ISbResponseData,
+		params: ISbStoriesParams
+	): Promise<void> {
 		let relationParams: string[] = []
 
 		if (
 			typeof params.resolve_relations !== 'undefined' &&
-      params.resolve_relations.length > 0
+			params.resolve_relations.length > 0
 		) {
 			relationParams = params.resolve_relations.split(',')
 			await this.resolveRelations(responseData, params)
@@ -413,7 +460,11 @@ class Storyblok {
 		}
 	}
 
-	private cacheResponse(url: string, params: ISbStoriesParams, retries?: number): Promise<ISbResult> {
+	private cacheResponse(
+		url: string,
+		params: ISbStoriesParams,
+		retries?: number
+	): Promise<ISbResult> {
 		if (typeof retries === 'undefined' || !retries) {
 			retries = 0
 		}
@@ -434,59 +485,66 @@ class Storyblok {
 			}
 
 			try {
-				(async () => {
+				;(async () => {
 					const res = await this.throttle('get', url, params)
 
 					let response = { data: res.data, headers: res.headers } as ISbResult
-  
+
 					if (res.headers['per-page']) {
 						response = Object.assign({}, response, {
 							perPage: res.headers['per-page'] ? parseInt(res.headers['per-page']) : 0,
 							total: res.headers['per-page'] ? parseInt(res.headers['total']): 0,
 						})
 					}
-  
+
 					if (res.status != 200) {
 						return reject(res)
 					}
-  
+
 					if (response.data.story || response.data.stories) {
 						await this.resolveStories(response.data, params)
 					}
-  
+
 					if (params.version === 'published' && url != '/cdn/spaces/me') {
 						provider.set(cacheKey, response)
 					}
-  
+
 					if (response.data.cv && params.token) {
 						if (
 							params.version == 'draft' &&
-              cacheVersions[params.token] != response.data.cv
+							cacheVersions[params.token] != response.data.cv
 						) {
 							this.flushCache()
 						}
-  
+
 						cacheVersions[params.token] = response.data.cv
 					}
-  
+
 					resolve(response)
 				})()
 			} catch (error: Error | any) {
-				(async () => {
+				;async () => {
 					if (error.response && error.response.status === 429) {
 						retries = retries ? retries + 1 : 0
 
 						if (this.maxRetries && retries < this.maxRetries) {
 							await this.helpers.delay(1000 * retries)
-							return this.cacheResponse(url, params, retries).then(resolve).catch(reject)
+							return this.cacheResponse(url, params, retries)
+								.then(resolve)
+								.catch(reject)
 						}
 					}
-					reject(error.message)})
+					reject(error.message)
+				}
 			}
 		})
 	}
 
-	private throttledRequest(type: Method, url: string, params: ISbStoriesParams): Promise<unknown> {
+	private throttledRequest(
+		type: Method,
+		url: string,
+		params: ISbStoriesParams
+	): Promise<unknown> {
 		return this.client[type](url, params)
 	}
 
@@ -506,36 +564,36 @@ class Storyblok {
 
 	private cacheProvider(): ICacheProvider {
 		switch (this.cache.type) {
-		case 'memory':
-			return {
-				get(key: string) {
-					return memory[key]
-				},
-				getAll() {
-					return memory as IMemoryType
-				},
-				set(key: string, content: ISbResult) {
-					memory[key] = content
-				},
-				flush() {
-					memory = {}
-				},
-			}
-		default:
-			return {
-				get() {
-					return undefined
-				},
-				getAll() {
-					return undefined
-				},
-				set() {
-					return undefined
-				},
-				flush() {
-					return undefined
-				},
-			}
+			case 'memory':
+				return {
+					get(key: string) {
+						return memory[key]
+					},
+					getAll() {
+						return memory as IMemoryType
+					},
+					set(key: string, content: ISbResult) {
+						memory[key] = content
+					},
+					flush() {
+						memory = {}
+					},
+				}
+			default:
+				return {
+					get() {
+						return undefined
+					},
+					getAll() {
+						return undefined
+					},
+					set() {
+						return undefined
+					},
+					flush() {
+						return undefined
+					},
+				}
 		}
 	}
 
