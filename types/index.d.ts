@@ -51,7 +51,7 @@ declare class Storyblok {
 		slug: string,
 		params: ISbStoriesParams,
 		entity?: string
-	): Promise<ISbResult>
+	): Promise<any[]>
 	post(
 		slug: string,
 		params: ISbStoriesParams | ISbContentMangmntAPI
