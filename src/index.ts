@@ -418,7 +418,7 @@ class Storyblok {
 			relations = responseData.rels
 		}
 
-		if (relations.length > 0) {
+		if (relations && relations.length > 0) {
 			relations.forEach((story: ISbStoryData) => {
 				this.relations[story.uuid] = { ...story, ...{ _stopResolving: true } }
 			})
