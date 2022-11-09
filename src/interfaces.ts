@@ -117,6 +117,22 @@ export interface ISbConfig {
 	richTextSchema?: ISbSchema
 }
 
+export interface ISbStories {
+	data: {
+		stories: ISbStoryData[]
+	},
+	perPage: number
+  total: number
+  headers: any
+}
+
+export interface ISbStory {
+  data: {
+    story: ISbStoryData
+  }
+  headers: any
+}
+
 export interface ISbResult {
 	data: any
 	perPage: number
