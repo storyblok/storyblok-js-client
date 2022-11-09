@@ -494,8 +494,12 @@ class Storyblok {
 
 					if (res.headers['per-page']) {
 						response = Object.assign({}, response, {
-							perPage: res.headers['per-page'] ? parseInt(res.headers['per-page']) : 0,
-							total: res.headers['per-page'] ? parseInt(res.headers['total']): 0,
+							perPage: res.headers['per-page']
+								? parseInt(res.headers['per-page'])
+								: 0,
+							total: res.headers['per-page']
+								? parseInt(res.headers['total'])
+								: 0,
 						})
 					}
 
@@ -606,3 +610,11 @@ class Storyblok {
 }
 
 export default Storyblok
+
+export * from './enum'
+export * from './interfaces'
+export { default as RichtextInstance } from './richTextResolver'
+export { default as SbFetch } from './sbFetch'
+export * from './sbHelpers'
+export * from './schema'
+export { default as throttledQueue } from './throttlePromise'
