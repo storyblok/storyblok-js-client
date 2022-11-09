@@ -1,29 +1,23 @@
-import {
-	ISbStoriesParams,
-	ISbConfig,
-	ISbResult,
-	ISbStoryData,
-	ISbContentMangmntAPI,
-} from './interfaces'
+import { ISbStoriesParams, ISbConfig, ISbResult, ISbStoryData, ISbContentMangmntAPI } from './interfaces';
 declare type ComponentResolverFn = {
-	(...args: any): any
-}
+    (...args: any): any;
+};
 declare type CachedVersions = {
-	[key: string]: number
-}
+    [key: string]: number;
+};
 declare type LinksType = {
-	[key: string]: any
-}
+    [key: string]: any;
+};
 declare type RelationsType = {
-	[key: string]: any
-}
+    [key: string]: any;
+};
 interface ISbResponseData {
-	link_uuids: string[]
-	links: string[]
-	rel_uuids: string[]
-	rels: any
-	story: ISbStoryData
-	stories: Array<ISbStoryData>
+    link_uuids: string[];
+    links: string[];
+    rel_uuids: string[];
+    rels: any;
+    story: ISbStoryData;
+    stories: Array<ISbStoryData>;
 }
 declare class Storyblok {
 	private client
