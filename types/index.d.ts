@@ -84,3 +84,11 @@ declare class Storyblok {
 	private flushCache
 }
 export default Storyblok
+
+export * from "./enum"
+export * from "./interfaces"
+export * from "./richTextResolver"
+export * from "./sbFetch"
+export * from "./sbHelpers"
+export * from "./schema"
+export * from "./throttlePromise"
