@@ -34,6 +34,17 @@ export interface ISbStoriesParams {
     datasource?: string;
     dimension?: string;
 }
+export interface ISbStoryParams {
+    token?: string;
+    find_by?: 'uuid';
+    version?: 'draft' | 'published';
+    resolve_links?: 'url' | 'story' | '0' | '1';
+    resolve_relations?: string;
+    cv?: number;
+    from_release?: string;
+    language?: string;
+    fallback_lang?: string;
+}
 declare type Dimension = {
     id: number;
     name: string;
@@ -91,6 +102,20 @@ export interface ISbAlternateObject {
     is_folder: boolean;
     parent_id: number;
 }
+export interface ISbStories {
+    data: {
+        stories: ISbStoryData[];
+    };
+    perPage: number;
+    total: number;
+    headers: any;
+}
+export interface ISbStory {
+    data: {
+        story: ISbStoryData;
+    };
+    headers: any;
+}
 export interface ISbCache {
     type?: 'none' | 'memory';
     clear?: 'auto' | 'manual';
@@ -113,7 +138,7 @@ export interface ISbResult {
     data: any;
     perPage: number;
     total: number;
-    headers: Headers;
+    headers?: Headers;
 }
 export interface ISbResponse {
     status: number;
@@ -163,6 +188,10 @@ export interface ISbContentMangmntAPI<Content = ISbComponentType<string> & {
     release_id?: number;
     publish?: '1' | unknown;
     lang?: string;
+}
+export interface ISbManagmentApiResult {
+    data: any;
+    headers: any;
 }
 export interface ISbSchema {
     nodes: any;

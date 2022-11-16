@@ -492,7 +492,7 @@ class Storyblok {
 
 					let response = { data: res.data, headers: res.headers } as ISbResult
 
-					if (res.headers?.['per-page']) {
+					if (res.headers['per-page']) {
 						response = Object.assign({}, response, {
 							perPage: res.headers['per-page']
 								? parseInt(res.headers['per-page'])
