@@ -1232,20 +1232,6 @@
   "resolved" "https://registry.npmjs.org/atob/-/atob-2.1.2.tgz"
   "version" "2.1.2"
 
-"babel-jest@^26.3.0":
-  "integrity" "sha512-pl4Q+GAVOHwvjrck6jKjvmGhnO3jHX/xuB9d27f+EJZ/6k+6nMuPjorrYp7s++bKKdANwzElBWnLWaObvTnaZA=="
-  "resolved" "https://registry.npmjs.org/babel-jest/-/babel-jest-26.6.3.tgz"
-  "version" "26.6.3"
-  dependencies:
-    "@jest/transform" "^26.6.2"
-    "@jest/types" "^26.6.2"
-    "@types/babel__core" "^7.1.7"
-    "babel-plugin-istanbul" "^6.0.0"
-    "babel-preset-jest" "^26.6.2"
-    "chalk" "^4.0.0"
-    "graceful-fs" "^4.2.4"
-    "slash" "^3.0.0"
-
 "babel-jest@^29.2.2":
   "integrity" "sha512-kkq2QSDIuvpgfoac3WZ1OOcHsQQDU5xYk2Ql7tLdJ8BVAYbefEXal+NfS45Y5LVZA7cxC8KYcQMObpCt1J025w=="
   "resolved" "https://registry.npmjs.org/babel-jest/-/babel-jest-29.2.2.tgz"
@@ -3131,16 +3117,6 @@
     "jest-util" "^29.2.1"
     "merge-stream" "^2.0.0"
     "supports-color" "^8.0.0"
-
-"jest@^29.2.0":
-  "integrity" "sha512-r+0zCN9kUqoON6IjDdjbrsWobXM/09Nd45kIPRD8kloaRh1z5ZCMdVsgLXGxmlL7UpAJsvCYOQNO+NjvG/gqiQ=="
-  "resolved" "https://registry.npmjs.org/jest/-/jest-29.2.2.tgz"
-  "version" "29.2.2"
-  dependencies:
-    "@jest/core" "^29.2.2"
-    "@jest/types" "^29.2.1"
-    "import-local" "^3.0.2"
-    "jest-cli" "^29.2.2"
 
 "js-sdsl@^4.1.4":
   "integrity" "sha512-08bOAKweV2NUC1wqTtf3qZlnpOX/R2DU9ikpjOHs0H+ibQv3zpncVQg6um4uYtRtrwIX8M4Nh3ytK4HGlYAq7Q=="
