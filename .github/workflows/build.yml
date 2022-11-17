@@ -10,11 +10,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Setup Node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: "16.13.2"
+          cache: "npm"
       - name: Install dependencies
-        run: npm ci
+        run: npm install
       - run: npm run lint
       - run: npm run prettier -- --check
       - run: npm run test
