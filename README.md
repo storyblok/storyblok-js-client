@@ -36,7 +36,7 @@ npm install storyblok-js-client # yarn add storyblok-js-client
 
 | Version to install                                                                                                              | Support                                              |
 | ------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
-| Latest `storyblok-js-client`                                                                                                    | Modern browsers + Node 18                            |
+| Latest `storyblok-js-client`                                                                                                    | Modern browsers + Node 18+                           |
 | Latest `storyblok-js-client` <br> + Fetch polyfill like [isomorphic-fetch](https://github.com/matthew-andrews/isomorphic-fetch) | Browsers and Node versions with no Fetch API support |
 | [Version 4](https://github.com/storyblok/storyblok-js-client/tree/v4.5.8) `storyblok-js-client@4`                               | Internet Explorer support                            |
 

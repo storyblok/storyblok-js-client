@@ -1,7 +1,6 @@
 /* eslint-disable no-undef */
-jest.setTimeout(60000)
-
-import StoryblokClient from '../dist/index'
+import { expect, test, describe } from 'vitest'
+import StoryblokClient from '../'
 
 let Storyblok = new StoryblokClient({
 	accessToken: 'w0yFvs04aKF2rpz6F8OfIQtt',

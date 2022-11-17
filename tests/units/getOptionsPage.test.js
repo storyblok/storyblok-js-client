@@ -1,5 +1,6 @@
 /* eslint-disable no-undef */
-import { SbHelpers } from '../../dist/sbHelpers'
+import { expect, test, describe } from 'vitest'
+import { SbHelpers } from '../../'
 
 const optionsPage = new SbHelpers()
 
