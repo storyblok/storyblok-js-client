@@ -138,7 +138,7 @@ export interface ISbResult {
     data: any;
     perPage: number;
     total: number;
-    headers?: Headers;
+    headers: Headers;
 }
 export interface ISbResponse {
     status: number;
