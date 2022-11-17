@@ -377,9 +377,11 @@ class Storyblok {
 					by_uuids: chunks[chunkIndex].join(','),
 				})
 
-				linksRes.data.stories.forEach((rel: ISbStoryData | ISbLinkURLObject | string) => {
-					links.push(rel)
-				})
+				linksRes.data.stories.forEach(
+					(rel: ISbStoryData | ISbLinkURLObject | string) => {
+						links.push(rel)
+					}
+				)
 			}
 		} else {
 			links = responseData.links
