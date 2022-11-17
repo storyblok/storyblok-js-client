@@ -365,7 +365,7 @@ Storyblok.richTextResolver.render(blok.richtext)
 #### Filter by content type values and path
 
 ```javascript
-const StoryblokClient = require("storyblok-js-client");
+import StoryblokClient from "storyblok-js-client";
 
 let client = new StoryblokClient({
   accessToken: <YOUR_SPACE_ACCESS_TOKEN>,
@@ -415,8 +415,8 @@ client
 Following a code example using the storyblok-js-client to backup all content on your local filesystem inside a 'backup' folder.
 
 ```javascript
-const StoryblokClient = require("storyblok-js-client");
-const fs = require("fs");
+import StoryblokClient from "storyblok-js-client";
+import fs from "fs";
 
 let client = new StoryblokClient({
   accessToken: <YOUR_SPACE_ACCESS_TOKEN>,
@@ -485,10 +485,10 @@ To define how to add some classes to specific html attributes rendered by the ri
 Below, you can check an example:
 
 ```javascript
-const StoryblokClient = require("storyblok-js-client");
+import StoryblokClient from "storyblok-js-client";
 
 // the default schema copied and updated
-const MySchema = require("./my-schema");
+import MySchema from "./my-schema";
 
 let client = new StoryblokClient({
   accessToken: <YOUR_SPACE_ACCESS_TOKEN>,
@@ -503,8 +503,8 @@ If you just want to change the way a specific tag is rendered you can import the
 Instead of `<p>Normal headline</p><h3><span class="margin-bottom-fdsafdsada">Styled headline</span></h3>` it will render `<p>Normal headline</p><h3 class="margin-bottom-fdsafdsada">Styled headline</h3>`.
 
 ```javascript
-const RichTextResolver = require('storyblok-js-client/dist/richTextResolver')
-const MySchema = require('storyblok-js-client/dist/schema')
+import RichTextResolver from 'storyblok-js-client/richTextResolver'
+import MySchema from 'storyblok-js-client/schema'
 
 MySchema.nodes.heading = function (node) {
 	let attrs = {}
