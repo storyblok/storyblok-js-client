@@ -1,4 +1,4 @@
-import { ISbStoriesParams, ISbConfig, ISbResult, ISbStoryData, ISbContentMangmntAPI } from './interfaces';
+import { ISbStoriesParams, ISbStoryParams, ISbStories, ISbStory, ISbConfig, ISbResult, ISbStoryData, ISbContentMangmntAPI } from './interfaces';
 declare type ComponentResolverFn = {
     (...args: any): any;
 };
@@ -45,8 +45,8 @@ declare class Storyblok {
     post(slug: string, params: ISbStoriesParams | ISbContentMangmntAPI): Promise<ISbResponseData>;
     put(slug: string, params: ISbStoriesParams | ISbContentMangmntAPI): Promise<ISbResponseData>;
     delete(slug: string, params: ISbStoriesParams | ISbContentMangmntAPI): Promise<ISbResponseData>;
-    getStories(params: ISbStoriesParams): Promise<ISbResult>;
-    getStory(slug: string, params: ISbStoriesParams): Promise<ISbResult>;
+    getStories(params: ISbStoriesParams): Promise<ISbStories>
+    getStory(slug: string, params: ISbStoryParams): Promise<ISbStory>
     private getToken;
     ejectInterceptor(): void;
     private _cleanCopy;
