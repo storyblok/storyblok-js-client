@@ -45,12 +45,12 @@ npm install storyblok-js-client # yarn add storyblok-js-client
 #### Using the Content Deliver API
 
 ```javascript
-// 1. Require the Storyblok client
-const StoryblokClient = require("storyblok-js-client");
+// 1. Import the Storyblok client
+import StoryblokClient from "storyblok-js-client";
 
 // 2. Initialize the client with the preview token
 // from your space dashboard at https://app.storyblok.com
-let Storyblok = new StoryblokClient({
+const Storyblok = new StoryblokClient({
   accessToken: <YOUR_SPACE_ACCESS_TOKEN>,
 });
 ```
@@ -58,13 +58,13 @@ let Storyblok = new StoryblokClient({
 #### Using the Content Management API
 
 ```javascript
-// 1. Require the Storyblok client
-const StoryblokClient = require("storyblok-js-client");
+// 1. Import the Storyblok client
+import StoryblokClient from "storyblok-js-client";
 const spaceId = <YOUR_SPACE_ID>;
 
 // 2. Initialize the client with the oauth token
 // from the my account area at https://app.storyblok.com
-let Storyblok = new StoryblokClient({
+const Storyblok = new StoryblokClient({
   oauthToken: <YOUR_OAUTH_TOKEN>,
 });
 
@@ -82,51 +82,11 @@ Storyblok.delete(`spaces/${spaceId}/stories/1`, null);
 You can import and use the `RichTextResolver` directly:
 
 ```js
-// you should need to use the format when import
-// es - when you are in EsModules environment (like React, Vue apps, for example)
-// cjs - when you are in NodeJS environment
-// standalone - when you are in Browser environment directly
-
-import RichTextResolver from 'storyblok-js-client/dist/rich-text-resolver.es'
-// const RichTextResolver = require('storyblok-js-client/dist/rich-text-resolver.cjs')
+import RichTextResolver from 'storyblok-js-client/richTextResolver'
 
 const resolver = new RichTextResolver()
 
 const html = resolver.render(data)
-```
-
-#### Using from the Browser directly
-
-This package has a standalone version that contains all dependencies and you can use it to import and use our package inside the browser.
-
-```html
-<!-- This import makes the StoryblokClient class available globally -->
-<script src="https://cdn.jsdelivr.net/npm/storyblok-js-client@5.0.0/dist/index.standalone.js"></script>
-
-<!-- This import makes the RichTextResolver class available globally -->
-<script src="https://cdn.jsdelivr.net/npm/storyblok-js-client@5.0.0/dist/rich-text-resolver.standalone.js"></script>
-```
-
-If you want a bundle with Babel (for non-es6 browsers):
-
-```html
-<!-- This import makes the StoryblokClient class available globally -->
-<script src="https://cdn.jsdelivr.net/npm/storyblok-js-client@5.0.0/dist/es5/index.standalone.js"></script>
-
-<!-- This import makes the RichTextResolver class available globally -->
-<script src="https://cdn.jsdelivr.net/npm/storyblok-js-client@5.0.0/dist/es5/rich-text-resolver.standalone.js"></script>
-```
-
-#### Note about use of Babel
-
-This package doesn't use the Babel by default in the final bundle. So, if you want a Babel transpiled file, you need to set the `es5/` prefix on import:
-
-```js
-// for CommonJS environments (NodeJS)
-const StoryblokClient = require('storyblok-js-client/dist/es5/index.cjs')
-
-// for EsModules environments
-import StoryblokClient from 'storyblok-js-client/dist/es5/index.es'
 ```
 
 ### NEW BRANCHES AND VERSIONS
@@ -140,7 +100,7 @@ If you wish to continue using the non Typescript version with `axios`, please us
 ### Added TypeScript - Version 5
 
 We added TypeScript to our codebase, improving our code quality and assuring the correct implementation from the client's side. This change will probably break your code, because your Storyblok client's current implementation is possibly sending the wrong types to the source.
-All the types are declared under `src/types`. If you use an IDE to code, you'll be able to hover the problematic cause and see what is being expected from the type. Yet, you can keep using our version without TypeScript.
+All the types are declared under `types`. If you use an IDE to code, you'll be able to hover the problematic cause and see what is being expected from the type. Yet, you can keep using our version without TypeScript.
 
 ### Axios removal - Version 5
 
