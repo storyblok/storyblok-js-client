@@ -31,6 +31,7 @@
 	"scripts": {
 		"lint": "eslint --max-warnings=0 './**/*.{ts,js}'",
 		"build": "node vite.build.mjs && tsc",
+		"playground": "vite",
 		"test": "NODE_ENV='test' jest",
 		"prepare": "npm run build"
 	},
