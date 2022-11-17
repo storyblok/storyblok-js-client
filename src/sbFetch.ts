@@ -1,4 +1,3 @@
-import fetch from 'isomorphic-fetch'
 import { SbHelpers } from './sbHelpers'
 
 import { ISbResponse, ISbError, ISbStoriesParams } from './interfaces'
