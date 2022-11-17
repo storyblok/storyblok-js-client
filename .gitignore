@@ -6,3 +6,4 @@ test-manager.js
 dist/
 *.log
 .DS_Store
+.nuxt
