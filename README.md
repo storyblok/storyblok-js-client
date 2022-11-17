@@ -32,6 +32,14 @@
 npm install storyblok-js-client # yarn add storyblok-js-client
 ```
 
+#### Compatibility
+
+| Version to install                                                                                                              | Support                                              |
+| ------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
+| Latest `storyblok-js-client`                                                                                                    | Modern browsers + Node 18                            |
+| Latest `storyblok-js-client` <br> + Fetch polyfill like [isomorphic-fetch](https://github.com/matthew-andrews/isomorphic-fetch) | Browsers and Node versions with no Fetch API support |
+| [Version 4](https://github.com/storyblok/storyblok-js-client/tree/v4.5.8) `storyblok-js-client@4`                               | Internet Explorer support                            |
+
 ### How to use it
 
 #### Using the Content Deliver API
@@ -139,11 +147,14 @@ All the types are declared under `src/types`. If you use an IDE to code, you'll 
 We removed our dependency on axios in Version `5`. If you want to continue using our SDK with axios, please use version `4`.
 The proxy feature was also removed in this version.
 
-### Isomorphic fetch - Version 5
+### Fetch (use polyfill if needed) - Version 5
 
-Since we removed Axios, and some developers may want to use the SDK under Node's environment, we added [isomorphic-fetch](https://www.npmjs.com/package/isomorphic-fetch) to deal with fetch, AbortController and XMLHttpRequest.
-Node already deals with those features natively from Version `17`. We'll keep using isomorphic-fetch until Node's most recent versions become more popular and more widely used.
-As part of our efforts to make the SDK more lightweight to web users, under the hood, the import of node-fetch is conditionally done depending on if the app is under the Node's environment or not.
+Version 5 is using native `fetch` API, supported by modern browsers and Node 17.5+. If you are using an environment with no `fetch` API support, you can use a polyfill like [isomorphic-fetch](https://github.com/matthew-andrews/isomorphic-fetch) at the very beginning of your app entry point:
+
+```js
+import 'isomorphic-fetch'
+require('isomorphic-fetch') // in CJS environments
+```
 
 ## Documentation
 
