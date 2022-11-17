@@ -8,8 +8,12 @@ import {
 	ISbStoriesParams,
 	ISbCache,
 	ISbConfig,
+	ISbLinkURLObject,
 	ISbResult,
+	ISbStories,
+	ISbStory,
 	ISbStoryData,
+	ISbStoryParams,
 	ISbContentMangmntAPI,
 	ISbNode,
 	ThrottleFn,
@@ -250,11 +254,11 @@ class Storyblok {
 		return Promise.resolve(this.throttle('delete', url, params))
 	}
 
-	public getStories(params: ISbStoriesParams): Promise<ISbResult> {
+	public getStories(params: ISbStoriesParams): Promise<ISbStories> {
 		return this.get('cdn/stories', params)
 	}
 
-	public getStory(slug: string, params: ISbStoriesParams): Promise<ISbResult> {
+	public getStory(slug: string, params: ISbStoryParams): Promise<ISbStory> {
 		return this.get(`cdn/stories/${slug}`, params)
 	}
 
@@ -353,7 +357,7 @@ class Storyblok {
 		responseData: ISbResponseData,
 		params: ISbStoriesParams
 	): Promise<void> {
-		let links: string[] = []
+		let links: (ISbStoryData | ISbLinkURLObject | string)[] = []
 
 		if (responseData.link_uuids) {
 			const relSize = responseData.link_uuids.length
@@ -373,7 +377,7 @@ class Storyblok {
 					by_uuids: chunks[chunkIndex].join(','),
 				})
 
-				linksRes.data.stories.forEach((rel: string) => {
+				linksRes.data.stories.forEach((rel: ISbStoryData | ISbLinkURLObject | string) => {
 					links.push(rel)
 				})
 			}
@@ -410,7 +414,7 @@ class Storyblok {
 					by_uuids: chunks[chunkIndex].join(','),
 				})
 
-				relationsRes.data.stories.forEach((rel: string) => {
+				relationsRes.data.stories.forEach((rel: ISbStoryData) => {
 					relations.push(rel)
 				})
 			}
@@ -492,7 +496,7 @@ class Storyblok {
 
 					let response = { data: res.data, headers: res.headers } as ISbResult
 
-					if (res.headers['per-page']) {
+					if (res.headers?.['per-page']) {
 						response = Object.assign({}, response, {
 							perPage: res.headers['per-page']
 								? parseInt(res.headers['per-page'])

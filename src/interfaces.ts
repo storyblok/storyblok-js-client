@@ -109,8 +109,20 @@ export interface ISbAlternateObject {
 	parent_id: number
 }
 
+export interface ISbLinkURLObject {
+	id: number
+	name: string
+	slug: string
+	full_slug: string
+	url: string
+	uuid: string
+}
+
 export interface ISbStories {
 	data: {
+		cv: number
+		links: (ISbStoryData | ISbLinkURLObject)[]
+		rels: ISbStoryData[]
 		stories: ISbStoryData[]
 	}
 	perPage: number
@@ -120,6 +132,9 @@ export interface ISbStories {
 
 export interface ISbStory {
 	data: {
+		cv: number
+		links: (ISbStoryData | ISbLinkURLObject)[]
+		rels: ISbStoryData[]
 		story: ISbStoryData
 	}
 	headers: any
@@ -149,7 +164,7 @@ export interface ISbResult {
 	data: any
 	perPage: number
 	total: number
-	headers?: Headers
+	headers: Headers
 }
 
 export interface ISbResponse {
