@@ -148,6 +148,7 @@ export interface ISbCache {
 export interface ISbConfig {
 	accessToken?: string
 	oauthToken?: string
+	resolveNestedRelations?: boolean
 	cache?: ISbCache
 	responseInterceptor?: (response: any) => any
 	timeout?: number
