@@ -208,7 +208,7 @@ class Storyblok {
         if (this.relations[resolveId][jtree[treeItem]]) {
           jtree[treeItem] = this._cleanCopy(this.relations[resolveId][jtree[treeItem]]);
         }
-      } else if (jtree[treeItem].constructor === Array) {
+      } else if (jtree[treeItem] && jtree[treeItem].constructor === Array) {
         let stories = [];
         jtree[treeItem].forEach((uuid) => {
           if (this.relations[resolveId][uuid]) {
