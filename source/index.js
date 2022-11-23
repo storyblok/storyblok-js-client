@@ -51,6 +51,7 @@ class Storyblok {
     this.maxRetries = config.maxRetries || 5;
     this.throttle = throttledQueue(this.throttledRequest, rateLimit, 1000);
     this.accessToken = config.accessToken;
+    this.resolveCount = 0;
     this.relations = {};
     this.links = {};
     this.cache = config.cache || { clear: "manual" };
@@ -180,7 +181,7 @@ class Storyblok {
     return JSON.parse(JSON.stringify(value));
   }
 
-  _insertLinks(jtree, treeItem) {
+  _insertLinks(jtree, treeItem, resolveId) {
     const node = jtree[treeItem];
 
     if (
@@ -188,30 +189,30 @@ class Storyblok {
       node.fieldtype == "multilink" &&
       node.linktype == "story" &&
       typeof node.id === "string" &&
-      this.links[node.id]
+      this.links[resolveId][node.id]
     ) {
-      node.story = this._cleanCopy(this.links[node.id]);
+      node.story = this._cleanCopy(this.links[resolveId][node.id]);
     } else if (
       node &&
       node.linktype === "story" &&
       typeof node.uuid === "string" &&
-      this.links[node.uuid]
+      this.links[resolveId][node.uuid]
     ) {
-      node.story = this._cleanCopy(this.links[node.uuid]);
+      node.story = this._cleanCopy(this.links[resolveId][node.uuid]);
     }
   }
 
-  _insertRelations(jtree, treeItem, fields) {
+  _insertRelations(jtree, treeItem, fields, resolveId) {
     if (fields.indexOf(jtree.component + "." + treeItem) > -1) {
       if (typeof jtree[treeItem] === "string") {
-        if (this.relations[jtree[treeItem]]) {
-          jtree[treeItem] = this._cleanCopy(this.relations[jtree[treeItem]]);
+        if (this.relations[resolveId][jtree[treeItem]]) {
+          jtree[treeItem] = this._cleanCopy(this.relations[resolveId][jtree[treeItem]]);
         }
       } else if (jtree[treeItem] && jtree[treeItem].constructor === Array) {
         let stories = [];
         jtree[treeItem].forEach((uuid) => {
-          if (this.relations[uuid]) {
-            stories.push(this._cleanCopy(this.relations[uuid]));
+          if (this.relations[resolveId][uuid]) {
+            stories.push(this._cleanCopy(this.relations[resolveId][uuid]));
           }
         });
         jtree[treeItem] = stories;
@@ -232,7 +233,7 @@ class Storyblok {
     })
   }
 
-  iterateTree(story, fields) {
+  iterateTree(story, fields, resolveId) {
     let enrich = (jtree) => {
       if (jtree == null) {
         return;
@@ -247,8 +248,8 @@ class Storyblok {
         }
         for (let treeItem in jtree) {
           if ((jtree.component && jtree._uid) || jtree.type === "link") {
-            this._insertRelations(jtree, treeItem, fields);
-            this._insertLinks(jtree, treeItem);
+            this._insertRelations(jtree, treeItem, fields, resolveId);
+            this._insertLinks(jtree, treeItem, resolveId);
           } else if ('id' in jtree && jtree.fieldtype === "asset") {
             this._insertAssetsRelations(jtree, fields);
           }
@@ -260,7 +261,7 @@ class Storyblok {
     enrich(story.content);
   }
 
-  async resolveLinks(responseData, params) {
+  async resolveLinks(responseData, params, resolveId) {
     let links = [];
 
     if (responseData.link_uuids) {
@@ -290,11 +291,11 @@ class Storyblok {
     }
 
     links.forEach((story) => {
-      this.links[story.uuid] = { ...story, ...{ _stopResolving: true } };
+      this.links[resolveId][story.uuid] = { ...story, ...{ _stopResolving: true } };
     });
   }
 
-  async resolveRelations(responseData, params) {
+  async resolveRelations(responseData, params, resolveId) {
     let relations = [];
 
     if (responseData.rel_uuids) {
@@ -324,35 +325,41 @@ class Storyblok {
     }
 
     relations.forEach((story) => {
-      this.relations[story.uuid] = { ...story, ...{ _stopResolving: true } };
+      this.relations[resolveId][story.uuid] = { ...story, ...{ _stopResolving: true } };
     });
   }
 
-  async resolveStories(responseData, params) {
+  async resolveStories(responseData, params, resolveId) {
     let relationParams = [];
+
+    this.links[resolveId] = {};
+    this.relations[resolveId] = {};
 
     if (typeof params.resolve_relations !== 'undefined' && params.resolve_relations.length > 0 && (responseData.rels || responseData.rel_uuids)) {
       relationParams = params.resolve_relations.split(',')
-      await this.resolveRelations(responseData, params)
+      await this.resolveRelations(responseData, params, resolveId)
     }
 
     if (["1", "story", "url"].indexOf(params.resolve_links) > -1 && (responseData.links || responseData.link_uuids)) {
-      await this.resolveLinks(responseData, params);
+      await this.resolveLinks(responseData, params, resolveId);
     }
 
     if (this.resolveNestedRelations) {
-      for (const relUuid in this.relations) {
-        this.iterateTree(this.relations[relUuid], relationParams)
+      for (const relUuid in this.relations[resolveId]) {
+        this.iterateTree(this.relations[resolveId][relUuid], relationParams, resolveId)
       }
     }
 
     if (responseData.story) {
-      this.iterateTree(responseData.story, relationParams);
+      this.iterateTree(responseData.story, relationParams, resolveId);
     } else {
       responseData.stories.forEach((story) => {
-        this.iterateTree(story, relationParams);
+        this.iterateTree(story, relationParams, resolveId);
       });
     }
+
+    delete this.links[resolveId];
+    delete this.relations[resolveId];
   }
 
   resolveAssetsRelations(response) {
@@ -411,7 +418,9 @@ class Storyblok {
         }
 
         if (response.data.story || response.data.stories) {
-          await this.resolveStories(response.data, params);
+          const resolveId = this.resolveCount = ++this.resolveCount % 10000;
+
+          await this.resolveStories(response.data, params, resolveId);
         }
 
         if (params.version === "published" && url != "/cdn/spaces/me") {
