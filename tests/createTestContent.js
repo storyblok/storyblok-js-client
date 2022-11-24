@@ -1,4 +1,4 @@
-import StoryblokClient from '../dist/index'
+import StoryblokClient from '../'
 const spaceId = 67647
 
 let Storyblok = new StoryblokClient({

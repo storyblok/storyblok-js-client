@@ -1,0 +1,16 @@
+{
+  "name": "@storyblok/playground",
+  "version": "0.0.1",
+  "scripts": {
+    "demo": "vite"
+  },
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^1.0.1",
+    "@tsconfig/svelte": "^3.0.0",
+    "svelte": "^3.49.0",
+    "vite": "^3.0.1"
+  },
+  "dependencies": {
+    "storyblok-js-client": "file:.."
+  }
+}

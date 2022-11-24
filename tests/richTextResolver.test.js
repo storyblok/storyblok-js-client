@@ -1,8 +1,9 @@
 /* eslint-disable no-undef */
-const TOKEN = 'w0yFvs04aKF2rpz6F8OfIQtt'
-
-import StoryblokClient from '../dist/index'
+import { expect, test } from 'vitest'
+import StoryblokClient from '../'
 import customSchema from './customSchema'
+
+const TOKEN = 'w0yFvs04aKF2rpz6F8OfIQtt'
 
 let client = new StoryblokClient({
 	accessToken: TOKEN,

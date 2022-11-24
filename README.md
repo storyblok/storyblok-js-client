@@ -32,17 +32,25 @@
 npm install storyblok-js-client # yarn add storyblok-js-client
 ```
 
+#### Compatibility
+
+| Version to install                                                                                                              | Support                                              |
+| ------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
+| Latest `storyblok-js-client`                                                                                                    | Modern browsers + Node 18+                           |
+| Latest `storyblok-js-client` <br> + Fetch polyfill like [isomorphic-fetch](https://github.com/matthew-andrews/isomorphic-fetch) | Browsers and Node versions with no Fetch API support |
+| [Version 4](https://github.com/storyblok/storyblok-js-client/tree/v4.5.8) `storyblok-js-client@4`                               | Internet Explorer support                            |
+
 ### How to use it
 
 #### Using the Content Deliver API
 
 ```javascript
-// 1. Require the Storyblok client
-const StoryblokClient = require("storyblok-js-client");
+// 1. Import the Storyblok client
+import StoryblokClient from "storyblok-js-client";
 
 // 2. Initialize the client with the preview token
 // from your space dashboard at https://app.storyblok.com
-let Storyblok = new StoryblokClient({
+const Storyblok = new StoryblokClient({
   accessToken: <YOUR_SPACE_ACCESS_TOKEN>,
 });
 ```
@@ -50,13 +58,13 @@ let Storyblok = new StoryblokClient({
 #### Using the Content Management API
 
 ```javascript
-// 1. Require the Storyblok client
-const StoryblokClient = require("storyblok-js-client");
+// 1. Import the Storyblok client
+import StoryblokClient from "storyblok-js-client";
 const spaceId = <YOUR_SPACE_ID>;
 
 // 2. Initialize the client with the oauth token
 // from the my account area at https://app.storyblok.com
-let Storyblok = new StoryblokClient({
+const Storyblok = new StoryblokClient({
   oauthToken: <YOUR_OAUTH_TOKEN>,
 });
 
@@ -74,51 +82,11 @@ Storyblok.delete(`spaces/${spaceId}/stories/1`, null);
 You can import and use the `RichTextResolver` directly:
 
 ```js
-// you should need to use the format when import
-// es - when you are in EsModules environment (like React, Vue apps, for example)
-// cjs - when you are in NodeJS environment
-// standalone - when you are in Browser environment directly
-
-import RichTextResolver from 'storyblok-js-client/dist/rich-text-resolver.es'
-// const RichTextResolver = require('storyblok-js-client/dist/rich-text-resolver.cjs')
+import RichTextResolver from 'storyblok-js-client/richTextResolver'
 
 const resolver = new RichTextResolver()
 
 const html = resolver.render(data)
-```
-
-#### Using from the Browser directly
-
-This package has a standalone version that contains all dependencies and you can use it to import and use our package inside the browser.
-
-```html
-<!-- This import makes the StoryblokClient class available globally -->
-<script src="https://cdn.jsdelivr.net/npm/storyblok-js-client@5.0.0/dist/index.standalone.js"></script>
-
-<!-- This import makes the RichTextResolver class available globally -->
-<script src="https://cdn.jsdelivr.net/npm/storyblok-js-client@5.0.0/dist/rich-text-resolver.standalone.js"></script>
-```
-
-If you want a bundle with Babel (for non-es6 browsers):
-
-```html
-<!-- This import makes the StoryblokClient class available globally -->
-<script src="https://cdn.jsdelivr.net/npm/storyblok-js-client@5.0.0/dist/es5/index.standalone.js"></script>
-
-<!-- This import makes the RichTextResolver class available globally -->
-<script src="https://cdn.jsdelivr.net/npm/storyblok-js-client@5.0.0/dist/es5/rich-text-resolver.standalone.js"></script>
-```
-
-#### Note about use of Babel
-
-This package doesn't use the Babel by default in the final bundle. So, if you want a Babel transpiled file, you need to set the `es5/` prefix on import:
-
-```js
-// for CommonJS environments (NodeJS)
-const StoryblokClient = require('storyblok-js-client/dist/es5/index.cjs')
-
-// for EsModules environments
-import StoryblokClient from 'storyblok-js-client/dist/es5/index.es'
 ```
 
 ### NEW BRANCHES AND VERSIONS
@@ -132,18 +100,21 @@ If you wish to continue using the non Typescript version with `axios`, please us
 ### Added TypeScript - Version 5
 
 We added TypeScript to our codebase, improving our code quality and assuring the correct implementation from the client's side. This change will probably break your code, because your Storyblok client's current implementation is possibly sending the wrong types to the source.
-All the types are declared under `src/types`. If you use an IDE to code, you'll be able to hover the problematic cause and see what is being expected from the type. Yet, you can keep using our version without TypeScript.
+All the types are declared under `types`. If you use an IDE to code, you'll be able to hover the problematic cause and see what is being expected from the type. Yet, you can keep using our version without TypeScript.
 
 ### Axios removal - Version 5
 
 We removed our dependency on axios in Version `5`. If you want to continue using our SDK with axios, please use version `4`.
 The proxy feature was also removed in this version.
 
-### Isomorphic fetch - Version 5
+### Fetch (use polyfill if needed) - Version 5
 
-Since we removed Axios, and some developers may want to use the SDK under Node's environment, we added [isomorphic-fetch](https://www.npmjs.com/package/isomorphic-fetch) to deal with fetch, AbortController and XMLHttpRequest.
-Node already deals with those features natively from Version `17`. We'll keep using isomorphic-fetch until Node's most recent versions become more popular and more widely used.
-As part of our efforts to make the SDK more lightweight to web users, under the hood, the import of node-fetch is conditionally done depending on if the app is under the Node's environment or not.
+Version 5 is using native `fetch` API, supported by modern browsers and Node 17.5+. If you are using an environment with no `fetch` API support, you can use a polyfill like [isomorphic-fetch](https://github.com/matthew-andrews/isomorphic-fetch) at the very beginning of your app entry point:
+
+```js
+import 'isomorphic-fetch'
+require('isomorphic-fetch') // in CJS environments
+```
 
 ## Documentation
 
@@ -394,7 +365,7 @@ Storyblok.richTextResolver.render(blok.richtext)
 #### Filter by content type values and path
 
 ```javascript
-const StoryblokClient = require("storyblok-js-client");
+import StoryblokClient from "storyblok-js-client";
 
 let client = new StoryblokClient({
   accessToken: <YOUR_SPACE_ACCESS_TOKEN>,
@@ -444,8 +415,8 @@ client
 Following a code example using the storyblok-js-client to backup all content on your local filesystem inside a 'backup' folder.
 
 ```javascript
-const StoryblokClient = require("storyblok-js-client");
-const fs = require("fs");
+import StoryblokClient from "storyblok-js-client";
+import fs from "fs";
 
 let client = new StoryblokClient({
   accessToken: <YOUR_SPACE_ACCESS_TOKEN>,
@@ -514,10 +485,10 @@ To define how to add some classes to specific html attributes rendered by the ri
 Below, you can check an example:
 
 ```javascript
-const StoryblokClient = require("storyblok-js-client");
+import StoryblokClient from "storyblok-js-client";
 
 // the default schema copied and updated
-const MySchema = require("./my-schema");
+import MySchema from "./my-schema";
 
 let client = new StoryblokClient({
   accessToken: <YOUR_SPACE_ACCESS_TOKEN>,
@@ -532,8 +503,8 @@ If you just want to change the way a specific tag is rendered you can import the
 Instead of `<p>Normal headline</p><h3><span class="margin-bottom-fdsafdsada">Styled headline</span></h3>` it will render `<p>Normal headline</p><h3 class="margin-bottom-fdsafdsada">Styled headline</h3>`.
 
 ```javascript
-const RichTextResolver = require('storyblok-js-client/dist/richTextResolver')
-const MySchema = require('storyblok-js-client/dist/schema')
+import RichTextResolver from 'storyblok-js-client/richTextResolver'
+import MySchema from 'storyblok-js-client/schema'
 
 MySchema.nodes.heading = function (node) {
 	let attrs = {}

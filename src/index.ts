@@ -377,9 +377,11 @@ class Storyblok {
 					by_uuids: chunks[chunkIndex].join(','),
 				})
 
-				linksRes.data.stories.forEach((rel: ISbStoryData | ISbLinkURLObject | string) => {
-					links.push(rel)
-				})
+				linksRes.data.stories.forEach(
+					(rel: ISbStoryData | ISbLinkURLObject | string) => {
+						links.push(rel)
+					}
+				)
 			}
 		} else {
 			links = responseData.links
@@ -614,11 +616,3 @@ class Storyblok {
 }
 
 export default Storyblok
-
-export * from './enum'
-export * from './interfaces'
-export { default as RichtextInstance } from './richTextResolver'
-export { default as SbFetch } from './sbFetch'
-export * from './sbHelpers'
-export * from './schema'
-export { default as throttledQueue } from './throttlePromise'

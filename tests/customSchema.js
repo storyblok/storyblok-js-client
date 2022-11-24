@@ -1,6 +1,6 @@
 // this is an example of custom schema to RichTextResolver
 
-module.exports = {
+export default {
 	nodes: {},
 	marks: {
 		// this custom schema render a anchor tag (<a></a>)

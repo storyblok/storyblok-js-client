@@ -1,8 +1,6 @@
 /* eslint-disable no-undef */
-jest.setTimeout(60000)
-
-import StoryblokClient from '../dist/index'
-import RichTextResolver from '../dist/richTextResolver'
+import { expect, test, describe } from 'vitest'
+import StoryblokClient, { RichtextResolver } from '../'
 
 let Storyblok = new StoryblokClient({
 	accessToken: 'w0yFvs04aKF2rpz6F8OfIQtt',
@@ -87,7 +85,7 @@ describe('test cached requests', () => {
 })
 
 describe('test constructor', () => {
-	it('should have a richtextResolver field that is an instance of RichTextResolver', () => {
-		expect(Storyblok.richTextResolver).toBeInstanceOf(RichTextResolver)
+	test('should have a richtextResolver field that is an instance of RichTextResolver', () => {
+		expect(Storyblok.richTextResolver).toBeInstanceOf(RichtextResolver)
 	})
 })
