@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 
 # [Unreleased]
 
+## [5.1.0] - 2022-11-24
+
+### Fixed
+
+- [Storyblok-JS-client](https://github.com/storyblok/storyblok-js-client/compare/v5.0.10...v5.1.0)
+- Update browsers compatibility
+- Remove isomorphic fetch from dependencies
+- Added a simple playground for manual testing
+- Build setup improvements
+- Added svelte + ts and Nuxt 3 playgrounds
 ## [5.0.4] - 2022-10-28
 
 ### Fixed
