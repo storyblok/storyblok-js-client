@@ -89,6 +89,7 @@ export interface ISbStoryData<
 	first_published_at: string | null
 	slug: string
 	lang: string
+	default_full_slug?: string
 	translated_slugs?: {
 		path: string
 		name: string | null
