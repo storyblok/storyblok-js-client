@@ -33,7 +33,7 @@
 		"prettier": "prettier './**/*.js' './src/**/*.ts' './**/*.md' --write",
 		"build": "node vite.build.mjs && tsc",
 		"demo": "vite serve playground",
-		"test": "vitest",
+		"test": "vitest run",
 		"prepare": "npm run build"
 	},
 	"repository": {
