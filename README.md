@@ -480,7 +480,7 @@ Read more about proxy settings in axios [documentation](https://github.com/axios
 
 #### How to define a custom schema for the RichTextRenderer
 
-To define how to add some classes to specific html attributes rendered by the rich text renderer, you need your own schema definition. With this new schema, you can pass it as the `richTextSchema` option when instantiate the `StoryblokClient` class. You **must** follow the [default schema](https://github.com/storyblok/storyblok-js-client/blob/master/source/schema.js) to do this.
+To define how to add some classes to specific html attributes rendered by the rich text renderer, you need your own schema definition. With this new schema, you can pass it as the `richTextSchema` option when instantiate the `StoryblokClient` class. You **must** follow the [default schema](https://github.com/storyblok/storyblok-js-client/blob/main/src/schema.ts) to do this.
 
 Below, you can check an example:
 
