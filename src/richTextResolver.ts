@@ -27,7 +27,7 @@ interface ISbTag extends Element {
 }
 
 interface ISbNode {
-	[key: string]: ISbSchema
+	[key: string]: ISbSchema | ((arg: ISbRichtext) => any)
 }
 
 class RichTextResolver {
@@ -39,8 +39,8 @@ class RichTextResolver {
 			schema = defaultHtmlSerializer as ISbSchema
 		}
 
-		this.marks = schema.marks
-		this.nodes = schema.nodes
+		this.marks = schema.marks || []
+		this.nodes = schema.nodes || []
 	}
 
 	public addNode(key: string, schema: ISbSchema) {
@@ -168,17 +168,17 @@ class RichTextResolver {
 	}
 
 	private getMatchingNode(item: ISbRichtext) {
-		if (typeof this.nodes[item.type] !== 'function') {
-			return
+		const node = this.nodes[item.type]
+		if (typeof node === 'function') {
+			return node(item)
 		}
-		return this.nodes[item.type](item)
 	}
 
 	private getMatchingMark(item: ISbRichtext) {
-		if (typeof this.marks[item.type] === 'function') {
-			return this.marks[item.type](item)
+		const node = this.marks[item.type]
+		if (typeof node === 'function') {
+			return node(item)
 		}
-		return this.marks[item.type](item)
 	}
 }
 

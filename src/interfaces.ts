@@ -232,13 +232,13 @@ export interface ISbManagmentApiResult {
 export interface ISbSchema {
 	nodes: any
 	marks: any
-	(arg: ISbRichtext): any
 }
 
 export interface ISbRichtext {
-	content: []
-	marks: []
-	text: string
+	content?: ISbRichtext[]
+	marks?: ISbRichtext[]
+	attrs?: any
+	text?: string
 	type: string
 }
 
