@@ -109,7 +109,7 @@ The proxy feature was also removed in this version.
 
 ### Fetch (use polyfill if needed) - Version 5
 
-Version 5 is using native `fetch` API, supported by modern browsers and Node 17.5+. If you are using an environment with no `fetch` API support, you can use a polyfill like [isomorphic-fetch](https://github.com/matthew-andrews/isomorphic-fetch) at the very beginning of your app entry point:
+Version 5 is using native `fetch` API, supported by modern browsers and Node >= 18. If you are using an environment with no `fetch` API support, you can use a polyfill like [isomorphic-fetch](https://github.com/matthew-andrews/isomorphic-fetch) at the very beginning of your app entry point:
 
 ```js
 import 'isomorphic-fetch'
