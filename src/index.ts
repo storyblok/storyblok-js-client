@@ -609,7 +609,7 @@ class Storyblok {
 		}
 	}
 
-	private flushCache(): this {
+	public flushCache(): this {
 		this.cacheProvider().flush()
 		return this
 	}
