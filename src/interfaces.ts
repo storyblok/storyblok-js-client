@@ -33,6 +33,7 @@ export interface ISbStoriesParams {
 	size?: string
 	datasource?: string
 	dimension?: string
+	content_type?: string
 }
 
 export interface ISbStoryParams {
