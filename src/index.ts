@@ -89,7 +89,7 @@ class Storyblok {
 	public constructor(config: ISbConfig, endpoint?: string) {
 		if (!endpoint) {
 			const region = config.region ? `-${config.region}` : ''
-			const protocol = !config.https ? 'http' : 'https'
+			const protocol = config.https === false ? 'http' : 'https'
 
 			if (!config.oauthToken) {
 				endpoint = `${protocol}://api${region}.storyblok.com/${Version.V2}`
