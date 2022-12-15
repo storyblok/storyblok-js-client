@@ -1,3 +1,5 @@
+import { ResponseFn } from './sbFetch'
+
 export interface ISbStoriesParams {
 	token?: string
 	with_tag?: string
@@ -152,7 +154,8 @@ export interface ISbConfig {
 	oauthToken?: string
 	resolveNestedRelations?: boolean
 	cache?: ISbCache
-	responseInterceptor?: (response: any) => any
+	responseInterceptor?: ResponseFn
+	fetch?: typeof fetch
 	timeout?: number
 	headers?: any
 	region?: string
