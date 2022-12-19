@@ -134,6 +134,7 @@ class Storyblok {
 			timeout: config.timeout || 0,
 			headers: headers,
 			responseInterceptor: config.responseInterceptor,
+			fetch: config.fetch,
 		})
 	}
 

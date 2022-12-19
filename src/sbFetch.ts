@@ -3,7 +3,7 @@ import { SbHelpers } from './sbHelpers'
 import { ISbResponse, ISbError, ISbStoriesParams } from './interfaces'
 import { Method } from './enum'
 
-type ResponseFn = {
+export type ResponseFn = {
 	(arg?: ISbResponse | any): any
 }
 
@@ -12,6 +12,7 @@ interface ISbFetch {
 	timeout?: number
 	headers: Headers
 	responseInterceptor?: ResponseFn
+	fetch?: typeof fetch
 }
 
 class SbFetch {
@@ -19,6 +20,7 @@ class SbFetch {
 	private timeout?: number
 	private headers: Headers
 	private responseInterceptor?: ResponseFn
+	private fetch: typeof fetch
 	private ejectInterceptor?: boolean
 	private url: string
 	private parameters: ISbStoriesParams
@@ -27,7 +29,8 @@ class SbFetch {
 		;(this.baseURL = $c.baseURL),
 			(this.timeout = $c.timeout ? $c.timeout * 1000 : 1000),
 			(this.headers = $c.headers || []),
-			(this.responseInterceptor = $c.responseInterceptor)
+			(this.responseInterceptor = $c.responseInterceptor),
+			(this.fetch = $c.fetch ?? fetch)
 		this.ejectInterceptor = false
 		this.url = ''
 		this.parameters = {} as ISbStoriesParams
@@ -104,7 +107,7 @@ class SbFetch {
 		const timeout = setTimeout(() => controller.abort(), this.timeout)
 
 		try {
-			const response = await fetch(`${url}`, {
+			const response = await this.fetch(`${url}`, {
 				method,
 				headers: this.headers,
 				body,
