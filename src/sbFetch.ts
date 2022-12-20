@@ -107,10 +107,15 @@ class SbFetch {
 		const timeout = setTimeout(() => controller.abort(), this.timeout)
 
 		try {
+			console.log('body', body)
+			console.log('url', url)
+			console.log('headers', this.headers)
 			const response = await this.fetch(`${url}`, {
 				method,
 				headers: this.headers,
 				body,
+				cache: 'default',
+				mode: 'cors',
 				signal,
 			})
 
