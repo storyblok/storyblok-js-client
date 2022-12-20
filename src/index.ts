@@ -98,7 +98,12 @@ class Storyblok {
 			}
 		}
 
-		const headers = Object.assign({}, config.headers)
+		const headers = Object.assign(
+			{
+				'Content-Type': 'application/json'
+			}, config.headers
+		)
+
 		let rateLimit = 5 // per second for cdn api
 
 		if (config.oauthToken) {
