@@ -100,7 +100,7 @@ If you wish to continue using the non Typescript version with `axios`, please us
 ### Added TypeScript - Version 5
 
 We added TypeScript to our codebase, improving our code quality and assuring the correct implementation from the client's side. This change will probably break your code, because your Storyblok client's current implementation is possibly sending the wrong types to the source.
-All the types are declared under `types`. If you use an IDE to code, you'll be able to hover the problematic cause and see what is being expected from the type. Yet, you can keep using our version without TypeScript.
+If you use an IDE to code, you'll be able to hover the problematic cause and see what is being expected from the type. Yet, you can keep using our version without TypeScript.
 
 ### Axios removal - Version 5
 
