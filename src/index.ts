@@ -3,7 +3,7 @@ import RichTextResolver from './richTextResolver'
 import { SbHelpers } from './sbHelpers'
 import SbFetch from './sbFetch'
 
-import { Method } from './enum'
+import Method from './constants'
 import {
 	ISbStoriesParams,
 	ISbCache,
@@ -63,10 +63,13 @@ interface ISbResponseData {
 	stories: Array<ISbStoryData>
 }
 
-enum Version {
-	V1 = 'v1',
-	V2 = 'v2',
-}
+const VERSION = {
+	V1: 'v1',
+	V2: 'v2',
+} as const
+
+type ObjectValues<T> = T[keyof T]
+type Version = ObjectValues<typeof VERSION>
 
 class Storyblok {
 	private client: SbFetch
@@ -92,16 +95,17 @@ class Storyblok {
 			const protocol = config.https === false ? 'http' : 'https'
 
 			if (!config.oauthToken) {
-				endpoint = `${protocol}://api${region}.storyblok.com/${Version.V2}`
+				endpoint = `${protocol}://api${region}.storyblok.com/${'v2' as Version}`
 			} else {
-				endpoint = `${protocol}://api${region}.storyblok.com/${Version.V1}`
+				endpoint = `${protocol}://api${region}.storyblok.com/${'v1' as Version}`
 			}
 		}
 
 		const headers = Object.assign(
 			{
-				'Content-Type': 'application/json'
-			}, config.headers
+				'Content-Type': 'application/json',
+			},
+			config.headers
 		)
 
 		let rateLimit = 5 // per second for cdn api
