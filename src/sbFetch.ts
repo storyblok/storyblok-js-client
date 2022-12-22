@@ -1,7 +1,7 @@
 import { SbHelpers } from './sbHelpers'
 
 import { ISbResponse, ISbError, ISbStoriesParams } from './interfaces'
-import { Method } from './enum'
+import Method from './constants'
 
 export type ResponseFn = {
 	(arg?: ISbResponse | any): any
@@ -45,25 +45,25 @@ class SbFetch {
 	public get(url: string, params: ISbStoriesParams) {
 		this.url = url
 		this.parameters = params
-		return this._methodHandler(Method.GET)
+		return this._methodHandler('get')
 	}
 
 	public post(url: string, params: ISbStoriesParams) {
 		this.url = url
 		this.parameters = params
-		return this._methodHandler(Method.POST)
+		return this._methodHandler('post')
 	}
 
 	public put(url: string, params: ISbStoriesParams) {
 		this.url = url
 		this.parameters = params
-		return this._methodHandler(Method.PUT)
+		return this._methodHandler('put')
 	}
 
 	public delete(url: string, params: ISbStoriesParams) {
 		this.url = url
 		this.parameters = params
-		return this._methodHandler(Method.DELETE)
+		return this._methodHandler('delete')
 	}
 
 	private async _responseHandler(res: Response) {
