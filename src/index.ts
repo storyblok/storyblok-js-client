@@ -101,17 +101,21 @@ class Storyblok {
 			}
 		}
 
-		const headers = Object.assign(
-			{
-				'Content-Type': 'application/json',
-			},
-			config.headers
-		)
+		const headers: Headers = new Headers()
+
+		headers.set('Content-Type', 'application/json')
+		headers.set('Accept', 'application/json')
+
+		headers.forEach((value, key) => {
+			if (config.headers && config.headers[key]) {
+				headers.set(key, config.headers[key])
+			}
+		})
 
 		let rateLimit = 5 // per second for cdn api
 
 		if (config.oauthToken) {
-			headers['Authorization'] = config.oauthToken
+			headers.set('Authorization', config.oauthToken)
 			rateLimit = 3 // per second for management api
 		}
 
