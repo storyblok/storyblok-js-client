@@ -455,7 +455,9 @@ class Storyblok {
 			typeof params.resolve_relations !== 'undefined' &&
 			params.resolve_relations.length > 0
 		) {
-			relationParams = params.resolve_relations.split(',')
+			if (typeof params.resolve_relations === 'string') {
+				relationParams = params.resolve_relations.split(',')
+			}
 			await this.resolveRelations(responseData, params)
 		}
 
