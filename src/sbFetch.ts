@@ -26,11 +26,11 @@ class SbFetch {
 	private parameters: ISbStoriesParams
 
 	public constructor($c: ISbFetch) {
-		;(this.baseURL = $c.baseURL),
-			(this.timeout = $c.timeout ? $c.timeout * 1000 : 1000),
-			(this.headers = $c.headers || []),
-			(this.responseInterceptor = $c.responseInterceptor),
-			(this.fetch = $c.fetch ?? fetch)
+		this.baseURL = $c.baseURL
+		this.headers = $c.headers || []
+		this.timeout = $c.timeout ? $c.timeout * 1000 : 1000
+		this.responseInterceptor = $c.responseInterceptor
+		this.fetch = (...args) => ($c.fetch ? $c.fetch(...args) : fetch(...args))
 		this.ejectInterceptor = false
 		this.url = ''
 		this.parameters = {} as ISbStoriesParams
