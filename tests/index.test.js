@@ -89,3 +89,15 @@ describe('test constructor', () => {
 		expect(Storyblok.richTextResolver).toBeInstanceOf(RichtextResolver)
 	})
 })
+
+describe('Test for cdn/links with simultaneous requests', () => {
+	test('should not abort any of the requests', async () => {
+		for (let index = 0; index < 20; index++) {
+			await Storyblok.get('cdn/links')
+				.then((res) => {
+					expect(res.data.links).toBeTruthy()
+				})
+				.catch()
+		}
+	})
+})
