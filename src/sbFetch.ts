@@ -28,7 +28,7 @@ class SbFetch {
 	public constructor($c: ISbFetch) {
 		this.baseURL = $c.baseURL
 		this.headers = $c.headers || []
-		this.timeout = $c.timeout ? $c.timeout * 1000 : 1000
+		this.timeout = $c?.timeout ? $c.timeout * 1000 : 0
 		this.responseInterceptor = $c.responseInterceptor
 		this.fetch = (...args) => ($c.fetch ? $c.fetch(...args) : fetch(...args))
 		this.ejectInterceptor = false
@@ -104,7 +104,12 @@ class SbFetch {
 		const controller = new AbortController()
 		const { signal } = controller
 
-		const timeout = setTimeout(() => controller.abort(), this.timeout)
+		let timeout
+
+		if (this.timeout) {
+			timeout = setTimeout(() => controller.abort(), this.timeout)
+		}
+		
 
 		try {
 			const response = await this.fetch(`${url}`, {
@@ -114,7 +119,9 @@ class SbFetch {
 				signal,
 			})
 
-			clearTimeout(timeout)
+			if (this.timeout) {
+				clearTimeout(timeout)
+			}
 
 			const res = (await this._responseHandler(response)) as ISbResponse
 
