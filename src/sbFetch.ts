@@ -109,7 +109,6 @@ class SbFetch {
 		if (this.timeout) {
 			timeout = setTimeout(() => controller.abort(), this.timeout)
 		}
-		
 
 		try {
 			const response = await this.fetch(`${url}`, {

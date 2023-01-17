@@ -93,6 +93,7 @@ export interface ISbStoryData<
 	slug: string
 	lang: string
 	default_full_slug?: string
+	path?: string
 	translated_slugs?: {
 		path: string
 		name: string | null
