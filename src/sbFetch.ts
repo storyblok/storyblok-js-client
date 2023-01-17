@@ -75,9 +75,11 @@ class SbFetch {
 			statusText: '',
 		}
 
-		await res.json().then(($r) => {
-			response.data = $r
-		})
+		if (res.status !== 204) {
+			await res.json().then(($r) => {
+				response.data = $r
+			})
+		}
 
 		for (const pair of res.headers.entries()) {
 			headers[pair[0] as any] = pair[1]
@@ -140,7 +142,7 @@ class SbFetch {
 	}
 
 	private _statusHandler(res: ISbResponse) {
-		const statusOk = /20[01]/g
+		const statusOk = /20[01|04]/g
 
 		if (statusOk.test(`${res.status}`)) {
 			return res
