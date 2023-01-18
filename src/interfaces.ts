@@ -1,4 +1,8 @@
 import { ResponseFn } from './sbFetch'
+import {
+	ISbContentMangmntAPIStory,
+	ISbContentMangmntAPIComponent,
+} from './mangmntApiIntefaces'
 
 export interface ISbStoriesParams {
 	token?: string
@@ -202,27 +206,16 @@ export type MarkSchema = {
 	(node: ISbNode): object
 }
 
-export interface ISbContentMangmntAPI<
-	Content = ISbComponentType<string> & { [index: string]: any }
-> {
-	story: {
-		name: string
-		slug: string
-		content?: Content
-		default_root?: boolean
-		is_folder?: boolean
-		parent_id?: string
-		disble_fe_editor?: boolean
-		path?: string
-		is_startpage?: boolean
-		position?: number
-		first_published_at?: string
-		translated_slugs_attributes?: {
-			path: string
-			name: string | null
-			lang: ISbContentMangmntAPI['lang']
-		}[]
-	}
+/**
+ * @interface ISbContentMangmntAPI
+ * @description Storyblok Content Management API Interface
+ * @description One use it to handle the API response
+ * @description It can be used with Omit or Pick to improve its usage
+ *
+ **/
+export interface ISbContentMangmntAPI {
+	story: ISbContentMangmntAPIStory
+	component?: ISbContentMangmntAPIComponent
 	force_update?: '1' | unknown
 	release_id?: number
 	publish?: '1' | unknown
