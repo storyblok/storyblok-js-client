@@ -91,15 +91,20 @@ class SbFetch {
 	}
 
 	private async _methodHandler(method: Method): Promise<ISbResponse | Error> {
-		const url = new URL(`${this.baseURL}${this.url}`)
+		let urlString = `${this.baseURL}${this.url}}`
+
 		let body = null
 
 		if (method === 'get') {
 			const helper = new SbHelpers()
-			url.search = helper.stringify(this.parameters)
+			urlString = `${this.baseURL}${this.url}?${helper.stringify(
+				this.parameters
+			)}`
 		} else {
 			body = JSON.stringify(this.parameters)
 		}
+
+		const url = new URL(urlString)
 
 		const controller = new AbortController()
 		const { signal } = controller
