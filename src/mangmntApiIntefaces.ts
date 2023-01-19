@@ -119,22 +119,15 @@ export interface ISbContentMangmntAPIComponent {
 	real_name?: string
 	component_group_uuid?: string
 }
-
-type TDataSourceEntry = {
-	name: string
-	value: string
-	datasource_id: number
-	dimension_value?: unknown
-	dimension_id?: number
-}
 export interface ISbContentMangmntAPIDataSourceEntries {
 	id?: number
 	name?: string
 	value?: string
-	datasource_id?: number | string
 	datasource_slug?: string
 	dimension: unknown
-	datasource_entry?: TDataSourceEntry
+	datasource_id?: number
+	dimension_value?: unknown
+	dimension_id?: number
 }
 
 export interface ISbContentMangmntAPIDataSource {
