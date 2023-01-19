@@ -70,38 +70,38 @@ type TComponentSchema = {
 	[key: string]: {
 		id: number
 		type: TComponentFieldTypes
-		pos: number
-		translatable: boolean
-		required: boolean
-		regex: string
-		description: string
-		default_value: string
-		can_sync: boolean
-		preview_field: boolean
-		no_translate: boolean
-		rtl: boolean
-		rich_markdown: boolean
-		keys: string[]
-		field_type: string
-		source: undefined | 'internal_stories' | 'internal' | 'external'
-		use_uuid: boolean
-		folder_slug: string
-		datasource_slug: string
-		external_datasource: string
-		options: { name: string; value: string }[]
-		image_crop: boolean
-		keep_image_size: boolean
-		image_width: number | string
-		image_height: number | string
-		asset_folder_id: number
-		add_https: boolean
-		restrict_components: boolean
-		maximum: number
-		restrict_content_types: boolean
-		component_whitelist: string[]
-		disable_time: boolean
-		max_length: number
-		filetypes: string[]
+		pos?: number
+		translatable?: boolean
+		required?: boolean
+		regex?: string
+		description?: string
+		default_value?: string
+		can_sync?: boolean
+		preview_field?: boolean
+		no_translate?: boolean
+		rtl?: boolean
+		rich_markdown?: boolean
+		keys?: string[]
+		field_type?: string
+		source?: undefined | 'internal_stories' | 'internal' | 'external'
+		use_uuid?: boolean
+		folder_slug?: string
+		datasource_slug?: string
+		external_datasource?: string
+		options?: { name?: string; value?: string }[]
+		image_crop?: boolean
+		keep_image_size?: boolean
+		image_width?: number | string
+		image_height?: number | string
+		asset_folder_id?: number
+		add_https?: boolean
+		restrict_components?: boolean
+		maximum?: number
+		restrict_content_types?: boolean
+		component_whitelist?: string[]
+		disable_time?: boolean
+		max_length?: number
+		filetypes?: string[]
 	}
 }
 
@@ -118,4 +118,31 @@ export interface ISbContentMangmntAPIComponent {
 	all_presets?: object[]
 	real_name?: string
 	component_group_uuid?: string
+}
+
+type TDataSourceEntry = {
+	name: string
+	value: string
+	datasource_id: number
+	dimension_value?: unknown
+	dimension_id?: number
+}
+export interface ISbContentMangmntAPIDataSourceEntries {
+	id?: number
+	name?: string
+	value?: string
+	datasource_id?: number | string
+	datasource_slug?: string
+	dimension: unknown
+	datasource_entry?: TDataSourceEntry
+}
+
+export interface ISbContentMangmntAPIDataSource {
+	id?: number
+	name?: string
+	slug?: string
+	dimensions?: unknown[]
+	search?: string
+	by_ids?: string[]
+	datasource?: ISbContentMangmntAPIDataSource
 }
