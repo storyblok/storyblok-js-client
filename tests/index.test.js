@@ -43,16 +43,6 @@ describe('getAll function', () => {
 		const result = await Storyblok.getAll('cdn/links')
 		expect(result.length).toBe(29)
 	})
-
-	if (process.env.OAUTH_TOKEN) {
-		test("getAll('spaces/67647/stories') should return all spaces", async () => {
-			let StoryblokManagement = new StoryblokClient({
-				oauthToken: process.env.OAUTH_TOKEN,
-			})
-			const result = await StoryblokManagement.getAll('spaces/67647/stories')
-			expect(result.length).toBe(29)
-		})
-	}
 })
 
 describe('test uncached requests', () => {

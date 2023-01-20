@@ -1,17 +1,12 @@
 /* eslint-disable no-undef */
 import { expect, test } from 'vitest'
 import StoryblokClient from '../'
-import customSchema from './customSchema'
+import customSchema from './mocks/customSchema'
+import RichTextResolver from '../src/richTextResolver'
 
 const TOKEN = 'w0yFvs04aKF2rpz6F8OfIQtt'
+const resolver = new RichTextResolver()
 
-let client = new StoryblokClient({
-	accessToken: TOKEN,
-	cache: { type: 'memory', clear: 'auto' },
-})
-
-// get the resolver function from StoryblokClient
-const resolver = client.richTextResolver
 
 test('call render function without any argument return an empty string', () => {
 	expect(resolver.render()).toBe('')
