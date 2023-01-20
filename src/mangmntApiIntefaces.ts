@@ -10,6 +10,13 @@ type TLastAuthor = {
 	userid: string
 }
 
+/**
+ * @interface ISbContentMangmntAPIStory
+ * @description Storyblok Content Management API Story Interface
+ * @description One use it to handle the API response
+ * @reference https://www.storyblok.com/docs/api/management#core-resources/stories/stories
+ *
+ **/
 export interface ISbContentMangmntAPIStory {
 	id?: number
 	uuid?: string
@@ -105,6 +112,96 @@ type TComponentSchema = {
 	}
 }
 
+/**
+ * @interface ISbAsset
+ * @description Storyblok Content Management API Asset Interface
+ * @description One use it to handle the API response
+ * @reference https://www.storyblok.com/docs/api/management#core-resources/assets/assets
+ *
+ **/
+export interface ISbAsset {
+	id?: number
+	filename: string
+	space_id: number
+	created_at: string
+	updated_at: string
+	deleted_at: string
+	file: object
+	asset_folder_id: number
+	short_filename: string
+	content_type: string
+	content_length: number
+	is_private: '1' | null
+}
+
+/**
+ * @interface ISbAssetResponseObject
+ * @description Storyblok Content Management API Asset Response Object Interface
+ * @description One use it to handle the API response. This interface is not mandatory and one can use it as a helper to handle the response
+ * @description This is the response object when one requests a new asset upload
+ * @reference https://www.storyblok.com/docs/api/management#core-resources/assets/signed-response-object
+ *
+ **/
+export interface ISbAssetResponseObject {
+	pretty_url: string
+	public_url: string
+	fields: {
+		key: string
+		acl: string
+		Expires: string
+		'Cache-Control': string
+		'Content-Type': string
+		policy: string
+		'x-amz-credential': string
+		'x-amz-algorithm': string
+		'x-amz-date': string
+		'x-amz-signature': string
+	}
+	post_url: string
+}
+
+/**
+ * @interface ISbMultipleAssets
+ * @description Storyblok Content Management API Multiple Assets Interface
+ * @description One use it to handle the API response
+ * @reference https://www.storyblok.com/docs/api/management#core-resources/assets/retrieve-multiple-assets
+ *
+ **/
+export interface ISbMultipleAssets {
+	in_folder?: number
+	sort_by?:
+		| 'created_at:asc'
+		| 'created_at:desc'
+		| 'updated_at:asc'
+		| 'updated_at:desc'
+		| 'short_filename:asc'
+		| 'short_filename:desc'
+	search?: string
+	is_private: '1' | null
+}
+
+/**
+ * @interface ISbComponentGroup
+ * @description Storyblok Content Management API Component Group Interface
+ * @description One use it to handle the API response
+ * @reference https://www.storyblok.com/docs/api/management#core-resources/component-groups/component-groups
+ *
+ **/
+export interface ISbContentMangmntAPIComponentGroup {
+	component_group: {
+		id?: number
+		name: string
+		uuid?: number | string
+	}
+}
+
+/**
+ * @interface ISbContentMangmntAPIComponent
+ * @description Storyblok Content Management API Component Interface
+ * @description One use it to handle the API response
+ * @reference https://www.storyblok.com/docs/api/management#core-resources/components/components
+ *
+ **/
 export interface ISbContentMangmntAPIComponent {
 	id?: number
 	schema?: TComponentSchema
@@ -119,6 +216,14 @@ export interface ISbContentMangmntAPIComponent {
 	real_name?: string
 	component_group_uuid?: string
 }
+
+/**
+ * @interface ISbContentMangmntAPIDataSourceEntries
+ * @description Storyblok Content Management API Data Source Entries Interface
+ * @description One use it to handle the API response
+ * @reference https://www.storyblok.com/docs/api/management#core-resources/datasource-entries/datasource-entries
+ *
+ **/
 export interface ISbContentMangmntAPIDataSourceEntries {
 	id?: number
 	name?: string
@@ -130,6 +235,13 @@ export interface ISbContentMangmntAPIDataSourceEntries {
 	dimension_id?: number
 }
 
+/**
+ * @interface ISbContentMangmntAPIDataSource
+ * @description Storyblok Content Management API Data Source Interface
+ * @description One use it to handle the API response
+ * @reference https://www.storyblok.com/docs/api/management#core-resources/datasources/datasources
+ *
+ **/
 export interface ISbContentMangmntAPIDataSource {
 	id?: number
 	name?: string

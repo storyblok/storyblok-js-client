@@ -1,9 +1,13 @@
 import { ResponseFn } from './sbFetch'
 import {
 	ISbContentMangmntAPIStory,
-	ISbContentMangmntAPIComponent,
 	ISbContentMangmntAPIDataSourceEntries,
 	ISbContentMangmntAPIDataSource,
+	ISbAsset,
+	ISbAssetResponseObject,
+	ISbMultipleAssets,
+	ISbContentMangmntAPIComponentGroup,
+	ISbContentMangmntAPIComponent,
 } from './mangmntApiIntefaces'
 
 export interface ISbStoriesParams {
@@ -212,6 +216,10 @@ export type MarkSchema = {
  * @interface ISbContentMangmntAPI
  * @extends ISbContentMangmntAPIDataSourceEntries
  * @extends ISbContentMangmntAPIDataSource
+ * @extends ISbAsset
+ * @extends ISbAssetResponseObject
+ * @extends ISbMultipleAssets
+ * @extends ISbContentMangmntAPIComponentGroup
  * @description Storyblok Content Management API Interface
  * @description One use it to handle the API response
  * @description It can be used with Omit or Pick to improve its usage
@@ -219,12 +227,16 @@ export type MarkSchema = {
  **/
 export interface ISbContentMangmntAPI
 	extends ISbContentMangmntAPIDataSourceEntries,
-		ISbContentMangmntAPIDataSource {
+		ISbContentMangmntAPIDataSource,
+		ISbAsset,
+		ISbAssetResponseObject,
+		ISbMultipleAssets,
+		ISbContentMangmntAPIComponentGroup {
 	story: ISbContentMangmntAPIStory
 	component?: ISbContentMangmntAPIComponent
-	force_update?: '1' | unknown
+	force_update?: '1' | null
 	release_id?: number
-	publish?: '1' | unknown
+	publish?: '1' | null
 	lang?: string
 }
 
