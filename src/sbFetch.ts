@@ -146,19 +146,21 @@ class SbFetch {
 		this.ejectInterceptor = true
 	}
 
-	private _statusHandler(res: ISbResponse) {
-		const statusOk = /20[01|04]/g
+	private _statusHandler(res: ISbResponse): Promise<ISbResponse | Error> {
+		const statusOk = /20[0-6]/g
 
-		if (statusOk.test(`${res.status}`)) {
-			return res
-		}
+		return new Promise((resolve, reject) => {
+			if (statusOk.test(`${res.status}`)) {
+				return resolve(res)
+			}
 
-		const error: ISbError = {
-			message: new Error(res.statusText || `status: ${res.status}`),
-			response: res,
-		}
+			const error: ISbError = {
+				message: new Error(res.statusText || `status: ${res.status}`),
+				response: res,
+			}
 
-		throw error
+			reject(error)
+		})
 	}
 }
 
