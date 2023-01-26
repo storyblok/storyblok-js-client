@@ -93,7 +93,7 @@ class SbFetch {
 	}
 
 	private async _methodHandler(method: Method): Promise<ISbResponse | Error> {
-		let urlString = `${this.baseURL}${this.url}}`
+		let urlString = `${this.baseURL}${this.url}`
 
 		let body = null
 
