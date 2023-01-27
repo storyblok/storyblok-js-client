@@ -222,7 +222,7 @@ class Storyblok {
 		slug: string,
 		params: ISbStoriesParams,
 		entity?: string
-	): Promise<ISbResult> {
+	): Promise<any[]> {
 		const perPage = params?.per_page || 25
 		const url = `/${slug}`
 		const urlParts = url.split('/')
