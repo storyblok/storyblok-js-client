@@ -17,6 +17,8 @@ import {
 	ISbContentMangmntAPI,
 	ISbNode,
 	ThrottleFn,
+	IMemoryType,
+	ICacheProvider,
 } from './interfaces'
 
 let memory: Partial<IMemoryType> = {}
@@ -39,19 +41,8 @@ type RelationsType = {
 	[key: string]: any
 }
 
-interface IMemoryType extends ISbResult {
-	[key: string]: any
-}
-
 interface ISbFlatMapped {
 	data: any
-}
-
-interface ICacheProvider {
-	get: (key: string) => IMemoryType | void
-	set: (key: string, content: ISbResult) => void
-	getAll: () => IMemoryType | void
-	flush: () => void
 }
 
 interface ISbResponseData {
@@ -484,7 +475,7 @@ class Storyblok {
 		}
 	}
 
-	private cacheResponse(
+	private async cacheResponse(
 		url: string,
 		params: ISbStoriesParams,
 		retries?: number
@@ -493,21 +484,21 @@ class Storyblok {
 			retries = 0
 		}
 
+		const cacheKey = this.helpers.stringify({ url: url, params: params })
+		const provider = this.cacheProvider()
+
+		if (this.cache.clear === 'auto' && params.version === 'draft') {
+			await this.flushCache()
+		}
+
+		if (params.version === 'published' && url != '/cdn/spaces/me') {
+			const cache = await provider.get(cacheKey)
+			if (cache) {
+				return Promise.resolve(cache)
+			}
+		}
+
 		return new Promise((resolve, reject) => {
-			const cacheKey = this.helpers.stringify({ url: url, params: params })
-			const provider = this.cacheProvider()
-
-			if (this.cache.clear === 'auto' && params.version === 'draft') {
-				this.flushCache()
-			}
-
-			if (params.version === 'published' && url != '/cdn/spaces/me') {
-				const cache = provider.get(cacheKey)
-				if (cache) {
-					return resolve(cache)
-				}
-			}
-
 			try {
 				;(async () => {
 					const res = await this.throttle('get', url, params)
@@ -534,7 +525,7 @@ class Storyblok {
 					}
 
 					if (params.version === 'published' && url != '/cdn/spaces/me') {
-						provider.set(cacheKey, response)
+						await provider.set(cacheKey, response)
 					}
 
 					if (response.data.cv && params.token) {
@@ -542,7 +533,7 @@ class Storyblok {
 							params.version == 'draft' &&
 							cacheVersions[params.token] != response.data.cv
 						) {
-							this.flushCache()
+							await this.flushCache()
 						}
 
 						cacheVersions[params.token] = response.data.cv
@@ -595,38 +586,43 @@ class Storyblok {
 			case 'memory':
 				return {
 					get(key: string) {
-						return memory[key]
+						return Promise.resolve(memory[key])
 					},
 					getAll() {
-						return memory as IMemoryType
+						return Promise.resolve(memory as IMemoryType)
 					},
 					set(key: string, content: ISbResult) {
 						memory[key] = content
+						return Promise.resolve(undefined)
 					},
 					flush() {
 						memory = {}
+						return Promise.resolve(undefined)
 					},
 				}
+			case 'custom':
+				if (this.cache.custom) return this.cache.custom
+			// eslint-disable-next-line no-fallthrough
 			default:
 				return {
 					get() {
-						return undefined
+						return Promise.resolve(undefined)
 					},
 					getAll() {
-						return undefined
+						return Promise.resolve(undefined)
 					},
 					set() {
-						return undefined
+						return Promise.resolve(undefined)
 					},
 					flush() {
-						return undefined
+						return Promise.resolve(undefined)
 					},
 				}
 		}
 	}
 
-	public flushCache(): this {
-		this.cacheProvider().flush()
+	public async flushCache(): Promise<this> {
+		await this.cacheProvider().flush()
 		return this
 	}
 }

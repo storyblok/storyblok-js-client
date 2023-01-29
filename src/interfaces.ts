@@ -145,9 +145,21 @@ export interface ISbStory {
 	headers: any
 }
 
+export interface IMemoryType extends ISbResult {
+	[key: string]: any
+}
+
+export interface ICacheProvider {
+	get: (key: string) => Promise<IMemoryType | void>
+	set: (key: string, content: ISbResult) => Promise<void>
+	getAll: () => Promise<IMemoryType | void>
+	flush: () => Promise<void>
+}
+
 export interface ISbCache {
-	type?: 'none' | 'memory'
+	type?: 'none' | 'memory' | 'custom'
 	clear?: 'auto' | 'manual'
+	custom?: ICacheProvider
 }
 
 export interface ISbConfig {
