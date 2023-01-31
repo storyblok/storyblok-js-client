@@ -175,13 +175,15 @@ export interface ISbResult {
 }
 
 export interface ISbResponse {
+	data: any
 	status: number
 	statusText: string
 }
 
 export interface ISbError {
-	message: Error
-	response: ISbResponse
+	message?: Error
+	status?: number
+	response?: ISbResponse
 }
 
 export interface ISbNode extends Element {
