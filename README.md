@@ -188,6 +188,33 @@ One can remove the reponseInterceptor at any time, by calling the function `ejec
 Storyblok.ejectInterceptor()
 ```
 
+### Error handling
+
+Exceptions will be thrown as an object with the following structure:
+
+```javascript
+{
+	message: Error // an Error object with the error message
+	status: number
+	response: ISbResponse
+}
+```
+
+where,
+
+```typescript
+interface ISbResponse {
+	data: any
+	status: number
+	statusText: string
+	headers: any
+	config: any
+	request: any
+}
+```
+
+One should catch the exception and handle it accordingly.
+
 ### Method `Storyblok#get`
 
 With this method you can get single or multiple items. The multiple items are paginated and you will receive 25 items per page by default. If you want to get all items at once use the `getAll` method.
