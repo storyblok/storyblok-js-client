@@ -194,7 +194,7 @@ Exceptions will be thrown as an object with the following structure:
 
 ```javascript
 {
-  message: an Error object with the error message
+	message: Error // an Error object with the error message
 	status: number
 	response: ISbResponse
 }
