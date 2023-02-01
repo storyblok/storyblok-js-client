@@ -92,7 +92,9 @@ class SbFetch {
 		return response
 	}
 
-	private async _methodHandler(method: Method): Promise<ISbResponse | Error> {
+	private async _methodHandler(
+		method: Method
+	): Promise<ISbResponse | ISbError> {
 		let urlString = `${this.baseURL}${this.url}`
 
 		let body = null
@@ -136,8 +138,10 @@ class SbFetch {
 			} else {
 				return this._statusHandler(res)
 			}
-		} catch ($e: TypeError | RangeError | EvalError | any) {
-			const error: Error = $e
+		} catch (err: TypeError | RangeError | EvalError | any) {
+			const error: ISbError = {
+				message: err,
+			}
 			return error
 		}
 	}
@@ -146,7 +150,7 @@ class SbFetch {
 		this.ejectInterceptor = true
 	}
 
-	private _statusHandler(res: ISbResponse): Promise<ISbResponse | Error> {
+	private _statusHandler(res: ISbResponse): Promise<ISbResponse | ISbError> {
 		const statusOk = /20[0-6]/g
 
 		return new Promise((resolve, reject) => {
@@ -155,8 +159,9 @@ class SbFetch {
 			}
 
 			const error: ISbError = {
-				message: new Error(res.statusText || `status: ${res.status}`),
-				response: res,
+				message: new Error(res.statusText),
+				status: res.status,
+				response: res.data.error || res.data.slug,
 			}
 
 			reject(error)
