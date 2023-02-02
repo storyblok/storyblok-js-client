@@ -58,7 +58,7 @@ describe('getAll function', () => {
 describe('test uncached requests', () => {
 	test("get('cdn/spaces/me') should not be cached", async () => {
 		let provider = Storyblok.cacheProvider()
-		provider.flush()
+		await provider.flush()
 		await Storyblok.get('cdn/spaces/me')
 		expect(Object.values(provider.getAll()).length).toBe(0)
 	})
