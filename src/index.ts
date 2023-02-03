@@ -537,10 +537,12 @@ class Storyblok {
 								await this.flushCache()
 							}
 
-							resolve(response)
+							cacheVersions[params.token] = response.data.cv
 						}
+
+						return resolve(response)
 					} catch (error: Error | any) {
-						reject(error)
+						return reject(error)
 					}
 				})()
 			} catch (error: Error | any) {
@@ -555,7 +557,7 @@ class Storyblok {
 								.catch(reject)
 						}
 					}
-					reject(error)
+					reject(error.message)
 				}
 			}
 		})
