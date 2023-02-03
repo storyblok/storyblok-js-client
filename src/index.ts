@@ -510,45 +510,49 @@ class Storyblok {
 
 			try {
 				;(async () => {
-					const res = await this.throttle('get', url, params)
+					try {
+						const res = await this.throttle('get', url, params)
 
-					let response = { data: res.data, headers: res.headers } as ISbResult
+						let response = { data: res.data, headers: res.headers } as ISbResult
 
-					if (res.headers?.['per-page']) {
-						response = Object.assign({}, response, {
-							perPage: res.headers['per-page']
-								? parseInt(res.headers['per-page'])
-								: 0,
-							total: res.headers['per-page']
-								? parseInt(res.headers['total'])
-								: 0,
-						})
-					}
-
-					if (res.status != 200) {
-						return reject(res)
-					}
-
-					if (response.data.story || response.data.stories) {
-						await this.resolveStories(response.data, params)
-					}
-
-					if (params.version === 'published' && url != '/cdn/spaces/me') {
-						provider.set(cacheKey, response)
-					}
-
-					if (response.data.cv && params.token) {
-						if (
-							params.version == 'draft' &&
-							cacheVersions[params.token] != response.data.cv
-						) {
-							this.flushCache()
+						if (res.headers?.['per-page']) {
+							response = Object.assign({}, response, {
+								perPage: res.headers['per-page']
+									? parseInt(res.headers['per-page'])
+									: 0,
+								total: res.headers['per-page']
+									? parseInt(res.headers['total'])
+									: 0,
+							})
 						}
 
-						cacheVersions[params.token] = response.data.cv
-					}
+						if (res.status != 200) {
+							return reject(res)
+						}
 
-					resolve(response)
+						if (response.data.story || response.data.stories) {
+							await this.resolveStories(response.data, params)
+						}
+
+						if (params.version === 'published' && url != '/cdn/spaces/me') {
+							provider.set(cacheKey, response)
+						}
+
+						if (response.data.cv && params.token) {
+							if (
+								params.version == 'draft' &&
+								cacheVersions[params.token] != response.data.cv
+							) {
+								this.flushCache()
+							}
+
+							cacheVersions[params.token] = response.data.cv
+						}
+
+						resolve(response)
+					} catch (error: Error | any) {
+						reject(error)
+					}
 				})()
 			} catch (error: Error | any) {
 				;async () => {
@@ -562,7 +566,7 @@ class Storyblok {
 								.catch(reject)
 						}
 					}
-					reject(error.message)
+					reject(error)
 				}
 			}
 		})
