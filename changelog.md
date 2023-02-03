@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 # [Unreleased]
 
+## [5.4.0] - 2023-02-02
+
+### Added
+
+- [Storyblok-JS-client](https://github.com/storyblok/storyblok-js-client/releases/tag/v5.4.0)
+- Custom cache provider
+
 ## [5.3.4] - 2023-01-24
 
 ### Fixed
