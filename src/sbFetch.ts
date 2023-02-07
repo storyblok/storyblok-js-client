@@ -134,9 +134,9 @@ class SbFetch {
 			const res = (await this._responseHandler(response)) as ISbResponse
 
 			if (this.responseInterceptor && !this.ejectInterceptor) {
-				return this._statusHandler(this.responseInterceptor(res))
+				return await this._statusHandler(this.responseInterceptor(res))
 			} else {
-				return this._statusHandler(res)
+				return await this._statusHandler(res)
 			}
 		} catch (err: TypeError | RangeError | EvalError | any) {
 			const error: ISbError = {
