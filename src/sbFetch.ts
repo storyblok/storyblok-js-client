@@ -161,7 +161,9 @@ class SbFetch {
 			const error: ISbError = {
 				message: new Error(res.statusText),
 				status: res.status,
-				response: res.data.error || res.data.slug,
+				response: Array.isArray(res.data)
+					? res.data[0]
+					: res.data.error || res.data.slug,
 			}
 
 			reject(error)
