@@ -469,6 +469,9 @@
   dependencies:
     "@typescript-eslint/types" "5.51.0"
     "@typescript-eslint/visitor-keys" "5.51.0"
+  dependencies:
+    "@typescript-eslint/types" "5.51.0"
+    "@typescript-eslint/visitor-keys" "5.51.0"
 
 "@typescript-eslint/scope-manager@5.52.0":
   version "5.52.0"
