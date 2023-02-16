@@ -91,3 +91,30 @@ describe('flatMap function', () => {
 		expect(helpers.flatMap([0, 2], (v) => [v, v + 1])).toEqual([0, 1, 2, 3])
 	})
 })
+
+describe('getRegionURL function', () => {
+	const EU_API_URL = 'api.storyblok.com'
+	const US_API_URL = 'api-us.storyblok.com'
+	const CN_API_URL = 'app.storyblokchina.cn'
+
+	test('should return the europe url when pass a empty string', () => {
+		expect(helpers.getRegionURL('')).toEqual(EU_API_URL)
+	})
+
+	test('should return the europe url when pass non supported region code', () => {
+		expect(helpers.getRegionURL('nn')).toEqual(EU_API_URL)
+	})
+
+	test('should return the europe url when pass eu string', () => {
+		expect(helpers.getRegionURL('eu')).toEqual(EU_API_URL)
+	})
+
+	test('should return the united states url when pass us string', () => {
+		expect(helpers.getRegionURL('us')).toEqual(US_API_URL)
+	})
+
+	test('should return the china url when pass cn string', () => {
+		expect(helpers.getRegionURL('cn')).toEqual(CN_API_URL)
+	})
+
+})
