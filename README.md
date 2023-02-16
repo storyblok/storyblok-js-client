@@ -129,9 +129,10 @@ We added retro-compatibility when using `resolve_assets: 1` parameter under V2. 
 **Parameters**
 
 - `config` Object
-  - `accessToken` String, The preview token you can find in your space dashboard at https://app.storyblok.com
-  - `cache` Object
-    - `type` String, `none` or `memory`
+  - (`accessToken` String, optional - The preview token you can find in your space dashboard at https://app.storyblok.com. This is mandatory only if you are using the CDN API.)
+  - (`oauthToken` String, optional - The personal access token you can find in your account at https://app.storyblok.com/#/me/account?tab=token. This is mandatory only if you are using the Management API.)
+  - (`cache` Object, optional)
+    - (`type` String, optional - `none` or `memory`)
   - (`responseInterceptor` Function, optional - You can pass a function and return the result. For security reasons, Storyblok client will deal only with the response interceptor.)
   - (`region` String, optional)
   - (`https` Boolean, optional)
