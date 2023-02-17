@@ -5,6 +5,10 @@ type HtmlEscapes = {
 	[key: string]: string
 }
 
+type RenderOptions = { 
+	optimizeImages: boolean 
+}
+
 const escapeHTML = function (string: string) {
 	const htmlEscapes = {
 		'&': '&amp;',
@@ -51,13 +55,16 @@ class RichTextResolver {
 		this.marks[key] = schema
 	}
 
-	public render(data?: ISbRichtext) {
+	public render(data?: ISbRichtext, options: RenderOptions = { optimizeImages: false } ) {
 		if (data && data.content && Array.isArray(data.content)) {
 			let html = ''
 
 			data.content.forEach((node) => {
 				html += this.renderNode(node)
 			})
+
+			if (options.optimizeImages)
+				return html.replace(/a.storyblok.com\/f\/(\d+)\/([^.]+)\.(gif|jpg|jpeg|png|tif|tiff|bmp)/g, "a.storyblok.com/f/$1/$2.$3/m/")
 
 			return html
 		}
