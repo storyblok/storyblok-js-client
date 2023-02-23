@@ -27,7 +27,7 @@ class SbFetch {
 
 	public constructor($c: ISbFetch) {
 		this.baseURL = $c.baseURL
-		this.headers = $c.headers || []
+		this.headers = $c.headers || new Headers()
 		this.timeout = $c?.timeout ? $c.timeout * 1000 : 0
 		this.responseInterceptor = $c.responseInterceptor
 		this.fetch = (...args) => ($c.fetch ? $c.fetch(...args) : fetch(...args))
