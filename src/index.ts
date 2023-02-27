@@ -82,13 +82,13 @@ class Storyblok {
 	 */
 	public constructor(config: ISbConfig, endpoint?: string) {
 		if (!endpoint) {
-			const region = config.region ? `-${config.region}` : ''
+			const getRegion = new SbHelpers().getRegionURL
 			const protocol = config.https === false ? 'http' : 'https'
 
 			if (!config.oauthToken) {
-				endpoint = `${protocol}://api${region}.storyblok.com/${'v2' as Version}`
+				endpoint = `${protocol}://${getRegion(config.region)}/${'v2' as Version}`
 			} else {
-				endpoint = `${protocol}://api${region}.storyblok.com/${'v1' as Version}`
+				endpoint = `${protocol}://${getRegion(config.region)}/${'v1' as Version}`
 			}
 		}
 
