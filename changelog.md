@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 
 # [Unreleased]
 
+## [5.4.0] - 2023-02-02
+
+### Added
+
+- [Storyblok-JS-client](https://github.com/storyblok/storyblok-js-client/releases/tag/v5.4.0)
+- Custom cache provider
+
+## [5.3.4] - 2023-01-24
+
+### Fixed
+
+- [Storyblok-JS-client](https://github.com/storyblok/storyblok-js-client/releases/tag/v5.3.4)
+- Error handling is return the correct reject/resolve to the client
 
 ## [5.2.1] - 2022-12-20
 
@@ -11,7 +24,6 @@ All notable changes to this project will be documented in this file.
 
 - [Storyblok-JS-client](https://github.com/storyblok/storyblok-js-client/releases/tag/v5.2.1)
 - Added content type header to fix a bug from the api calls.
-
 
 ## [5.2.0] - 2022-12-19
 
@@ -29,6 +41,7 @@ All notable changes to this project will be documented in this file.
 - Added a simple playground for manual testing
 - Build setup improvements
 - Added svelte + ts and Nuxt 3 playgrounds
+
 ## [5.0.4] - 2022-10-28
 
 ### Fixed

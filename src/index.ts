@@ -17,6 +17,8 @@ import {
 	ISbContentMangmntAPI,
 	ISbNode,
 	ThrottleFn,
+	IMemoryType,
+	ICacheProvider,
 } from './interfaces'
 
 let memory: Partial<IMemoryType> = {}
@@ -39,19 +41,8 @@ type RelationsType = {
 	[key: string]: any
 }
 
-interface IMemoryType extends ISbResult {
-	[key: string]: any
-}
-
 interface ISbFlatMapped {
 	data: any
-}
-
-interface ICacheProvider {
-	get: (key: string) => IMemoryType | void
-	set: (key: string, content: ISbResult) => void
-	getAll: () => IMemoryType | void
-	flush: () => void
 }
 
 interface ISbResponseData {
@@ -91,13 +82,13 @@ class Storyblok {
 	 */
 	public constructor(config: ISbConfig, endpoint?: string) {
 		if (!endpoint) {
-			const region = config.region ? `-${config.region}` : ''
+			const getRegion = new SbHelpers().getRegionURL
 			const protocol = config.https === false ? 'http' : 'https'
 
 			if (!config.oauthToken) {
-				endpoint = `${protocol}://api${region}.storyblok.com/${'v2' as Version}`
+				endpoint = `${protocol}://${getRegion(config.region)}/${'v2' as Version}`
 			} else {
-				endpoint = `${protocol}://api${region}.storyblok.com/${'v1' as Version}`
+				endpoint = `${protocol}://${getRegion(config.region)}/${'v1' as Version}`
 			}
 		}
 
@@ -222,7 +213,7 @@ class Storyblok {
 		slug: string,
 		params: ISbStoriesParams,
 		entity?: string
-	): Promise<ISbResult> {
+	): Promise<any[]> {
 		const perPage = params?.per_page || 25
 		const url = `/${slug}`
 		const urlParts = url.split('/')
@@ -484,7 +475,7 @@ class Storyblok {
 		}
 	}
 
-	private cacheResponse(
+	private async cacheResponse(
 		url: string,
 		params: ISbStoriesParams,
 		retries?: number
@@ -493,62 +484,66 @@ class Storyblok {
 			retries = 0
 		}
 
+		const cacheKey = this.helpers.stringify({ url: url, params: params })
+		const provider = this.cacheProvider()
+
+		if (this.cache.clear === 'auto' && params.version === 'draft') {
+			await this.flushCache()
+		}
+
+		if (params.version === 'published' && url != '/cdn/spaces/me') {
+			const cache = await provider.get(cacheKey)
+			if (cache) {
+				return Promise.resolve(cache)
+			}
+		}
+
 		return new Promise((resolve, reject) => {
-			const cacheKey = this.helpers.stringify({ url: url, params: params })
-			const provider = this.cacheProvider()
-
-			if (this.cache.clear === 'auto' && params.version === 'draft') {
-				this.flushCache()
-			}
-
-			if (params.version === 'published' && url != '/cdn/spaces/me') {
-				const cache = provider.get(cacheKey)
-				if (cache) {
-					return resolve(cache)
-				}
-			}
-
 			try {
 				;(async () => {
-					const res = await this.throttle('get', url, params)
+					try {
+						const res = await this.throttle('get', url, params)
 
-					let response = { data: res.data, headers: res.headers } as ISbResult
+						let response = { data: res.data, headers: res.headers } as ISbResult
 
-					if (res.headers?.['per-page']) {
-						response = Object.assign({}, response, {
-							perPage: res.headers['per-page']
-								? parseInt(res.headers['per-page'])
-								: 0,
-							total: res.headers['per-page']
-								? parseInt(res.headers['total'])
-								: 0,
-						})
-					}
-
-					if (res.status != 200) {
-						return reject(res)
-					}
-
-					if (response.data.story || response.data.stories) {
-						await this.resolveStories(response.data, params)
-					}
-
-					if (params.version === 'published' && url != '/cdn/spaces/me') {
-						provider.set(cacheKey, response)
-					}
-
-					if (response.data.cv && params.token) {
-						if (
-							params.version == 'draft' &&
-							cacheVersions[params.token] != response.data.cv
-						) {
-							this.flushCache()
+						if (res.headers?.['per-page']) {
+							response = Object.assign({}, response, {
+								perPage: res.headers['per-page']
+									? parseInt(res.headers['per-page'])
+									: 0,
+								total: res.headers['per-page']
+									? parseInt(res.headers['total'])
+									: 0,
+							})
 						}
 
-						cacheVersions[params.token] = response.data.cv
-					}
+						if (res.status != 200) {
+							return reject(res)
+						}
 
-					resolve(response)
+						if (response.data.story || response.data.stories) {
+							await this.resolveStories(response.data, params)
+						}
+
+						if (params.version === 'published' && url != '/cdn/spaces/me') {
+							await provider.set(cacheKey, response)
+						}
+
+						if (response.data.cv && params.token) {
+							if (
+								params.version == 'draft' &&
+								cacheVersions[params.token] != response.data.cv
+							) {
+								await this.flushCache()
+							}
+
+							cacheVersions[params.token] = response.data.cv
+						}
+
+						return resolve(response)
+					} catch (error: Error | any) {
+						return reject(error)
+					}
 				})()
 			} catch (error: Error | any) {
 				;async () => {
@@ -595,38 +590,43 @@ class Storyblok {
 			case 'memory':
 				return {
 					get(key: string) {
-						return memory[key]
+						return Promise.resolve(memory[key])
 					},
 					getAll() {
-						return memory as IMemoryType
+						return Promise.resolve(memory as IMemoryType)
 					},
 					set(key: string, content: ISbResult) {
 						memory[key] = content
+						return Promise.resolve(undefined)
 					},
 					flush() {
 						memory = {}
+						return Promise.resolve(undefined)
 					},
 				}
+			case 'custom':
+				if (this.cache.custom) return this.cache.custom
+			// eslint-disable-next-line no-fallthrough
 			default:
 				return {
 					get() {
-						return undefined
+						return Promise.resolve(undefined)
 					},
 					getAll() {
-						return undefined
+						return Promise.resolve(undefined)
 					},
 					set() {
-						return undefined
+						return Promise.resolve(undefined)
 					},
 					flush() {
-						return undefined
+						return Promise.resolve(undefined)
 					},
 				}
 		}
 	}
 
-	public flushCache(): this {
-		this.cacheProvider().flush()
+	public async flushCache(): Promise<this> {
+		await this.cacheProvider().flush()
 		return this
 	}
 }
