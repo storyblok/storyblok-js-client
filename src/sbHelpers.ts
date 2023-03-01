@@ -76,4 +76,24 @@ export class SbHelpers {
 		}
 		return pairs.join('&')
 	}
+
+	/**
+	 * @method getRegionURL
+	 * @param  {String} regionCode region code, could be eu, us or cn
+	 * @return {String} The base URL of the region
+	 */
+	public getRegionURL(regionCode?: string): string {
+		const EU_API_URL = 'api.storyblok.com'
+		const US_API_URL = 'api-us.storyblok.com'
+		const CN_API_URL = 'app.storyblokchina.cn'
+
+		switch (regionCode) {
+			case 'us':
+				return US_API_URL
+			case 'cn':
+				return CN_API_URL
+			default:
+				return EU_API_URL
+		}
+	}
 }

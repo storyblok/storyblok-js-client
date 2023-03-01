@@ -27,7 +27,7 @@ class SbFetch {
 
 	public constructor($c: ISbFetch) {
 		this.baseURL = $c.baseURL
-		this.headers = $c.headers || []
+		this.headers = $c.headers || new Headers()
 		this.timeout = $c?.timeout ? $c.timeout * 1000 : 0
 		this.responseInterceptor = $c.responseInterceptor
 		this.fetch = (...args) => ($c.fetch ? $c.fetch(...args) : fetch(...args))
@@ -92,8 +92,10 @@ class SbFetch {
 		return response
 	}
 
-	private async _methodHandler(method: Method): Promise<ISbResponse | Error> {
-		let urlString = `${this.baseURL}${this.url}}`
+	private async _methodHandler(
+		method: Method
+	): Promise<ISbResponse | ISbError> {
+		let urlString = `${this.baseURL}${this.url}`
 
 		let body = null
 
@@ -136,8 +138,10 @@ class SbFetch {
 			} else {
 				return this._statusHandler(res)
 			}
-		} catch ($e: TypeError | RangeError | EvalError | any) {
-			const error: Error = $e
+		} catch (err: TypeError | RangeError | EvalError | any) {
+			const error: ISbError = {
+				message: err,
+			}
 			return error
 		}
 	}
@@ -146,19 +150,24 @@ class SbFetch {
 		this.ejectInterceptor = true
 	}
 
-	private _statusHandler(res: ISbResponse) {
-		const statusOk = /20[01|04]/g
+	private _statusHandler(res: ISbResponse): Promise<ISbResponse | ISbError> {
+		const statusOk = /20[0-6]/g
 
-		if (statusOk.test(`${res.status}`)) {
-			return res
-		}
+		return new Promise((resolve, reject) => {
+			if (statusOk.test(`${res.status}`)) {
+				return resolve(res)
+			}
 
-		const error: ISbError = {
-			message: new Error(res.statusText || `status: ${res.status}`),
-			response: res,
-		}
+			const error: ISbError = {
+				message: new Error(res.statusText),
+				status: res.status,
+				response: Array.isArray(res.data)
+					? res.data[0]
+					: res.data.error || res.data.slug,
+			}
 
-		throw error
+			reject(error)
+		})
 	}
 }
 

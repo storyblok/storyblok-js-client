@@ -90,6 +90,22 @@ test('image to generate img tag', () => {
 	expect(resolver.render(doc)).toBe('<img src="https://asset" />')
 })
 
+test('image to generate img tag with optimization', () => {
+	const doc = {
+		type: 'doc',
+		content: [
+			{
+				type: 'image',
+				attrs: {
+					src: 'https://a.storyblok.com/f/000000/00a00a00a0/image-name.png',
+				},
+			},
+		],
+	}
+
+	expect(resolver.render(doc, { optimizeImages: true })).toBe('<img src="https://a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/" />')
+})
+
 test('link to generate a tag', () => {
 	const doc = {
 		type: 'doc',
