@@ -69,7 +69,7 @@ class Storyblok {
 	private accessToken: string
 	private cache: ISbCache
 	private helpers: SbHelpers
-
+	private resolveCounter: number
 	public relations: RelationsType
 	public links: LinksType
 	public richTextResolver: any
@@ -131,6 +131,7 @@ class Storyblok {
 		this.links = {} as LinksType
 		this.cache = config.cache || { clear: 'manual' }
 		this.helpers = new SbHelpers()
+		this.resolveCounter = 0
 		this.resolveNestedRelations = false
 
 		this.client = new SbFetch({
@@ -281,7 +282,8 @@ class Storyblok {
 
 	private _insertLinks(
 		jtree: ISbStoriesParams,
-		treeItem: keyof ISbStoriesParams
+		treeItem: keyof ISbStoriesParams,
+		resolveId: string
 	): void {
 		const node = jtree[treeItem]
 
@@ -290,34 +292,37 @@ class Storyblok {
 			node.fieldtype == 'multilink' &&
 			node.linktype == 'story' &&
 			typeof node.id === 'string' &&
-			this.links[node.id]
+			this.links[resolveId][node.id]
 		) {
-			node.story = this._cleanCopy(this.links[node.id])
+			node.story = this._cleanCopy(this.links[resolveId][node.id])
 		} else if (
 			node &&
 			node.linktype === 'story' &&
 			typeof node.uuid === 'string' &&
-			this.links[node.uuid]
+			this.links[resolveId][node.uuid]
 		) {
-			node.story = this._cleanCopy(this.links[node.uuid])
+			node.story = this._cleanCopy(this.links[resolveId][node.uuid])
 		}
 	}
 
 	private _insertRelations(
 		jtree: ISbStoriesParams,
 		treeItem: keyof ISbStoriesParams,
-		fields: string | Array<string>
+		fields: string | Array<string>,
+		resolveId: string
 	): void {
 		if (fields.indexOf(`${jtree.component}.${treeItem}`) > -1) {
 			if (typeof jtree[treeItem] === 'string') {
-				if (this.relations[jtree[treeItem]]) {
-					jtree[treeItem] = this._cleanCopy(this.relations[jtree[treeItem]])
+				if (this.relations[resolveId][jtree[treeItem]]) {
+					jtree[treeItem] = this._cleanCopy(
+						this.relations[resolveId][jtree[treeItem]]
+					)
 				}
 			} else if (jtree[treeItem] && jtree[treeItem].constructor === Array) {
 				const stories: JSON[] = []
 				jtree[treeItem].forEach((uuid: string) => {
-					if (this.relations[uuid]) {
-						stories.push(this._cleanCopy(this.relations[uuid]))
+					if (this.relations[resolveId][uuid]) {
+						stories.push(this._cleanCopy(this.relations[resolveId][uuid]))
 					}
 				})
 				jtree[treeItem] = stories
@@ -327,7 +332,8 @@ class Storyblok {
 
 	private iterateTree(
 		story: ISbStoryData,
-		fields: string | Array<string>
+		fields: string | Array<string>,
+		resolveId: string
 	): void {
 		const enrich = (jtree: ISbStoriesParams | any) => {
 			if (jtree == null) {
@@ -346,9 +352,14 @@ class Storyblok {
 						this._insertRelations(
 							jtree,
 							treeItem as keyof ISbStoriesParams,
-							fields
+							fields,
+							resolveId
 						)
-						this._insertLinks(jtree, treeItem as keyof ISbStoriesParams)
+						this._insertLinks(
+							jtree,
+							treeItem as keyof ISbStoriesParams,
+							resolveId
+						)
 					}
 					enrich(jtree[treeItem])
 				}
@@ -360,7 +371,8 @@ class Storyblok {
 
 	private async resolveLinks(
 		responseData: ISbResponseData,
-		params: ISbStoriesParams
+		params: ISbStoriesParams,
+		resolveId: string
 	): Promise<void> {
 		let links: (ISbStoryData | ISbLinkURLObject | string)[] = []
 
@@ -393,13 +405,17 @@ class Storyblok {
 		}
 
 		links.forEach((story: ISbStoryData | any) => {
-			this.links[story.uuid] = { ...story, ...{ _stopResolving: true } }
+			this.links[resolveId][story.uuid] = {
+				...story,
+				...{ _stopResolving: true },
+			}
 		})
 	}
 
 	private async resolveRelations(
 		responseData: ISbResponseData,
-		params: ISbStoriesParams
+		params: ISbStoriesParams,
+		resolveId: string
 	): Promise<void> {
 		let relations = []
 
@@ -431,16 +447,23 @@ class Storyblok {
 
 		if (relations && relations.length > 0) {
 			relations.forEach((story: ISbStoryData) => {
-				this.relations[story.uuid] = { ...story, ...{ _stopResolving: true } }
+				this.relations[resolveId][story.uuid] = {
+					...story,
+					...{ _stopResolving: true },
+				}
 			})
 		}
 	}
 
 	private async resolveStories(
 		responseData: ISbResponseData,
-		params: ISbStoriesParams
+		params: ISbStoriesParams,
+		resolveId: string
 	): Promise<void> {
 		let relationParams: string[] = []
+
+		this.links[resolveId] = {}
+		this.relations[resolveId] = {}
 
 		if (
 			typeof params.resolve_relations !== 'undefined' &&
@@ -449,7 +472,7 @@ class Storyblok {
 			if (typeof params.resolve_relations === 'string') {
 				relationParams = params.resolve_relations.split(',')
 			}
-			await this.resolveRelations(responseData, params)
+			await this.resolveRelations(responseData, params, resolveId)
 		}
 
 		if (
@@ -457,22 +480,29 @@ class Storyblok {
 			['1', 'story', 'url'].indexOf(params.resolve_links) > -1 &&
 			(responseData.links?.length || responseData.link_uuids?.length)
 		) {
-			await this.resolveLinks(responseData, params)
+			await this.resolveLinks(responseData, params, resolveId)
 		}
 
 		if (this.resolveNestedRelations) {
-			for (const relUuid in this.relations) {
-				this.iterateTree(this.relations[relUuid], relationParams)
+			for (const relUuid in this.relations[resolveId]) {
+				this.iterateTree(
+					this.relations[resolveId][relUuid],
+					relationParams,
+					resolveId
+				)
 			}
 		}
 
 		if (responseData.story) {
-			this.iterateTree(responseData.story, relationParams)
+			this.iterateTree(responseData.story, relationParams, resolveId)
 		} else {
 			responseData.stories.forEach((story: ISbStoryData) => {
-				this.iterateTree(story, relationParams)
+				this.iterateTree(story, relationParams, resolveId)
 			})
 		}
+
+		delete this.links[resolveId]
+		delete this.relations[resolveId]
 	}
 
 	private async cacheResponse(
@@ -522,7 +552,9 @@ class Storyblok {
 						}
 
 						if (response.data.story || response.data.stories) {
-							await this.resolveStories(response.data, params)
+							const resolveId = (this.resolveCounter =
+								++this.resolveCounter % 1000)
+							await this.resolveStories(response.data, params, `${resolveId}`)
 						}
 
 						if (params.version === 'published' && url != '/cdn/spaces/me') {
