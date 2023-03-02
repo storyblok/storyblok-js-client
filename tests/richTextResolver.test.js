@@ -455,3 +455,83 @@ test('test with a custom schema from StoryblokRich', () => {
 
 	expect(result).toBe(expected)
 })
+
+test('should render a custom attribute in a link tag', () => {
+	const linkWithCustomAttribute = {
+		type: 'paragraph',
+		content: [
+			{
+				text: 'A nice link with custom attr',
+				type: 'text',
+				marks: [
+					{
+						type: 'link',
+						attrs: {
+							href: 'www.storyblok.com',
+							uuid: '300aeadc-c82d-4529-9484-f3f8f09cf9f5',
+							anchor: null,
+							custom: {
+								rel: 'nofollow',
+								title: 'nice test',
+							},
+							target: '_blank',
+							linktype: 'url'
+						}
+					}
+				]
+			}
+		]
+	}
+
+	const result = resolver.render(linkWithCustomAttribute)
+	const expected =
+		'<a href="www.storyblok.com" uuid="300aeadc-c82d-4529-9484-f3f8f09cf9f5" target="_blank" linktype="url" rel="nofollow" title="nice test">A nice link with custom attr</a>'
+
+	expect(result).toBe(expected)
+})
+
+test('should render a subscript', () => {
+	const subscriptData = {
+		type: 'paragraph',
+		content: [
+			{
+				text: 'A Subscript text',
+				type: 'text',
+				marks: [
+					{
+						type: 'subscript'
+					}
+				]
+			}
+		]
+	}
+
+	const result = resolver.render(subscriptData)
+	const expected = '<sub>A Subscript text</sub>'
+
+	expect(result).toBe(expected)
+})
+
+test('should render a superscript', () => {
+	const subscriptData = {
+		type: 'paragraph',
+		content: [
+			{
+				text: 'A superscript text',
+				type: 'text',
+				marks: [
+					{
+						type: 'superscript'
+					}
+				]
+			}
+		]
+	}
+
+	const result = resolver.render(subscriptData)
+	const expected = '<sup>A superscript text</sup>'
+
+	expect(result).toBe(expected)
+})
+
+// test('should render an emoji', () => {})
