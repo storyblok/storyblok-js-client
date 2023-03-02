@@ -2,6 +2,16 @@
 import { expect, test } from 'vitest'
 import StoryblokClient from '../'
 import customSchema from './customSchema'
+import {
+	IMAGE_DATA,
+	SPAN_WITH_RED_CLASS,
+	LINK_DATA,
+	EMAIL_LINK_DATA,
+	LONG_TEXT_FOR_IMMUTABILITY_TEST,
+	CUSTOM_ATTRIBUTE_DATA,
+	LONG_TEXT_WITH_LINKS_SUB_SUP_SCRIPTS,
+	LINK_WITH_ANCHOR_FOR_CUSTOM_SCHEMA,
+} from './constants/richTextResolver'
 
 const TOKEN = 'w0yFvs04aKF2rpz6F8OfIQtt'
 
@@ -27,25 +37,7 @@ test('call render function with an object.content equals an empty return an empt
 })
 
 test('styled mark to add span with red class', () => {
-	const doc = {
-		type: 'doc',
-		content: [
-			{
-				text: 'red text',
-				type: 'text',
-				marks: [
-					{
-						type: 'styled',
-						attrs: {
-							class: 'red',
-						},
-					},
-				],
-			},
-		],
-	}
-
-	expect(resolver.render(doc)).toBe('<span class="red">red text</span>')
+	expect(resolver.render(SPAN_WITH_RED_CLASS)).toBe('<span class="red">red text</span>')
 })
 
 test('horizontal_rule to generate hr tag', () => {
@@ -75,19 +67,7 @@ test('hard_break to generate br tag', () => {
 })
 
 test('image to generate img tag', () => {
-	const doc = {
-		type: 'doc',
-		content: [
-			{
-				type: 'image',
-				attrs: {
-					src: 'https://asset',
-				},
-			},
-		],
-	}
-
-	expect(resolver.render(doc)).toBe('<img src="https://asset" />')
+	expect(resolver.render(IMAGE_DATA)).toBe('<img src="https://asset" />')
 })
 
 test('image to generate img tag with optimization', () => {
@@ -107,26 +87,7 @@ test('image to generate img tag with optimization', () => {
 })
 
 test('link to generate a tag', () => {
-	const doc = {
-		type: 'doc',
-		content: [
-			{
-				text: 'link text',
-				type: 'text',
-				marks: [
-					{
-						type: 'link',
-						attrs: {
-							href: '/link',
-							target: '_blank',
-							uuid: '300aeadc-c82d-4529-9484-f3f8f09cf9f5',
-						},
-					},
-				],
-			},
-		],
-	}
-	const result = resolver.render(doc)
+	const result = resolver.render(LINK_DATA)
 	const expected =
 		'<a href="/link" target="_blank" uuid="300aeadc-c82d-4529-9484-f3f8f09cf9f5">link text</a>'
 
@@ -134,28 +95,7 @@ test('link to generate a tag', () => {
 })
 
 test('link to generate a tag with an email', () => {
-	const doc = {
-		type: 'doc',
-		content: [
-			{
-				text: 'an email link',
-				type: 'text',
-				marks: [
-					{
-						type: 'link',
-						attrs: {
-							href: 'email@client.com',
-							target: '_blank',
-							uuid: null,
-							linktype: 'email',
-						},
-					},
-				],
-			},
-		],
-	}
-
-	const result = resolver.render(doc)
+	const result = resolver.render(EMAIL_LINK_DATA)
 	const expected =
 		'<a href="mailto:email@client.com" target="_blank" linktype="email">an email link</a>'
 
@@ -279,143 +219,7 @@ test('link to generate a tag with achor', () => {
 })
 
 test('Complex and immutability test', () => {
-	const doc = {
-		type: 'doc',
-		content: [
-			{
-				type: 'paragraph',
-				content: [
-					{
-						text: 'Lorem',
-						type: 'text',
-						marks: [
-							{
-								type: 'bold',
-							},
-						],
-					},
-					{
-						text: ' ipsum, ',
-						type: 'text',
-					},
-					{
-						text: 'dolor',
-						type: 'text',
-						marks: [
-							{
-								type: 'strike',
-							},
-						],
-					},
-					{
-						text: ' sit amet ',
-						type: 'text',
-					},
-					{
-						text: 'consectetur',
-						type: 'text',
-						marks: [
-							{
-								type: 'underline',
-							},
-						],
-					},
-					{
-						text: ' adipisicing elit. ',
-						type: 'text',
-					},
-					{
-						text: 'Eos architecto',
-						type: 'text',
-						marks: [
-							{
-								type: 'code',
-							},
-						],
-					},
-					{
-						text: ' asperiores temporibus ',
-						type: 'text',
-					},
-					{
-						text: 'suscipit harum ',
-						type: 'text',
-						marks: [
-							{
-								type: 'link',
-								attrs: {
-									href: '/test/our-service',
-									uuid: '931e04b7-f701-4fe4-8ec0-78be0bee8809',
-									anchor: 'anchor-text',
-									target: '_blank',
-									linktype: 'story',
-								},
-							},
-						],
-					},
-					{
-						text: 'ut, fugit, cumque ',
-						type: 'text',
-					},
-					{
-						text: 'molestiae ',
-						type: 'text',
-						marks: [
-							{
-								type: 'link',
-								attrs: {
-									href: 'asdfsdfasf',
-									uuid: null,
-									anchor: null,
-									target: '_blank',
-									linktype: 'url',
-								},
-							},
-						],
-					},
-					{
-						text: 'ratione non adipisci, ',
-						type: 'text',
-					},
-					{
-						text: 'facilis',
-						type: 'text',
-						marks: [
-							{
-								type: 'italic',
-							},
-						],
-					},
-					{
-						text: ' inventore optio dolores. Rem, perspiciatis ',
-						type: 'text',
-					},
-					{
-						text: 'deserunt!',
-						type: 'text',
-						marks: [
-							{
-								type: 'link',
-								attrs: {
-									href: '/home',
-									uuid: 'fc6a453f-9aa6-4a00-a22d-49c5878f7983',
-									anchor: null,
-									target: '_self',
-									linktype: 'story',
-								},
-							},
-						],
-					},
-					{
-						text: ' Esse, maiores!',
-						type: 'text',
-					},
-				],
-			},
-		],
-	}
-
-	const result = resolver.render(doc)
+	const result = resolver.render(LONG_TEXT_FOR_IMMUTABILITY_TEST)
 	const expected =
 		'<p><b>Lorem</b> ipsum, <strike>dolor</strike> sit amet <u>consectetur</u> adipisicing elit. <code>Eos architecto</code> asperiores temporibus <a href="/test/our-service#anchor-text" uuid="931e04b7-f701-4fe4-8ec0-78be0bee8809" target="_blank" linktype="story">suscipit harum </a>ut, fugit, cumque <a href="asdfsdfasf" target="_blank" linktype="url">molestiae </a>ratione non adipisci, <i>facilis</i> inventore optio dolores. Rem, perspiciatis <a href="/home" uuid="fc6a453f-9aa6-4a00-a22d-49c5878f7983" target="_self" linktype="story">deserunt!</a> Esse, maiores!</p>'
 
@@ -428,28 +232,7 @@ test('test with a custom schema from StoryblokRich', () => {
 		richTextSchema: customSchema,
 	})
 
-	const doc = {
-		type: 'doc',
-		content: [
-			{
-				text: 'link text from custom schema',
-				type: 'text',
-				marks: [
-					{
-						type: 'link',
-						attrs: {
-							href: '/link',
-							target: '_blank',
-							uuid: '300aeadc-c82d-4529-9484-f3f8f09cf9f5',
-							anchor: 'anchor-text',
-						},
-					},
-				],
-			},
-		],
-	}
-
-	const result = internalClient.richTextResolver.render(doc)
+	const result = internalClient.richTextResolver.render(LINK_WITH_ANCHOR_FOR_CUSTOM_SCHEMA)
 	const expected =
 		'<a href="/link%anchor-text" target="_blank" uuid="300aeadc-c82d-4529-9484-f3f8f09cf9f5">link text from custom schema</a>'
 
@@ -457,33 +240,7 @@ test('test with a custom schema from StoryblokRich', () => {
 })
 
 test('should render a custom attribute in a link tag', () => {
-	const linkWithCustomAttribute = {
-		type: 'paragraph',
-		content: [
-			{
-				text: 'A nice link with custom attr',
-				type: 'text',
-				marks: [
-					{
-						type: 'link',
-						attrs: {
-							href: 'www.storyblok.com',
-							uuid: '300aeadc-c82d-4529-9484-f3f8f09cf9f5',
-							anchor: null,
-							custom: {
-								rel: 'nofollow',
-								title: 'nice test',
-							},
-							target: '_blank',
-							linktype: 'url'
-						}
-					}
-				]
-			}
-		]
-	}
-
-	const result = resolver.render(linkWithCustomAttribute)
+	const result = resolver.render(CUSTOM_ATTRIBUTE_DATA)
 	const expected =
 		'<a href="www.storyblok.com" uuid="300aeadc-c82d-4529-9484-f3f8f09cf9f5" target="_blank" linktype="url" rel="nofollow" title="nice test">A nice link with custom attr</a>'
 
@@ -554,6 +311,13 @@ test('should render an emoji', () => {
 
 	const result = resolver.render(emojiData)
 	const expected = '<p><span data-type="emoji" data-name="smiley"></span></p>'
+
+	expect(result).toBe(expected)
+})
+
+test('should render a text with links, subscripts and superscripts', () => {
+	const result = resolver.render(LONG_TEXT_WITH_LINKS_SUB_SUP_SCRIPTS)
+	const expected = '<p><b>Lorem Ipsum</b> is simply dummy text of the <a href="test.com" linktype="url" target="_self" title="test one" rel="test two">printing and typesetting industry</a>. Lorem Ipsum has been the industry&#39;s standard dummy text ever since the <sup>1500s</sup>, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the <sub>1960s</sub> with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like <sup>Aldus PageMaker</sup> including versions of <sub>Lorem Ipsum</sub>.</p>'
 
 	expect(result).toBe(expected)
 })
