@@ -125,6 +125,13 @@ const link: MarkSchema = (node: ISbNode) => {
 		delete attrs.anchor
 	}
 
+	if (attrs.custom) {
+		for (const key in attrs.custom) {
+		  attrs[key] = attrs.custom[key]
+		}
+		delete attrs.custom
+	}
+
 	return {
 		tag: [
 			{
@@ -142,6 +149,18 @@ const styled: MarkSchema = (node: ISbNode) => {
 				attrs: node.attrs,
 			},
 		],
+	}
+}
+
+const subscript: MarkSchema = () => {
+	return {
+		tag: 'sub',
+	}
+}
+
+const superscript: MarkSchema = () => {
+	return {
+		tag: 'sup'
 	}
 }
 
@@ -167,5 +186,7 @@ export default {
 		italic,
 		link,
 		styled,
+		subscript,
+		superscript,
 	},
 }
