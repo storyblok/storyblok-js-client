@@ -534,4 +534,26 @@ test('should render a superscript', () => {
 	expect(result).toBe(expected)
 })
 
-// test('should render an emoji', () => {})
+test('should render an emoji', () => {
+	const emojiData = {
+    type: 'doc',
+    content: [
+			{
+				type: 'paragraph',
+				content: [
+					{
+						type: 'emoji',
+						attrs: {
+							name: 'smiley'
+						}
+					}
+				]
+			}
+    ]
+	}
+
+	const result = resolver.render(emojiData)
+	const expected = '<p><span data-type="emoji" data-name="smiley"></span></p>'
+
+	expect(result).toBe(expected)
+})

@@ -81,6 +81,22 @@ const paragraph: NodeSchema = () => {
 	}
 }
 
+const emoji: NodeSchema = (node: ISbNode) => {
+	const attrs = {
+		['data-type']: 'emoji',
+		['data-name']: node.attrs.name
+	}
+
+	return {
+		tag: [
+			{
+				tag: 'span',
+				attrs: attrs,
+			},
+		],
+	}
+}
+
 // marks
 const bold: MarkSchema = () => {
 	return {
@@ -176,6 +192,7 @@ export default {
 		list_item,
 		ordered_list,
 		paragraph,
+		emoji
 	},
 	marks: {
 		bold,
