@@ -14,7 +14,7 @@ import {
 	ISbStory,
 	ISbStoryData,
 	ISbStoryParams,
-	ISbContentMangmntAPI,
+	ISbContentMAPI,
 	ISbNode,
 	ThrottleFn,
 	IMemoryType,
@@ -86,9 +86,13 @@ class Storyblok {
 			const protocol = config.https === false ? 'http' : 'https'
 
 			if (!config.oauthToken) {
-				endpoint = `${protocol}://${getRegion(config.region)}/${'v2' as Version}`
+				endpoint = `${protocol}://${getRegion(config.region)}/${
+					'v2' as Version
+				}`
 			} else {
-				endpoint = `${protocol}://${getRegion(config.region)}/${'v1' as Version}`
+				endpoint = `${protocol}://${getRegion(config.region)}/${
+					'v1' as Version
+				}`
 			}
 		}
 
@@ -238,7 +242,7 @@ class Storyblok {
 
 	public post(
 		slug: string,
-		params: ISbStoriesParams | ISbContentMangmntAPI
+		params: ISbStoriesParams | ISbContentMAPI
 	): Promise<ISbResponseData> {
 		const url = `/${slug}`
 		return Promise.resolve(this.throttle('post', url, params))
@@ -246,7 +250,7 @@ class Storyblok {
 
 	public put(
 		slug: string,
-		params: ISbStoriesParams | ISbContentMangmntAPI
+		params: ISbStoriesParams | ISbContentMAPI
 	): Promise<ISbResponseData> {
 		const url = `/${slug}`
 		return Promise.resolve(this.throttle('put', url, params))
@@ -254,7 +258,7 @@ class Storyblok {
 
 	public delete(
 		slug: string,
-		params: ISbStoriesParams | ISbContentMangmntAPI
+		params: ISbStoriesParams | ISbContentMAPI
 	): Promise<ISbResponseData> {
 		const url = `/${slug}`
 		return Promise.resolve(this.throttle('delete', url, params))

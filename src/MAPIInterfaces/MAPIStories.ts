@@ -1,4 +1,4 @@
-import { ISbComponentType, ISbContentMangmntAPI } from '../interfaces'
+import { ISbComponentType, ISbContentMAPI } from '../interfaces'
 
 type TPreviewToken = {
 	token: string
@@ -11,12 +11,12 @@ type TLastAuthor = {
 }
 
 /**
- * @interface ISbContentMangmntAPIStory
+ * @interface ISbContentMAPIStory
  * @description Storyblok Content Management API Story Interface
  * @reference https://www.storyblok.com/docs/api/management#core-resources/stories/stories
  *
  **/
-export interface ISbContentMangmntAPIStory {
+export interface ISbContentMAPIStory {
 	id?: number
 	uuid?: string
 	name: string
@@ -33,7 +33,7 @@ export interface ISbContentMangmntAPIStory {
 	default_root?: boolean
 	disble_fe_editor?: boolean
 	parent_id?: number | string
-	parent?: ISbContentMangmntAPIStory
+	parent?: ISbContentMAPIStory
 	group_id?: string | number
 	alternates?: object[]
 	tag_list?: string[]
@@ -51,6 +51,6 @@ export interface ISbContentMangmntAPIStory {
 	translated_slugs_attributes?: {
 		path: string
 		name: string | null
-		lang: ISbContentMangmntAPI['lang']
+		lang: ISbContentMAPI['lang']
 	}[]
 }

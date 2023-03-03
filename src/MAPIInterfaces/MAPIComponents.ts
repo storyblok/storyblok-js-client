@@ -60,7 +60,7 @@ type TComponentSchema = {
  * @reference https://www.storyblok.com/docs/api/management#core-resources/component-groups/component-groups
  *
  **/
-export interface ISbContentMangmntAPIComponentGroup {
+export interface ISbContentMAPIComponentGroup {
 	component_group: {
 		id?: number
 		name: string
@@ -69,12 +69,12 @@ export interface ISbContentMangmntAPIComponentGroup {
 }
 
 /**
- * @interface ISbContentMangmntAPIComponent
+ * @interface ISbContentMAPIComponent
  * @description Storyblok Content Management API Component Interface
  * @reference https://www.storyblok.com/docs/api/management#core-resources/components/components
  *
  **/
-export interface ISbContentMangmntAPIComponent {
+export interface ISbContentMAPIComponent {
 	id?: number
 	schema?: TComponentSchema
 	name: string

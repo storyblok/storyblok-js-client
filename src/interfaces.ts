@@ -1,22 +1,22 @@
 import { ResponseFn } from './sbFetch'
 
-import { ISbContentMangmntAPIStory } from './MAPIInterfaces/mangmntApiStories'
+import { ISbContentMAPIStory } from './MAPIInterfaces/MAPIStories'
 
 import {
-	ISbContentMangmntAPIComponentGroup,
-	ISbContentMangmntAPIComponent,
-} from './MAPIInterfaces/mangmntApiComponents'
+	ISbContentMAPIComponentGroup,
+	ISbContentMAPIComponent,
+} from './MAPIInterfaces/MAPIComponents'
 
 import {
 	ISbAsset,
 	ISbAssetSignedResponseObject,
 	ISbMultipleAssets,
-} from './MAPIInterfaces/mangmntApiAssets'
+} from './MAPIInterfaces/MAPIAssets'
 
 import {
-	ISbContentMangmntAPIDataSourceEntries,
-	ISbContentMangmntAPIDataSource,
-} from './MAPIInterfaces/mangmntApiDataSources'
+	ISbContentMAPIDataSourceEntry,
+	ISbContentMAPIDataSource,
+} from './MAPIInterfaces/MAPIDataSources'
 
 export interface ISbStoriesParams {
 	token?: string
@@ -235,27 +235,27 @@ export type MarkSchema = {
 }
 
 /**
- * @interface ISbContentMangmntAPI
- * @extends ISbContentMangmntAPIDataSourceEntries
- * @extends ISbContentMangmntAPIDataSource
+ * @interface ISbContentMAPI
+ * @extends ISbContentMAPIDataSourceEntry
+ * @extends ISbContentMAPIDataSource
  * @extends ISbAsset
  * @extends ISbAssetResponseObject
  * @extends ISbMultipleAssets
- * @extends ISbContentMangmntAPIComponentGroup
+ * @extends ISbContentMAPIComponentGroup
  * @description Storyblok Content Management API Interface
  * @description One use it to handle the API response
  * @description It can be used with Omit or Pick to improve its usage
  *
  **/
-export interface ISbContentMangmntAPI
-	extends ISbContentMangmntAPIDataSourceEntries,
-		ISbContentMangmntAPIDataSource,
+export interface ISbContentMAPI
+	extends ISbContentMAPIDataSourceEntry,
+		ISbContentMAPIDataSource,
 		ISbAsset,
 		ISbAssetSignedResponseObject,
 		ISbMultipleAssets,
-		ISbContentMangmntAPIComponentGroup {
-	story: ISbContentMangmntAPIStory
-	component?: ISbContentMangmntAPIComponent
+		ISbContentMAPIComponentGroup {
+	story: ISbContentMAPIStory
+	component?: ISbContentMAPIComponent
 	force_update?: '1' | null
 	release_id?: number
 	publish?: '1' | null
