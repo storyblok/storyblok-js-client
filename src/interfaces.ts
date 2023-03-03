@@ -1,14 +1,22 @@
 import { ResponseFn } from './sbFetch'
+
+import { ISbContentMangmntAPIStory } from './MAPIInterfaces/mangmntApiStories'
+
 import {
-	ISbContentMangmntAPIStory,
-	ISbContentMangmntAPIDataSourceEntries,
-	ISbContentMangmntAPIDataSource,
-	ISbAsset,
-	ISbAssetResponseObject,
-	ISbMultipleAssets,
 	ISbContentMangmntAPIComponentGroup,
 	ISbContentMangmntAPIComponent,
-} from './mangmntApiIntefaces'
+} from './MAPIInterfaces/mangmntApiComponents'
+
+import {
+	ISbAsset,
+	ISbAssetSignedResponseObject,
+	ISbMultipleAssets,
+} from './MAPIInterfaces/mangmntApiAssets'
+
+import {
+	ISbContentMangmntAPIDataSourceEntries,
+	ISbContentMangmntAPIDataSource,
+} from './MAPIInterfaces/mangmntApiDataSources'
 
 export interface ISbStoriesParams {
 	token?: string
@@ -243,7 +251,7 @@ export interface ISbContentMangmntAPI
 	extends ISbContentMangmntAPIDataSourceEntries,
 		ISbContentMangmntAPIDataSource,
 		ISbAsset,
-		ISbAssetResponseObject,
+		ISbAssetSignedResponseObject,
 		ISbMultipleAssets,
 		ISbContentMangmntAPIComponentGroup {
 	story: ISbContentMangmntAPIStory
