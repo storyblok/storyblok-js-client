@@ -227,7 +227,8 @@ export type MarkSchema = {
  * @description It can be used with Omit or Pick to improve its usage
  *
  **/
-export interface ISbContentMAPI {
+export interface ISbContentMAPI<T> {
+	auxiliaryInterface?: T
 	story: ISbContentMAPIStory
 	component?: ISbContentMAPIComponent
 	force_update?: '1' | null
