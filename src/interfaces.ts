@@ -1,8 +1,40 @@
 import { ResponseFn } from './sbFetch'
 
-import { ISbContentMAPIStory } from './MAPIInterfaces'
+/**
+ * @description Exports all the Managememt API Interfaces
+ *
+ **/
+import {
+	ISbAsset,
+	ISbAssetSignedResponseObject,
+	ISbMultipleAssets,
+} from './MAPIInterfaces/MAPIAssets'
 
-import { ISbContentMAPIComponent } from './MAPIInterfaces'
+import {
+	ISbContentMAPIComponentGroup,
+	ISbContentMAPIComponent,
+} from './MAPIInterfaces/MAPIComponents'
+
+import { ISbContentMAPIStory } from './MAPIInterfaces/MAPIStories'
+
+import {
+	ISbContentMAPIDataSourceEntry,
+	ISbContentMAPIDataSource,
+} from './MAPIInterfaces/MAPIDataSources'
+
+export type {
+	ISbAsset,
+	ISbAssetSignedResponseObject,
+	ISbMultipleAssets,
+	ISbContentMAPIComponentGroup,
+	ISbContentMAPIComponent,
+	ISbContentMAPIStory,
+	ISbContentMAPIDataSourceEntry,
+	ISbContentMAPIDataSource,
+}
+/**
+ * @description End of Management API Interfaces
+ */
 
 export interface ISbStoriesParams {
 	token?: string
@@ -227,8 +259,8 @@ export type MarkSchema = {
  * @description It can be used with Omit or Pick to improve its usage
  *
  **/
-export interface ISbContentMAPI<T> {
-	auxiliaryInterface?: T
+export interface ISbContentMAPI<T = void> {
+	auxiliaryInterfaces?: T[]
 	story: ISbContentMAPIStory
 	component?: ISbContentMAPIComponent
 	force_update?: '1' | null
