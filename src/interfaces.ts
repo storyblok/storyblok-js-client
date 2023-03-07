@@ -1,8 +1,8 @@
 import { ResponseFn } from './sbFetch'
 
-import { ISbContentMAPIStory } from './MAPIInterfaces/MAPIStories'
+import { ISbContentMAPIStory } from './MAPIInterfaces'
 
-import { ISbContentMAPIComponent } from './MAPIInterfaces/MAPIComponents'
+import { ISbContentMAPIComponent } from './MAPIInterfaces'
 
 export interface ISbStoriesParams {
 	token?: string
