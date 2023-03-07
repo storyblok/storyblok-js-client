@@ -2,21 +2,7 @@ import { ResponseFn } from './sbFetch'
 
 import { ISbContentMAPIStory } from './MAPIInterfaces/MAPIStories'
 
-import {
-	ISbContentMAPIComponentGroup,
-	ISbContentMAPIComponent,
-} from './MAPIInterfaces/MAPIComponents'
-
-import {
-	ISbAsset,
-	ISbAssetSignedResponseObject,
-	ISbMultipleAssets,
-} from './MAPIInterfaces/MAPIAssets'
-
-import {
-	ISbContentMAPIDataSourceEntry,
-	ISbContentMAPIDataSource,
-} from './MAPIInterfaces/MAPIDataSources'
+import { ISbContentMAPIComponent } from './MAPIInterfaces/MAPIComponents'
 
 export interface ISbStoriesParams {
 	token?: string
@@ -236,24 +222,12 @@ export type MarkSchema = {
 
 /**
  * @interface ISbContentMAPI
- * @extends ISbContentMAPIDataSourceEntry
- * @extends ISbContentMAPIDataSource
- * @extends ISbAsset
- * @extends ISbAssetResponseObject
- * @extends ISbMultipleAssets
- * @extends ISbContentMAPIComponentGroup
  * @description Storyblok Content Management API Interface
  * @description One use it to handle the API response
  * @description It can be used with Omit or Pick to improve its usage
  *
  **/
-export interface ISbContentMAPI
-	extends ISbContentMAPIDataSourceEntry,
-		ISbContentMAPIDataSource,
-		ISbAsset,
-		ISbAssetSignedResponseObject,
-		ISbMultipleAssets,
-		ISbContentMAPIComponentGroup {
+export interface ISbContentMAPI {
 	story: ISbContentMAPIStory
 	component?: ISbContentMAPIComponent
 	force_update?: '1' | null
