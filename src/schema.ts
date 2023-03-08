@@ -180,6 +180,34 @@ const superscript: MarkSchema = () => {
 	}
 }
 
+const highlight: MarkSchema = (node: ISbNode) => {
+	const attrs = {
+		['style']: `background-color:${node.attrs.color};`
+	}
+	return {
+		tag: [
+			{
+				tag: 'span',
+				attrs,
+			},
+		],
+	}
+}
+
+const textStyle: MarkSchema =(node: ISbNode) => {
+	const attrs = {
+		['style']: `background-color:${node.attrs.color}`
+	}
+	return {
+		tag: [
+			{
+				tag: 'span',
+				attrs,
+			},
+		],
+	}
+}
+
 export default {
 	nodes: {
 		horizontal_rule,
@@ -196,14 +224,16 @@ export default {
 	},
 	marks: {
 		bold,
-		strike,
-		underline,
-		strong,
 		code,
+		highlight,
 		italic,
 		link,
+		strike,
+		strong,
 		styled,
 		subscript,
 		superscript,
+		underline,
+		textStyle,
 	},
 }

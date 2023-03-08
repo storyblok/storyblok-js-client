@@ -11,6 +11,9 @@ import {
 	CUSTOM_ATTRIBUTE_DATA,
 	LONG_TEXT_WITH_LINKS_SUB_SUP_SCRIPTS,
 	LINK_WITH_ANCHOR_FOR_CUSTOM_SCHEMA,
+	TEXT_COLOR_DATA,
+	HIGLIGHT_COLOR_DATA,
+	BOLD_TEXT,
 } from './constants/richTextResolver'
 
 const TOKEN = 'w0yFvs04aKF2rpz6F8OfIQtt'
@@ -37,7 +40,9 @@ test('call render function with an object.content equals an empty return an empt
 })
 
 test('styled mark to add span with red class', () => {
-	expect(resolver.render(SPAN_WITH_RED_CLASS)).toBe('<span class="red">red text</span>')
+	expect(resolver.render(SPAN_WITH_RED_CLASS)).toBe(
+		'<span class="red">red text</span>'
+	)
 })
 
 test('horizontal_rule to generate hr tag', () => {
@@ -83,7 +88,9 @@ test('image to generate img tag with optimization', () => {
 		],
 	}
 
-	expect(resolver.render(doc, { optimizeImages: true })).toBe('<img src="https://a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/" />')
+	expect(resolver.render(doc, { optimizeImages: true })).toBe(
+		'<img src="https://a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/" />'
+	)
 })
 
 test('link to generate a tag', () => {
@@ -232,7 +239,9 @@ test('test with a custom schema from StoryblokRich', () => {
 		richTextSchema: customSchema,
 	})
 
-	const result = internalClient.richTextResolver.render(LINK_WITH_ANCHOR_FOR_CUSTOM_SCHEMA)
+	const result = internalClient.richTextResolver.render(
+		LINK_WITH_ANCHOR_FOR_CUSTOM_SCHEMA
+	)
 	const expected =
 		'<a href="/link%anchor-text" target="_blank" uuid="300aeadc-c82d-4529-9484-f3f8f09cf9f5">link text from custom schema</a>'
 
@@ -256,11 +265,11 @@ test('should render a subscript', () => {
 				type: 'text',
 				marks: [
 					{
-						type: 'subscript'
-					}
-				]
-			}
-		]
+						type: 'subscript',
+					},
+				],
+			},
+		],
 	}
 
 	const result = resolver.render(subscriptData)
@@ -278,11 +287,11 @@ test('should render a superscript', () => {
 				type: 'text',
 				marks: [
 					{
-						type: 'superscript'
-					}
-				]
-			}
-		]
+						type: 'superscript',
+					},
+				],
+			},
+		],
 	}
 
 	const result = resolver.render(subscriptData)
@@ -293,20 +302,20 @@ test('should render a superscript', () => {
 
 test('should render an emoji', () => {
 	const emojiData = {
-    type: 'doc',
-    content: [
+		type: 'doc',
+		content: [
 			{
 				type: 'paragraph',
 				content: [
 					{
 						type: 'emoji',
 						attrs: {
-							name: 'smiley'
-						}
-					}
-				]
-			}
-    ]
+							name: 'smiley',
+						},
+					},
+				],
+			},
+		],
 	}
 
 	const result = resolver.render(emojiData)
@@ -317,7 +326,30 @@ test('should render an emoji', () => {
 
 test('should render a text with links, subscripts and superscripts', () => {
 	const result = resolver.render(LONG_TEXT_WITH_LINKS_SUB_SUP_SCRIPTS)
-	const expected = '<p><b>Lorem Ipsum</b> is simply dummy text of the <a href="test.com" linktype="url" target="_self" title="test one" rel="test two">printing and typesetting industry</a>. Lorem Ipsum has been the industry&#39;s standard dummy text ever since the <sup>1500s</sup>, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the <sub>1960s</sub> with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like <sup>Aldus PageMaker</sup> including versions of <sub>Lorem Ipsum</sub>.</p>'
+	const expected =
+		'<p><b>Lorem Ipsum</b> is simply dummy text of the <a href="test.com" linktype="url" target="_self" title="test one" rel="test two">printing and typesetting industry</a>. Lorem Ipsum has been the industry&#39;s standard dummy text ever since the <sup>1500s</sup>, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the <sub>1960s</sub> with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like <sup>Aldus PageMaker</sup> including versions of <sub>Lorem Ipsum</sub>.</p>'
+
+	expect(result).toBe(expected)
+})
+
+test('should render a text with text color', () => {
+	const result = resolver.render(TEXT_COLOR_DATA)
+	const expected = '<span style="background-color:#E72929">Colored text</span>'
+
+	expect(result).toBe(expected)
+})
+
+test('should render a text with highlight color', () => {
+	const result = resolver.render(HIGLIGHT_COLOR_DATA)
+	const expected =
+		'<span style="background-color:#E72929;">Highlighted text</span>'
+
+	expect(result).toBe(expected)
+})
+
+test('should render a text with bold', () => {
+	const result = resolver.render(BOLD_TEXT)
+	const expected = '<b>Lorem Ipsum</b>'
 
 	expect(result).toBe(expected)
 })
