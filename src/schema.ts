@@ -1,239 +1,239 @@
 import { ISbNode, NodeSchema, MarkSchema, ISbComponentType } from './interfaces'
 
 const pick = function (attrs: Attrs, allowed: string[]) {
-	const h = {} as Attrs
+  const h = {} as Attrs
 
-	for (const key in attrs) {
-		const value = attrs[key]
-		if (allowed.indexOf(key) > -1 && value !== null) {
-			h[key] = value
-		}
-	}
-	return h
+  for (const key in attrs) {
+    const value = attrs[key]
+    if (allowed.indexOf(key) > -1 && value !== null) {
+      h[key] = value
+    }
+  }
+  return h
 }
 
 const isEmailLinkType = (type: string) => type === 'email'
 
 type Attrs = {
-	[key: string]: string | number | Array<ISbComponentType<any>>
+  [key: string]: string | number | Array<ISbComponentType<any>>
 }
 
 // nodes
 const horizontal_rule: NodeSchema = () => {
-	return {
-		singleTag: 'hr',
-	}
+  return {
+    singleTag: 'hr',
+  }
 }
 const blockquote: NodeSchema = () => {
-	return {
-		tag: 'blockquote',
-	}
+  return {
+    tag: 'blockquote',
+  }
 }
 const bullet_list: NodeSchema = () => {
-	return {
-		tag: 'ul',
-	}
+  return {
+    tag: 'ul',
+  }
 }
 const code_block: NodeSchema = (node: ISbNode) => {
-	return {
-		tag: [
-			'pre',
-			{
-				tag: 'code',
-				attrs: node.attrs,
-			},
-		],
-	}
+  return {
+    tag: [
+      'pre',
+      {
+        tag: 'code',
+        attrs: node.attrs,
+      },
+    ],
+  }
 }
 const hard_break: NodeSchema = () => {
-	return {
-		singleTag: 'br',
-	}
+  return {
+    singleTag: 'br',
+  }
 }
 const heading: NodeSchema = (node: ISbNode) => {
-	return {
-		tag: `h${node.attrs.level}`,
-	}
+  return {
+    tag: `h${node.attrs.level}`,
+  }
 }
 const image: NodeSchema = (node: ISbNode) => {
-	return {
-		singleTag: [
-			{
-				tag: 'img',
-				attrs: pick(node.attrs, ['src', 'alt', 'title']),
-			},
-		],
-	}
+  return {
+    singleTag: [
+      {
+        tag: 'img',
+        attrs: pick(node.attrs, ['src', 'alt', 'title']),
+      },
+    ],
+  }
 }
 const list_item: NodeSchema = () => {
-	return {
-		tag: 'li',
-	}
+  return {
+    tag: 'li',
+  }
 }
 const ordered_list: NodeSchema = () => {
-	return {
-		tag: 'ol',
-	}
+  return {
+    tag: 'ol',
+  }
 }
 const paragraph: NodeSchema = () => {
-	return {
-		tag: 'p',
-	}
+  return {
+    tag: 'p',
+  }
 }
 
 const emoji: NodeSchema = (node: ISbNode) => {
-	const attrs = {
-		['data-type']: 'emoji',
-		['data-name']: node.attrs.name
-	}
+  const attrs = {
+    ['data-type']: 'emoji',
+    ['data-name']: node.attrs.name
+  }
 
-	return {
-		tag: [
-			{
-				tag: 'span',
-				attrs: attrs,
-			},
-		],
-	}
+  return {
+    tag: [
+      {
+        tag: 'span',
+        attrs: attrs,
+      },
+    ],
+  }
 }
 
 // marks
 const bold: MarkSchema = () => {
-	return {
-		tag: 'b',
-	}
+  return {
+    tag: 'b',
+  }
 }
 const strike: MarkSchema = () => {
-	return {
-		tag: 'strike',
-	}
+  return {
+    tag: 'strike',
+  }
 }
 const underline: MarkSchema = () => {
-	return {
-		tag: 'u',
-	}
+  return {
+    tag: 'u',
+  }
 }
 const strong: MarkSchema = () => {
-	return {
-		tag: 'strong',
-	}
+  return {
+    tag: 'strong',
+  }
 }
 const code: MarkSchema = () => {
-	return {
-		tag: 'code',
-	}
+  return {
+    tag: 'code',
+  }
 }
 const italic: MarkSchema = () => {
-	return {
-		tag: 'i',
-	}
+  return {
+    tag: 'i',
+  }
 }
 const link: MarkSchema = (node: ISbNode) => {
-	const attrs = { ...node.attrs }
-	const { linktype = 'url' } = node.attrs
+  const attrs = { ...node.attrs }
+  const { linktype = 'url' } = node.attrs
 
-	if (isEmailLinkType(linktype)) {
-		attrs.href = `mailto:${attrs.href}`
-	}
+  if (isEmailLinkType(linktype)) {
+    attrs.href = `mailto:${attrs.href}`
+  }
 
-	if (attrs.anchor) {
-		attrs.href = `${attrs.href}#${attrs.anchor}`
-		delete attrs.anchor
-	}
+  if (attrs.anchor) {
+    attrs.href = `${attrs.href}#${attrs.anchor}`
+    delete attrs.anchor
+  }
 
-	if (attrs.custom) {
-		for (const key in attrs.custom) {
-		  attrs[key] = attrs.custom[key]
-		}
-		delete attrs.custom
-	}
+  if (attrs.custom) {
+    for (const key in attrs.custom) {
+      attrs[key] = attrs.custom[key]
+    }
+    delete attrs.custom
+  }
 
-	return {
-		tag: [
-			{
-				tag: 'a',
-				attrs: attrs,
-			},
-		],
-	}
+  return {
+    tag: [
+      {
+        tag: 'a',
+        attrs: attrs,
+      },
+    ],
+  }
 }
 const styled: MarkSchema = (node: ISbNode) => {
-	return {
-		tag: [
-			{
-				tag: 'span',
-				attrs: node.attrs,
-			},
-		],
-	}
+  return {
+    tag: [
+      {
+        tag: 'span',
+        attrs: node.attrs,
+      },
+    ],
+  }
 }
 
 const subscript: MarkSchema = () => {
-	return {
-		tag: 'sub',
-	}
+  return {
+    tag: 'sub',
+  }
 }
 
 const superscript: MarkSchema = () => {
-	return {
-		tag: 'sup'
-	}
+  return {
+    tag: 'sup'
+  }
 }
 
 const highlight: MarkSchema = (node: ISbNode) => {
-	const attrs = {
-		['style']: `background-color:${node.attrs.color};`
-	}
-	return {
-		tag: [
-			{
-				tag: 'span',
-				attrs,
-			},
-		],
-	}
+  const attrs = {
+    ['style']: `background-color:${node.attrs.color};`
+  }
+  return {
+    tag: [
+      {
+        tag: 'span',
+        attrs,
+      },
+    ],
+  }
 }
 
 const textStyle: MarkSchema =(node: ISbNode) => {
-	const attrs = {
-		['style']: `background-color:${node.attrs.color}`
-	}
-	return {
-		tag: [
-			{
-				tag: 'span',
-				attrs,
-			},
-		],
-	}
+  const attrs = {
+    ['style']: `background-color:${node.attrs.color}`
+  }
+  return {
+    tag: [
+      {
+        tag: 'span',
+        attrs,
+      },
+    ],
+  }
 }
 
 export default {
-	nodes: {
-		horizontal_rule,
-		blockquote,
-		bullet_list,
-		code_block,
-		hard_break,
-		heading,
-		image,
-		list_item,
-		ordered_list,
-		paragraph,
-		emoji
-	},
-	marks: {
-		bold,
-		code,
-		highlight,
-		italic,
-		link,
-		strike,
-		strong,
-		styled,
-		subscript,
-		superscript,
-		underline,
-		textStyle,
-	},
+  nodes: {
+    horizontal_rule,
+    blockquote,
+    bullet_list,
+    code_block,
+    hard_break,
+    heading,
+    image,
+    list_item,
+    ordered_list,
+    paragraph,
+    emoji
+  },
+  marks: {
+    bold,
+    code,
+    highlight,
+    italic,
+    link,
+    strike,
+    strong,
+    styled,
+    subscript,
+    superscript,
+    underline,
+    textStyle,
+  },
 }
