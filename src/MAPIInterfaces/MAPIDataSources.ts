@@ -1,31 +1,26 @@
 /**
- * @interface ISbContentMAPIDataSourceEntry
+ * @interface ISbContentMAPI_DataSourceEntryPOST
  * @description Storyblok Content Management API Data Source Entries Interface
+ * @description This is used when creating a new data source entry
  * @reference https://www.storyblok.com/docs/api/management#core-resources/datasource-entries/datasource-entries
  *
  **/
-export interface ISbContentMAPIDataSourceEntry {
-	id?: number
-	name?: string
-	value?: string
-	datasource_id?: number | string
+export interface ISbContentMAPI_DataSourceEntryPOST {
+	datasource_entry: {
+		name: string
+		value: string
+		datasource_id: number
+	}
 }
 
-/**
- * @interface ISbContentMAPICRUDDataSourceEntry
- * @description Storyblok Content Management API Data Source Entry Interface
- * @description One can use this as an auxiliary interface to create or update a data source entry
- * @reference https://www.storyblok.com/docs/api/management#core-resources/datasource-entries/create-datasource-entry
- *
- **/
-export interface ISbContentMAPICRUDDataSourceEntry {
-	datasource_entry: ISbContentMAPIDataSourceEntry
-	name: string
-	value: string
-	data_source_id?: number | string
-	dimension_id?: number
-	dimension_value?: string
-}
+export type ISbContentMAPI_DataSourceEntryPUT =
+	ISbContentMAPI_DataSourceEntryPOST & {
+		dimension_id: number
+		datasource_entry: {
+			id: number
+			dimension_value: string
+		}
+	}
 
 /**
  * @interface ISbContentMAPIDataSource
@@ -34,8 +29,7 @@ export interface ISbContentMAPICRUDDataSourceEntry {
  *
  **/
 export interface ISbContentMAPIDataSource {
-	id?: number
-	name?: string
-	slug?: string
-	dimensions?: unknown[]
+	id: number
+	name: string
+	slug: string
 }

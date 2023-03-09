@@ -17,11 +17,6 @@ import {
 
 import { ISbContentMAPIStory } from './MAPIInterfaces/MAPIStories'
 
-import {
-	ISbContentMAPIDataSourceEntry,
-	ISbContentMAPIDataSource,
-} from './MAPIInterfaces/MAPIDataSources'
-
 export type {
 	ISbAsset,
 	ISbAssetSignedResponseObject,
@@ -29,8 +24,6 @@ export type {
 	ISbContentMAPIComponentGroup,
 	ISbContentMAPIComponent,
 	ISbContentMAPIStory,
-	ISbContentMAPIDataSourceEntry,
-	ISbContentMAPIDataSource,
 }
 /**
  * @description End of Management API Interfaces
