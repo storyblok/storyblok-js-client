@@ -670,6 +670,7 @@ class Storyblok {
 export default Storyblok
 
 export type {
+	ISbContentMAPIDataSource,
 	ISbContentMAPI_DataSourceEntryPOST,
 	ISbContentMAPI_DataSourceEntryPUT,
 } from './MAPIInterfaces/MAPIDataSources'
