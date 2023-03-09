@@ -321,3 +321,44 @@ test('should render a text with links, subscripts and superscripts', () => {
 
 	expect(result).toBe(expected)
 })
+
+test('should render a h1 title with a anchor in the midlle of the text', () => {
+	const sentenceWithAnchor = {
+		type: 'doc',
+		content: [
+			{
+				type: 'heading',
+				attrs: {
+					level: '1'
+				},
+				content: [
+					{
+						text: 'Title with ',
+						type: 'text'
+					},
+					{
+						text: 'Anchor',
+						type: 'text',
+						marks: [
+							{
+								type: 'anchor',
+								attrs: {
+									id: 'test1'
+								}
+							}
+						]
+					},
+					{
+						text: ' in the midle',
+						type: 'text'
+					}
+				]
+			}
+		]
+	}
+
+	const result = resolver.render(sentenceWithAnchor)
+	const expected = '<h1>Title with <span id="test1">Anchor</span> in the midle</h1>'
+
+	expect(result).toBe(expected)
+})

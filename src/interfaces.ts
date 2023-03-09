@@ -199,6 +199,7 @@ export interface ISbError {
 }
 
 export interface ISbNode extends Element {
+	content: any
 	attrs: {
 		anchor?: string
 		body: Array<ISbComponentType<any>>
