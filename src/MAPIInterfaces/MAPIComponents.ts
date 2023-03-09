@@ -55,7 +55,7 @@ type TComponentSchema = {
 }
 
 /**
- * @interface ISbComponentGroup
+ * @interface ISbContentMAPIComponentGroup
  * @description Storyblok Content Management API Component Group Interface
  * @reference https://www.storyblok.com/docs/api/management#core-resources/component-groups/component-groups
  *
@@ -75,16 +75,15 @@ export interface ISbContentMAPIComponentGroup {
  *
  **/
 export interface ISbContentMAPIComponent {
-	id?: number
-	schema?: TComponentSchema
-	name: string
-	display_name?: string
-	created_at?: string
-	image?: string
-	preview?: string
-	is_root?: boolean
-	is_nestable?: boolean
-	all_presets?: object[]
-	real_name?: string
-	component_group_uuid?: string
+	component: {
+		id?: number
+		name: string
+		display_name?: string
+		image?: string
+		preview?: string
+		is_root?: boolean
+		is_nestable?: boolean
+		component_group_uuid?: string
+		schema?: TComponentSchema
+	}
 }

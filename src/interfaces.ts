@@ -4,27 +4,13 @@ import { ResponseFn } from './sbFetch'
  * @description Exports all the Managememt API Interfaces
  *
  **/
-import {
-	ISbAsset,
-	ISbAssetSignedResponseObject,
-	ISbMultipleAssets,
-} from './MAPIInterfaces/MAPIAssets'
+import { ISbAsset } from './MAPIInterfaces/MAPIAssets'
 
-import {
-	ISbContentMAPIComponentGroup,
-	ISbContentMAPIComponent,
-} from './MAPIInterfaces/MAPIComponents'
+import { ISbContentMAPIComponent } from './MAPIInterfaces/MAPIComponents'
 
 import { ISbContentMAPIStory } from './MAPIInterfaces/MAPIStories'
 
-export type {
-	ISbAsset,
-	ISbAssetSignedResponseObject,
-	ISbMultipleAssets,
-	ISbContentMAPIComponentGroup,
-	ISbContentMAPIComponent,
-	ISbContentMAPIStory,
-}
+export type { ISbAsset, ISbContentMAPIComponent, ISbContentMAPIStory }
 /**
  * @description End of Management API Interfaces
  */

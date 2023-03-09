@@ -674,3 +674,7 @@ export type {
 	ISbContentMAPI_DataSourceEntryPOST,
 	ISbContentMAPI_DataSourceEntryPUT,
 } from './MAPIInterfaces/MAPIDataSources'
+
+export type { ISbAsset, ISbAssetFolder } from './MAPIInterfaces/MAPIAssets'
+
+export type { ISBContentMAPISpaceRoles } from './MAPIInterfaces/MAPISpaces'

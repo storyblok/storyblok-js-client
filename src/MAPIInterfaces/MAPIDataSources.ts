@@ -13,6 +13,13 @@ export interface ISbContentMAPI_DataSourceEntryPOST {
 	}
 }
 
+/**
+ * @interface ISbContentMAPI_DataSourceEntryPUT
+ * @description Storyblok Content Management API Data Source Entries Interface
+ * @description This is used when updating a data source entry
+ * @reference https://www.storyblok.com/docs/api/management#core-resources/datasource-entries/datasource-entries
+ *
+ **/
 export type ISbContentMAPI_DataSourceEntryPUT =
 	ISbContentMAPI_DataSourceEntryPOST & {
 		dimension_id: number
