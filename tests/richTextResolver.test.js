@@ -11,6 +11,9 @@ import {
 	CUSTOM_ATTRIBUTE_DATA,
 	LONG_TEXT_WITH_LINKS_SUB_SUP_SCRIPTS,
 	LINK_WITH_ANCHOR_FOR_CUSTOM_SCHEMA,
+	TEXT_COLOR_DATA,
+	HIGLIGHT_COLOR_DATA,
+	BOLD_TEXT,
 } from './constants/richTextResolver'
 
 const TOKEN = 'w0yFvs04aKF2rpz6F8OfIQtt'
@@ -318,6 +321,28 @@ test('should render an emoji', () => {
 test('should render a text with links, subscripts and superscripts', () => {
 	const result = resolver.render(LONG_TEXT_WITH_LINKS_SUB_SUP_SCRIPTS)
 	const expected = '<p><b>Lorem Ipsum</b> is simply dummy text of the <a href="test.com" linktype="url" target="_self" title="test one" rel="test two">printing and typesetting industry</a>. Lorem Ipsum has been the industry&#39;s standard dummy text ever since the <sup>1500s</sup>, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the <sub>1960s</sub> with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like <sup>Aldus PageMaker</sup> including versions of <sub>Lorem Ipsum</sub>.</p>'
+
+	expect(result).toBe(expected)
+})
+
+test('should render a text with text color', () => {
+	const result = resolver.render(TEXT_COLOR_DATA)
+	const expected = '<span style="background-color:#E72929">Colored text</span>'
+
+	expect(result).toBe(expected)
+})
+
+test('should render a text with highlight color', () => {
+	const result = resolver.render(HIGLIGHT_COLOR_DATA)
+	const expected =
+		'<span style="background-color:#E72929;">Highlighted text</span>'
+
+	expect(result).toBe(expected)
+})
+
+test('should render a text with bold', () => {
+	const result = resolver.render(BOLD_TEXT)
+	const expected = '<b>Lorem Ipsum</b>'
 
 	expect(result).toBe(expected)
 })
