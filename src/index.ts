@@ -86,9 +86,13 @@ class Storyblok {
 			const protocol = config.https === false ? 'http' : 'https'
 
 			if (!config.oauthToken) {
-				endpoint = `${protocol}://${getRegion(config.region)}/${'v2' as Version}`
+				endpoint = `${protocol}://${getRegion(config.region)}/${
+					'v2' as Version
+				}`
 			} else {
-				endpoint = `${protocol}://${getRegion(config.region)}/${'v1' as Version}`
+				endpoint = `${protocol}://${getRegion(config.region)}/${
+					'v1' as Version
+				}`
 			}
 		}
 

@@ -116,5 +116,4 @@ describe('getRegionURL function', () => {
 	test('should return the china url when pass cn string', () => {
 		expect(helpers.getRegionURL('cn')).toEqual(CN_API_URL)
 	})
-
 })

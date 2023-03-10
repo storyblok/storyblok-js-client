@@ -84,7 +84,7 @@ const paragraph: NodeSchema = () => {
 const emoji: NodeSchema = (node: ISbNode) => {
 	const attrs = {
 		['data-type']: 'emoji',
-		['data-name']: node.attrs.name
+		['data-name']: node.attrs.name,
 	}
 
 	return {
@@ -176,13 +176,13 @@ const subscript: MarkSchema = () => {
 
 const superscript: MarkSchema = () => {
 	return {
-		tag: 'sup'
+		tag: 'sup',
 	}
 }
 
 const highlight: MarkSchema = (node: ISbNode) => {
 	const attrs = {
-		['style']: `background-color:${node.attrs.color};`
+		['style']: `background-color:${node.attrs.color};`,
 	}
 	return {
 		tag: [
@@ -194,9 +194,9 @@ const highlight: MarkSchema = (node: ISbNode) => {
 	}
 }
 
-const textStyle: MarkSchema =(node: ISbNode) => {
+const textStyle: MarkSchema = (node: ISbNode) => {
 	const attrs = {
-		['style']: `background-color:${node.attrs.color}`
+		['style']: `background-color:${node.attrs.color}`,
 	}
 	return {
 		tag: [
@@ -220,7 +220,7 @@ export default {
 		list_item,
 		ordered_list,
 		paragraph,
-		emoji
+		emoji,
 	},
 	marks: {
 		bold,
