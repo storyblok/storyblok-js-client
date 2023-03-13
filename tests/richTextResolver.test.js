@@ -324,7 +324,7 @@ test('should render a text with links, subscripts and superscripts', () => {
 	expect(result).toBe(expected)
 })
 
-test('should render a h1 title with a anchor in the midlle of the text', () => {
+test('should render a h1 title with a anchor in the middle of the text', () => {
 	const sentenceWithAnchor = {
 		type: 'doc',
 		content: [
