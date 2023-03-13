@@ -351,3 +351,57 @@ export const LONG_TEXT_WITH_LINKS_SUB_SUP_SCRIPTS = {
     }
   ]
 }
+
+export const PARAGRAPH_WITH_ANCHOR_IN_THE_MIDDLE = {
+  "type": "doc",
+  "content": [
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "text": "a long text with a super nice ",
+          "type": "text"
+        },
+        {
+          "text": "anchor here",
+          "type": "text",
+          "marks": [
+            {
+              "type": "anchor",
+              "attrs": {
+                "id": "test2"
+              }
+            }
+          ]
+        },
+        {
+          "text": ", and at the end of the text is a normal tag",
+          "type": "text"
+        }
+      ]
+    }
+  ]
+}
+
+export const PARAGRAPH_WITH_ANCHOR = {
+  "type": "doc",
+  "content": [
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "text": "Paragraph with anchor in the midle",
+          "type": "text",
+          "marks": [
+            {
+              "type": "anchor",
+              "attrs": {
+                "id": "test"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
