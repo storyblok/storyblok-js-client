@@ -13,6 +13,9 @@ import {
 	LINK_WITH_ANCHOR_FOR_CUSTOM_SCHEMA,
 	PARAGRAPH_WITH_ANCHOR_IN_THE_MIDDLE,
 	PARAGRAPH_WITH_ANCHOR,
+	TEXT_COLOR_DATA,
+	HIGLIGHT_COLOR_DATA,
+	BOLD_TEXT,
 } from './constants/richTextResolver'
 
 const TOKEN = 'w0yFvs04aKF2rpz6F8OfIQtt'
@@ -361,6 +364,12 @@ test('should render a h1 title with a anchor in the middle of the text', () => {
 
 	const result = resolver.render(sentenceWithAnchor)
 	const expected = '<h1>Title with <span id="test1">Anchor</span> in the midle</h1>'
+	expect(result).toBe(expected)
+})
+
+test('should render a text with text color', () => {
+	const result = resolver.render(TEXT_COLOR_DATA)
+	const expected = '<span style="background-color:#E72929">Colored text</span>'
 
 	expect(result).toBe(expected)
 })
@@ -372,9 +381,24 @@ test('should render a anchor in the text', () => {
 	expect(result).toBe(expected)
 })
 
+test('should render a text with highlight color', () => {
+	const result = resolver.render(HIGLIGHT_COLOR_DATA)
+	const expected =
+		'<span style="background-color:#E72929;">Highlighted text</span>'
+
+	expect(result).toBe(expected)
+})
+
 test('should render a anchor in the middle of a text', () => {
 	const result = resolver.render(PARAGRAPH_WITH_ANCHOR_IN_THE_MIDDLE)
 	const expected = '<p>a long text with a super nice <span id="test2">anchor here</span>, and at the end of the text is a normal tag</p>'
+
+	expect(result).toBe(expected)
+})
+
+test('should render a text with bold', () => {
+	const result = resolver.render(BOLD_TEXT)
+	const expected = '<b>Lorem Ipsum</b>'
 
 	expect(result).toBe(expected)
 })

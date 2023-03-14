@@ -405,3 +405,54 @@ export const PARAGRAPH_WITH_ANCHOR = {
     }
   ]
 }
+
+export const TEXT_COLOR_DATA = {
+  type: 'doc',
+  content: [
+    {
+      text: 'Colored text',
+      type: 'text',
+      marks: [
+        {
+          type: 'textStyle',
+          attrs: {
+            color: '#E72929',
+          },
+        },
+      ],
+    },
+  ],
+}
+
+export const HIGLIGHT_COLOR_DATA = {
+  type: 'doc',
+  content: [
+    {
+      text: 'Highlighted text',
+      type: 'text',
+      marks: [
+        {
+          type: 'highlight',
+          attrs: {
+            color: '#E72929',
+          },
+        },
+      ],
+    },
+  ],
+}
+
+export const BOLD_TEXT = {
+  type: 'doc',
+  content: [
+    {
+      type: 'text',
+      marks: [
+        {
+          type: 'bold',
+        },
+      ],
+      text: 'Lorem Ipsum',
+    },
+  ],
+}
