@@ -677,4 +677,9 @@ export type {
 
 export type { ISbAsset, ISbAssetFolder } from './MAPIInterfaces/MAPIAssets'
 
-export type { ISBContentMAPISpaceRoles } from './MAPIInterfaces/MAPISpaces'
+export type {
+	ISBContentMAPISpaceRoles,
+	ISBContentMAPISpace,
+} from './MAPIInterfaces/MAPISpaces'
+
+export type { ISBContentMAPITask } from './MAPIInterfaces/MAPITasks'
