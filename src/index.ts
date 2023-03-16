@@ -683,3 +683,14 @@ export type {
 } from './MAPIInterfaces/MAPISpaces'
 
 export type { ISBContentMAPITask } from './MAPIInterfaces/MAPITasks'
+
+export type { ISBContentMAPIFieldTypes } from './MAPIInterfaces/MAPIFieldTypes'
+
+export type {
+	ISBContentMAPIApprovals,
+	ISBContentMAPIReleaseApproval,
+} from './MAPIInterfaces/MAPIApprovals'
+
+export type { ISBContentMAPIActivity } from './MAPIInterfaces/MAPIActivities'
+
+export type { ISBContentMAPIPresets } from './MAPIInterfaces/MAPIPresets'
