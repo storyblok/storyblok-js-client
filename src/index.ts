@@ -694,3 +694,12 @@ export type {
 export type { ISBContentMAPIActivity } from './MAPIInterfaces/MAPIActivities'
 
 export type { ISBContentMAPIPresets } from './MAPIInterfaces/MAPIPresets'
+
+export type {
+	ISbContentMAPIWorkflowStage,
+	ISbContentMAPIWorkflowStageChanges,
+} from './MAPIInterfaces/MAPIWorkflowStages'
+
+export type { ISbContentMAPIReleases } from './MAPIInterfaces/MAPIReleases'
+
+export type { ISbContentMAPIBranchDeployments } from './MAPIInterfaces/MAPIBranchDeployments'
