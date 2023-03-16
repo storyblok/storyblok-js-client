@@ -55,6 +55,7 @@ const heading: NodeSchema = (node: ISbNode) => {
 		tag: `h${node.attrs.level}`,
 	}
 }
+
 const image: NodeSchema = (node: ISbNode) => {
 	return {
 		singleTag: [
@@ -157,6 +158,7 @@ const link: MarkSchema = (node: ISbNode) => {
 		],
 	}
 }
+
 const styled: MarkSchema = (node: ISbNode) => {
 	return {
 		tag: [
@@ -177,6 +179,17 @@ const subscript: MarkSchema = () => {
 const superscript: MarkSchema = () => {
 	return {
 		tag: 'sup'
+	}
+}
+
+const anchor: MarkSchema = (node: ISbNode) => {
+	return {
+		tag: [
+			{
+				tag: 'span',
+				attrs: node.attrs,
+			},
+		],
 	}
 }
 
@@ -233,6 +246,7 @@ export default {
 		styled,
 		subscript,
 		superscript,
+		anchor,
 		highlight,
 		textStyle,
 	},
