@@ -81,6 +81,22 @@ const paragraph: NodeSchema = () => {
 	}
 }
 
+const emoji: NodeSchema = (node: ISbNode) => {
+	const attrs = {
+		['data-type']: 'emoji',
+		['data-name']: node.attrs.name
+	}
+
+	return {
+		tag: [
+			{
+				tag: 'span',
+				attrs: attrs,
+			},
+		],
+	}
+}
+
 // marks
 const bold: MarkSchema = () => {
 	return {
@@ -125,6 +141,13 @@ const link: MarkSchema = (node: ISbNode) => {
 		delete attrs.anchor
 	}
 
+	if (attrs.custom) {
+		for (const key in attrs.custom) {
+		  attrs[key] = attrs.custom[key]
+		}
+		delete attrs.custom
+	}
+
 	return {
 		tag: [
 			{
@@ -145,6 +168,46 @@ const styled: MarkSchema = (node: ISbNode) => {
 	}
 }
 
+const subscript: MarkSchema = () => {
+	return {
+		tag: 'sub',
+	}
+}
+
+const superscript: MarkSchema = () => {
+	return {
+		tag: 'sup'
+	}
+}
+
+const highlight: MarkSchema = (node: ISbNode) => {
+	const attrs = {
+		['style']: `background-color:${node.attrs.color};`,
+	}
+	return {
+		tag: [
+			{
+				tag: 'span',
+				attrs,
+			},
+		],
+	}
+}
+
+const textStyle: MarkSchema = (node: ISbNode) => {
+	const attrs = {
+		['style']: `background-color:${node.attrs.color}`,
+	}
+	return {
+		tag: [
+			{
+				tag: 'span',
+				attrs,
+			},
+		],
+	}
+}
+
 export default {
 	nodes: {
 		horizontal_rule,
@@ -157,6 +220,7 @@ export default {
 		list_item,
 		ordered_list,
 		paragraph,
+		emoji
 	},
 	marks: {
 		bold,
@@ -167,5 +231,9 @@ export default {
 		italic,
 		link,
 		styled,
+		subscript,
+		superscript,
+		highlight,
+		textStyle,
 	},
 }

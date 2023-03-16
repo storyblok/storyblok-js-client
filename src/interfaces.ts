@@ -220,6 +220,8 @@ export interface ISbNode extends Element {
 		href?: string
 		level?: number
 		linktype?: string
+		custom?: LinkCustomAttributes,
+		[key: string]: any,
 	}
 }
 
@@ -264,6 +266,12 @@ export interface ISbRichtext {
 	attrs?: any
 	text?: string
 	type: string
+}
+
+export interface LinkCustomAttributes {
+	rel?: string,
+	title?: string,
+	[key: string]: any
 }
 
 export type ThrottleFn = {
