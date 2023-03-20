@@ -381,11 +381,62 @@ Storyblok.setComponentResolver((component, blok) => {
 
 - `[return]` String, Rendered html of a richtext field
 - `data` Richtext object, An object with a `content` (an array of nodes) field.
+- `options` (optional) Options to control render behavior.
 
 **Example**
 
 ```javascript
 Storyblok.richTextResolver.render(blok.richtext)
+```
+
+**Optimizing images**
+
+You can instruct the richtext resolver to optimize images using [Storyblok Image Service](https://www.storyblok.com/docs/image-service) 
+passing the option `optimizeImages: true`. 
+
+**Example**
+
+```javascript
+Storyblok.richTextResolver.render(blok.richtext, { optimizeImages: true })
+```
+
+Also, it is possible to customize this option passing an object. 
+All properties are optional and will be applied to each image in the field.
+
+**Example**
+
+```js
+const options = { 
+  optimizeImages: {
+    class: 'w-full my-8 border-b border-black',
+    width: 640, // image width
+    height: 360, // image height
+    loading: 'lazy', // 'lazy' | 'eager'
+    filters: {
+      blur: 0, // 0 to 100
+      brightness: 0, // -100 to 100
+      fill: 'transparent', // Or any hexadecimal value like FFCC99
+      format: 'webp', // 'webp' | 'jpeg' | 'png'
+      grayscale: false,
+      quality: 95, // 0 to 100
+      rotate: 0 // 0 | 90 | 180 | 270
+    },
+    // srcset accepts an array with image widths. 
+    // Example: [720, 1024, 1533] 
+    // will render srcset="//../m/720x0 720w", "//../m/1024x0 1024w", "//../m/1533x0 1280w"
+    // Also accept an array to pass width and height. 
+    // Example: [[720,500], 1024, [1500, 1000]] 
+    // will render srcset="//../m/720x500 720w", "//../m/1024x0 1024w", "//../m/1280x0 1280w"
+    srcset: [720, 1024, 1533], 
+    sizes: [
+      '(max-width: 767px) 100vw',
+      '(max-width: 1024px) 768px',
+      '1500px'
+    ]
+  }
+}
+
+Storyblok.richTextResolver.render(blok.richtext, options)
 ```
 
 ### Code examples
