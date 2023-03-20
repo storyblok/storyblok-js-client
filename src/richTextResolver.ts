@@ -267,6 +267,8 @@ class RichTextResolver {
 			html.push(this.renderTag(node.singleTag, ' /'))
 		} else if (node && node.html) {
 			html.push(node.html)
+		} else if (item.type === 'emoji') {
+			html.push(this.renderEmoji(item))
 		}
 
 		if (node && node.tag) {
@@ -349,6 +351,26 @@ class RichTextResolver {
 		if (typeof node === 'function') {
 			return node(item)
 		}
+	}
+
+	private renderEmoji(item: ISbRichtext) {
+		if (item.attrs.emoji) {
+			return item.attrs.emoji
+		}
+
+		const emojiImageContainer = [
+			{
+				tag: 'img',
+				attrs: {
+					src: item.attrs.fallbackImage,
+					draggable: 'false',
+					loading: 'lazy',
+					align: 'absmiddle',
+				},
+			},
+		] as unknown as ISbTag[]
+
+		return this.renderTag(emojiImageContainer, ' /')
 	}
 }
 
