@@ -16,6 +16,8 @@ import {
 	TEXT_COLOR_DATA,
 	HIGLIGHT_COLOR_DATA,
 	BOLD_TEXT,
+	TEXT_WITH_EMOJI,
+	TEXT_WITH_EMOJI_VIA_FALLBACKIMAGE
 } from './constants/richTextResolver'
 
 const TOKEN = 'w0yFvs04aKF2rpz6F8OfIQtt'
@@ -423,26 +425,16 @@ test('should render a superscript', () => {
 	expect(result).toBe(expected)
 })
 
-test('should render an emoji', () => {
-	const emojiData = {
-    type: 'doc',
-    content: [
-			{
-				type: 'paragraph',
-				content: [
-					{
-						type: 'emoji',
-						attrs: {
-							name: 'smiley'
-						}
-					}
-				]
-			}
-    ]
-	}
+test('should render a text with a emoji', () => {
+	const result = resolver.render(TEXT_WITH_EMOJI)
+	const expected = '<p>Text with a emoji in the end <span data-type="emoji" data-name="smile" emoji="😄">😄</span></p>'
 
-	const result = resolver.render(emojiData)
-	const expected = '<p><span data-type="emoji" data-name="smiley"></span></p>'
+	expect(result).toBe(expected)
+})
+
+test('should render a emoji with falbackimage', () => {
+	const result = resolver.render(TEXT_WITH_EMOJI_VIA_FALLBACKIMAGE)
+	const expected = '<p>Text with a emoji in the end <span data-type="emoji" data-name="trollface"><img src="https://github.githubassets.com/images/icons/emoji/trollface.png" draggable="false" loading="lazy" align="absmiddle" /></span></p>'
 
 	expect(result).toBe(expected)
 })
