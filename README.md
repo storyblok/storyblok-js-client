@@ -140,6 +140,7 @@ We added retro-compatibility when using `resolve_assets: 1` parameter under V2. 
   - (`timeout` Integer, optional)
   - (`maxRetries` Integer, optional, defaults to 5)
   - (`richTextSchema` Object, optional - your custom schema for RichTextRenderer)
+  - (`resolveNestedRelations` Boolean, optional - By default are true)
 - (`endpoint` String, optional)
 
 #### Activating request cache
