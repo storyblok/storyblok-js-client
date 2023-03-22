@@ -9,7 +9,8 @@
 		"forceConsistentCasingInFileNames": true,
 		"declaration": true,
 		"declarationDir": "dist/types",
-		"emitDeclarationOnly": true
+		"emitDeclarationOnly": true,
+		"lib": ["ESNext"]
 	},
 	"extends": "@tsconfig/recommended/tsconfig.json",
 	"$schema": "https://json.schemastore.org/tsconfig",
