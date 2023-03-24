@@ -67,7 +67,7 @@ class SbFetch {
 	}
 
 	private async _responseHandler(res: Response) {
-		const headers: string[] = []
+		const headers = new Map<string, string>()
 		const response = {
 			data: {},
 			headers: {},
@@ -81,8 +81,8 @@ class SbFetch {
 			})
 		}
 
-		for (const pair of res.headers.entries()) {
-			headers[pair[0] as any] = pair[1]
+		for (const [key, value] of res.headers.entries()) {
+			headers.set(key, value)
 		}
 
 		response.headers = { ...headers }
