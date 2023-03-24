@@ -85,7 +85,8 @@ const paragraph: NodeSchema = () => {
 const emoji: NodeSchema = (node: ISbNode) => {
 	const attrs = {
 		['data-type']: 'emoji',
-		['data-name']: node.attrs.name
+		['data-name']: node.attrs.name,
+		emoji: node.attrs.emoji
 	}
 
 	return {

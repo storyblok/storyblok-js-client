@@ -456,3 +456,49 @@ export const BOLD_TEXT = {
     },
   ],
 }
+
+export const TEXT_WITH_EMOJI = {
+  "type": "doc",
+  "content": [
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "text": "Text with a emoji in the end ",
+          "type": "text"
+        },
+        {
+          "type": "emoji",
+          "attrs": {
+            "name": "smile",
+            "emoji": "😄",
+            "fallbackImage": "https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/1f604.png"
+          }
+        },
+      ]
+    }
+  ]
+}
+
+export const TEXT_WITH_EMOJI_VIA_FALLBACKIMAGE = {
+  "type": "doc",
+  "content": [
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "text": "Text with a emoji in the end ",
+          "type": "text"
+        },
+        {
+          "type": "emoji",
+          "attrs": {
+            "name": "trollface",
+            "emoji": null,
+            "fallbackImage": "https://github.githubassets.com/images/icons/emoji/trollface.png"
+          }
+        },
+      ]
+    }
+  ]
+}
