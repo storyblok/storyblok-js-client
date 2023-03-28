@@ -77,31 +77,58 @@ export interface ISbComponentType<T extends string> {
 export interface ISbStoryData<
 	Content = ISbComponentType<string> & { [index: string]: any }
 > {
-	alternates: ISbAlternateObject[]
-	content: Content
-	created_at: string
-	full_slug: string
-	group_id: string
 	id: number
-	is_startpage: boolean
-	meta_data: any
-	name: string
-	parent_id: number
-	position: number
-	published_at: string | null
-	first_published_at: string | null
-	slug: string
-	lang: string
+	uuid?: string
+	name?: string
+	slug?: string
+	full_slug?: string
 	default_full_slug?: string
-	path?: string
+	created_at?: string
+	published_at?: string
+	first_published_at?: string
+	released_id?: number
+	lang?: 'default'
+	content: Content
+	position?: number
+	is_startpage?: boolean
+	parent_id?: number
+	group_id?: string
+	alternates: ISbAlternateObject[]
 	translated_slugs?: {
-		path: string
-		name: string | null
-		lang: ISbStoryData['lang']
+		path?: string
+		name?: string
+		lang?: ISbStoryData['lang']
 	}[]
-	sort_by_date: string | null
-	tag_list: string[]
-	uuid: string
+	links?: object[]
+	rels?: object[]
+	sort_by_date?: string
+	tag_list?: string[]
+	meta_data?: object
+	path?: string
+}
+
+export interface ISBStoryDataResponse extends ISbStoryData {
+	breadcrumbs?: object[]
+	can_not_view?: boolean
+	default_root?: boolean
+	deleted_at?: string
+	disble_fe_editor?: boolean
+	expired_at?: string
+	imported_at?: string
+	is_folder?: boolean
+	is_scheduled?: boolean
+	last_author?: object
+	localized_paths?: []
+	parent?: object
+	pinned?: boolean
+	preview_token?: string
+	publish_at?: string
+	published?: boolean
+	space_role_ids?: []
+	translated_stories?: []
+	unpublished_changes?: boolean
+	updated_at?: string
+	user_ids?: []
 }
 
 export interface ISbAlternateObject {
@@ -206,8 +233,8 @@ export interface ISbNode extends Element {
 		href?: string
 		level?: number
 		linktype?: string
-		custom?: LinkCustomAttributes,
-		[key: string]: any,
+		custom?: LinkCustomAttributes
+		[key: string]: any
 	}
 }
 
@@ -265,8 +292,8 @@ export interface ISbRichtext {
 }
 
 export interface LinkCustomAttributes {
-	rel?: string,
-	title?: string,
+	rel?: string
+	title?: string
 	[key: string]: any
 }
 
