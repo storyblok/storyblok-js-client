@@ -13,6 +13,7 @@ import {
 	ISbStories,
 	ISbStory,
 	ISbStoryData,
+	ISBStoryDataResponse,
 	ISbStoryParams,
 	ISbContentMangmntAPI,
 	ISbNode,
@@ -86,9 +87,13 @@ class Storyblok {
 			const protocol = config.https === false ? 'http' : 'https'
 
 			if (!config.oauthToken) {
-				endpoint = `${protocol}://${getRegion(config.region)}/${'v2' as Version}`
+				endpoint = `${protocol}://${getRegion(config.region)}/${
+					'v2' as Version
+				}`
 			} else {
-				endpoint = `${protocol}://${getRegion(config.region)}/${'v1' as Version}`
+				endpoint = `${protocol}://${getRegion(config.region)}/${
+					'v1' as Version
+				}`
 			}
 		}
 
@@ -374,7 +379,7 @@ class Storyblok {
 		params: ISbStoriesParams,
 		resolveId: string
 	): Promise<void> {
-		let links: (ISbStoryData | ISbLinkURLObject | string)[] = []
+		let links: (ISBStoryDataResponse | ISbLinkURLObject | string)[] = []
 
 		if (responseData.link_uuids) {
 			const relSize = responseData.link_uuids.length

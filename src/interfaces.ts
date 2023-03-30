@@ -78,7 +78,7 @@ export interface ISbStoryData<
 	Content = ISbComponentType<string> & { [index: string]: any }
 > {
 	id: number
-	uuid?: string
+	uuid: string
 	name?: string
 	slug?: string
 	full_slug?: string
