@@ -10,7 +10,7 @@ let Storyblok = new StoryblokClient({
 describe('getAll function', () => {
 	test("getAll('cdn/stories') should return all stories", async () => {
 		const result = await Storyblok.getAll('cdn/stories')
-		expect(result.length).toBe(25)
+		expect(result.length).toBe(28)
 	})
 
 	test("getAll('cdn/stories') should return all stories with filtered results", async () => {
