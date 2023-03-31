@@ -217,6 +217,25 @@ interface ISbResponse {
 
 One should catch the exception and handle it accordingly.
 
+### Resolve relations with bridge
+With this parameter, you can resolve relations with live updates in the Storyblok JS bridge input event. With the `resolve_relations` parameter, you can resolve content entries that are teo levels deep, such as `resolve_relations=page.author, page.products. Resolved relations can be found in root of response under the property rels. You can check out more on resolve_relations with our tutotial [here](https://www.storyblok.com/tp/using-relationship-resolving-to-include-other-content-entries)
+
+```javascript 
+window.storyblok.resolveRelations(storyObject, relationsToResolve, callbackWhenResolved) 
+```
+
+**Example**
+
+```javascript
+window.storyblok.on('input', (event) => {
+  window.storyblok.addComments(event.story.content, event.story.id)
+  window.storyblok.resolveRelations(event.story, ['post.author', 'post.categories'], () => {
+    // event.story.content has now the resolved relations
+    // this.content = event.story.content
+  })
+})
+```
+
 ### Method `Storyblok#get`
 
 With this method you can get single or multiple items. The multiple items are paginated and you will receive 25 items per page by default. If you want to get all items at once use the `getAll` method.
