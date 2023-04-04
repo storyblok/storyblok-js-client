@@ -230,8 +230,6 @@ window.storyblok.resolveRelations(storyObject, relationsToResolve, callbackWhenR
 window.storyblok.on('input', (event) => {
   window.storyblok.addComments(event.story.content, event.story.id)
   window.storyblok.resolveRelations(event.story, ['post.author', 'post.categories'], () => {
-    // event.story.content has now the resolved relations
-    // this.content = event.story.content
   })
 })
 ```
