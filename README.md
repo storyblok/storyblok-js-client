@@ -217,8 +217,8 @@ interface ISbResponse {
 
 One should catch the exception and handle it accordingly.
 
-### Resolve relations with bridge
-With this parameter, you can resolve relations with live updates in the Storyblok JS bridge input event. With the `resolve_relations` parameter, you can resolve content entries that are teo levels deep, such as `resolve_relations=page.author, page.products. Resolved relations can be found in root of response under the property rels. You can check out more on resolve_relations with our tutotial [here](https://www.storyblok.com/tp/using-relationship-resolving-to-include-other-content-entries)
+### Resolve relations using the Storyblok Bridge
+With this parameter, you can resolve relations with live updates in the Storyblok JS Bridge input event. With the `resolve_relations` parameter, you can resolve content entries that are two levels deep, such as `resolve_relations=page.author,page.products`. Resolved relations can be found in the root of the response under the property `rels`. You can learn more about `resolve_relations` in [this tutorial](https://www.storyblok.com/tp/using-relationship-resolving-to-include-other-content-entries)
 
 ```javascript 
 window.storyblok.resolveRelations(storyObject, relationsToResolve, callbackWhenResolved) 
