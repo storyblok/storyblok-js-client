@@ -192,7 +192,7 @@ test('image to generate img tag with optimization and srcset and sizes', () => {
 })
 
 test('image to generate img tag with optimization and multiple options', () => {
-	const options = { 
+	const options = {
 		optimizeImages: {
 			loading: 'lazy',
 			class: 'w-full',
@@ -207,12 +207,12 @@ test('image to generate img tag with optimization and multiple options', () => {
 			  quality: 95,
 			  rotate: 180
 			},
-			srcset: [360, 1024, 1500], 
+			srcset: [360, 1024, 1500],
 			sizes: [
-				'(max-width: 767px) 100vw', 
-				'(max-width: 1024px) 768px', 
+				'(max-width: 767px) 100vw',
+				'(max-width: 1024px) 768px',
 				'1500px'
-			] 
+			]
 		}
 	}
 
@@ -488,7 +488,7 @@ test('should render a h1 title with a anchor in the middle of the text', () => {
 
 test('should render a text with text color', () => {
 	const result = resolver.render(TEXT_COLOR_DATA)
-	const expected = '<span style="background-color:#E72929">Colored text</span>'
+	const expected = '<span style="color:#E72929">Colored text</span>'
 
 	expect(result).toBe(expected)
 })
