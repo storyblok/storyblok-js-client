@@ -210,7 +210,7 @@ const highlight: MarkSchema = (node: ISbNode) => {
 
 const textStyle: MarkSchema = (node: ISbNode) => {
 	const attrs = {
-		['style']: `background-color:${node.attrs.color}`,
+		['style']: `color:${node.attrs.color}`,
 	}
 	return {
 		tag: [
