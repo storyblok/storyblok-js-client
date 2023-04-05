@@ -17,8 +17,8 @@ type TComponentFieldTypes =
 
 type TComponentSchema = {
 	[key: string]: {
-		id: number
-		type: TComponentFieldTypes
+		id?: number
+		type?: TComponentFieldTypes
 		pos?: number
 		translatable?: boolean
 		required?: boolean
@@ -51,6 +51,8 @@ type TComponentSchema = {
 		disable_time?: boolean
 		max_length?: number
 		filetypes?: string[]
+		title?: string
+		image?: string
 	}
 }
 
