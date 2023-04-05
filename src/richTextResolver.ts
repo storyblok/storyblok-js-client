@@ -5,8 +5,28 @@ type HtmlEscapes = {
 	[key: string]: string
 }
 
-type RenderOptions = { 
-	optimizeImages: boolean 
+type OptimizeImagesOptions =
+	| boolean
+	| {
+			class?: string
+			filters?: {
+				blur?: number
+				brightness?: number
+				fill?: string
+				format?: 'webp' | 'jpeg' | 'png'
+				grayscale?: boolean
+				quality?: number
+				rotate?: 90 | 180 | 270
+			}
+			height?: number
+			loading?: 'lazy' | 'eager'
+			sizes?: string[]
+			srcset?: (number | [number, number])[]
+			width?: number
+	  }
+
+type RenderOptions = {
+	optimizeImages?: OptimizeImagesOptions
 }
 
 const escapeHTML = function (string: string) {
@@ -55,7 +75,10 @@ class RichTextResolver {
 		this.marks[key] = schema
 	}
 
-	public render(data?: ISbRichtext, options: RenderOptions = { optimizeImages: false } ) {
+	public render(
+		data?: ISbRichtext,
+		options: RenderOptions = { optimizeImages: false }
+	) {
 		if (data && data.content && Array.isArray(data.content)) {
 			let html = ''
 
@@ -63,8 +86,9 @@ class RichTextResolver {
 				html += this.renderNode(node)
 			})
 
-			if (options.optimizeImages)
-				return html.replace(/a.storyblok.com\/f\/(\d+)\/([^.]+)\.(gif|jpg|jpeg|png|tif|tiff|bmp)/g, "a.storyblok.com/f/$1/$2.$3/m/")
+			if (options.optimizeImages) {
+				return this.optimizeImages(html, options.optimizeImages)
+			}
 
 			return html
 		}
@@ -73,6 +97,145 @@ class RichTextResolver {
 			'The render method must receive an object with a content field, which is an array'
 		)
 		return ''
+	}
+
+	private optimizeImages(html: string, options: OptimizeImagesOptions): string {
+		let w = 0
+		let h = 0
+		let imageAttributes = ''
+		let filters = ''
+
+		if (typeof options !== 'boolean') {
+			if (typeof options.width === 'number' && options.width > 0) {
+				imageAttributes += `width="${options.width}" `
+				w = options.width
+			}
+
+			if (typeof options.height === 'number' && options.height > 0) {
+				imageAttributes += `height="${options.height}" `
+				h = options.height
+			}
+
+			if (options.loading === 'lazy' || options.loading === 'eager') {
+				imageAttributes += `loading="${options.loading}" `
+			}
+
+			if (typeof options.class === 'string' && options.class.length > 0) {
+				imageAttributes += `class="${options.class}" `
+			}
+
+			if (options.filters) {
+				if (
+					typeof options.filters.blur === 'number' &&
+					options.filters.blur >= 0 &&
+					options.filters.blur <= 100
+				) {
+					filters += `:blur(${options.filters.blur})`
+				}
+
+				if (
+					typeof options.filters.brightness === 'number' &&
+					options.filters.brightness >= -100 &&
+					options.filters.brightness <= 100
+				) {
+					filters += `:brightness(${options.filters.brightness})`
+				}
+
+				if (
+					options.filters.fill &&
+					(options.filters.fill.match(/[0-9A-Fa-f]{6}/g) ||
+						options.filters.fill === 'transparent')
+				) {
+					filters += `:fill(${options.filters.fill})`
+				}
+
+				if (
+					options.filters.format &&
+					['webp', 'png', 'jpeg'].includes(options.filters.format)
+				) {
+					filters += `:format(${options.filters.format})`
+				}
+
+				if (
+					typeof options.filters.grayscale === 'boolean' &&
+					options.filters.grayscale
+				) {
+					filters += ':grayscale()'
+				}
+
+				if (
+					typeof options.filters.quality === 'number' &&
+					options.filters.quality >= 0 &&
+					options.filters.quality <= 100
+				) {
+					filters += `:quality(${options.filters.quality})`
+				}
+
+				if (
+					options.filters.rotate &&
+					[90, 180, 270].includes(options.filters.rotate)
+				) {
+					filters += `:rotate(${options.filters.rotate})`
+				}
+
+				if (filters.length > 0) filters = '/filters' + filters
+			}
+		}
+
+		if (imageAttributes.length > 0) {
+			html = html.replace(/<img/g, `<img ${imageAttributes.trim()}`)
+		}
+
+		const parameters =
+			w > 0 || h > 0 || filters.length > 0 ? `${w}x${h}${filters}` : ''
+
+		html = html.replace(
+			/a.storyblok.com\/f\/(\d+)\/([^.]+)\.(gif|jpg|jpeg|png|tif|tiff|bmp)/g,
+			`a.storyblok.com/f/$1/$2.$3/m/${parameters}`
+		)
+
+		if (typeof options !== 'boolean' && (options.sizes || options.srcset)) {
+			html = html.replace(/<img.*?src=["|'](.*?)["|']/g, (value: string) => {
+				const url = value.match(
+					/a.storyblok.com\/f\/(\d+)\/([^.]+)\.(gif|jpg|jpeg|png|tif|tiff|bmp)/g
+				)
+
+				if (url && url.length > 0) {
+					const imageAttributes = {
+						srcset: options.srcset
+							?.map((value) => {
+								if (typeof value === 'number') {
+									return `//${url}/m/${value}x0${filters} ${value}w`
+								}
+
+								if (typeof value === 'object' && value.length === 2) {
+									let w = 0
+									let h = 0
+									if (typeof value[0] === 'number') w = value[0]
+									if (typeof value[1] === 'number') h = value[1]
+									return `//${url}/m/${w}x${h}${filters} ${w}w`
+								}
+							})
+							.join(', '),
+						sizes: options.sizes?.map((size) => size).join(', '),
+					}
+
+					let renderImageAttributes = ''
+					if (imageAttributes.srcset) {
+						renderImageAttributes += `srcset="${imageAttributes.srcset}" `
+					}
+					if (imageAttributes.sizes) {
+						renderImageAttributes += `sizes="${imageAttributes.sizes}" `
+					}
+
+					return value.replace(/<img/g, `<img ${renderImageAttributes.trim()}`)
+				}
+
+				return value
+			})
+		}
+
+		return html
 	}
 
 	private renderNode(item: ISbRichtext) {
@@ -104,6 +267,8 @@ class RichTextResolver {
 			html.push(this.renderTag(node.singleTag, ' /'))
 		} else if (node && node.html) {
 			html.push(node.html)
+		} else if (item.type === 'emoji') {
+			html.push(this.renderEmoji(item))
 		}
 
 		if (node && node.tag) {
@@ -186,6 +351,26 @@ class RichTextResolver {
 		if (typeof node === 'function') {
 			return node(item)
 		}
+	}
+
+	private renderEmoji(item: ISbRichtext) {
+		if (item.attrs.emoji) {
+			return item.attrs.emoji
+		}
+
+		const emojiImageContainer = [
+			{
+				tag: 'img',
+				attrs: {
+					src: item.attrs.fallbackImage,
+					draggable: 'false',
+					loading: 'lazy',
+					align: 'absmiddle',
+				},
+			},
+		] as unknown as ISbTag[]
+
+		return this.renderTag(emojiImageContainer, ' /')
 	}
 }
 

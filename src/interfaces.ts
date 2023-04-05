@@ -214,6 +214,7 @@ export interface ISbError {
 }
 
 export interface ISbNode extends Element {
+	content: object[]
 	attrs: {
 		anchor?: string
 		body: Array<ISbComponentType<any>>

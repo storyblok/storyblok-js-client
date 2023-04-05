@@ -55,6 +55,7 @@ const heading: NodeSchema = (node: ISbNode) => {
 		tag: `h${node.attrs.level}`,
 	}
 }
+
 const image: NodeSchema = (node: ISbNode) => {
 	return {
 		singleTag: [
@@ -84,7 +85,8 @@ const paragraph: NodeSchema = () => {
 const emoji: NodeSchema = (node: ISbNode) => {
 	const attrs = {
 		['data-type']: 'emoji',
-		['data-name']: node.attrs.name
+		['data-name']: node.attrs.name,
+		emoji: node.attrs.emoji
 	}
 
 	return {
@@ -157,6 +159,7 @@ const link: MarkSchema = (node: ISbNode) => {
 		],
 	}
 }
+
 const styled: MarkSchema = (node: ISbNode) => {
 	return {
 		tag: [
@@ -180,6 +183,17 @@ const superscript: MarkSchema = () => {
 	}
 }
 
+const anchor: MarkSchema = (node: ISbNode) => {
+	return {
+		tag: [
+			{
+				tag: 'span',
+				attrs: node.attrs,
+			},
+		],
+	}
+}
+
 const highlight: MarkSchema = (node: ISbNode) => {
 	const attrs = {
 		['style']: `background-color:${node.attrs.color};`,
@@ -196,7 +210,7 @@ const highlight: MarkSchema = (node: ISbNode) => {
 
 const textStyle: MarkSchema = (node: ISbNode) => {
 	const attrs = {
-		['style']: `background-color:${node.attrs.color}`,
+		['style']: `color:${node.attrs.color}`,
 	}
 	return {
 		tag: [
@@ -233,6 +247,7 @@ export default {
 		styled,
 		subscript,
 		superscript,
+		anchor,
 		highlight,
 		textStyle,
 	},

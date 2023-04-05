@@ -352,6 +352,60 @@ export const LONG_TEXT_WITH_LINKS_SUB_SUP_SCRIPTS = {
   ]
 }
 
+export const PARAGRAPH_WITH_ANCHOR_IN_THE_MIDDLE = {
+  "type": "doc",
+  "content": [
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "text": "a long text with a super nice ",
+          "type": "text"
+        },
+        {
+          "text": "anchor here",
+          "type": "text",
+          "marks": [
+            {
+              "type": "anchor",
+              "attrs": {
+                "id": "test2"
+              }
+            }
+          ]
+        },
+        {
+          "text": ", and at the end of the text is a normal tag",
+          "type": "text"
+        }
+      ]
+    }
+  ]
+}
+
+export const PARAGRAPH_WITH_ANCHOR = {
+  "type": "doc",
+  "content": [
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "text": "Paragraph with anchor in the midle",
+          "type": "text",
+          "marks": [
+            {
+              "type": "anchor",
+              "attrs": {
+                "id": "test"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+
 export const TEXT_COLOR_DATA = {
   type: 'doc',
   content: [
@@ -401,4 +455,50 @@ export const BOLD_TEXT = {
       text: 'Lorem Ipsum',
     },
   ],
+}
+
+export const TEXT_WITH_EMOJI = {
+  "type": "doc",
+  "content": [
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "text": "Text with a emoji in the end ",
+          "type": "text"
+        },
+        {
+          "type": "emoji",
+          "attrs": {
+            "name": "smile",
+            "emoji": "😄",
+            "fallbackImage": "https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/1f604.png"
+          }
+        },
+      ]
+    }
+  ]
+}
+
+export const TEXT_WITH_EMOJI_VIA_FALLBACKIMAGE = {
+  "type": "doc",
+  "content": [
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "text": "Text with a emoji in the end ",
+          "type": "text"
+        },
+        {
+          "type": "emoji",
+          "attrs": {
+            "name": "trollface",
+            "emoji": null,
+            "fallbackImage": "https://github.githubassets.com/images/icons/emoji/trollface.png"
+          }
+        },
+      ]
+    }
+  ]
 }

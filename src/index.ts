@@ -136,7 +136,7 @@ class Storyblok {
 		this.cache = config.cache || { clear: 'manual' }
 		this.helpers = new SbHelpers()
 		this.resolveCounter = 0
-		this.resolveNestedRelations = false
+		this.resolveNestedRelations = config.resolveNestedRelations || true
 
 		this.client = new SbFetch({
 			baseURL: endpoint,
