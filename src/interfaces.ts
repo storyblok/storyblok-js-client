@@ -4,11 +4,54 @@ import { ResponseFn } from './sbFetch'
  * @description Exports all the Managememt API Interfaces
  *
  **/
-import { ISbAsset } from './MAPIInterfaces/MAPIAssets'
-
-import { ISbContentMAPIComponent } from './MAPIInterfaces/MAPIComponents'
+import {
+	ISbContentMAPIComponentGroup,
+	ISbContentMAPIComponent,
+} from './MAPIInterfaces/MAPIComponents'
 
 import { ISbContentMAPIStory } from './MAPIInterfaces/MAPIStories'
+import { ISBContentMAPIActivity } from './MAPIInterfaces/MAPIActivities'
+import {
+	ISBContentMAPIApprovals,
+	ISBContentMAPIReleaseApproval,
+} from './MAPIInterfaces/MAPIApprovals'
+import { ISbAsset, ISbAssetFolder } from './MAPIInterfaces/MAPIAssets'
+import { ISbContentMAPIBranchDeployments } from './MAPIInterfaces/MAPIBranchDeployments'
+import { ISbContentMAPIDataSource } from './MAPIInterfaces/MAPIDataSources'
+import { ISBContentMAPIFieldTypes } from './MAPIInterfaces/MAPIFieldTypes'
+import { ISBContentMAPIPresets } from './MAPIInterfaces/MAPIPresets'
+import { ISbContentMAPIReleases } from './MAPIInterfaces/MAPIReleases'
+import {
+	ISBContentMAPISpace,
+	ISBContentMAPISpaceRoles,
+} from './MAPIInterfaces/MAPISpaces'
+import { ISBContentMAPITask } from './MAPIInterfaces/MAPITasks'
+import {
+	ISbContentMAPIWorkflowStage,
+	ISbContentMAPIWorkflowStageChanges,
+} from './MAPIInterfaces/MAPIWorkflowStages'
+
+export type SbMAPIParams =
+	| ISbContentMAPIComponentGroup
+	| ISbContentMAPIComponent
+	| ISbContentMAPIStory
+	| ISBContentMAPIActivity
+	| ISBContentMAPIApprovals
+	| ISBContentMAPIReleaseApproval
+	| ISbAsset
+	| ISbAssetFolder
+	| ISbContentMAPIBranchDeployments
+	| ISbContentMAPIDataSource
+	| ISBContentMAPIFieldTypes
+	| ISBContentMAPIPresets
+	| ISbContentMAPIReleases
+	| ISBContentMAPISpace
+	| ISBContentMAPISpaceRoles
+	| ISBContentMAPITask
+	| ISbContentMAPIWorkflowStage
+	| ISbContentMAPIWorkflowStageChanges
+
+export type ISbMergedParams = ISbStoriesParams & SbMAPIParams & { id?: number }
 
 export type { ISbAsset, ISbContentMAPIComponent, ISbContentMAPIStory }
 /**
@@ -221,8 +264,8 @@ export interface ISbNode extends Element {
 		href?: string
 		level?: number
 		linktype?: string
-		custom?: LinkCustomAttributes,
-		[key: string]: any,
+		custom?: LinkCustomAttributes
+		[key: string]: any
 	}
 }
 
@@ -270,8 +313,8 @@ export interface ISbRichtext {
 }
 
 export interface LinkCustomAttributes {
-	rel?: string,
-	title?: string,
+	rel?: string
+	title?: string
 	[key: string]: any
 }
 

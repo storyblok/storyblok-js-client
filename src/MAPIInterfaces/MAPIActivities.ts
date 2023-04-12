@@ -1,5 +1,5 @@
 export interface ISBContentMAPIActivity {
-	id: number
+	id?: number
 	trackable_id?: number
 	trackable_type?: string
 	owner_id?: number
