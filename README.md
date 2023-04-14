@@ -666,6 +666,23 @@ let rendered = rteResolver.render({
 console.log(rendered)
 ```
 
+### Handling access token overwrite
+We've enabled handling access token overwrite in the javascript client. 
+This means that if you have multiple access tokens for the same space, you can overwrite the default access token with the one you want to use for a specific request. You can do this by using a `.catch` method as shown below
+
+
+```javascript
+const public = 'token1'
+const preview = 'token2'
+```
+
+You can pass the tokens as follows:
+  
+```javascript
+client.getStories({token: 'preview'...}).then(previewResponse => ... ).catch()
+client.getStories({token: 'public'...}).then(publicResponse => ... ).catch()
+```
+
 ## 🔗 Related Links
 
 - **[Storyblok & Javascript on GitHub](https://github.com/search?q=org%3Astoryblok+topic%3Ajavascript)**: Check all of our Javascript open source repos;
