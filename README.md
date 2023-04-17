@@ -667,9 +667,7 @@ console.log(rendered)
 ```
 
 ### Handling access token overwrite
-We've enabled handling access token overwrite in the javascript client. 
-This means that if you have multiple access tokens for the same space, you can overwrite the default access token with the one you want to use for a specific request. You can do this by using a `.catch` method as shown below
-
+You can overwrte an access token, and prevent errors from the function call by adding a `.catch()` method for each access token as shown below. 
 
 ```javascript
 const public = 'token1'
