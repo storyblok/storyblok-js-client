@@ -666,6 +666,21 @@ let rendered = rteResolver.render({
 console.log(rendered)
 ```
 
+### Handling access token overwrite
+You can overwrte an access token, and prevent errors from the function call by adding a `.catch()` method for each access token as shown below. 
+
+```javascript
+const public = 'token1'
+const preview = 'token2'
+```
+
+You can pass the tokens as follows:
+  
+```javascript
+client.getStories({token: 'preview'...}).then(previewResponse => ... ).catch()
+client.getStories({token: 'public'...}).then(publicResponse => ... ).catch()
+```
+
 ## 🔗 Related Links
 
 - **[Storyblok & Javascript on GitHub](https://github.com/search?q=org%3Astoryblok+topic%3Ajavascript)**: Check all of our Javascript open source repos;
