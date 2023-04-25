@@ -286,7 +286,7 @@ export type MarkSchema = {
  **/
 export interface ISbContentMAPI<T = void> {
 	auxiliaryInterfaces?: T[]
-	story: ISbContentMAPIStory
+	story?: ISbContentMAPIStory
 	component?: ISbContentMAPIComponent
 	force_update?: '1' | null
 	release_id?: number
