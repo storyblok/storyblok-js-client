@@ -64,7 +64,7 @@ type Version = ObjectValues<typeof VERSION>
 
 class Storyblok {
 	private client: SbFetch
-	private maxRetries?: number | 5
+	private maxRetries: number
 	private throttle: ThrottleFn
 	private accessToken: string
 	private cache: ISbCache
@@ -124,7 +124,7 @@ class Storyblok {
 			this.setComponentResolver(config.componentResolver)
 		}
 
-		this.maxRetries = config.maxRetries
+		this.maxRetries = config.maxRetries || 5
 		this.throttle = throttledQueue(this.throttledRequest, rateLimit, 1000)
 		this.accessToken = config.accessToken || ''
 		this.relations = {} as RelationsType
@@ -582,7 +582,8 @@ class Storyblok {
 					if (error.response && error.response.status === 429) {
 						retries = retries ? retries + 1 : 0
 
-						if (this.maxRetries && retries < this.maxRetries) {
+						if (retries < this.maxRetries) {
+							console.log(`Hit rate limit. Retrying in ${retries} seconds.`);
 							await this.helpers.delay(1000 * retries)
 							return this.cacheResponse(url, params, retries)
 								.then(resolve)
