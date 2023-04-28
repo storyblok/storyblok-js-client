@@ -296,7 +296,7 @@ Storyblok.getAll('cdn/stories', {
 ```javascript
 Storyblok
   .post('spaces/<YOUR_SPACE_ID>/stories', {
-    story: {name 'xy', slug: 'xy'}
+    story: {name: 'xy', slug: 'xy'}
   })
   .then((response) => {
     console.log(response);
@@ -319,7 +319,7 @@ Storyblok
 ```javascript
 Storyblok
   .put('spaces/<YOUR_SPACE_ID>/stories/1', {
-    story: {name 'xy', slug: 'xy'}
+    story: {name: 'xy', slug: 'xy'}
   })
   .then((response) => {
     console.log(response);
