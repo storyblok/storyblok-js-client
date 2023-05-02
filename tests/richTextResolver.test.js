@@ -1,7 +1,10 @@
 /* eslint-disable no-undef */
 import { expect, test } from 'vitest'
 import StoryblokClient from '../'
-import customSchema from './customSchema'
+import RichTextResolver from '../src/richTextResolver'
+
+import customSchema from './mocks/customSchema'
+
 import {
 	IMAGE_DATA,
 	SPAN_WITH_RED_CLASS,
@@ -20,15 +23,8 @@ import {
 	TEXT_WITH_EMOJI_VIA_FALLBACKIMAGE
 } from './constants/richTextResolver'
 
-const TOKEN = 'w0yFvs04aKF2rpz6F8OfIQtt'
 
-let client = new StoryblokClient({
-	accessToken: TOKEN,
-	cache: { type: 'memory', clear: 'auto' },
-})
-
-// get the resolver function from StoryblokClient
-const resolver = client.richTextResolver
+const resolver = new RichTextResolver()
 
 test('call render function without any argument return an empty string', () => {
 	expect(resolver.render()).toBe('')
@@ -361,6 +357,7 @@ test('Complex and immutability test', () => {
 })
 
 test('test with a custom schema from StoryblokRich', () => {
+	const TOKEN = 'w0yFvs04aKF2rpz6F8OfIQtt'
 	const internalClient = new StoryblokClient({
 		accessToken: TOKEN,
 		richTextSchema: customSchema,
