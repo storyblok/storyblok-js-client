@@ -34,6 +34,7 @@
 		"build": "node vite.build.mjs && tsc",
 		"demo": "vite serve playground",
 		"test": "vitest run",
+		"test:coverage": "vitest run --coverage",
 		"prepare": "npm run build"
 	},
 	"repository": {
@@ -54,6 +55,7 @@
 		"@tsconfig/recommended": "^1.0.1",
 		"@typescript-eslint/eslint-plugin": "^5.43.0",
 		"@typescript-eslint/parser": "^5.43.0",
+		"@vitest/coverage-c8": "^0.30.1",
 		"eslint": "^8.27.0",
 		"eslint-config-prettier": "^8.5.0",
 		"husky": "^8.0.2",
