@@ -98,7 +98,30 @@ class RichTextResolver {
 		}
 
 		console.warn(
-			'The render method must receive an object with a content field, which is an array'
+			`The render method must receive an Object with a "content" field.
+			The "content" field must be an array of nodes as the type ISbRichtext.
+			ISbRichtext:
+				content?: ISbRichtext[]
+				marks?: ISbRichtext[]
+				attrs?: any
+				text?: string
+				type: string
+				
+				Example:
+				{
+					content: [
+						{
+							content: [
+								{
+									text: 'Hello World',
+									type: 'text'
+								}
+							],
+							type: 'paragraph'
+						}
+					],
+					type: 'doc'
+				}`
 		)
 		return ''
 	}
