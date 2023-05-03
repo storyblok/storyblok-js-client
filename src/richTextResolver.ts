@@ -54,6 +54,10 @@ interface ISbNode {
 	[key: string]: ISbSchema | ((arg: ISbRichtext) => any)
 }
 
+interface ISbFunction<T extends any[], R> {
+	(...args: T): R
+}
+
 class RichTextResolver {
 	private marks: ISbNode
 	private nodes: ISbNode
@@ -67,7 +71,7 @@ class RichTextResolver {
 		this.nodes = schema.nodes || []
 	}
 
-	public addNode(key: string, schema: ISbSchema) {
+	public addNode(key: string, schema: ISbSchema | ISbFunction<any, any>) {
 		this.nodes[key] = schema
 	}
 
