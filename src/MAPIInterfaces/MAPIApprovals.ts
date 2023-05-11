@@ -1,6 +1,6 @@
 export interface ISBContentMAPIApprovals {
 	approval: {
-		id: number
+		id?: number
 		status: string
 		story_id: number
 		approver_id: number

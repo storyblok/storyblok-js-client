@@ -5,8 +5,8 @@
  *
  **/
 export interface ISbAsset {
-	filename: string
-	size: string
+	filename?: string
+	size?: string
 	asset_folder_id?: number
 	id?: number
 	validate_upload: '1' | null

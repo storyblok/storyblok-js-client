@@ -4,7 +4,7 @@
  * @reference https://www.storyblok.com/docs/api/management#core-resources/tasks/tasks
  */
 export interface ISBContentMAPITask {
-	id: number
+	id?: number
 	name: string
 	description?: string
 	task_type?: string | 'webhook'

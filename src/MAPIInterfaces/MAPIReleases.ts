@@ -1,5 +1,5 @@
 export interface ISbContentMAPIReleases {
-	id: number
+	id?: number
 	name: string
 	release_at: string
 	branches_to_deploy: number[]

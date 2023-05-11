@@ -31,27 +31,28 @@ import {
 	ISbContentMAPIWorkflowStageChanges,
 } from './MAPIInterfaces/MAPIWorkflowStages'
 
-export type SbMAPIParams =
-	| ISbContentMAPIComponentGroup
-	| ISbContentMAPIComponent
-	| ISbContentMAPIStory
-	| ISBContentMAPIActivity
-	| ISBContentMAPIApprovals
-	| ISBContentMAPIReleaseApproval
-	| ISbAsset
-	| ISbAssetFolder
-	| ISbContentMAPIBranchDeployments
-	| ISbContentMAPIDataSource
-	| ISBContentMAPIFieldTypes
-	| ISBContentMAPIPresets
-	| ISbContentMAPIReleases
-	| ISBContentMAPISpace
-	| ISBContentMAPISpaceRoles
-	| ISBContentMAPITask
-	| ISbContentMAPIWorkflowStage
-	| ISbContentMAPIWorkflowStageChanges
+export interface ISbMAPIParams extends
+	ISbContentMAPIComponentGroup,
+	ISbContentMAPIComponent,
+	ISbContentMAPIStory,
+	ISBContentMAPIActivity,
+	ISBContentMAPIApprovals,
+	ISBContentMAPIReleaseApproval,
+	ISbAsset,
+	ISbAssetFolder,
+	ISbContentMAPIBranchDeployments,
+	ISbContentMAPIDataSource,
+	ISBContentMAPIFieldTypes,
+	ISBContentMAPIPresets,
+	ISbContentMAPIReleases,
+	ISBContentMAPISpace,
+	ISBContentMAPISpaceRoles,
+	ISBContentMAPITask,
+	ISbContentMAPIWorkflowStage,
+	ISbContentMAPIWorkflowStageChanges {}
 
-export type ISbMergedParams = ISbStoriesParams & SbMAPIParams & { id?: number }
+
+export interface ISbMergedParams extends ISbMAPIParams, ISbStoriesParams {}
 
 export type { ISbAsset, ISbContentMAPIComponent, ISbContentMAPIStory }
 /**
@@ -61,7 +62,7 @@ export type { ISbAsset, ISbContentMAPIComponent, ISbContentMAPIStory }
 export interface ISbStoriesParams {
 	token?: string
 	with_tag?: string
-	is_startpage?: 0 | 1
+	is_startpage?: boolean
 	starts_with?: string
 	by_uuids?: string
 	by_uuids_ordered?: string
@@ -88,10 +89,10 @@ export interface ISbStoriesParams {
 	by_slugs?: string
 	excluding_slugs?: string
 	_stopResolving?: boolean
-	component?: string
+	component?: ISbContentMAPIComponent | string
 	filename?: string
 	size?: string
-	datasource?: string
+	datasource?: ISbContentMAPIDataSource
 	dimension?: string
 	content_type?: string
 }

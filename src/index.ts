@@ -603,9 +603,9 @@ class Storyblok {
 	private throttledRequest<T extends Method>(
 		type: T,
 		url: string,
-		params: T extends 'get' ? ISbStoriesParams : ISbMergedParams
+		params: Partial<ISbStoriesParams> & ISbMergedParams
 	): Promise<unknown> {
-		return this.client[type](url, params)
+		return this.client[type](url, params);
 	}
 
 	public cacheVersions(): CachedVersions {

@@ -1,5 +1,5 @@
 export interface ISBContentMAPIFieldTypes {
-	id: number
+	id?: number
 	name: string
 	body: string
 	compiled_body: string | ''

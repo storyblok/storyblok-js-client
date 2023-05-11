@@ -36,8 +36,6 @@ export type ISbContentMAPI_DataSourceEntryPUT =
  *
  **/
 export interface ISbContentMAPIDataSource {
-	datasource: {
-		name: string
-		slug: string
-	}
+	name: string
+	slug: string
 }

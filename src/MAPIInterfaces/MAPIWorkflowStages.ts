@@ -1,12 +1,12 @@
 export interface ISbContentMAPIWorkflowStage {
-	id: number
+	id?: number
 	after_publish_id?: number
 	allow_publish?: boolean
 	is_default?: boolean
 	position?: number
 	allow_all_stages?: boolean
 	allow_all_users?: boolean
-	name?: string
+	name: string | ''
 	color?: string
 	user_ids?: number[]
 	space_role_ids?: number[]
@@ -14,8 +14,8 @@ export interface ISbContentMAPIWorkflowStage {
 }
 
 export interface ISbContentMAPIWorkflowStageChanges {
-	id: number
+	id?: number
 	user_id: number
-	created_at: string
+	created_at?: string
 	workflow_stage_id: number
 }
