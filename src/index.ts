@@ -147,9 +147,11 @@ class Storyblok {
 		this.richTextResolver.addNode('blok', (node: ISbNode) => {
 			let html = ''
 
-			node.attrs.body.forEach((blok) => {
-				html += resolver(blok.component, blok)
-			})
+			if (node.attrs.body) {
+				node.attrs.body.forEach((blok) => {
+					html += resolver(blok.component, blok)
+				})
+			}
 
 			return {
 				html: html,
