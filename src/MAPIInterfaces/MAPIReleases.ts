@@ -5,3 +5,6 @@ export interface ISbContentMAPIReleases {
 	branches_to_deploy: number[]
 	do_release?: boolean
 }
+
+// Aliases
+export type Release = ISbContentMAPIReleases

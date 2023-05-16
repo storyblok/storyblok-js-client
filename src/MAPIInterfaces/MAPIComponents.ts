@@ -87,3 +87,7 @@ export interface ISbContentMAPIComponent {
 	component_group_uuid?: string
 	schema?: TComponentSchema
 }
+
+// Aliases
+export type Component = ISbContentMAPIComponent
+export type ComponentGroup = ISbContentMAPIComponentGroup

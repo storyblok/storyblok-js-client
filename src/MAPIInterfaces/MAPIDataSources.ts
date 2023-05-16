@@ -39,3 +39,9 @@ export interface ISbContentMAPIDataSource {
 	name: string
 	slug: string
 }
+
+// Aliases
+export type DataSource = ISbContentMAPIDataSource
+export type DataSourceEntryPOST = ISbContentMAPI_DataSourceEntryPOST
+export type DataSourceEntryPUT = ISbContentMAPI_DataSourceEntryPUT
+export type DataSourceEntry = DataSourceEntryPOST | DataSourceEntryPUT

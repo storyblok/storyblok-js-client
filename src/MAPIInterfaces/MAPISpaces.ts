@@ -40,3 +40,7 @@ export interface ISBContentMAPISpace {
 		billing_address?: object
 	}
 }
+
+// Aliases
+export type SpaceRoles = ISBContentMAPISpaceRoles
+export type Space = ISBContentMAPISpace

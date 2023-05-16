@@ -23,3 +23,7 @@ export interface ISbAssetFolder {
 		name: string
 	}
 }
+
+// Aliases
+export type Asset = ISbAsset
+export type AssetFolder = ISbAssetFolder

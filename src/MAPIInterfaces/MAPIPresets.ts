@@ -7,3 +7,6 @@ export interface ISBContentMAPIPresets {
 	created_at?: string
 	updated_at?: string
 }
+
+// Aliases
+export type Preset = ISBContentMAPIPresets

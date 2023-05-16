@@ -6,3 +6,6 @@ export interface ISBContentMAPIFieldTypes {
 	space_ids: number[]
 	publish?: boolean
 }
+
+// Aliases
+export type FieldType = ISBContentMAPIFieldTypes

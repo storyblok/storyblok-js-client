@@ -12,3 +12,6 @@ export interface ISBContentMAPIActivity {
 	updated_at?: string
 	space_id?: number
 }
+
+// Alias for ISBContentMAPIActivity
+export type Activity = ISBContentMAPIActivity

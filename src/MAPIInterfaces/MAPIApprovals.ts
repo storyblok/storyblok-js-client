@@ -10,3 +10,7 @@ export interface ISBContentMAPIApprovals {
 export interface ISBContentMAPIReleaseApproval extends ISBContentMAPIApprovals {
 	release_id: number
 }
+
+// Aliases
+export type Approval = ISBContentMAPIApprovals
+export type ReleaseApproval = ISBContentMAPIReleaseApproval

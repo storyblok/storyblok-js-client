@@ -13,3 +13,6 @@ export interface ISBContentMAPITask {
 	last_response?: string
 	lamba_code?: string
 }
+
+// Aliases
+export type Task = ISBContentMAPITask

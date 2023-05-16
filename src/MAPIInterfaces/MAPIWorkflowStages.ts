@@ -19,3 +19,7 @@ export interface ISbContentMAPIWorkflowStageChanges {
 	created_at?: string
 	workflow_stage_id: number
 }
+
+// Aliases
+export type WorkflowStage = ISbContentMAPIWorkflowStage
+export type WorkflowStageChanges = ISbContentMAPIWorkflowStageChanges

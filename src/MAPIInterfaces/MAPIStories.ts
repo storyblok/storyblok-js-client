@@ -54,3 +54,6 @@ export interface ISbContentMAPIStory {
 		lang: ISbContentMAPI['lang']
 	}[]
 }
+
+// Aliases
+export type Story = ISbContentMAPIStory

@@ -3,7 +3,7 @@ import { SbHelpers } from './sbHelpers'
 import { ISbResponse, ISbError, ISbStoriesParams } from './interfaces'
 import Method from './constants'
 
-import { ISbMergedParams } from './interfaces'
+import { ISbCRUDParams, ISbMAPIParams } from './interfaces'
 
 export type ResponseFn = {
 	(arg?: ISbResponse | any): any
@@ -50,19 +50,19 @@ class SbFetch {
 		return this._methodHandler('get')
 	}
 
-	public post(url: string, params: ISbMergedParams) {
+	public post(url: string, params: ISbCRUDParams<ISbMAPIParams>) {
 		this.url = url
 		this.parameters = params
 		return this._methodHandler('post')
 	}
 
-	public put(url: string, params: ISbMergedParams) {
+	public put(url: string, params: ISbCRUDParams<ISbMAPIParams>) {
 		this.url = url
 		this.parameters = params
 		return this._methodHandler('put')
 	}
 
-	public delete(url: string, params: ISbMergedParams) {
+	public delete(url: string, params: ISbCRUDParams<ISbMAPIParams>) {
 		this.url = url
 		this.parameters = params
 		return this._methodHandler('delete')

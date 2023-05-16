@@ -31,28 +31,28 @@ import {
 	ISbContentMAPIWorkflowStageChanges,
 } from './MAPIInterfaces/MAPIWorkflowStages'
 
-export interface ISbMAPIParams extends
-	ISbContentMAPIComponentGroup,
-	ISbContentMAPIComponent,
-	ISbContentMAPIStory,
-	ISBContentMAPIActivity,
-	ISBContentMAPIApprovals,
-	ISBContentMAPIReleaseApproval,
-	ISbAsset,
-	ISbAssetFolder,
-	ISbContentMAPIBranchDeployments,
-	ISbContentMAPIDataSource,
-	ISBContentMAPIFieldTypes,
-	ISBContentMAPIPresets,
-	ISbContentMAPIReleases,
-	ISBContentMAPISpace,
-	ISBContentMAPISpaceRoles,
-	ISBContentMAPITask,
-	ISbContentMAPIWorkflowStage,
-	ISbContentMAPIWorkflowStageChanges {}
+export type ISbMAPIParams =
+	ISbContentMAPIComponentGroup
+	| ISbContentMAPIComponent
+	| ISbContentMAPIStory
+	| ISBContentMAPIActivity
+	| ISBContentMAPIApprovals
+	| ISBContentMAPIReleaseApproval
+	| ISbAsset
+	| ISbAssetFolder
+	| ISbContentMAPIBranchDeployments
+	| ISbContentMAPIDataSource
+	| ISBContentMAPIFieldTypes
+	| ISBContentMAPIPresets
+	| ISbContentMAPIReleases
+	| ISBContentMAPISpace
+	| ISBContentMAPISpaceRoles
+	| ISBContentMAPITask
+	| ISbContentMAPIWorkflowStage
+	| ISbContentMAPIWorkflowStageChanges
 
 
-export interface ISbMergedParams extends ISbMAPIParams, ISbStoriesParams {}
+export type ISbCRUDParams<T> = Partial<T> & ISbStoriesParams
 
 export type { ISbAsset, ISbContentMAPIComponent, ISbContentMAPIStory }
 /**
