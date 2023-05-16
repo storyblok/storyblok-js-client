@@ -54,6 +54,10 @@ interface ISbNode {
 	[key: string]: ISbSchema | ((arg: ISbRichtext) => any)
 }
 
+interface ISbFunction<T extends any[], R> {
+	(...args: T): R
+}
+
 class RichTextResolver {
 	private marks: ISbNode
 	private nodes: ISbNode
@@ -67,7 +71,7 @@ class RichTextResolver {
 		this.nodes = schema.nodes || []
 	}
 
-	public addNode(key: string, schema: ISbSchema) {
+	public addNode(key: string, schema: ISbSchema | ISbFunction<any, any>) {
 		this.nodes[key] = schema
 	}
 
@@ -94,7 +98,30 @@ class RichTextResolver {
 		}
 
 		console.warn(
-			'The render method must receive an object with a content field, which is an array'
+			`The render method must receive an Object with a "content" field.
+			The "content" field must be an array of nodes as the type ISbRichtext.
+			ISbRichtext:
+				content?: ISbRichtext[]
+				marks?: ISbRichtext[]
+				attrs?: any
+				text?: string
+				type: string
+				
+				Example:
+				{
+					content: [
+						{
+							content: [
+								{
+									text: 'Hello World',
+									type: 'text'
+								}
+							],
+							type: 'paragraph'
+						}
+					],
+					type: 'doc'
+				}`
 		)
 		return ''
 	}

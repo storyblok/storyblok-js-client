@@ -296,7 +296,7 @@ Storyblok.getAll('cdn/stories', {
 ```javascript
 Storyblok
   .post('spaces/<YOUR_SPACE_ID>/stories', {
-    story: {name 'xy', slug: 'xy'}
+    story: {name: 'xy', slug: 'xy'}
   })
   .then((response) => {
     console.log(response);
@@ -319,7 +319,7 @@ Storyblok
 ```javascript
 Storyblok
   .put('spaces/<YOUR_SPACE_ID>/stories/1', {
-    story: {name 'xy', slug: 'xy'}
+    story: {name: 'xy', slug: 'xy'}
   })
   .then((response) => {
     console.log(response);
@@ -664,6 +664,21 @@ let rendered = rteResolver.render({
 })
 
 console.log(rendered)
+```
+
+### Handling access token overwrite
+You can overwrte an access token, and prevent errors from the function call by adding a `.catch()` method for each access token as shown below. 
+
+```javascript
+const public = 'token1'
+const preview = 'token2'
+```
+
+You can pass the tokens as follows:
+  
+```javascript
+client.getStories({token: 'preview'...}).then(previewResponse => ... ).catch()
+client.getStories({token: 'public'...}).then(publicResponse => ... ).catch()
 ```
 
 ## 🔗 Related Links
