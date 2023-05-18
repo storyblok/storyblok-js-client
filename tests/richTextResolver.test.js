@@ -17,7 +17,9 @@ import {
 	HIGLIGHT_COLOR_DATA,
 	BOLD_TEXT,
 	TEXT_WITH_EMOJI,
-	TEXT_WITH_EMOJI_VIA_FALLBACKIMAGE
+	TEXT_WITH_EMOJI_VIA_FALLBACKIMAGE,
+	TEXT_WITH_COLORS_MISSING_PARAMETERS,
+	TEXT_MISSING_PARAMETERS,
 } from './constants/richTextResolver'
 
 const TOKEN = 'w0yFvs04aKF2rpz6F8OfIQtt'
@@ -518,6 +520,22 @@ test('should render a anchor in the middle of a text', () => {
 test('should render a text with bold', () => {
 	const result = resolver.render(BOLD_TEXT)
 	const expected = '<b>Lorem Ipsum</b>'
+
+	expect(result).toBe(expected)
+})
+
+test('should not render atributes when they are null or empty string', () => {
+	const result = resolver.render(TEXT_WITH_COLORS_MISSING_PARAMETERS)
+
+	const expected = '<p>Text with highlight colors. And another text with text color.</p>'
+
+	expect(result).toBe(expected)
+})
+
+test('should not render atributes when they are undefined or broken', () => {
+	const result = resolver.render(TEXT_MISSING_PARAMETERS)
+
+	const expected = '<p>Text with highlight colors. And another text with text color.</p><p>Text with highlight colors. And another text with text color.</p>'
 
 	expect(result).toBe(expected)
 })
