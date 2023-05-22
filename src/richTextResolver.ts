@@ -272,7 +272,7 @@ class RichTextResolver {
 			item.marks.forEach((m) => {
 				const mark = this.getMatchingMark(m)
 
-				if (mark) {
+				if (mark && mark.tag !== '') {
 					html.push(this.renderOpeningTag(mark.tag))
 				}
 			})
@@ -309,7 +309,7 @@ class RichTextResolver {
 				.forEach((m) => {
 					const mark = this.getMatchingMark(m)
 
-					if (mark) {
+					if (mark && mark.tag !== '') {
 						html.push(this.renderClosingTag(mark.tag))
 					}
 				})

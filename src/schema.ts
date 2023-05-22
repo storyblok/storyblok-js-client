@@ -195,6 +195,10 @@ const anchor: MarkSchema = (node: ISbNode) => {
 }
 
 const highlight: MarkSchema = (node: ISbNode) => {
+	if (!node.attrs?.color) return {
+		tag: '',
+	}
+
 	const attrs = {
 		['style']: `background-color:${node.attrs.color};`,
 	}
@@ -209,6 +213,10 @@ const highlight: MarkSchema = (node: ISbNode) => {
 }
 
 const textStyle: MarkSchema = (node: ISbNode) => {
+	if (!node.attrs?.color) return {
+		tag: '',
+	}
+
 	const attrs = {
 		['style']: `color:${node.attrs.color}`,
 	}

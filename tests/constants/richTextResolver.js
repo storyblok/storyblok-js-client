@@ -502,3 +502,133 @@ export const TEXT_WITH_EMOJI_VIA_FALLBACKIMAGE = {
     }
   ]
 }
+
+export const TEXT_WITH_COLORS_MISSING_PARAMETERS = {
+  "type": "doc",
+  "content": [
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "text": "Text with ",
+          "type": "text"
+        },
+        {
+          "text": "highlight",
+          "type": "text",
+          "marks": [
+            {
+              "type": "highlight",
+              "attrs": {
+                "color": ""
+              }
+            }
+          ]
+        },
+        {
+          "text": " colors. And another text ",
+          "type": "text"
+        },
+        {
+          "text": "with text",
+          "type": "text",
+          "marks": [
+            {
+              "type": "textStyle",
+              "attrs": {
+                "color": null
+              }
+            }
+          ]
+        },
+        {
+          "text": " color.",
+          "type": "text"
+        }
+      ]
+    }
+  ]
+}
+
+export const TEXT_MISSING_PARAMETERS = {
+  "type": "doc",
+  "content": [
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "text": "Text with ",
+          "type": "text"
+        },
+        {
+          "text": "highlight",
+          "type": "text",
+          "marks": [
+            {
+              "type": "highlight",
+              "attrs": {
+                "color": undefined
+              }
+            }
+          ]
+        },
+        {
+          "text": " colors. And another text ",
+          "type": "text"
+        },
+        {
+          "text": "with text",
+          "type": "text",
+          "marks": [
+            {
+              "type": "textStyle",
+              "attrs": {}
+            }
+          ]
+        },
+        {
+          "text": " color.",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "text": "Text with ",
+          "type": "text"
+        },
+        {
+          "text": "highlight",
+          "type": "text",
+          "marks": [
+            {
+              "type": "highlight",
+              "attrs": {
+                "color": null
+              }
+            }
+          ]
+        },
+        {
+          "text": " colors. And another text ",
+          "type": "text"
+        },
+        {
+          "text": "with text",
+          "type": "text",
+          "marks": [
+            {
+              "type": "textStyle",
+            }
+          ]
+        },
+        {
+          "text": " color.",
+          "type": "text"
+        }
+      ]
+    }
+  ]
+}

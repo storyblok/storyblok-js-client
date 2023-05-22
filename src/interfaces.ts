@@ -202,12 +202,12 @@ export interface ISbNode extends Element {
 	content: object[]
 	attrs: {
 		anchor?: string
-		body: Array<ISbComponentType<any>>
+		body?: Array<ISbComponentType<any>>
 		href?: string
 		level?: number
 		linktype?: string
-		custom?: LinkCustomAttributes,
-		[key: string]: any,
+		custom?: LinkCustomAttributes
+		[key: string]: any | undefined
 	}
 }
 
