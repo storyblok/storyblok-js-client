@@ -77,15 +77,17 @@ export interface ISbContentMAPIComponentGroup {
  *
  **/
 export interface ISbContentMAPIComponent {
-	id?: number
-	name: string
-	display_name?: string
-	image?: string
-	preview?: string
-	is_root?: boolean
-	is_nestable?: boolean
-	component_group_uuid?: string
-	schema?: TComponentSchema
+	comopnent: {
+		id?: number
+		name: string
+		display_name?: string
+		image?: string
+		preview?: string
+		is_root?: boolean
+		is_nestable?: boolean
+		component_group_uuid?: string
+		schema?: TComponentSchema
+	}
 }
 
 // Aliases

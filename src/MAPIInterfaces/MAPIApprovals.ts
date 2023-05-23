@@ -1,3 +1,8 @@
+/**
+ * @interface ISBContentMAPIApprovals
+ * @description This interface is generated from the API endpoint for approvals
+ * @reference https://www.storyblok.com/docs/api/management#core-resources/approvals/approvals
+ */
 export interface ISBContentMAPIApprovals {
 	approval: {
 		id?: number

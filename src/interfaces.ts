@@ -1,60 +1,16 @@
 import { ResponseFn } from './sbFetch'
 
-/**
- * @description Exports all the Managememt API Interfaces
- *
- **/
 import {
-	ISbContentMAPIComponentGroup,
 	ISbContentMAPIComponent,
 } from './MAPIInterfaces/MAPIComponents'
 
-import { ISbContentMAPIStory } from './MAPIInterfaces/MAPIStories'
-import { ISBContentMAPIActivity } from './MAPIInterfaces/MAPIActivities'
 import {
-	ISBContentMAPIApprovals,
-	ISBContentMAPIReleaseApproval,
-} from './MAPIInterfaces/MAPIApprovals'
-import { ISbAsset, ISbAssetFolder } from './MAPIInterfaces/MAPIAssets'
-import { ISbContentMAPIBranchDeployments } from './MAPIInterfaces/MAPIBranchDeployments'
+	ISbContentMAPIStory,
+} from './MAPIInterfaces/MAPIStories'
 import { ISbContentMAPIDataSource } from './MAPIInterfaces/MAPIDataSources'
-import { ISBContentMAPIFieldTypes } from './MAPIInterfaces/MAPIFieldTypes'
-import { ISBContentMAPIPresets } from './MAPIInterfaces/MAPIPresets'
-import { ISbContentMAPIReleases } from './MAPIInterfaces/MAPIReleases'
-import {
-	ISBContentMAPISpace,
-	ISBContentMAPISpaceRoles,
-} from './MAPIInterfaces/MAPISpaces'
-import { ISBContentMAPITask } from './MAPIInterfaces/MAPITasks'
-import {
-	ISbContentMAPIWorkflowStage,
-	ISbContentMAPIWorkflowStageChanges,
-} from './MAPIInterfaces/MAPIWorkflowStages'
 
-export type ISbMAPIParams =
-	ISbContentMAPIComponentGroup
-	| ISbContentMAPIComponent
-	| ISbContentMAPIStory
-	| ISBContentMAPIActivity
-	| ISBContentMAPIApprovals
-	| ISBContentMAPIReleaseApproval
-	| ISbAsset
-	| ISbAssetFolder
-	| ISbContentMAPIBranchDeployments
-	| ISbContentMAPIDataSource
-	| ISBContentMAPIFieldTypes
-	| ISBContentMAPIPresets
-	| ISbContentMAPIReleases
-	| ISBContentMAPISpace
-	| ISBContentMAPISpaceRoles
-	| ISBContentMAPITask
-	| ISbContentMAPIWorkflowStage
-	| ISbContentMAPIWorkflowStageChanges
+export type ISbCRUDParams<T> = T & ISbStoriesParams
 
-
-export type ISbCRUDParams<T> = Partial<T> & ISbStoriesParams
-
-export type { ISbAsset, ISbContentMAPIComponent, ISbContentMAPIStory }
 /**
  * @description End of Management API Interfaces
  */
@@ -92,7 +48,9 @@ export interface ISbStoriesParams {
 	component?: ISbContentMAPIComponent | string
 	filename?: string
 	size?: string
-	datasource?: ISbContentMAPIDataSource
+	datasource?: ISbContentMAPIDataSource | Datasource
+	datasources?: MultipleDatasources[]
+	datasource_entries?: ISbDataSourceEntry[]
 	dimension?: string
 	content_type?: string
 }
@@ -107,6 +65,47 @@ export interface ISbStoryParams {
 	from_release?: string
 	language?: string
 	fallback_lang?: string
+}
+
+/**
+ * @type Datasource
+ * @description Storyblok Datasource type for ISbStoriesParams' interface
+ * @description One use it to handle the API response
+ * @reference https://www.storyblok.com/docs/api/content-delivery/v2#core-resources/datasources/datasources
+ */
+type Datasource = {
+	id:	number
+	name:	string
+	slug:	string
+	dimensions: Dimension[]
+}
+
+/**
+ * @type MultipleDatasources
+ * @description Storyblok Multiple Datasources type for ISbStoriesParams' interface
+ * @description One use it to handle the API response
+ * @reference https://www.storyblok.com/docs/api/content-delivery/v2#core-resources/datasources/retrieve-multiple-datasources
+ */
+type MultipleDatasources = {
+	token:	string
+	page?: number | 1
+	per_page?: number | 25
+}
+
+export interface ISbDataSourceEntry {
+	id?: number
+	name?: string
+	value?: string
+	dimension_value?: string | null
+}
+
+export interface IsBMultipleDataSourceEntries {
+	token: string
+	datasource: string
+	dimension: string | 'en'
+	page: number | 1
+	per_page: number | 25
+	cv: number
 }
 
 type Dimension = {

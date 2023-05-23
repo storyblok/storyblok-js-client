@@ -3,7 +3,11 @@ import { SbHelpers } from './sbHelpers'
 import { ISbResponse, ISbError, ISbStoriesParams } from './interfaces'
 import Method from './constants'
 
-import { ISbCRUDParams, ISbMAPIParams } from './interfaces'
+import { ISbCRUDParams } from './interfaces'
+
+import {
+	ISbMAPIParams
+} from './MAPIInterfaces'
 
 export type ResponseFn = {
 	(arg?: ISbResponse | any): any

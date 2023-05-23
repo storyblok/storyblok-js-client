@@ -20,8 +20,11 @@ import {
 	IMemoryType,
 	ICacheProvider,
 	ISbCRUDParams,
-	ISbMAPIParams,
 } from './interfaces'
+
+import {
+	ISbMAPIParams
+} from './MAPIInterfaces'
 
 let memory: Partial<IMemoryType> = {}
 
@@ -671,38 +674,3 @@ class Storyblok {
 }
 
 export default Storyblok
-
-export type {
-	ISbContentMAPIDataSource,
-	ISbContentMAPI_DataSourceEntryPOST,
-	ISbContentMAPI_DataSourceEntryPUT,
-} from './MAPIInterfaces/MAPIDataSources'
-
-export type { ISbAsset, ISbAssetFolder } from './MAPIInterfaces/MAPIAssets'
-
-export type {
-	ISBContentMAPISpaceRoles,
-	ISBContentMAPISpace,
-} from './MAPIInterfaces/MAPISpaces'
-
-export type { ISBContentMAPITask } from './MAPIInterfaces/MAPITasks'
-
-export type { ISBContentMAPIFieldTypes } from './MAPIInterfaces/MAPIFieldTypes'
-
-export type {
-	ISBContentMAPIApprovals,
-	ISBContentMAPIReleaseApproval,
-} from './MAPIInterfaces/MAPIApprovals'
-
-export type { ISBContentMAPIActivity } from './MAPIInterfaces/MAPIActivities'
-
-export type { ISBContentMAPIPresets } from './MAPIInterfaces/MAPIPresets'
-
-export type {
-	ISbContentMAPIWorkflowStage,
-	ISbContentMAPIWorkflowStageChanges,
-} from './MAPIInterfaces/MAPIWorkflowStages'
-
-export type { ISbContentMAPIReleases } from './MAPIInterfaces/MAPIReleases'
-
-export type { ISbContentMAPIBranchDeployments } from './MAPIInterfaces/MAPIBranchDeployments'

@@ -5,11 +5,18 @@
  *
  **/
 export interface ISbAsset {
+	id: number
 	filename?: string
-	size?: string
+	space_id?: number
+	created_at?: string
+	updated_at?: string
+	deleted_at?: string
+	file?: object
 	asset_folder_id?: number
-	id?: number
-	validate_upload: '1' | null
+	short_filename?: string
+	content_type?: string
+	content_length?: number
+	is_private?: boolean
 }
 
 /**
@@ -20,7 +27,9 @@ export interface ISbAsset {
  **/
 export interface ISbAssetFolder {
 	asset_folder: {
-		name: string
+		id: number
+		name?: string
+		parent_id?: number
 	}
 }
 
