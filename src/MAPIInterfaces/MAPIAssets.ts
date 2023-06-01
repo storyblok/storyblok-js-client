@@ -27,7 +27,7 @@ export interface ISbAsset {
  **/
 export interface ISbAssetFolder {
 	asset_folder: {
-		id: number
+		id?: number
 		name?: string
 		parent_id?: number
 	}

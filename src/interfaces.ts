@@ -7,7 +7,7 @@ import {
 import {
 	ISbContentMAPIStory,
 } from './MAPIInterfaces/MAPIStories'
-import { ISbContentMAPIDataSource } from './MAPIInterfaces/MAPIDataSources'
+import { ISbContentMAPIDataSourceEntry } from './MAPIInterfaces/MAPIDataSources'
 
 export type ISbCRUDParams<T> = T & ISbStoriesParams
 
@@ -48,11 +48,27 @@ export interface ISbStoriesParams {
 	component?: ISbContentMAPIComponent | string
 	filename?: string
 	size?: string
-	datasource?: ISbContentMAPIDataSource | Datasource
+	datasource?: ISbContentDataSource
 	datasources?: MultipleDatasources[]
-	datasource_entries?: ISbDataSourceEntry[]
+	datasource_entries?: ISbContentMAPIDataSourceEntry[]
 	dimension?: string
 	content_type?: string
+}
+
+type ISbContentDataSource = {
+	id?: number
+	name: string
+	slug: string
+	dimensions?: Dimension[]
+}
+
+type Dimension = {
+	id: number
+	name: string
+	entry_value: string
+	datasource_id: number
+	created_at: string
+	updated_at: string
 }
 
 export interface ISbStoryParams {
@@ -68,19 +84,6 @@ export interface ISbStoryParams {
 }
 
 /**
- * @type Datasource
- * @description Storyblok Datasource type for ISbStoriesParams' interface
- * @description One use it to handle the API response
- * @reference https://www.storyblok.com/docs/api/content-delivery/v2#core-resources/datasources/datasources
- */
-type Datasource = {
-	id:	number
-	name:	string
-	slug:	string
-	dimensions: Dimension[]
-}
-
-/**
  * @type MultipleDatasources
  * @description Storyblok Multiple Datasources type for ISbStoriesParams' interface
  * @description One use it to handle the API response
@@ -90,40 +93,6 @@ type MultipleDatasources = {
 	token:	string
 	page?: number | 1
 	per_page?: number | 25
-}
-
-export interface ISbDataSourceEntry {
-	id?: number
-	name?: string
-	value?: string
-	dimension_value?: string | null
-}
-
-export interface IsBMultipleDataSourceEntries {
-	token: string
-	datasource: string
-	dimension: string | 'en'
-	page: number | 1
-	per_page: number | 25
-	cv: number
-}
-
-type Dimension = {
-	id: number
-	name: string
-	entry_value: string
-	datasource_id: number
-	created_at: string
-	updated_at: string
-}
-
-/**
- * @interface ISbDimensions
- * @description Storyblok Dimensions Interface auxiliary interface
- * @description One use it to handle the API response
- */
-export interface ISbDimensions {
-	dimensions: Dimension[]
 }
 
 export interface ISbComponentType<T extends string> {

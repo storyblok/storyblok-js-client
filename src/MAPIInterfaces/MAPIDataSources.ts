@@ -7,7 +7,7 @@
  **/
 export interface ISbContentMAPIDataSourceEntry {
 	datasource_entry: {
-		id:	number
+		id?: number
 		name:	string
 		value: string
 		datasource_id: number
@@ -24,10 +24,12 @@ export interface ISbContentMAPIDataSourceEntry {
  **/
 export interface ISbContentMAPIDataSource {
 	datasource: {
-		id:	number
-		name?:	string
-		slug?:	string
-		dimensions: Dimension[]
+		id?: number
+		name?: string
+		slug?: string
+		dimensions?: Dimension[]
+		search?: string
+		by_ids?: string[]
 	}
 }
 
