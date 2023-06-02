@@ -9,7 +9,14 @@ import {
 } from './MAPIInterfaces/MAPIStories'
 import { ISbContentMAPIDataSourceEntry } from './MAPIInterfaces/MAPIDataSources'
 
-export type ISbCRUDParams<T> = T & ISbStoriesParams
+import { ISbMAPICUDParams } from './MAPIInterfaces/index'
+
+// Allowed interfaces for CUD<POST, PUT, DELETE> requests
+export type ISbCUDParams<T extends ISbMAPICUDParams> = T & ISbStoriesParams
+
+// Allowed interfaces for GET requests
+import { ISbMAPIGETParams } from './MAPIInterfaces/index'
+export type ISbGetParams<T extends ISbMAPIGETParams> = T & ISbStoriesParams
 
 /**
  * @description End of Management API Interfaces

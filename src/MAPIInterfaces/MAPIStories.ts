@@ -58,11 +58,11 @@ export interface ISbContentMAPIStory {
 }
 
 /**
- * @interface ISbContentMAPIMultipleStories
+ * @interface ISbContentMAPIGetMultipleStories
  * @description Storyblok Content Management API Multiple Stories Interface
  * @reference https://www.storyblok.com/docs/api/management#core-resources/stories/retrieve-multiple-stories
  */
-export interface ISbContentMAPIMultipleStories {
+export interface ISbContentMAPIGetMultipleStories {
 	page?: number
 	contain_component?: string
 	text_search?: string
@@ -123,6 +123,6 @@ export interface ISbContentMAPIUpdateStory extends ISbContentMAPICreateStory {
 
 // Aliases
 export type Story = ISbContentMAPIStory
-export type MultipleStories = ISbContentMAPIMultipleStories
+export type GetMultipleStories = ISbContentMAPIGetMultipleStories
 export type CreateStory = ISbContentMAPICreateStory
 export type UpdateStory = ISbContentMAPIUpdateStory

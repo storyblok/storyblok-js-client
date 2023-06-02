@@ -20,7 +20,7 @@ import {
 	ISbContentMAPIComponentGroup,
 } from './MAPIComponents'
 // Data Sources
-import { ISbContentMAPIDataSource, ISbContentMAPIDataSourceEntry } from './MAPIDataSources'
+import { ISbContentMAPIDataSource, ISbContentMAPIDataSourceEntry, ISbRetrieveMultipleDataSourcesParams, ISbRetrieveMultipleDataSourcesEntriesParams } from './MAPIDataSources'
 // Field Types
 import { ISBContentMAPIFieldTypes } from './MAPIFieldTypes'
 // Presets
@@ -41,7 +41,7 @@ import {
 // Stories
 import {
 	ISbContentMAPIStory,
-	ISbContentMAPIMultipleStories,
+	ISbContentMAPIGetMultipleStories,
 	ISbContentMAPICreateStory,
 	ISbContentMAPIUpdateStory,
 } from './MAPIStories'
@@ -53,7 +53,7 @@ import {
 	ISbContentMAPIWorkflowStageChanges,
 } from './MAPIWorkflowStages'
 
-export type ISbMAPIParams =
+export type ISbMAPICUDParams =
   ISBContentMAPIActivity
   | ISBContentMAPIApprovals
 	| ISBContentMAPIReleaseApproval
@@ -73,9 +73,13 @@ export type ISbMAPIParams =
   | ISBContentMAPIDuplicateSpace
 	| ISBContentMAPISpaceRoles
 	| ISbContentMAPIStory
-	| ISbContentMAPIMultipleStories
 	| ISbContentMAPICreateStory
 	| ISbContentMAPIUpdateStory
 	| ISBContentMAPITask
 	| ISbContentMAPIWorkflowStage
 	| ISbContentMAPIWorkflowStageChanges
+
+export type ISbMAPIGETParams =
+	ISbRetrieveMultipleDataSourcesParams
+	| ISbRetrieveMultipleDataSourcesEntriesParams
+	| ISbContentMAPIGetMultipleStories

@@ -3,10 +3,10 @@ import { SbHelpers } from './sbHelpers'
 import { ISbResponse, ISbError, ISbStoriesParams } from './interfaces'
 import Method from './constants'
 
-import { ISbCRUDParams } from './interfaces'
+import { ISbCUDParams } from './interfaces'
 
 import {
-	ISbMAPIParams
+	ISbMAPICUDParams
 } from './MAPIInterfaces'
 
 export type ResponseFn = {
@@ -54,19 +54,19 @@ class SbFetch {
 		return this._methodHandler('get')
 	}
 
-	public post(url: string, params: ISbCRUDParams<ISbMAPIParams>) {
+	public post(url: string, params: ISbCUDParams<ISbMAPICUDParams>) {
 		this.url = url
 		this.parameters = params
 		return this._methodHandler('post')
 	}
 
-	public put(url: string, params: ISbCRUDParams<ISbMAPIParams>) {
+	public put(url: string, params: ISbCUDParams<ISbMAPICUDParams>) {
 		this.url = url
 		this.parameters = params
 		return this._methodHandler('put')
 	}
 
-	public delete(url: string, params: ISbCRUDParams<ISbMAPIParams>) {
+	public delete(url: string, params: ISbCUDParams<ISbMAPICUDParams>) {
 		this.url = url
 		this.parameters = params
 		return this._methodHandler('delete')
