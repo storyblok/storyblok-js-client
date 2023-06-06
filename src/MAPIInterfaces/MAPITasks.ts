@@ -6,7 +6,7 @@
 export interface ISBContentMAPITask {
 	task: {
 		id?: number
-		name: string
+		name?: string
 		description?: string
 		task_type?: string | 'webhook'
 		last_execution?: string
