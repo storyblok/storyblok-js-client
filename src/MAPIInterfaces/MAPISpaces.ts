@@ -1,10 +1,10 @@
 /**
- * @interface ISBContentMAPISpace
+ * @interface ISbContentMAPISpace
  * @description Storyblok Content Management API Space Interface
  * @reference https://www.storyblok.com/docs/api/management#core-resources/spaces/spaces
  *
  */
-export interface ISBContentMAPISpace {
+export interface ISbContentMAPISpace {
 	space: {
 		[key: string]: any
 	}
@@ -16,11 +16,11 @@ type TEnvironment = {
 }
 
 /**
- * @interface ISBContentMAPICreateSpace
+ * @interface ISbContentMAPICreateSpace
  * @description Storyblok Content Management API Create Space Interface
  * @reference https://www.storyblok.com/docs/api/management#core-resources/spaces/create-space
  */
-export interface ISBContentMAPICreateSpace {
+export interface ISbContentMAPICreateSpace {
 	space: {
 		name: string
 		domain?: string
@@ -31,11 +31,11 @@ export interface ISBContentMAPICreateSpace {
 }
 
 /**
- * @interface ISBContentMAPIUpdateSpace
+ * @interface ISbContentMAPIUpdateSpace
  * @description Storyblok Content Management API Update Space Interface
  * @reference https://www.storyblok.com/docs/api/management#core-resources/spaces/update-space
  */
-export interface ISBContentMAPIUpdateSpace {
+export interface ISbContentMAPIUpdateSpace {
 	space: {
 		id: number
 		name: string
@@ -61,11 +61,11 @@ export interface ISBContentMAPIUpdateSpace {
 }
 
 /**
- * @interface ISBContentMAPIDuplicateSpace
+ * @interface ISbContentMAPIDuplicateSpace
  * @description Storyblok Content Management API Duplicate Space Interface
  * @reference https://www.storyblok.com/docs/api/management#core-resources/spaces/duplicate-space
  */
-export interface ISBContentMAPIDuplicateSpace {
+export interface ISbContentMAPIDuplicateSpace {
 	dup_id: number
 	space: {
 		name: string
@@ -78,8 +78,8 @@ export interface ISBContentMAPIDuplicateSpace {
 
 
 // Aliases
-export type Space = ISBContentMAPISpace
+export type Space = ISbContentMAPISpace
 
-export type CreateSpace = ISBContentMAPICreateSpace
-export type UpdateSpace = ISBContentMAPIUpdateSpace
-export type DuplicateSpace = ISBContentMAPIDuplicateSpace
+export type CreateSpace = ISbContentMAPICreateSpace
+export type UpdateSpace = ISbContentMAPIUpdateSpace
+export type DuplicateSpace = ISbContentMAPIDuplicateSpace

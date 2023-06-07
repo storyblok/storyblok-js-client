@@ -1,9 +1,9 @@
 /**
- * @interface ISBContentMAPIPresets
+ * @interface ISbContentMAPIPresets
  * @description This interface is generated from the API endpoint for presets
  * @reference https://www.storyblok.com/docs/api/management#core-resources/presets/presets
  */
-export interface ISBContentMAPIPresets {
+export interface ISbContentMAPIPresets {
 	preset: {
 		id?: number
 		name: string
@@ -16,4 +16,4 @@ export interface ISBContentMAPIPresets {
 }
 
 // Aliases
-export type Preset = ISBContentMAPIPresets
+export type Preset = ISbContentMAPIPresets

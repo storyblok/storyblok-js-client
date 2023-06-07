@@ -1,9 +1,9 @@
 /**
- * @interface ISBContentMAPIFieldTypes
+ * @interface ISbContentMAPIFieldTypes
  * @description This interface is generated from the API endpoint for field types
  * @reference https://www.storyblok.com/docs/api/management#core-resources/field-types/field-types
  */
-export interface ISBContentMAPIFieldTypes {
+export interface ISbContentMAPIFieldTypes {
 	field_type: {
 		id?: number
 		name: string
@@ -15,4 +15,4 @@ export interface ISBContentMAPIFieldTypes {
 }
 
 // Aliases
-export type FieldType = ISBContentMAPIFieldTypes
+export type FieldType = ISbContentMAPIFieldTypes

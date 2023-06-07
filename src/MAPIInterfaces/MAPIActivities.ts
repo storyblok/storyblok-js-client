@@ -1,10 +1,10 @@
 /**
  * Interface for MAPI Activities
- * @interface ISBContentMAPIActivity
+ * @interface ISbContentMAPIActivity
  * @description Storyblok Content Management API Activity Interface
  * @reference https://www.storyblok.com/docs/api/management#core-resources/activities/activities
  */
-export interface ISBContentMAPIActivity {
+export interface ISbContentMAPIActivity {
 	activity: {
 		id?: number
 		trackable_id?: number
@@ -21,5 +21,5 @@ export interface ISBContentMAPIActivity {
 	}
 }
 
-// Alias for ISBContentMAPIActivity
-export type Activity = ISBContentMAPIActivity
+// Alias for ISbContentMAPIActivity
+export type Activity = ISbContentMAPIActivity

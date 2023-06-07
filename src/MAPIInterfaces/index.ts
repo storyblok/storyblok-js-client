@@ -4,11 +4,11 @@
  **/
 
 // Activities
-import { ISBContentMAPIActivity } from './MAPIActivities'
+import { ISbContentMAPIActivity } from './MAPIActivities'
 // Approvals
 import {
-  ISBContentMAPIApprovals,
-  ISBContentMAPIReleaseApproval,
+  ISbContentMAPIApprovals,
+  ISbContentMAPIReleaseApproval,
 } from './MAPIApprovals'
 // Assets
 import { ISbAsset, ISbAssetFolder } from './MAPIAssets'
@@ -22,21 +22,21 @@ import {
 // Data Sources
 import { ISbContentMAPIDataSource, ISbContentMAPIDataSourceEntry, ISbRetrieveMultipleDataSourcesParams, ISbRetrieveMultipleDataSourcesEntriesParams } from './MAPIDataSources'
 // Field Types
-import { ISBContentMAPIFieldTypes } from './MAPIFieldTypes'
+import { ISbContentMAPIFieldTypes } from './MAPIFieldTypes'
 // Presets
-import { ISBContentMAPIPresets } from './MAPIPresets'
+import { ISbContentMAPIPresets } from './MAPIPresets'
 // Releases
 import { ISbContentMAPIReleases } from './MAPIReleases'
 // Spaces
 import {
-  ISBContentMAPISpace,
-  ISBContentMAPICreateSpace,
-  ISBContentMAPIUpdateSpace,
-  ISBContentMAPIDuplicateSpace,
+  ISbContentMAPISpace,
+  ISbContentMAPICreateSpace,
+  ISbContentMAPIUpdateSpace,
+  ISbContentMAPIDuplicateSpace,
 } from './MAPISpaces'
 // Spaces Roles
 import {
-  ISBContentMAPISpaceRoles,
+  ISbContentMAPISpaceRoles,
 } from './MAPISpacesRoles'
 // Stories
 import {
@@ -46,7 +46,7 @@ import {
 	ISbContentMAPIUpdateStory,
 } from './MAPIStories'
 // Tasks
-import { ISBContentMAPITask } from './MAPITasks'
+import { ISbContentMAPITask } from './MAPITasks'
 // Workflow Stages
 import {
 	ISbContentMAPIWorkflowStage,
@@ -54,9 +54,9 @@ import {
 } from './MAPIWorkflowStages'
 
 export type ISbMAPICUDParams =
-  ISBContentMAPIActivity
-  | ISBContentMAPIApprovals
-	| ISBContentMAPIReleaseApproval
+  ISbContentMAPIActivity
+  | ISbContentMAPIApprovals
+	| ISbContentMAPIReleaseApproval
   | ISbAsset
 	| ISbAssetFolder
 	| ISbContentMAPIBranchDeployments
@@ -64,18 +64,18 @@ export type ISbMAPICUDParams =
 	| ISbContentMAPIComponentGroup
 	| ISbContentMAPIDataSource
   | ISbContentMAPIDataSourceEntry
-	| ISBContentMAPIFieldTypes
-	| ISBContentMAPIPresets
+	| ISbContentMAPIFieldTypes
+	| ISbContentMAPIPresets
 	| ISbContentMAPIReleases
-	| ISBContentMAPISpace
-  | ISBContentMAPICreateSpace
-  | ISBContentMAPIUpdateSpace
-  | ISBContentMAPIDuplicateSpace
-	| ISBContentMAPISpaceRoles
+	| ISbContentMAPISpace
+  | ISbContentMAPICreateSpace
+  | ISbContentMAPIUpdateSpace
+  | ISbContentMAPIDuplicateSpace
+	| ISbContentMAPISpaceRoles
 	| ISbContentMAPIStory
 	| ISbContentMAPICreateStory
 	| ISbContentMAPIUpdateStory
-	| ISBContentMAPITask
+	| ISbContentMAPITask
 	| ISbContentMAPIWorkflowStage
 	| ISbContentMAPIWorkflowStageChanges
 

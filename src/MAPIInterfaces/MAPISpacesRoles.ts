@@ -1,10 +1,10 @@
 /**
- * @interface ISBContentMAPISpaceRoles
+ * @interface ISbContentMAPISpaceRoles
  * @description Storyblok Content Management API Space Roles Interface
  * @reference https://www.storyblok.com/docs/api/management#core-resources/space-roles/space-roles
  *
  */
-export interface ISBContentMAPISpaceRoles {
+export interface ISbContentMAPISpaceRoles {
 	space_role: {
 		id?: number
 		name: string
@@ -28,4 +28,4 @@ type TPermissions = {
 }
 
 // Aliases
-export type SpaceRoles = ISBContentMAPISpaceRoles
+export type SpaceRoles = ISbContentMAPISpaceRoles
