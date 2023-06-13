@@ -79,14 +79,18 @@ class RichTextResolver {
 		this.marks[key] = schema
 	}
 
+	public static isRichTextEmpty(data?: ISbRichtext) {
+		return !data || (data?.content?.[0].type !== "blok" && !data?.content?.[0].content);
+	}
+
 	public render(
 		data?: ISbRichtext,
 		options: RenderOptions = { optimizeImages: false }
 	) {
-		if (data && data.content && Array.isArray(data.content)) {
+		if (!RichTextResolver.isRichTextEmpty(data)) {
 			let html = ''
 
-			data.content.forEach((node) => {
+			data?.content?.forEach((node) => {
 				html += this.renderNode(node)
 			})
 
@@ -97,32 +101,6 @@ class RichTextResolver {
 			return html
 		}
 
-		console.warn(
-			`The render method must receive an Object with a "content" field.
-			The "content" field must be an array of nodes as the type ISbRichtext.
-			ISbRichtext:
-				content?: ISbRichtext[]
-				marks?: ISbRichtext[]
-				attrs?: any
-				text?: string
-				type: string
-				
-				Example:
-				{
-					content: [
-						{
-							content: [
-								{
-									text: 'Hello World',
-									type: 'text'
-								}
-							],
-							type: 'paragraph'
-						}
-					],
-					type: 'doc'
-				}`
-		)
 		return ''
 	}
 
