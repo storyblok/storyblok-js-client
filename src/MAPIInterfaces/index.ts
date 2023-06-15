@@ -53,7 +53,7 @@ import {
 	ISbContentMAPIWorkflowStageChanges,
 } from './MAPIWorkflowStages'
 
-export type ISbMAPICUDParams =
+export type ISbMAPIP2Params =
   ISbContentMAPIActivity
   | ISbContentMAPIApprovals
 	| ISbContentMAPIReleaseApproval

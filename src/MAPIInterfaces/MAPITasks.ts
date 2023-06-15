@@ -12,7 +12,7 @@ export interface ISbContentMAPITask {
 		last_execution?: string
 		webhook_url?: string
 		last_response?: string
-		lamba_code?: string
+		lambda_code?: string
 	}
 }
 

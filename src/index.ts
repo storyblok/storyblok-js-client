@@ -19,11 +19,11 @@ import {
 	ThrottleFn,
 	IMemoryType,
 	ICacheProvider,
-	ISbCUDParams,
+	ISbP2Params,
 } from './interfaces'
 
 import {
-	ISbMAPICUDParams
+	ISbMAPIP2Params
 } from './MAPIInterfaces'
 
 let memory: Partial<IMemoryType> = {}
@@ -608,7 +608,7 @@ class Storyblok {
 	private throttledRequest<T extends Method>(
 		type: T,
 		url: string,
-		params: Partial<ISbStoriesParams> & ISbCUDParams<ISbMAPICUDParams>
+		params: Partial<ISbStoriesParams> & ISbP2Params<ISbMAPIP2Params>
 	): Promise<unknown> {
 		return this.client[type](url, params);
 	}
