@@ -4,7 +4,7 @@
  **/
 
 // Activities
-import { ISbContentMAPIActivity } from './MAPIActivities'
+import { ISbContentMAPIActivity, ISbRetrieveMultipleActivitiesParams } from './MAPIActivities'
 // Approvals
 import {
   ISbContentMAPIApprovals,
@@ -83,3 +83,4 @@ export type ISbMAPIGETParams =
 	ISbRetrieveMultipleDataSourcesParams
 	| ISbRetrieveMultipleDataSourcesEntriesParams
 	| ISbContentMAPIGetMultipleStories
+	| ISbRetrieveMultipleActivitiesParams
