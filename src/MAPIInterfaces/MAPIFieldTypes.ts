@@ -17,7 +17,7 @@ export interface ISbContentMAPIFieldTypes {
 /**
  * @interface ISbRetrieveMultipleFieldTypesParams
  * @description This interface is generated from the API endpoint for field types
- * @reference http://localhost:3000/docs/api/management/v1/#core-resources/field-types/retrieve-multiple-field-types
+ * @reference https://www.storyblok.com/docs/api/management/v1/#core-resources/field-types/retrieve-multiple-field-types
  */
 export interface ISbRetrieveMultipleFieldTypesParams {
 	field_type: {

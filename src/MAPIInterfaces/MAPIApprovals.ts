@@ -24,7 +24,7 @@ export interface ISbContentMAPIReleaseApproval extends ISbContentMAPIApprovals {
 /**
  * @interface ISbRetrieveMultipleApprovalsParams
  * @description This interface is generated from the API endpoint for retrieving multiple approvals
- * @reference http://localhost:3000/docs/api/management/v1/#core-resources/approvals/retrieve-multiple-approvals
+ * @reference https://www.storyblok.com/docs/api/management/v1/#core-resources/approvals/retrieve-multiple-approvals
  */
 export interface ISbRetrieveMultipleApprovalsParams {
 	approver?: number

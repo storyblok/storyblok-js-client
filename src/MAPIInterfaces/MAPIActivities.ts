@@ -24,7 +24,7 @@ export interface ISbContentMAPIActivity {
 /**
  * @interface ISbRetrieveMultipleActivitiesParams
  * @description Storyblok Content Management API Activity Interface to retrieve multiple activities
- * @reference http://localhost:3000/docs/api/management/v1/#core-resources/activities/retrieve-multiple-activities
+ * @reference https://www.storyblok.com/docs/api/management/v1/#core-resources/activities/retrieve-multiple-activities
  */
 export interface ISbRetrieveMultipleActivitiesParams {
 	created_at_gte: string
