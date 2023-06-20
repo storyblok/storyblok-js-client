@@ -36,6 +36,16 @@ export interface ISbContentMAPIWorkflowStageChanges {
 	}
 }
 
+/**
+ * @interface ISbRetrieveMultipleWorkflowStageChangesParams
+ * @description Storyblok Content Management API Retrieve Multiple Workflow Stages Params Interface
+ * @reference https://www.storyblok.com/docs/api/management#core-resources/workflow-stage-changes/get-all
+ */
+export interface ISbRetrieveMultipleWorkflowStageChangesParams {
+	with_story: number
+}
+
 // Aliases
 export type WorkflowStage = ISbContentMAPIWorkflowStage
 export type WorkflowStageChanges = ISbContentMAPIWorkflowStageChanges
+export type GetMultipleWorkflowStageChanges = ISbRetrieveMultipleWorkflowStageChangesParams

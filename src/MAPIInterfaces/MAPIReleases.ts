@@ -15,8 +15,8 @@ export interface ISbContentMAPIReleases {
 		branches_to_deploy?:	string[] | number[]
 		created_at?:	string
 		owner_id?:	number
-		do_release?:	boolean
 	}
+	do_release?:	boolean
 }
 
 // Aliases
