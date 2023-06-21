@@ -35,4 +35,4 @@ export interface ISbRetrieveMultipleActivitiesParams {
 export type Activity = ISbContentMAPIActivity
 
 // Alias for ISbRetrieveMultipleActivitiesParams
-export type GetMultipleActivities = ISbRetrieveMultipleActivitiesParams
+export type GetActivities = ISbRetrieveMultipleActivitiesParams

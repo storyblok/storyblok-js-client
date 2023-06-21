@@ -65,5 +65,5 @@ type Dimension = {
 // Aliases
 export type DataSource = ISbContentMAPIDataSource
 export type DataSourceEntry = ISbContentMAPIDataSourceEntry
-export type GetMultipleDataSources = ISbRetrieveMultipleDataSourcesParams
-export type GetMultipleDataSourcesEntries = ISbRetrieveMultipleDataSourcesEntriesParams
+export type GetDataSources = ISbRetrieveMultipleDataSourcesParams
+export type GetDataSourcesEntries = ISbRetrieveMultipleDataSourcesEntriesParams

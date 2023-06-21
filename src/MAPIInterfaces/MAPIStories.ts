@@ -103,4 +103,4 @@ export interface ISbContentMAPIUpdateStory extends ISbContentMAPIStory {
 // Aliases
 export type CreateStory = ISbContentMAPIStory
 export type UpdateStory = ISbContentMAPIUpdateStory
-export type GetMultipleStories = ISbRetrieveMultipleStories
+export type GetStories = ISbRetrieveMultipleStories

@@ -48,4 +48,4 @@ export interface ISbRetrieveMultipleWorkflowStageChangesParams {
 // Aliases
 export type WorkflowStage = ISbContentMAPIWorkflowStage
 export type WorkflowStageChanges = ISbContentMAPIWorkflowStageChanges
-export type GetMultipleWorkflowStageChanges = ISbRetrieveMultipleWorkflowStageChangesParams
+export type GetWorkflowStageChanges = ISbRetrieveMultipleWorkflowStageChangesParams

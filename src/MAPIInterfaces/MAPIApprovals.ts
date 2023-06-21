@@ -33,4 +33,4 @@ export interface ISbRetrieveMultipleApprovalsParams {
 // Aliases
 export type Approval = ISbContentMAPIApprovals
 export type ReleaseApproval = ISbContentMAPIReleaseApproval
-export type GetMultipleApprovals = ISbRetrieveMultipleApprovalsParams
+export type GetApprovals = ISbRetrieveMultipleApprovalsParams
