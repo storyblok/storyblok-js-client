@@ -54,6 +54,8 @@ export interface ISbContentMAPIStory {
 			name: string | null
 			lang: ISbContentMAPI['lang']
 		}[]
+		publish?: boolean
+		release_id?: number
 	}
 }
 
@@ -85,34 +87,11 @@ export interface ISbContentMAPIGetMultipleStories {
 }
 
 /**
- * @interface ISbContentMAPICreateStory
- * @description Storyblok Content Management API Create Story Interface
- * @reference https://www.storyblok.com/docs/api/management#core-resources/stories/create-story
- */
-export interface ISbContentMAPICreateStory {
-	story: {
-		name: string
-		slug: string
-		content?: object
-		default_root?: boolean
-		is_folder?: boolean
-		parent_id?: number
-		path?: string
-		is_startpage?: boolean
-		position?: number
-		first_published_at?: string
-		translated_slugs_attributes?: object[]
-		publish?: boolean
-		release_id?: number
-	}
-}
-
-/**
  * @interface ISbContentMAPIUpdateStory
  * @description Storyblok Content Management API Update Story Interface
  * @reference https://www.storyblok.com/docs/api/management#core-resources/stories/update-story
  */
-export interface ISbContentMAPIUpdateStory extends ISbContentMAPICreateStory {
+export interface ISbContentMAPIUpdateStory extends ISbContentMAPIStory {
 	alternates?: object[]
 	disble_fe_editor?: boolean
 	group_id?: string
@@ -122,7 +101,6 @@ export interface ISbContentMAPIUpdateStory extends ISbContentMAPICreateStory {
 
 
 // Aliases
-export type Story = ISbContentMAPIStory
-export type GetMultipleStories = ISbContentMAPIGetMultipleStories
-export type CreateStory = ISbContentMAPICreateStory
+export type CreateStory = ISbContentMAPIStory
 export type UpdateStory = ISbContentMAPIUpdateStory
+export type GetMultipleStories = ISbContentMAPIGetMultipleStories
