@@ -41,7 +41,7 @@ import {
 // Stories
 import {
 	ISbContentMAPIStory,
-	ISbContentMAPIGetMultipleStories,
+	ISbRetrieveMultipleStories,
 	ISbContentMAPICreateStory,
 	ISbContentMAPIUpdateStory,
 } from './MAPIStories'
@@ -82,5 +82,5 @@ export type ISbMAPIP2Params =
 export type ISbMAPIGETParams =
 	ISbRetrieveMultipleDataSourcesParams
 	| ISbRetrieveMultipleDataSourcesEntriesParams
-	| ISbContentMAPIGetMultipleStories
+	| ISbRetrieveMultipleStories
 	| ISbRetrieveMultipleActivitiesParams
