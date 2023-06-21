@@ -42,7 +42,6 @@ import {
 import {
 	ISbContentMAPIStory,
 	ISbRetrieveMultipleStories,
-	ISbContentMAPICreateStory,
 	ISbContentMAPIUpdateStory,
 } from './MAPIStories'
 // Tasks
@@ -73,7 +72,6 @@ export type ISbMAPIP2Params =
   | ISbContentMAPIDuplicateSpace
 	| ISbContentMAPISpaceRoles
 	| ISbContentMAPIStory
-	| ISbContentMAPICreateStory
 	| ISbContentMAPIUpdateStory
 	| ISbContentMAPITask
 	| ISbContentMAPIWorkflowStage
