@@ -147,7 +147,8 @@ We added retro-compatibility when using `resolve_assets: 1` parameter under V2. 
 
 The Storyblok client comes with a caching mechanism.
 When initializing the Storyblok client you can define a cache provider for caching the requests in memory.
-To clear the cache you can call `Storyblok.flushCache()` or activate the automatic clear with clear: 'auto'.
+
+The default behavior of the cache is `clear: 'manual'`, that is, if you need to clear the cache, you need to call `Storyblok.flushCache()` or activate the automatic clear with `clear: 'auto'`, as in the example below.
 
 ```javascript
 let Storyblok = new StoryblokClient({
@@ -553,27 +554,6 @@ let getStories = (page) => {
 
 getStories(1);
 ```
-
-#### Initialize with a proxy server
-
-```javascript
-const proxy = {
-  host: host,
-  port: port,
-  auth: {
-    username: 'username',
-    password: 'password'
-  }
-}
-
-const storyblok = new StoryblokClient({
-  ...
-  https: false,
-  proxy: proxy
-})
-```
-
-Read more about proxy settings in axios [documentation](https://github.com/axios/axios)
 
 #### How to define a custom schema for the RichTextRenderer
 
