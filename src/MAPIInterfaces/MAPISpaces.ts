@@ -69,10 +69,10 @@ export interface ISbContentMAPIDuplicateSpace {
 	dup_id: number
 	space: {
 		name: string
-		domain: string
-		story_published_hook: string
-		searchblok_id: number
-		environments: TEnvironment[]
+		domain?: string
+		story_published_hook?: string
+		searchblok_id?: number
+		environments?: TEnvironment[]
 	}
 }
 
