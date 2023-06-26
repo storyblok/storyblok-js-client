@@ -80,7 +80,9 @@ class Storyblok {
 	 * @param config ISbConfig interface
 	 * @param endpoint string, optional
 	 */
-	public constructor(config: ISbConfig, endpoint?: string) {
+	public constructor(config: ISbConfig, pEndpoint?: string) {
+		let endpoint = config.endpoint || pEndpoint
+
 		if (!endpoint) {
 			const getRegion = new SbHelpers().getRegionURL
 			const protocol = config.https === false ? 'http' : 'https'
@@ -585,7 +587,7 @@ class Storyblok {
 						retries = retries ? retries + 1 : 0
 
 						if (retries < this.maxRetries) {
-							console.log(`Hit rate limit. Retrying in ${retries} seconds.`);
+							console.log(`Hit rate limit. Retrying in ${retries} seconds.`)
 							await this.helpers.delay(1000 * retries)
 							return this.cacheResponse(url, params, retries)
 								.then(resolve)

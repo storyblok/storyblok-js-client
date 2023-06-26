@@ -177,6 +177,7 @@ export interface ISbConfig {
 	rateLimit?: number
 	componentResolver?: (component: string, data: any) => void
 	richTextSchema?: ISbSchema
+	endpoint?: string
 }
 
 export interface ISbResult {
@@ -265,8 +266,8 @@ export interface ISbRichtext {
 }
 
 export interface LinkCustomAttributes {
-	rel?: string,
-	title?: string,
+	rel?: string
+	title?: string
 	[key: string]: any
 }
 
