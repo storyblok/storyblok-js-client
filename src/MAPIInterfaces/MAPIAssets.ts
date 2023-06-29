@@ -5,7 +5,7 @@
  *
  **/
 export interface ISbAsset {
-	id: number
+	id?: number
 	filename?: string
 	space_id?: number
 	created_at?: string
