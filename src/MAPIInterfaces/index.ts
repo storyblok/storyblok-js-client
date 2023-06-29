@@ -14,6 +14,13 @@ import {
 import { ISbAsset, ISbAssetFolder } from './MAPIAssets'
 // Branch Deployments
 import { ISbContentMAPIBranchDeployments } from './MAPIBranchDeployments'
+// Collaborators
+import {
+	ISbContentMAPICollaboratorsCollection,
+	ISbContentMAPICollaborator,
+	ISbContentMAPICollaboratorAdd,
+	ISbContentMAPICollaboratorAddWithSSO,
+} from './MAPICollaborators'
 // Components
 import {
 	ISbContentMAPIComponent,
@@ -59,6 +66,10 @@ export type ISbMAPIP2Params =
   | ISbAsset
 	| ISbAssetFolder
 	| ISbContentMAPIBranchDeployments
+	| ISbContentMAPICollaboratorsCollection
+	| ISbContentMAPICollaborator
+	| ISbContentMAPICollaboratorAdd
+	| ISbContentMAPICollaboratorAddWithSSO
 	| ISbContentMAPIComponent
 	| ISbContentMAPIComponentGroup
 	| ISbContentMAPIDataSource
