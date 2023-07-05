@@ -12,15 +12,18 @@
 	"exports": {
 		".": {
 			"import": "./dist/index.mjs",
-			"require": "./dist/index.umd.js"
+			"require": "./dist/index.umd.js",
+			"types": "./dist/types/entry.esm.d.ts"
 		},
 		"./richTextResolver": {
 			"import": "./dist/richTextResolver.mjs",
-			"require": "./dist/richTextResolver.umd.js"
+			"require": "./dist/richTextResolver.umd.js",
+			"types": "./dist/types/richTextResolver.d.ts"
 		},
 		"./schema": {
 			"import": "./dist/schema.mjs",
-			"require": "./dist/schema.umd.js"
+			"require": "./dist/schema.umd.js",
+			"types": "./dist/types/schema.d.ts"
 		}
 	},
 	"files": [
