@@ -10,7 +10,7 @@ type Method = ObjectValues<typeof METHOD>
 
 export default Method
 
-export const STORYBLOK_AGENT = 'SB_Agent'
+export const STORYBLOK_AGENT = 'SB-Agent'
 
 export const STORYBLOK_JS_CLIENT_AGENT = {
 	defaultAgentName: 'SB-JS-CLIENT',
