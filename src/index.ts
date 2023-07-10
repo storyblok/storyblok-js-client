@@ -104,7 +104,9 @@ class Storyblok {
 			for (const header in config.headers) {
 				headers.set(header, config.headers[header])
 			}
-		} else if (!headers.has(STORYBLOK_AGENT)) {
+		}
+		
+		if (!headers.has(STORYBLOK_AGENT)) {
 			headers.set(STORYBLOK_AGENT, STORYBLOK_JS_CLIENT_AGENT.defaultAgentName)
 			headers.set( STORYBLOK_JS_CLIENT_AGENT.defaultAgentVersion,  STORYBLOK_JS_CLIENT_AGENT.packageVersion)
 		}
