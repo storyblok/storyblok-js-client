@@ -2,6 +2,7 @@ import throttledQueue from './throttlePromise'
 import RichTextResolver from './richTextResolver'
 import { SbHelpers } from './sbHelpers'
 import SbFetch from './sbFetch'
+import { STORYBLOK_AGENT, STORYBLOK_JS_CLIENT_AGENT } from './constants'
 
 import Method from './constants'
 import {
@@ -99,11 +100,16 @@ class Storyblok {
 		headers.set('Content-Type', 'application/json')
 		headers.set('Accept', 'application/json')
 
-		headers.forEach((value, key) => {
-			if (config.headers && config.headers[key]) {
-				headers.set(key, config.headers[key])
+		if (config.headers) {
+			for (const header in config.headers) {
+				headers.set(header, config.headers[header])
 			}
-		})
+		}
+		
+		if (!headers.has(STORYBLOK_AGENT)) {
+			headers.set(STORYBLOK_AGENT, STORYBLOK_JS_CLIENT_AGENT.defaultAgentName)
+			headers.set( STORYBLOK_JS_CLIENT_AGENT.defaultAgentVersion,  STORYBLOK_JS_CLIENT_AGENT.packageVersion)
+		}
 
 		let rateLimit = 5 // per second for cdn api
 
