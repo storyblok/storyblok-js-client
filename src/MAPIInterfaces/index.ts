@@ -13,7 +13,7 @@ import {
 // Assets
 import { ISbAsset, ISbAssetFolder } from './MAPIAssets'
 // Branch Deployments
-import { ISbContentMAPIBranchDeployments } from './MAPIBranchDeployments'
+import { ISbContentMAPIPipelineDeployments, ISbContentMAPIPipeline } from './MAPIPipelines'
 // Collaborators
 import {
 	ISbContentMAPICollaboratorsCollection,
@@ -65,7 +65,8 @@ export type ISbMAPIP2Params =
 	| ISbContentMAPIReleaseApproval
   | ISbAsset
 	| ISbAssetFolder
-	| ISbContentMAPIBranchDeployments
+	| ISbContentMAPIPipelineDeployments
+	| ISbContentMAPIPipeline
 	| ISbContentMAPICollaboratorsCollection
 	| ISbContentMAPICollaborator
 	| ISbContentMAPICollaboratorAdd
