@@ -1,3 +1,27 @@
+/**
+ * @type TComponent
+ * @description Storyblok Content Management API Component Type
+ * @reference https://www.storyblok.com/docs/api/management#core-resources/components/the-component-object
+ */
+type TComponent = {
+	id?: number
+	name?: string
+	display_name?: string
+	created_at?: string
+	image?: string
+	preview?: string
+	is_root?: boolean
+	is_nestable?: boolean
+	all_presets?: string[]
+	real_name?: string
+	component_group_uuid?: string
+}
+
+/**
+ * @type TComponentFieldTypes
+ * @description Storyblok Content Management API Component Field Type
+ * @reference https://www.storyblok.com/docs/api/management#core-resources/components/possible-field-types
+ */
 type TComponentFieldTypes =
 	| 'bloks'
 	| 'text'
@@ -15,7 +39,12 @@ type TComponentFieldTypes =
 	| 'section'
 	| 'custom'
 
-type TComponentSchema = {
+/**
+ * @type TComponentField
+ * @description Storyblok Content Management API Component Field Type
+ * @reference https://www.storyblok.com/docs/api/management#core-resources/components/the-component-field-object
+ */
+type TComponentField = {
 	[key: string]: {
 		id?: number
 		type?: TComponentFieldTypes
@@ -47,26 +76,12 @@ type TComponentSchema = {
 		restrict_components?: boolean
 		maximum?: number
 		restrict_content_types?: boolean
-		component_whitelist?: string[]
+		component_whitelist?: ('post' | 'page' | 'product')[]
 		disable_time?: boolean
 		max_length?: number
-		filetypes?: string[]
+		filetypes?: ('images' | 'videos' | 'audios' | 'texts')[]
 		title?: string
 		image?: string
-	}
-}
-
-/**
- * @interface ISbContentMAPIComponentGroup
- * @description Storyblok Content Management API Component Group Interface
- * @reference https://www.storyblok.com/docs/api/management#core-resources/component-groups/component-groups
- *
- **/
-export interface ISbContentMAPIComponentGroup {
-	component_group: {
-		id?: number
-		name: string
-		uuid?: number | string
 	}
 }
 
@@ -77,17 +92,16 @@ export interface ISbContentMAPIComponentGroup {
  *
  **/
 export interface ISbContentMAPIComponent {
-	id?: number
-	name: string
+	component: TComponent
+	name?: string
 	display_name?: string
 	image?: string
 	preview?: string
 	is_root?: boolean
 	is_nestable?: boolean
 	component_group_uuid?: string
-	schema?: TComponentSchema
+	schema?: TComponentField
 }
 
 // Aliases
 export type Component = ISbContentMAPIComponent
-export type ComponentGroup = ISbContentMAPIComponentGroup

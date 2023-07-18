@@ -24,8 +24,11 @@ import {
 // Components
 import {
 	ISbContentMAPIComponent,
-	ISbContentMAPIComponentGroup,
 } from './MAPIComponents'
+// Component Groups
+import {
+	ISbContentMAPIComponentGroup,
+} from './MAPIComponentGroups'
 // Data Sources
 import { ISbContentMAPIDataSource, ISbContentMAPIDataSourceEntry, ISbRetrieveMultipleDataSourcesParams, ISbRetrieveMultipleDataSourcesEntriesParams } from './MAPIDataSources'
 // Field Types
