@@ -34,7 +34,7 @@ import { ISbContentMAPIDataSource, ISbContentMAPIDataSourceEntry, ISbRetrieveMul
 // Field Types
 import { ISbContentMAPIFieldTypes } from './MAPIFieldTypes'
 // Presets
-import { ISbContentMAPIPresets } from './MAPIPresets'
+import { ISbContentMAPIPresets, ISbRetrieveMultiplePresetsParams } from './MAPIPresets'
 // Releases
 import { ISbContentMAPIReleases } from './MAPIReleases'
 // Spaces
@@ -97,3 +97,4 @@ export type ISbMAPIGETParams =
 	| ISbRetrieveMultipleDataSourcesEntriesParams
 	| ISbRetrieveMultipleStories
 	| ISbRetrieveMultipleActivitiesParams
+	| ISbRetrieveMultiplePresetsParams
