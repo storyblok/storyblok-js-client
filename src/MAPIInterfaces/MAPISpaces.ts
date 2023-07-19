@@ -1,13 +1,11 @@
 /**
  * @interface ISbContentMAPISpace
  * @description Storyblok Content Management API Space Interface
- * @reference https://www.storyblok.com/docs/api/management#core-resources/spaces/spaces
+ * @reference https://www.storyblok.com/docs/api/management#core-resources/spaces/the-space-object
  *
  */
 export interface ISbContentMAPISpace {
-	space: {
-		[key: string]: any
-	}
+	[key: string]: object
 }
 
 type TEnvironment = {
@@ -21,7 +19,7 @@ type TEnvironment = {
  * @reference https://www.storyblok.com/docs/api/management#core-resources/spaces/create-space
  */
 export interface ISbContentMAPICreateSpace {
-	space: {
+	[key: string]: {
 		name: string
 		domain?: string
 		story_published_hook?: string
@@ -36,9 +34,9 @@ export interface ISbContentMAPICreateSpace {
  * @reference https://www.storyblok.com/docs/api/management#core-resources/spaces/update-space
  */
 export interface ISbContentMAPIUpdateSpace {
-	space: {
-		id: number
-		name: string
+	[key: string]: {
+		id?: number
+		name?: string
 		domain?: string
 		uniq_domain?: string
 		owner_id?: number
@@ -67,13 +65,15 @@ export interface ISbContentMAPIUpdateSpace {
  */
 export interface ISbContentMAPIDuplicateSpace {
 	dup_id: number
-	space: {
-		name: string
-		domain?: string
-		story_published_hook?: string
-		searchblok_id?: number
-		environments?: TEnvironment[]
-	}
+	[key: string]: ContentData | number
+}
+
+type ContentData = {
+	name: string
+	domain?: string
+	story_published_hook?: string
+	searchblok_id?: number
+	environments?: TEnvironment[]
 }
 
 
