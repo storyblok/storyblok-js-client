@@ -47,6 +47,8 @@ import {
 // Spaces Roles
 import {
   ISbContentMAPISpaceRoles,
+	ISbContentMAPISpaceRolesCreate,
+	ISbContentMAPISpaceRolesUpdate,
 } from './MAPISpacesRoles'
 // Stories
 import {
@@ -86,6 +88,8 @@ export type ISbMAPIP2Params =
   | ISbContentMAPIUpdateSpace
   | ISbContentMAPIDuplicateSpace
 	| ISbContentMAPISpaceRoles
+	| ISbContentMAPISpaceRolesCreate
+	| ISbContentMAPISpaceRolesUpdate
 	| ISbContentMAPIStory
 	| ISbContentMAPIUpdateStory
 	| ISbContentMAPITask
