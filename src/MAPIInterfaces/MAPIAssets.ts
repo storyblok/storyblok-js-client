@@ -17,6 +17,7 @@ export interface ISbAsset {
 	content_type?: string
 	content_length?: number
 	is_private?: boolean
+	validate_upload?: "1" | string
 }
 
 /**
