@@ -4,11 +4,9 @@
  * @reference https://www.storyblok.com/docs/api/management#core-resources/component-groups/the-component-group-object
  */
 type TComponentGroup = {
-	component_group: {
-		id?: number
-		name?: string
-		uuid?: string
-	}
+	id?: number
+	name?: string
+	uuid?: string
 }
 /**
  * @interface ISbContentMAPIComponentGroup
