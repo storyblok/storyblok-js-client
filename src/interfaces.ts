@@ -22,6 +22,8 @@ export type ISbGetParams<T extends ISbMAPIGETParams> = T & ISbStoriesParams
  * @description End of Management API Interfaces
  */
 
+type TComponent = Omit<ISbContentMAPIComponent, 'component'>
+
 export interface ISbStoriesParams {
 	token?: string
 	with_tag?: string
@@ -52,7 +54,7 @@ export interface ISbStoriesParams {
 	by_slugs?: string
 	excluding_slugs?: string
 	_stopResolving?: boolean
-	component?: ISbContentMAPIComponent | string
+	component?: TComponent
 	filename?: string
 	size?: string
 	datasource?: ISbContentDataSource
@@ -263,7 +265,7 @@ export type MarkSchema = {
 export interface ISbContentMAPI<T = void> {
 	auxiliaryInterfaces?: T[]
 	story?: ISbContentMAPIStory
-	component?: ISbContentMAPIComponent
+	component?: TComponent
 	force_update?: '1' | null
 	release_id?: number
 	publish?: '1' | null
