@@ -21,9 +21,6 @@ export type ISbGetParams<T extends ISbMAPIGETParams> = T & ISbStoriesParams
 /**
  * @description End of Management API Interfaces
  */
-
-type TComponent = Omit<ISbContentMAPIComponent, 'component'>
-
 export interface ISbStoriesParams {
 	token?: string
 	with_tag?: string
@@ -63,6 +60,8 @@ export interface ISbStoriesParams {
 	dimension?: string
 	content_type?: string
 }
+
+type TComponent = Omit<ISbContentMAPIComponent, 'component'>
 
 type ISbContentDataSource = {
 	id?: number
