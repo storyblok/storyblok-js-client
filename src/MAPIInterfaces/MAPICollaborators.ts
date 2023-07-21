@@ -39,7 +39,6 @@ export interface ISbContentMAPICollaborator {
  * @reference https://www.storyblok.com/docs/api/management#core-resources/collaborators/add-collaborator
  */
 export interface ISbContentMAPICollaboratorAdd {
-	collaborator?: ISbContentMAPICollaborator
 	email?: string
 	role?: string
 	space_id?: number
