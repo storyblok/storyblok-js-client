@@ -38,7 +38,7 @@ export interface ISbContentMAPIDataSource {
  **/
 export interface ISbRetrieveMultipleDataSourcesParams {
 	search?: string
-	by_ids?: string[]
+	by_ids?: number[]
 }
 
 /**
