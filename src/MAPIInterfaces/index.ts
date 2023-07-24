@@ -69,8 +69,8 @@ export type ISbMAPIP2Params =
   | ISbContentMAPIApprovals
 	| ISbContentMAPIReleaseApproval
   | ISbAsset
-	| ISbAssetFolder
 	| ISbRetrieveMultipleAssets
+	| ISbAssetFolder
 	| ISbContentMAPIPipelineDeployments
 	| ISbContentMAPIPipeline
 	| ISbContentMAPICollaboratorsCollection
