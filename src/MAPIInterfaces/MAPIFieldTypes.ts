@@ -10,8 +10,8 @@ export interface ISbContentMAPIFieldTypes {
 		body?: string
 		compiled_body?: string | ''
 		space_ids?: number[]
-		publish?: boolean
 	}
+	publish?: boolean
 }
 
 /**

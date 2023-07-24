@@ -27,8 +27,8 @@ export interface ISbContentMAPIActivity {
  * @reference https://www.storyblok.com/docs/api/management/v1/#core-resources/activities/retrieve-multiple-activities
  */
 export interface ISbRetrieveMultipleActivitiesParams {
-	created_at_gte: string
-	created_at_lte: string
+	created_at_gte?: string
+	created_at_lte?: string
 }
 
 // Alias for ISbContentMAPIActivity
