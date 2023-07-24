@@ -11,7 +11,7 @@ import {
   ISbContentMAPIReleaseApproval,
 } from './MAPIApprovals'
 // Assets
-import { ISbAsset, ISbAssetFolder } from './MAPIAssets'
+import { ISbAsset, ISbAssetFolder, ISbRetrieveMultipleAssets } from './MAPIAssets'
 // Branch Deployments
 import { ISbContentMAPIPipelineDeployments, ISbContentMAPIPipeline } from './MAPIPipelines'
 // Collaborators
@@ -70,6 +70,7 @@ export type ISbMAPIP2Params =
 	| ISbContentMAPIReleaseApproval
   | ISbAsset
 	| ISbAssetFolder
+	| ISbRetrieveMultipleAssets
 	| ISbContentMAPIPipelineDeployments
 	| ISbContentMAPIPipeline
 	| ISbContentMAPICollaboratorsCollection
