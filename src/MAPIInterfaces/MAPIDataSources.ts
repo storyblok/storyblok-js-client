@@ -48,9 +48,9 @@ export interface ISbRetrieveMultipleDataSourcesParams {
  * @description This is used when retrieving multiple data source entries
  **/
 export interface ISbRetrieveMultipleDataSourcesEntriesParams {
-	datasource_id: number
-	datasource_slug: string
-	dimension: string
+	datasource_id?: number
+	datasource_slug?: string
+	dimension?: string
 }
 
 type Dimension = {

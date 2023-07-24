@@ -9,6 +9,7 @@ import { ISbContentMAPIActivity, ISbRetrieveMultipleActivitiesParams } from './M
 import {
   ISbContentMAPIApprovals,
   ISbContentMAPIReleaseApproval,
+	ISbRetrieveMultipleApprovalsParams,
 } from './MAPIApprovals'
 // Assets
 import { ISbAsset, ISbAssetFolder, ISbRetrieveMultipleAssets } from './MAPIAssets'
@@ -103,3 +104,4 @@ export type ISbMAPIGETParams =
 	| ISbRetrieveMultipleStories
 	| ISbRetrieveMultipleActivitiesParams
 	| ISbRetrieveMultiplePresetsParams
+	| ISbRetrieveMultipleApprovalsParams
