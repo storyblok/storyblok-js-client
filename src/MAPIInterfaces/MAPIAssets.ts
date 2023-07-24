@@ -50,4 +50,4 @@ export interface ISbAssetFolder {
 // Aliases
 export type Asset = ISbAsset
 export type AssetFolder = ISbAssetFolder
-export type RetrieveMultipleAssets = ISbRetrieveMultipleAssets
+export type GetMultipleAssets = ISbRetrieveMultipleAssets
