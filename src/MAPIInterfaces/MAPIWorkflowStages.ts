@@ -30,8 +30,8 @@ export interface ISbContentMAPIWorkflowStageChanges {
 		id?: number
 		user_id?: number
 		created_at?: string
-		workflow_stage_id?: number
-		story_id?: number
+		workflow_stage_id: number
+		story_id: number
 		with_story?: number
 	}
 }
