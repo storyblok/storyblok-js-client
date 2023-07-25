@@ -63,6 +63,7 @@ import { ISbContentMAPITask } from './MAPITasks'
 import {
 	ISbContentMAPIWorkflowStage,
 	ISbContentMAPIWorkflowStageChanges,
+	ISbRetrieveMultipleWorkflowStageChangesParams,
 } from './MAPIWorkflowStages'
 
 export type ISbMAPIP2Params =
@@ -105,3 +106,4 @@ export type ISbMAPIGETParams =
 	| ISbRetrieveMultipleActivitiesParams
 	| ISbRetrieveMultiplePresetsParams
 	| ISbRetrieveMultipleApprovalsParams
+	| ISbRetrieveMultipleWorkflowStageChangesParams
