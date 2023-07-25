@@ -42,7 +42,7 @@ export interface ISbContentMAPIWorkflowStageChanges {
  * @reference https://www.storyblok.com/docs/api/management#core-resources/workflow-stage-changes/get-all
  */
 export interface ISbRetrieveMultipleWorkflowStageChangesParams {
-	with_story: number
+	with_story?: number
 }
 
 // Aliases
