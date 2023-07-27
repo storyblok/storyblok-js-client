@@ -11,12 +11,12 @@ type TLastAuthor = {
 }
 
 /**
- * @interface ISbContentMAPIStory
+ * @interface ISbContentMAPIStories
  * @description Storyblok Content Management API Story Interface
  * @reference https://www.storyblok.com/docs/api/management#core-resources/stories/stories
  *
  **/
-export interface ISbContentMAPIStory {
+export interface ISbContentMAPIStories {
 	story: {
 		id?: number
 		uuid?: string
@@ -34,7 +34,7 @@ export interface ISbContentMAPIStory {
 		default_root?: boolean
 		disble_fe_editor?: boolean
 		parent_id?: number | string
-		parent?: ISbContentMAPIStory
+		parent?: ISbContentMAPIStories
 		group_id?: string | number
 		alternates?: object[]
 		tag_list?: string[]
@@ -91,7 +91,7 @@ export interface ISbRetrieveMultipleStories {
  * @description Storyblok Content Management API Update Story Interface
  * @reference https://www.storyblok.com/docs/api/management#core-resources/stories/update-story
  */
-export interface ISbContentMAPIUpdateStory extends ISbContentMAPIStory {
+export interface ISbContentMAPIUpdateStory extends ISbContentMAPIStories {
 	alternates?: object[]
 	disble_fe_editor?: boolean
 	group_id?: string
@@ -99,8 +99,7 @@ export interface ISbContentMAPIUpdateStory extends ISbContentMAPIStory {
 	lang?: string
 }
 
-
 // Aliases
-export type CreateStory = ISbContentMAPIStory
+export type CreateStory = ISbContentMAPIStories
 export type UpdateStory = ISbContentMAPIUpdateStory
 export type GetStories = ISbRetrieveMultipleStories

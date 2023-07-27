@@ -1,10 +1,10 @@
 /**
  * Interface for MAPI Activities
- * @interface ISbContentMAPIActivity
- * @description Storyblok Content Management API Activity Interface
+ * @interface ISbContentMAPIActivities
+ * @description Storyblok Content Management API Activities Interface
  * @reference https://www.storyblok.com/docs/api/management#core-resources/activities/activities
  */
-export interface ISbContentMAPIActivity {
+export interface ISbContentMAPIActivities {
 	activity: {
 		id?: number
 		trackable_id?: number
@@ -23,7 +23,7 @@ export interface ISbContentMAPIActivity {
 
 /**
  * @interface ISbRetrieveMultipleActivitiesParams
- * @description Storyblok Content Management API Activity Interface to retrieve multiple activities
+ * @description Storyblok Content Management API Activities Interface to retrieve multiple activities
  * @reference https://www.storyblok.com/docs/api/management/v1/#core-resources/activities/retrieve-multiple-activities
  */
 export interface ISbRetrieveMultipleActivitiesParams {
@@ -31,8 +31,8 @@ export interface ISbRetrieveMultipleActivitiesParams {
 	created_at_lte?: string
 }
 
-// Alias for ISbContentMAPIActivity
-export type Activity = ISbContentMAPIActivity
+// Alias for ISbContentMAPIActivities
+export type Activities = ISbContentMAPIActivities
 
 // Alias for ISbRetrieveMultipleActivitiesParams
 export type GetActivities = ISbRetrieveMultipleActivitiesParams

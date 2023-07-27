@@ -1,9 +1,9 @@
 /**
- * @interface ISbContentMAPIPipeline
+ * @interface ISbContentMAPIPipelines
  * @description Storyblok Content Management API Pipeline Interface
  * @reference https://www.storyblok.com/docs/api/managemen#core-resources/pipelines/object
  */
-export interface ISbContentMAPIPipeline {
+export interface ISbContentMAPIPipelines {
 	branch: {
 		id?: number
 		name: string
@@ -30,5 +30,5 @@ export interface ISbContentMAPIPipelineDeployments {
 }
 
 // Aliases
-export type Pipeline = ISbContentMAPIPipeline
-export type PipelineDeployment = ISbContentMAPIPipelineDeployments
+export type Pipelines = ISbContentMAPIPipelines
+export type PipelineDeployments = ISbContentMAPIPipelineDeployments

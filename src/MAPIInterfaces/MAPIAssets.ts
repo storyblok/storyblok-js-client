@@ -1,10 +1,10 @@
 /**
- * @interface ISbAsset
- * @description Storyblok Content Management API Asset Interface
+ * @interface ISbAssets
+ * @description Storyblok Content Management API Assets Interface
  * @reference https://www.storyblok.com/docs/api/management#core-resources/assets/assets
  *
  **/
-export interface ISbAsset {
+export interface ISbAssets {
 	id?: number
 	filename?: string
 	space_id?: number
@@ -34,12 +34,12 @@ export interface ISbRetrieveMultipleAssets {
 }
 
 /**
- * @interface ISbAssetFolder
- * @description Storyblok Content Management API Asset Folder Interface
+ * @interface ISbAssetFolders
+ * @description Storyblok Content Management API Assets Folder Interface
  * @reference https://www.storyblok.com/docs/api/management#core-resources/asset-folders/asset-folders
  *
  **/
-export interface ISbAssetFolder {
+export interface ISbAssetFolders {
 	asset_folder: {
 		id?: number
 		name?: string
@@ -48,6 +48,6 @@ export interface ISbAssetFolder {
 }
 
 // Aliases
-export type Asset = ISbAsset
-export type AssetFolder = ISbAssetFolder
+export type Assets = ISbAssets
+export type AssetFolders = ISbAssetFolders
 export type GetMultipleAssets = ISbRetrieveMultipleAssets

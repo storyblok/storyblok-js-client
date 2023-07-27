@@ -30,7 +30,7 @@ export interface ISbRetrieveMultiplePresetsParams {
 }
 
 // Aliases for ISbContentMAPIPresets
-export type Preset = ISbContentMAPIPresets
+export type Presets = ISbContentMAPIPresets
 
 // Aliases for ISbRetrieveMultiplePresetsParams
 export type GetPresets = ISbRetrieveMultiplePresetsParams

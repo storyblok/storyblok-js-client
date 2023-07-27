@@ -4,103 +4,117 @@
  **/
 
 // Activities
-import { ISbContentMAPIActivity, ISbRetrieveMultipleActivitiesParams } from './MAPIActivities'
+import {
+	ISbContentMAPIActivities,
+	ISbRetrieveMultipleActivitiesParams,
+} from './MAPIActivities'
 // Approvals
 import {
-  ISbContentMAPIApprovals,
-  ISbContentMAPIReleaseApproval,
+	ISbContentMAPIApprovals,
+	ISbContentMAPIReleaseApprovals,
 	ISbRetrieveMultipleApprovalsParams,
 } from './MAPIApprovals'
 // Assets
-import { ISbAsset, ISbAssetFolder, ISbRetrieveMultipleAssets } from './MAPIAssets'
+import {
+	ISbAssets,
+	ISbAssetFolders,
+	ISbRetrieveMultipleAssets,
+} from './MAPIAssets'
 // Branch Deployments
-import { ISbContentMAPIPipelineDeployments, ISbContentMAPIPipeline } from './MAPIPipelines'
+import {
+	ISbContentMAPIPipelineDeployments,
+	ISbContentMAPIPipelines,
+} from './MAPIPipelines'
 // Collaborators
 import {
 	ISbContentMAPICollaboratorsCollection,
 	ISbContentMAPICollaborator,
 	ISbContentMAPICollaboratorAdd,
-	ISbContentMAPICollaboratorAddWithSSO,
+	ISbContentMAPICollaboratorAddUsersWithSSO,
 } from './MAPICollaborators'
 // Components
-import {
-	ISbContentMAPIComponent,
-} from './MAPIComponents'
+import { ISbContentMAPIComponents } from './MAPIComponents'
 // Component Groups
-import {
-	ISbContentMAPIComponentGroup,
-} from './MAPIComponentGroups'
+import { ISbContentMAPIComponentGroups } from './MAPIComponentGroups'
 // Data Sources
-import { ISbContentMAPIDataSource, ISbContentMAPIDataSourceEntry, ISbRetrieveMultipleDataSourcesParams, ISbRetrieveMultipleDataSourcesEntriesParams } from './MAPIDataSources'
+import {
+	ISbContentMAPIDataSources,
+	ISbContentMAPIDataSourceEntries,
+	ISbRetrieveMultipleDataSourcesParams,
+	ISbRetrieveMultipleDataSourcesEntriesParams,
+} from './MAPIDataSources'
 // Field Types
 import { ISbContentMAPIFieldTypes } from './MAPIFieldTypes'
 // Presets
-import { ISbContentMAPIPresets, ISbRetrieveMultiplePresetsParams } from './MAPIPresets'
+import {
+	ISbContentMAPIPresets,
+	ISbRetrieveMultiplePresetsParams,
+} from './MAPIPresets'
 // Releases
 import { ISbContentMAPIReleases } from './MAPIReleases'
 // Spaces
 import {
-  ISbContentMAPISpace,
-  ISbContentMAPICreateSpace,
-  ISbContentMAPIUpdateSpace,
-  ISbContentMAPIDuplicateSpace,
+	ISbContentMAPISpaces,
+	ISbContentMAPICreateSpace,
+	ISbContentMAPIUpdateSpace,
+	ISbContentMAPIDuplicateSpace,
 } from './MAPISpaces'
 // Spaces Roles
 import {
-  ISbContentMAPISpaceRoles,
+	ISbContentMAPISpaceRoles,
 	ISbContentMAPISpaceRolesCreate,
 	ISbContentMAPISpaceRolesUpdate,
 } from './MAPISpacesRoles'
 // Stories
 import {
-	ISbContentMAPIStory,
+	ISbContentMAPIStories,
 	ISbRetrieveMultipleStories,
 	ISbContentMAPIUpdateStory,
 } from './MAPIStories'
 // Tasks
-import { ISbContentMAPITask } from './MAPITasks'
+import { ISbContentMAPITasks } from './MAPITasks'
 // Workflow Stages
 import {
-	ISbContentMAPIWorkflowStage,
+	ISbContentMAPIWorkflowStages,
 	ISbContentMAPIWorkflowStageChanges,
 	ISbRetrieveMultipleWorkflowStageChangesParams,
 } from './MAPIWorkflowStages'
 
 export type ISbMAPIP2Params =
-  ISbContentMAPIActivity
-  | ISbContentMAPIApprovals
-	| ISbContentMAPIReleaseApproval
-  | ISbAsset
+	| ISbContentMAPIActivities
+	| ISbContentMAPIApprovals
+	| ISbContentMAPIReleaseApprovals
+	| ISbAssets
 	| ISbRetrieveMultipleAssets
-	| ISbAssetFolder
+	| ISbAssetFolders
 	| ISbContentMAPIPipelineDeployments
-	| ISbContentMAPIPipeline
+	| ISbContentMAPIPipelines
 	| ISbContentMAPICollaboratorsCollection
 	| ISbContentMAPICollaborator
 	| ISbContentMAPICollaboratorAdd
-	| ISbContentMAPICollaboratorAddWithSSO
-	| ISbContentMAPIComponent
-	| ISbContentMAPIComponentGroup
-	| ISbContentMAPIDataSource
-  | ISbContentMAPIDataSourceEntry
+	| ISbContentMAPICollaboratorAddUsersWithSSO
+	| ISbContentMAPIComponents
+	| ISbContentMAPIComponentGroups
+	| ISbContentMAPIDataSources
+	| ISbContentMAPIDataSourceEntries
 	| ISbContentMAPIFieldTypes
 	| ISbContentMAPIPresets
 	| ISbContentMAPIReleases
-	| ISbContentMAPISpace
-  | ISbContentMAPICreateSpace
-  | ISbContentMAPIUpdateSpace
-  | ISbContentMAPIDuplicateSpace
+	| ISbContentMAPISpaces
+	| ISbContentMAPICreateSpace
+	| ISbContentMAPIUpdateSpace
+	| ISbContentMAPIDuplicateSpace
 	| ISbContentMAPISpaceRoles
 	| ISbContentMAPISpaceRolesCreate
 	| ISbContentMAPISpaceRolesUpdate
-	| ISbContentMAPIStory
+	| ISbContentMAPIStories
 	| ISbContentMAPIUpdateStory
-	| ISbContentMAPITask
-	| ISbContentMAPIWorkflowStage
+	| ISbContentMAPITasks
+	| ISbContentMAPIWorkflowStages
 	| ISbContentMAPIWorkflowStageChanges
 
 export type ISbMAPIGETParams =
-	ISbRetrieveMultipleDataSourcesParams
+	| ISbRetrieveMultipleDataSourcesParams
 	| ISbRetrieveMultipleDataSourcesEntriesParams
 	| ISbRetrieveMultipleStories
 	| ISbRetrieveMultipleActivitiesParams

@@ -26,5 +26,5 @@ export interface ISbRetrieveMultipleFieldTypesParams {
 }
 
 // Aliases
-export type FieldType = ISbContentMAPIFieldTypes
+export type FieldTypes = ISbContentMAPIFieldTypes
 export type GetFieldTypes = ISbRetrieveMultipleFieldTypesParams

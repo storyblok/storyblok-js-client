@@ -13,11 +13,11 @@ export interface ISbContentMAPIApprovals {
 }
 
 /**
- * @interface ISbContentMAPIReleaseApproval
+ * @interface ISbContentMAPIReleaseApprovals
  * @description This interface is generated from the API endpoint for release approvals
  * @reference https://www.storyblok.com/docs/api/management#core-resources/approvals/release-approvals
  */
-export interface ISbContentMAPIReleaseApproval extends ISbContentMAPIApprovals {
+export interface ISbContentMAPIReleaseApprovals extends ISbContentMAPIApprovals {
 	release_id: number
 }
 
@@ -31,6 +31,6 @@ export interface ISbRetrieveMultipleApprovalsParams {
 }
 
 // Aliases
-export type Approval = ISbContentMAPIApprovals
-export type ReleaseApproval = ISbContentMAPIReleaseApproval
+export type Approvals = ISbContentMAPIApprovals
+export type ReleaseApprovals = ISbContentMAPIReleaseApprovals
 export type GetApprovals = ISbRetrieveMultipleApprovalsParams

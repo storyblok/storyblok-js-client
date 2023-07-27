@@ -49,11 +49,11 @@ export interface ISbContentMAPICollaboratorAdd {
 }
 
 /**
- * @interface ISbContentMAPICollaboratorAddWithSSO
+ * @interface ISbContentMAPICollaboratorAddUsersWithSSO
  * @description This interface is generated from the API endpoint for collaborators
  * @reference https://www.storyblok.com/docs/api/management#core-resources/collaborators/add-users-with-sso
  */
-export interface ISbContentMAPICollaboratorAddWithSSO {
+export interface ISbContentMAPICollaboratorAddUsersWithSSO {
 	sso_id?: string
 	email?: string
 	role?: string
@@ -65,4 +65,4 @@ export interface ISbContentMAPICollaboratorAddWithSSO {
 export type Collaborator = ISbContentMAPICollaborator
 export type Collaborators = ISbContentMAPICollaboratorsCollection
 export type AddCollaborator = ISbContentMAPICollaboratorAdd
-export type AddCollaboratorWithSSO = ISbContentMAPICollaboratorAddWithSSO
+export type AddCollaboratorUsersWithSSO = ISbContentMAPICollaboratorAddUsersWithSSO

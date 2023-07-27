@@ -9,15 +9,15 @@ type TComponentGroup = {
 	uuid?: string
 }
 /**
- * @interface ISbContentMAPIComponentGroup
+ * @interface ISbContentMAPIComponentGroups
  * @description Storyblok Content Management API Component Group Interface
  * @reference https://www.storyblok.com/docs/api/management#core-resources/component-groups/component-groups
  *
  **/
-export interface ISbContentMAPIComponentGroup {
+export interface ISbContentMAPIComponentGroups {
 	component_group: TComponentGroup
 	name?: string
 }
 
 // Aliases
-export type ComponentGroup = ISbContentMAPIComponentGroup
+export type ComponentGroups = ISbContentMAPIComponentGroups

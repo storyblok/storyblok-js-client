@@ -1,10 +1,10 @@
 /**
- * @interface ISbContentMAPISpace
+ * @interface ISbContentMAPISpaces
  * @description Storyblok Content Management API Space Interface
  * @reference https://www.storyblok.com/docs/api/management#core-resources/spaces/the-space-object
  *
  */
-export interface ISbContentMAPISpace {
+export interface ISbContentMAPISpaces {
 	[key: string]: object
 }
 
@@ -46,7 +46,7 @@ export interface ISbContentMAPIUpdateSpace {
 		options?: {
 			[key: string]: any
 		}
-		routes?:	{
+		routes?: {
 			[key: string]: any
 		}
 		story_published_hook?: string
@@ -76,9 +76,8 @@ type ContentData = {
 	environments?: TEnvironment[]
 }
 
-
 // Aliases
-export type Space = ISbContentMAPISpace
+export type Spaces = ISbContentMAPISpaces
 
 export type CreateSpace = ISbContentMAPICreateSpace
 export type UpdateSpace = ISbContentMAPIUpdateSpace

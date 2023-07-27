@@ -1,9 +1,9 @@
 /**
- * @interface ISbContentMAPITask
+ * @interface ISbContentMAPITasks
  * @description Storyblok Content Management API Task Interface
  * @reference https://www.storyblok.com/docs/api/management#core-resources/tasks/tasks
  */
-export interface ISbContentMAPITask {
+export interface ISbContentMAPITasks {
 	task: {
 		id?: number
 		name?: string
@@ -17,4 +17,4 @@ export interface ISbContentMAPITask {
 }
 
 // Aliases
-export type Task = ISbContentMAPITask
+export type Tasks = ISbContentMAPITasks

@@ -1,13 +1,9 @@
 import { ResponseFn } from './sbFetch'
 
-import {
-	ISbContentMAPIComponent,
-} from './MAPIInterfaces/MAPIComponents'
+import { ISbContentMAPIComponents } from './MAPIInterfaces/MAPIComponents'
 
-import {
-	ISbContentMAPIStory,
-} from './MAPIInterfaces/MAPIStories'
-import { ISbContentMAPIDataSourceEntry } from './MAPIInterfaces/MAPIDataSources'
+import { ISbContentMAPIStories } from './MAPIInterfaces/MAPIStories'
+import { ISbContentMAPIDataSourceEntries } from './MAPIInterfaces/MAPIDataSources'
 
 import { ISbMAPIP2Params } from './MAPIInterfaces/index'
 
@@ -56,12 +52,12 @@ export interface ISbStoriesParams {
 	size?: string
 	datasource?: ISbContentDataSource
 	datasources?: MultipleDatasources[]
-	datasource_entries?: ISbContentMAPIDataSourceEntry[]
+	datasource_entries?: ISbContentMAPIDataSourceEntries[]
 	dimension?: string
 	content_type?: string
 }
 
-type TComponent = Omit<ISbContentMAPIComponent, 'component'>
+type TComponent = Omit<ISbContentMAPIComponents, 'component'>
 
 type ISbContentDataSource = {
 	id?: number
@@ -98,7 +94,7 @@ export interface ISbStoryParams {
  * @reference https://www.storyblok.com/docs/api/content-delivery/v2#core-resources/datasources/retrieve-multiple-datasources
  */
 type MultipleDatasources = {
-	token:	string
+	token: string
 	page?: number | 1
 	per_page?: number | 25
 }
@@ -263,7 +259,7 @@ export type MarkSchema = {
  **/
 export interface ISbContentMAPI<T = void> {
 	auxiliaryInterfaces?: T[]
-	story?: ISbContentMAPIStory
+	story?: ISbContentMAPIStories
 	component?: TComponent
 	force_update?: '1' | null
 	release_id?: number

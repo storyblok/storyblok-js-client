@@ -1,14 +1,14 @@
 /**
- * @interface ISbContentMAPIDataSourceEntry
+ * @interface ISbContentMAPIDataSourceEntries
  * @description Storyblok Content Management API Data Source Entries Interface
  * @description This is used when creating a new data source entry
  * @reference https://www.storyblok.com/docs/api/management#core-resources/datasource-entries/datasource-entries
  *
  **/
-export interface ISbContentMAPIDataSourceEntry {
+export interface ISbContentMAPIDataSourceEntries {
 	datasource_entry: {
 		id?: number
-		name:	string
+		name: string
 		value: string
 		datasource_id: number
 		dimension_value?: string
@@ -17,12 +17,12 @@ export interface ISbContentMAPIDataSourceEntry {
 }
 
 /**
- * @interface ISbContentMAPIDataSource
+ * @interface ISbContentMAPIDataSources
  * @description Storyblok Content Management API Data Source Interface
  * @reference https://www.storyblok.com/docs/api/management#core-resources/datasources/datasources
  *
  **/
-export interface ISbContentMAPIDataSource {
+export interface ISbContentMAPIDataSources {
 	datasource: {
 		id?: number
 		name?: string
@@ -63,7 +63,7 @@ type Dimension = {
 }
 
 // Aliases
-export type DataSource = ISbContentMAPIDataSource
-export type DataSourceEntry = ISbContentMAPIDataSourceEntry
+export type DataSources = ISbContentMAPIDataSources
+export type DataSourceEntries = ISbContentMAPIDataSourceEntries
 export type GetDataSources = ISbRetrieveMultipleDataSourcesParams
 export type GetDataSourcesEntries = ISbRetrieveMultipleDataSourcesEntriesParams

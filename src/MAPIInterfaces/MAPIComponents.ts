@@ -86,12 +86,12 @@ type TComponentField = {
 }
 
 /**
- * @interface ISbContentMAPIComponent
+ * @interface ISbContentMAPIComponents
  * @description Storyblok Content Management API Component Interface
  * @reference https://www.storyblok.com/docs/api/management#core-resources/components/components
  *
  **/
-export interface ISbContentMAPIComponent {
+export interface ISbContentMAPIComponents {
 	component: TComponent
 	name?: string
 	display_name?: string
@@ -104,4 +104,4 @@ export interface ISbContentMAPIComponent {
 }
 
 // Aliases
-export type Component = ISbContentMAPIComponent
+export type Components = ISbContentMAPIComponents
