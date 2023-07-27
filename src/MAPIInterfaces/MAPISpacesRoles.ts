@@ -29,9 +29,7 @@ type TPermissions = {
  * @reference https://www.storyblok.com/docs/api/management#core-resources/space-roles/create-space-role
  */
 export interface ISbContentMAPISpaceRolesCreate {
-	space_role: {
-		role?: string
-	}
+	space_role: ISbContentMAPISpaceRoles
 }
 
 /**
