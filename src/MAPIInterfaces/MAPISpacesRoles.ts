@@ -30,7 +30,6 @@ type TPermissions = {
  */
 export interface ISbContentMAPISpaceRolesCreate {
 	space_role: {
-		space_role: ISbContentMAPISpaceRoles
 		role?: string
 	}
 }
@@ -41,10 +40,7 @@ export interface ISbContentMAPISpaceRolesCreate {
  * @reference https://www.storyblok.com/docs/api/management#core-resources/space-roles/update-space-role
  */
 export interface ISbContentMAPISpaceRolesUpdate {
-	space_role: {
-		space_role: ISbContentMAPISpaceRoles
-		role?: string
-	}
+	space_role: ISbContentMAPISpaceRoles
 }
 
 // Aliases
