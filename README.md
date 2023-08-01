@@ -385,7 +385,7 @@ Storyblok.setComponentResolver((component, blok) => {
 })
 ```
 
-Option 2: Dynamically render a component (Example in Vue.js):
+Option 2: Dynamically render a component (Example in Vue.js, which will only work with runtime template rendering enabled):
 
 ```javascript
 Storyblok.setComponentResolver((component, blok) => {
@@ -445,7 +445,7 @@ const options = {
     // will render srcset="//../m/720x0 720w", "//../m/1024x0 1024w", "//../m/1533x0 1280w"
     // Also accept an array to pass width and height. 
     // Example: [[720,500], 1024, [1500, 1000]] 
-    // will render srcset="//../m/720x500 720w", "//../m/1024x0 1024w", "//../m/1280x0 1280w"
+    // will render srcset="//../m/720x500 720w", "//../m/1024x0 1024w", "//../m/1500x1000 1280w"
     srcset: [720, 1024, 1533], 
     sizes: [
       '(max-width: 767px) 100vw',
@@ -510,7 +510,7 @@ client
 
 #### Download all content from Storyblok
 
-Following a code example using the storyblok-js-client to backup all content on your local filesystem inside a 'backup' folder.
+Following a code example using the storyblok-js-client to back up all content on your local filesystem inside a 'backup' folder.
 
 ```javascript
 import StoryblokClient from "storyblok-js-client";
@@ -647,7 +647,7 @@ console.log(rendered)
 ```
 
 ### Handling access token overwrite
-You can overwrte an access token, and prevent errors from the function call by adding a `.catch()` method for each access token as shown below. 
+You can overwrite an access token, and prevent errors from the function call by adding a `.catch()` method for each access token as shown below. 
 
 ```javascript
 const public = 'token1'
