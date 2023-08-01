@@ -61,7 +61,7 @@
 		"eslint-config-prettier": "^8.5.0",
 		"husky": "^8.0.2",
 		"isomorphic-fetch": "^3.0.0",
-		"prettier": "^2.7.1",
+		"prettier": "^3.0.0",
 		"typescript": "^5.0.2",
 		"vite": "^4.0.4",
 		"vitest": "^0.32.0"
