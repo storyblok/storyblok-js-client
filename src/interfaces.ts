@@ -3,7 +3,7 @@ import { ResponseFn } from './sbFetch'
 export interface ISbStoriesParams {
 	token?: string
 	with_tag?: string
-	is_startpage?: 0 | 1
+	is_startpage?: boolean
 	starts_with?: string
 	by_uuids?: string
 	by_uuids_ordered?: string
