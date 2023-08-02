@@ -1,9 +1,13 @@
-import path from 'path'
-import { fileURLToPath } from 'url'
+import { fileURLToPath } from 'node:url'
+import { resolve } from 'node:path'
+import { readFileSync } from 'node:fs'
 import { build } from 'vite'
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 
+const pkg = JSON.parse(
+	readFileSync(resolve(__dirname, `./package.json`), 'utf-8')
+)
 let firstRunCounter = 0
 const bundles = [
 	{
@@ -37,12 +41,15 @@ const bundles = [
 			configFile: false,
 			build: {
 				lib: {
-					entry: path.resolve(__dirname, 'src', bundle.entry),
+					entry: resolve(__dirname, 'src', bundle.entry),
 					formats: bundle.formats,
 					name: bundle.name,
 					fileName: bundle.fileName,
 				},
 				emptyOutDir: !firstRunCounter++,
+			},
+			define: {
+				'process.env.npm_package_version': `"${pkg.version}"`,
 			},
 		})
 	}
