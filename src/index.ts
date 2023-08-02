@@ -110,7 +110,7 @@ class Storyblok {
 			}
 		}
 
-		const packageVersion = import.meta.env.VITE_PACKAGE_VERSION || '5.0.0'
+		const { packageVersion } = import.meta.env
 
 		if (!headers.has(STORYBLOK_AGENT)) {
 			headers.set(STORYBLOK_AGENT, STORYBLOK_JS_CLIENT_AGENT.defaultAgentName)
