@@ -1,6 +1,6 @@
 {
 	"compilerOptions": {
-		"module": "commonjs",
+		"module": "ESNext",
 		"isolatedModules": true,
 		"target": "ESNext",
 		"strict": true,
@@ -10,7 +10,8 @@
 		"declaration": true,
 		"declarationDir": "dist/types",
 		"emitDeclarationOnly": true,
-		"lib": ["ESNext", "DOM", "DOM.Iterable"]
+		"lib": ["ESNext", "DOM", "DOM.Iterable"],
+		"types": ["node", "vite/client"]
 	},
 	"extends": "@tsconfig/recommended/tsconfig.json",
 	"$schema": "https://json.schemastore.org/tsconfig",

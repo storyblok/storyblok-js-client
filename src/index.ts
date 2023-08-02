@@ -89,9 +89,13 @@ class Storyblok {
 			const protocol = config.https === false ? 'http' : 'https'
 
 			if (!config.oauthToken) {
-				endpoint = `${protocol}://${getRegion(config.region)}/${'v2' as Version}`
+				endpoint = `${protocol}://${getRegion(config.region)}/${
+					'v2' as Version
+				}`
 			} else {
-				endpoint = `${protocol}://${getRegion(config.region)}/${'v1' as Version}`
+				endpoint = `${protocol}://${getRegion(config.region)}/${
+					'v1' as Version
+				}`
 			}
 		}
 
@@ -105,10 +109,12 @@ class Storyblok {
 				headers.set(header, config.headers[header])
 			}
 		}
-		
+
+		const packageVersion = import.meta.env.VITE_PACKAGE_VERSION || '5.0.0'
+
 		if (!headers.has(STORYBLOK_AGENT)) {
 			headers.set(STORYBLOK_AGENT, STORYBLOK_JS_CLIENT_AGENT.defaultAgentName)
-			headers.set( STORYBLOK_JS_CLIENT_AGENT.defaultAgentVersion,  STORYBLOK_JS_CLIENT_AGENT.packageVersion)
+			headers.set(STORYBLOK_JS_CLIENT_AGENT.defaultAgentVersion, packageVersion)
 		}
 
 		let rateLimit = 5 // per second for cdn api
