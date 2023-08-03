@@ -89,9 +89,13 @@ class Storyblok {
 			const protocol = config.https === false ? 'http' : 'https'
 
 			if (!config.oauthToken) {
-				endpoint = `${protocol}://${getRegion(config.region)}/${'v2' as Version}`
+				endpoint = `${protocol}://${getRegion(config.region)}/${
+					'v2' as Version
+				}`
 			} else {
-				endpoint = `${protocol}://${getRegion(config.region)}/${'v1' as Version}`
+				endpoint = `${protocol}://${getRegion(config.region)}/${
+					'v1' as Version
+				}`
 			}
 		}
 
@@ -105,10 +109,13 @@ class Storyblok {
 				headers.set(header, config.headers[header])
 			}
 		}
-		
+
 		if (!headers.has(STORYBLOK_AGENT)) {
 			headers.set(STORYBLOK_AGENT, STORYBLOK_JS_CLIENT_AGENT.defaultAgentName)
-			headers.set( STORYBLOK_JS_CLIENT_AGENT.defaultAgentVersion,  STORYBLOK_JS_CLIENT_AGENT.packageVersion)
+			headers.set(
+				STORYBLOK_JS_CLIENT_AGENT.defaultAgentVersion,
+				STORYBLOK_JS_CLIENT_AGENT.packageVersion
+			)
 		}
 
 		let rateLimit = 5 // per second for cdn api
@@ -538,70 +545,55 @@ class Storyblok {
 			}
 		}
 
-		return new Promise((resolve, reject) => {
+		return new Promise(async (resolve, reject) => {
 			try {
-				;(async () => {
-					try {
-						const res = await this.throttle('get', url, params)
+				const res = await this.throttle('get', url, params)
 
-						let response = { data: res.data, headers: res.headers } as ISbResult
+				let response = { data: res.data, headers: res.headers } as ISbResult
 
-						if (res.headers?.['per-page']) {
-							response = Object.assign({}, response, {
-								perPage: res.headers['per-page']
-									? parseInt(res.headers['per-page'])
-									: 0,
-								total: res.headers['per-page']
-									? parseInt(res.headers['total'])
-									: 0,
-							})
-						}
-
-						if (res.status != 200) {
-							return reject(res)
-						}
-
-						if (response.data.story || response.data.stories) {
-							const resolveId = (this.resolveCounter =
-								++this.resolveCounter % 1000)
-							await this.resolveStories(response.data, params, `${resolveId}`)
-						}
-
-						if (params.version === 'published' && url != '/cdn/spaces/me') {
-							await provider.set(cacheKey, response)
-						}
-
-						if (response.data.cv && params.token) {
-							if (
-								params.version == 'draft' &&
-								cacheVersions[params.token] != response.data.cv
-							) {
-								await this.flushCache()
-							}
-
-							cacheVersions[params.token] = response.data.cv
-						}
-
-						return resolve(response)
-					} catch (error: Error | any) {
-						return reject(error)
-					}
-				})()
-			} catch (error: Error | any) {
-				;async () => {
-					if (error.response && error.response.status === 429) {
-						retries = retries ? retries + 1 : 0
-
-						if (retries < this.maxRetries) {
-							console.log(`Hit rate limit. Retrying in ${retries} seconds.`)
-							await this.helpers.delay(1000 * retries)
-							return this.cacheResponse(url, params, retries)
-								.then(resolve)
-								.catch(reject)
-						}
-					}
-					reject(error.message)
+				if (res.headers?.['per-page']) {
+					response = Object.assign({}, response, {
+						perPage: res.headers['per-page']
+							? parseInt(res.headers['per-page'])
+							: 0,
+						total: res.headers['per-page'] ? parseInt(res.headers['total']) : 0,
+					})
 				}
+
+				if (response.data.story || response.data.stories) {
+					const resolveId = (this.resolveCounter = ++this.resolveCounter % 1000)
+					await this.resolveStories(response.data, params, `${resolveId}`)
+				}
+
+				if (params.version === 'published' && url != '/cdn/spaces/me') {
+					await provider.set(cacheKey, response)
+				}
+
+				if (response.data.cv && params.token) {
+					if (
+						params.version == 'draft' &&
+						cacheVersions[params.token] != response.data.cv
+					) {
+						await this.flushCache()
+					}
+
+					cacheVersions[params.token] = response.data.cv
+				}
+
+				return resolve(response)
+			} catch (error: Error | any) {
+				if (error.response && error.response.status === 429) {
+					retries = retries ? retries + 1 : 0
+
+					if (retries < this.maxRetries) {
+						console.log(`Hit rate limit. Retrying in ${retries} seconds.`)
+						await this.helpers.delay(1000 * retries)
+						return this.cacheResponse(url, params, retries)
+							.then(resolve)
+							.catch(reject)
+					}
+				}
+				reject(error.message)
 			}
 		})
 	}
