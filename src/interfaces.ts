@@ -280,10 +280,5 @@ export type AsyncFn = (...args: any) => [] | Promise<ISbResult>
 export type ArrayFn = (...args: any) => void
 
 export type HtmlEscapes = {
-	'&': '&amp;'
-	'<': '&lt;'
-	'>': '&gt;'
-	'"': '&quot;'
-	"'": '&#39;'
 	[key: string]: string
 }
