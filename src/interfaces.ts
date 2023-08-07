@@ -278,3 +278,7 @@ export type ThrottleFn = {
 export type AsyncFn = (...args: any) => [] | Promise<ISbResult>
 
 export type ArrayFn = (...args: any) => void
+
+export type HtmlEscapes = {
+	[key: string]: string
+}
