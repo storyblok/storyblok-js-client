@@ -539,3 +539,39 @@ test('should not render atributes when they are undefined or broken', () => {
 
 	expect(result).toBe(expected)
 })
+
+test('should escape ampersand in link attribute values', () => {
+	
+	const data = {
+    type: 'doc',
+    content: [
+        {
+            type: 'paragraph',
+            content: [
+                {
+                    text: 'test',
+                    type: 'text',
+                    marks: [
+                        {
+                            type: "link",
+                            attrs: {
+                                href: "https://www.storyblok.com/?foo=bar&bar=foo",
+                                uuid: null,
+                                anchor: null,
+                                target: "_self",
+                                linktype: "url",
+                            },
+                        },
+                    ],
+                },
+            ],
+        },
+    ],
+	}
+
+	const result = resolver.render(data)
+
+	const expected = '<p><a href="https://www.storyblok.com/?foo=bar&amp;bar=foo" target="_self" linktype="url">test</a></p>'
+
+	expect(result).toBe(expected)
+})

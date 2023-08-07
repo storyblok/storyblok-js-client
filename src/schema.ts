@@ -1,4 +1,5 @@
 import { ISbNode, NodeSchema, MarkSchema, ISbComponentType } from './interfaces'
+import { SbHelpers } from './sbHelpers'
 
 const pick = function (attrs: Attrs, allowed: string[]) {
 	const h = {} as Attrs
@@ -131,8 +132,13 @@ const italic: MarkSchema = () => {
 	}
 }
 const link: MarkSchema = (node: ISbNode) => {
+	const escapeHTML = new SbHelpers().escapeHTML
 	const attrs = { ...node.attrs }
 	const { linktype = 'url' } = node.attrs
+
+	if (attrs.href) {
+		attrs.href = escapeHTML(node.attrs.href || '')
+	}
 
 	if (isEmailLinkType(linktype)) {
 		attrs.href = `mailto:${attrs.href}`

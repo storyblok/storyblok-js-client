@@ -1,4 +1,4 @@
-import { ISbStoriesParams, ISbResult, AsyncFn } from './interfaces'
+import { ISbStoriesParams, ISbResult, AsyncFn, HtmlEscapes } from './interfaces'
 interface ISbParams extends ISbStoriesParams {
 	[key: string]: any
 }
@@ -95,5 +95,27 @@ export class SbHelpers {
 			default:
 				return EU_API_URL
 		}
+	}
+
+	/**
+	 * @method escapeHTML
+	 * @param  {String} string text to be parsed
+	 * @return {String} Text parsed
+	 */
+	public escapeHTML = function (string: string) {
+		const htmlEscapes = {
+			'&': '&amp;',
+			'<': '&lt;',
+			'>': '&gt;',
+			'"': '&quot;',
+			"'": '&#39;',
+		} as HtmlEscapes
+
+		const reUnescapedHtml = /[&<>"']/g
+		const reHasUnescapedHtml = RegExp(reUnescapedHtml.source)
+
+		return string && reHasUnescapedHtml.test(string)
+			? string.replace(reUnescapedHtml, (chr) => htmlEscapes[chr])
+			: string
 	}
 }
