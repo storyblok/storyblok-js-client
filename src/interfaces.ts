@@ -10,7 +10,7 @@ export interface ISbStoriesParams {
 	excluding_ids?: string
 	excluding_fields?: string
 	version?: 'draft' | 'published'
-	resolve_links?: 'url' | 'story' | '0' | '1' | 'link'
+	resolve_links?: 'link' | 'url' | 'story' | '0' | '1' | 'link'
 	resolve_relations?: string | string[]
 	resolve_assets?: number
 	cv?: number
@@ -42,7 +42,7 @@ export interface ISbStoryParams {
 	token?: string
 	find_by?: 'uuid'
 	version?: 'draft' | 'published'
-	resolve_links?: 'url' | 'story' | '0' | '1'
+	resolve_links?: 'link' | 'url' | 'story' | '0' | '1'
 	resolve_relations?: string | string[]
 	cv?: number
 	from_release?: string
