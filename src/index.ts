@@ -549,6 +549,10 @@ class Storyblok {
 			try {
 				const res = await this.throttle('get', url, params)
 
+				if (res.status !== 200) {
+					return reject(res)
+				}
+
 				let response = { data: res.data, headers: res.headers } as ISbResult
 
 				if (res.headers?.['per-page']) {
