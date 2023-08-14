@@ -132,9 +132,15 @@ const italic: MarkSchema = () => {
 	}
 }
 const link: MarkSchema = (node: ISbNode) => {
+	if (!node.attrs) {
+		return {
+			tag: '',
+		}
+	}
 	const escapeHTML = new SbHelpers().escapeHTML
 	const attrs = { ...node.attrs }
 	const { linktype = 'url' } = node.attrs
+	delete attrs.linktype
 
 	if (attrs.href) {
 		attrs.href = escapeHTML(node.attrs.href || '')
