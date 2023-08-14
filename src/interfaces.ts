@@ -194,7 +194,7 @@ export interface ISbResponse {
 }
 
 export interface ISbError {
-	message?: Error
+	message?: string
 	status?: number
 	response?: ISbResponse
 }

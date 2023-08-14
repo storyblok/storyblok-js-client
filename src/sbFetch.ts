@@ -153,20 +153,19 @@ class SbFetch {
 	private _statusHandler(res: ISbResponse): Promise<ISbResponse | ISbError> {
 		const statusOk = /20[0-6]/g
 
-		return new Promise((resolve, reject) => {
+		return new Promise((resolve) => {
 			if (statusOk.test(`${res.status}`)) {
 				return resolve(res)
 			}
 
 			const error: ISbError = {
-				message: new Error(res.statusText),
+				message: res.statusText,
 				status: res.status,
 				response: Array.isArray(res.data)
 					? res.data[0]
 					: res.data.error || res.data.slug,
 			}
-
-			reject(error)
+			throw new Error(JSON.stringify(error))
 		})
 	}
 }
