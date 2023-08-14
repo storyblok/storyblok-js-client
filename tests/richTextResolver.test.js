@@ -20,6 +20,7 @@ import {
 	TEXT_WITH_EMOJI_VIA_FALLBACKIMAGE,
 	TEXT_WITH_COLORS_MISSING_PARAMETERS,
 	TEXT_MISSING_PARAMETERS,
+	TEXT_WITH_BROKEN_LINK,
 } from './constants/richTextResolver'
 
 const TOKEN = 'w0yFvs04aKF2rpz6F8OfIQtt'
@@ -233,7 +234,7 @@ test('link to generate a tag', () => {
 test('link to generate a tag with an email', () => {
 	const result = resolver.render(EMAIL_LINK_DATA)
 	const expected =
-		'<a href="mailto:email@client.com" target="_blank" linktype="email">an email link</a>'
+		'<a href="mailto:email@client.com" target="_blank">an email link</a>'
 
 	expect(result).toBe(expected)
 })
@@ -357,7 +358,7 @@ test('link to generate a tag with achor', () => {
 test('Complex and immutability test', () => {
 	const result = resolver.render(LONG_TEXT_FOR_IMMUTABILITY_TEST)
 	const expected =
-		'<p><b>Lorem</b> ipsum, <strike>dolor</strike> sit amet <u>consectetur</u> adipisicing elit. <code>Eos architecto</code> asperiores temporibus <a href="/test/our-service#anchor-text" uuid="931e04b7-f701-4fe4-8ec0-78be0bee8809" target="_blank" linktype="story">suscipit harum </a>ut, fugit, cumque <a href="asdfsdfasf" target="_blank" linktype="url">molestiae </a>ratione non adipisci, <i>facilis</i> inventore optio dolores. Rem, perspiciatis <a href="/home" uuid="fc6a453f-9aa6-4a00-a22d-49c5878f7983" target="_self" linktype="story">deserunt!</a> Esse, maiores!</p>'
+		'<p><b>Lorem</b> ipsum, <strike>dolor</strike> sit amet <u>consectetur</u> adipisicing elit. <code>Eos architecto</code> asperiores temporibus <a href="/test/our-service#anchor-text" uuid="931e04b7-f701-4fe4-8ec0-78be0bee8809" target="_blank">suscipit harum </a>ut, fugit, cumque <a href="asdfsdfasf" target="_blank">molestiae </a>ratione non adipisci, <i>facilis</i> inventore optio dolores. Rem, perspiciatis <a href="/home" uuid="fc6a453f-9aa6-4a00-a22d-49c5878f7983" target="_self">deserunt!</a> Esse, maiores!</p>'
 
 	expect(result).toBe(expected)
 })
@@ -378,7 +379,7 @@ test('test with a custom schema from StoryblokRich', () => {
 test('should render a custom attribute in a link tag', () => {
 	const result = resolver.render(CUSTOM_ATTRIBUTE_DATA)
 	const expected =
-		'<a href="www.storyblok.com" uuid="300aeadc-c82d-4529-9484-f3f8f09cf9f5" target="_blank" linktype="url" rel="nofollow" title="nice test">A nice link with custom attr</a>'
+		'<a href="www.storyblok.com" uuid="300aeadc-c82d-4529-9484-f3f8f09cf9f5" target="_blank" rel="nofollow" title="nice test">A nice link with custom attr</a>'
 
 	expect(result).toBe(expected)
 })
@@ -443,7 +444,7 @@ test('should render a emoji with falbackimage', () => {
 
 test('should render a text with links, subscripts and superscripts', () => {
 	const result = resolver.render(LONG_TEXT_WITH_LINKS_SUB_SUP_SCRIPTS)
-	const expected = '<p><b>Lorem Ipsum</b> is simply dummy text of the <a href="test.com" linktype="url" target="_self" title="test one" rel="test two">printing and typesetting industry</a>. Lorem Ipsum has been the industry&#39;s standard dummy text ever since the <sup>1500s</sup>, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the <sub>1960s</sub> with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like <sup>Aldus PageMaker</sup> including versions of <sub>Lorem Ipsum</sub>.</p>'
+	const expected = '<p><b>Lorem Ipsum</b> is simply dummy text of the <a href="test.com" target="_self" title="test one" rel="test two">printing and typesetting industry</a>. Lorem Ipsum has been the industry&#39;s standard dummy text ever since the <sup>1500s</sup>, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the <sub>1960s</sub> with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like <sup>Aldus PageMaker</sup> including versions of <sub>Lorem Ipsum</sub>.</p>'
 
 	expect(result).toBe(expected)
 })
@@ -571,7 +572,14 @@ test('should escape ampersand in link attribute values', () => {
 
 	const result = resolver.render(data)
 
-	const expected = '<p><a href="https://www.storyblok.com/?foo=bar&amp;bar=foo" target="_self" linktype="url">test</a></p>'
+	const expected = '<p><a href="https://www.storyblok.com/?foo=bar&amp;bar=foo" target="_self">test</a></p>'
 
+	expect(result).toBe(expected)
+})
+
+test('should not render empty links', () => {
+	const result = resolver.render(TEXT_WITH_BROKEN_LINK)
+
+	const expected = '<p><span style="color:rgb(23, 43, 77)">...</span><br /><a href="...">...</a><br />...</p>'
 	expect(result).toBe(expected)
 })
