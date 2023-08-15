@@ -632,3 +632,57 @@ export const TEXT_MISSING_PARAMETERS = {
     }
   ]
 }
+
+export const TEXT_WITH_BROKEN_LINK = {
+  "type": "doc",
+  "content": [
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "text": "...",
+          "type": "text",
+          "marks": [
+            {
+              "type": "textStyle",
+              "attrs": {
+                  "color": "rgb(23, 43, 77)"
+              }
+            }
+          ]
+        },
+        {
+          "type": "hard_break"
+        },
+        {
+          "text": "...",
+          "type": "text",
+          "marks": [
+            {
+              "type": "link",
+              "attrs": {
+                "href": "...",
+                "uuid": null,
+                "anchor": null,
+                "target": null,
+                "linktype": "url"
+              }
+            }
+          ]
+        },
+        {
+          "type": "hard_break"
+        },
+        {
+          "text": "...",
+          "type": "text",
+          "marks": [
+            {
+              "type": "link"
+            }
+          ]
+        }
+      ]
+    }
+  ] 
+}
