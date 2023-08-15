@@ -2,7 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
-# [Unreleased]
+## [6.0.0] - 2022-08-15
+
+### Changed
+
+- Error handling changed to expose the error object instead of the error message
 
 ## [5.4.0] - 2023-02-02
 
