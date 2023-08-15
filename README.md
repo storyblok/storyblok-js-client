@@ -97,7 +97,7 @@ If you wish to continue using the non Typescript version with `axios`, please us
 
 ### BREAKING CHANGES - FROM VERSION 6
 
-Error handling has changed. Exceptions will be thrown as an object with the following structure:
+Error handling from fetch has changed. Exceptions will be thrown as an object with the following structure:
 
 ```javascript
 {
