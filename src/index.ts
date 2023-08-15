@@ -597,7 +597,7 @@ class Storyblok {
 							.catch(reject)
 					}
 				}
-				reject(error.message)
+				reject(error)
 			}
 		})
 	}

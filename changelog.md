@@ -2,12 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
-## [5.14.2] - 2023-08-14
+## [6.0.0] - 2022-08-15
 
-### Fixed
+### Changed
 
-- [Storyblok-JS-client](https://github.com/storyblok/storyblok-js-client/releases/tag/v5.14.2)
-- Fixing the error return from the statusHandler function.
+- Error handling changed to expose the error object instead of the error message as a string.
 
 ## [5.4.0] - 2023-02-02
 
