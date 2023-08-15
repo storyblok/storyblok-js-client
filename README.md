@@ -92,7 +92,7 @@ const html = resolver.render(data)
 ### NEW BRANCHES AND VERSIONS
 
 The old master branch containing version `4.x.y` has been moved to the `v4` branch.
-We’ve renamed the `master` branch to `main` and now it contains version 5.0.0.
+We’ve renamed the `master` branch to `main` and now it contains version >= 5.0.0.
 If you wish to continue using the non Typescript version with `axios`, please use version `4`. You can install it by running `npm install https://github.com/storyblok/storyblok-js-client.git#4.x.x`.
 
 ### BREAKING CHANGES - FROM VERSION 6
