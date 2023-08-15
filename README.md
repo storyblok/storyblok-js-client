@@ -107,7 +107,7 @@ Error handling from fetch has changed. Exceptions will be thrown as an object wi
 }
 ```
 
-You don't need to parse the response.
+You don't need to parse the error from the client's side.
 
 ### BREAKING CHANGES - FROM VERSION 5
 
