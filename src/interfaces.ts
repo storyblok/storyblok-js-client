@@ -112,6 +112,11 @@ export interface ISbAlternateObject {
 	full_slug: string
 	is_folder: boolean
 	parent_id: number
+	position: number
+  uuid: string
+  is_startpage: boolean
+  real_path: string
+	path: string
 }
 
 export interface ISbLinkURLObject {
