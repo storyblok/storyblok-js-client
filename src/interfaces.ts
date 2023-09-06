@@ -112,11 +112,6 @@ export interface ISbAlternateObject {
 	full_slug: string
 	is_folder: boolean
 	parent_id: number
-	position: number
-  uuid: string
-  is_startpage: boolean
-  real_path: string
-	path: string
 }
 
 export interface ISbLinkURLObject {
@@ -274,6 +269,24 @@ export interface LinkCustomAttributes {
 	rel?: string
 	title?: string
 	[key: string]: any
+}
+
+export interface ISbLink {
+	id?: number
+  slug?: string
+  name?: string
+  is_folder?: boolean
+	parent_id?: number
+	published?: boolean
+	position?: number
+	uuid?: string
+	is_startpage?: boolean
+}
+
+export interface ISbLinks {
+  links?: {
+		[key: string]: ISbLink
+	}
 }
 
 export type ThrottleFn = {
