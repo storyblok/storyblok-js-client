@@ -271,6 +271,24 @@ export interface LinkCustomAttributes {
 	[key: string]: any
 }
 
+export interface ISbLink {
+	id?: number
+  slug?: string
+  name?: string
+  is_folder?: boolean
+	parent_id?: number
+	published?: boolean
+	position?: number
+	uuid?: string
+	is_startpage?: boolean
+}
+
+export interface ISbLinks {
+  links?: {
+		[key: string]: ISbLink
+	}
+}
+
 export type ThrottleFn = {
 	(...args: any): any
 }
