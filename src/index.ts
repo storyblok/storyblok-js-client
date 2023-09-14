@@ -452,6 +452,7 @@ class Storyblok {
 					language: params.language,
 					version: params.version,
 					by_uuids: chunks[chunkIndex].join(','),
+					excluding_fields: params.excluding_fields,
 				})
 
 				relationsRes.data.stories.forEach((rel: ISbStoryData) => {
