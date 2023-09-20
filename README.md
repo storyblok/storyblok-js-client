@@ -95,6 +95,13 @@ The old master branch containing version `4.x.y` has been moved to the `v4` bran
 We’ve renamed the `master` branch to `main` and now it contains version 5.0.0.
 If you wish to continue using the non Typescript version with `axios`, please use version `4`. You can install it by running `npm install https://github.com/storyblok/storyblok-js-client.git#4.x.x`.
 
+### BREAKING CHANGES - FROM VERSION 7
+
+### Added TypeScript's new interfaces - Version 7
+
+From version 7, all the interfaces and the way to instantiate the client have changed. Please refer to the complete [documentation](link-to-updated-docs-comming-soon) to see how to use the new version.
+
+
 ### BREAKING CHANGES - FROM VERSION 5
 
 ### Added TypeScript - Version 5
