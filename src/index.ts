@@ -71,6 +71,7 @@ class Storyblok {
 	private cache: ISbCache
 	private helpers: SbHelpers
 	private resolveCounter: number
+	private fetchOptions: object
 	public relations: RelationsType
 	public links: LinksType
 	public richTextResolver: any
@@ -148,6 +149,7 @@ class Storyblok {
 		this.helpers = new SbHelpers()
 		this.resolveCounter = 0
 		this.resolveNestedRelations = config.resolveNestedRelations || true
+		this.fetchOptions = {}
 
 		this.client = new SbFetch({
 			baseURL: endpoint,
@@ -156,6 +158,23 @@ class Storyblok {
 			responseInterceptor: config.responseInterceptor,
 			fetch: config.fetch,
 		})
+	}
+
+	public customFetch(
+		slug: string,
+		params?: ISbStoriesParams,
+		fetchOptions?: object
+	): Promise<any> {
+		if (fetchOptions && Object.keys(fetchOptions).length > 0) {
+			this.fetchOptions = fetchOptions
+		}
+
+		if (!params) params = {} as ISbStoriesParams
+
+		const url = `/${slug}`
+		const query = this.factoryParamOptions(url, params)
+
+		return this.cacheResponse(url, query)
 	}
 
 	public setComponentResolver(resolver: ComponentResolverFn): void {
@@ -607,7 +626,7 @@ class Storyblok {
 		url: string,
 		params: ISbStoriesParams
 	): Promise<unknown> {
-		return this.client[type](url, params)
+		return this.client[type](url, params, this.fetchOptions)
 	}
 
 	public cacheVersions(): CachedVersions {

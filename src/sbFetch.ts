@@ -24,6 +24,7 @@ class SbFetch {
 	private ejectInterceptor?: boolean
 	private url: string
 	private parameters: ISbStoriesParams
+	private fetchOptions?: object
 
 	public constructor($c: ISbFetch) {
 		this.baseURL = $c.baseURL
@@ -34,6 +35,7 @@ class SbFetch {
 		this.ejectInterceptor = false
 		this.url = ''
 		this.parameters = {} as ISbStoriesParams
+		this.fetchOptions = {}
 	}
 
 	/**
@@ -42,7 +44,11 @@ class SbFetch {
 	 * @param params ISbStoriesParams
 	 * @returns Promise<ISbResponse | Error>
 	 */
-	public get(url: string, params: ISbStoriesParams) {
+	public get(url: string, params: ISbStoriesParams, fetchOptions?: object) {
+		if (fetchOptions) {
+			this.fetchOptions = fetchOptions
+		}
+
 		this.url = url
 		this.parameters = params
 		return this._methodHandler('get')
@@ -120,12 +126,22 @@ class SbFetch {
 		}
 
 		try {
-			const response = await this.fetch(`${url}`, {
-				method,
-				headers: this.headers,
-				body,
-				signal,
-			})
+			let response
+			if (this.fetchOptions && Object.keys(this.fetchOptions).length > 0) {
+				response = await fetch(`${url}`, {
+					...this.fetchOptions,
+					headers: this.headers,
+					body,
+					signal,
+				})
+			} else {
+				response = await this.fetch(`${url}`, {
+					method,
+					headers: this.headers,
+					body,
+					signal,
+				})
+			}
 
 			if (this.timeout) {
 				clearTimeout(timeout)
