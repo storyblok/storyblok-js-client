@@ -2,8 +2,10 @@
 import { expect, test, describe } from 'vitest'
 import StoryblokClient from '../'
 
+const accessToken = import.meta.env.VITE_ACCESS_TOKEN
+
 let Storyblok = new StoryblokClient({
-	accessToken: 'w0yFvs04aKF2rpz6F8OfIQtt',
+	accessToken,
 	cache: { type: 'memory', clear: 'auto' },
 })
 

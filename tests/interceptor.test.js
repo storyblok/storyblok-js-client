@@ -2,7 +2,8 @@
 import { expect, test, describe } from 'vitest'
 import StoryblokClient from '../'
 
-const accessToken = 'w0yFvs04aKF2rpz6F8OfIQtt'
+const accessToken = import.meta.env.VITE_ACCESS_TOKEN
+
 const cache = {
 	type: 'memory',
 	clear: 'auto',

@@ -9,3 +9,4 @@ dist/
 .nuxt
 .idea
 gitcommit.fish
+.env.test

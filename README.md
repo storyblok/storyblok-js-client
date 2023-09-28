@@ -174,6 +174,45 @@ let Storyblok = new StoryblokClient({
 });
 ```
 
+#### NEW FEATURE - Custom Fetch
+
+You can now pass a custom fetch function per call. This can be used passing any options from the [fetch](https://developer.mozilla.org/en-US/docs/Web/API/fetch) API, like headers, etc.
+You can use like this:
+
+```javascript
+const client = new StoryblokClient({
+	accessToken,
+	oauthToken,
+})
+
+const postObject = {
+	story: {
+		name: 'Story Name',
+		slug: 'your-slug',
+		content: {
+			component: 'page',
+			text: 'test',
+		},
+	},
+}
+try {
+	const res = await client.customFetch(
+		`spaces/${spaceId}/stories`,
+		postObject,
+		{
+			method: 'POST',
+			next: { // using with Next.js
+				tags: ['storyblok'],
+			},
+		}
+	)
+
+	return res
+} catch (err) {
+	console.error('err =>', err)
+}
+```
+
 #### Passing response interceptor
 
 The Storyblok client lets you pass a function that serves as a response interceptor to it.
