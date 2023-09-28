@@ -154,7 +154,7 @@ class SbFetch {
 					body: getRegex.test(method) ? null : JSON.stringify(this.parameters),
 					signal,
 				}
-				response = await fetch(`${url}`, fetchOptions)
+				response = await this.fetch(`${url}`, fetchOptions)
 			} else {
 				const fetchOptions = {
 					method,
