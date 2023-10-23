@@ -52,7 +52,7 @@
 	},
 	"homepage": "https://github.com/storyblok/storyblok-js-client#readme",
 	"devDependencies": {
-		"@commitlint/cli": "^17.2.0",
+		"@commitlint/cli": "^18.0.0",
 		"@commitlint/config-conventional": "^18.0.0",
 		"@tsconfig/recommended": "^1.0.1",
 		"@typescript-eslint/eslint-plugin": "^5.43.0",
