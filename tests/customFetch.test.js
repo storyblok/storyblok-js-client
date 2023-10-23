@@ -1,9 +1,9 @@
 import { expect, test, describe } from 'vitest'
 import StoryblokClient from '../'
 
-const accessToken = import.meta.env.VITE_ACCESS_TOKEN
-const oauthToken = import.meta.env.VITE_OAUTH_TOKEN
-const spaceId = import.meta.env.VITE_SPACE_ID
+const accessToken = $VITE_ACCESS_TOKEN
+const oauthToken = $VITE_OAUTH_TOKEN
+const spaceId = $VITE_SPACE_ID
 
 const generateJibberishWord = (length) => {
 	const characters = 'abcdefghijklmnopqrstuvwxyz'
