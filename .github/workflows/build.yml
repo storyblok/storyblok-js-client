@@ -1,9 +1,16 @@
 name: build
+
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
+
+env:
+  VITE_ACCESS_TOKEN=: 0yFvs04aKF2rpz6F8OfIQtt
+  VITE_OAUTH_TOKEN: meWkYejN3HKX291k7WTRdAtt-76646-kcHesqDzj_ugHNWbzY7i
+  VITE_SPACE_ID: 103062
+  
 jobs:
   test:
     runs-on: ubuntu-latest
