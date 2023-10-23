@@ -2,7 +2,7 @@
 import { expect, test, describe } from 'vitest'
 import StoryblokClient from '../'
 
-const accessToken = process.env.VITE_ACCESS_TOKEN
+const accessToken = import.meta.env.VITE_ACCESS_TOKEN
 
 let Storyblok = new StoryblokClient({
 	accessToken,

@@ -30,6 +30,7 @@ describe('test resolvingRelations', () => {
 	})
 
 	test('resolveRelations should insert relations of multiple stories', async () => {
+		console.log('test', accessToken)
 		const singleStory = {
 			stories: [
 				{
