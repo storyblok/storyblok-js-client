@@ -281,6 +281,7 @@ export interface ISbLink {
 	position?: number
 	uuid?: string
 	is_startpage?: boolean
+	real_path?: string
 }
 
 export interface ISbLinks {
