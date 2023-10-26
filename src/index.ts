@@ -173,7 +173,10 @@ class Storyblok {
 		const url = `/${slug}`
 		const query = this.factoryParamOptions(url, params)
 
-		return this.cacheResponse(url, query)
+		const response = this.cacheResponse(url, query)
+		this.fetchOptions = {}
+
+		return response
 	}
 
 	public setComponentResolver(resolver: ComponentResolverFn): void {

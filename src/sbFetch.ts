@@ -50,7 +50,7 @@ class SbFetch {
 	 * @returns Promise<ISbResponse | Error>
 	 */
 	public get(url: string, params: ISbStoriesParams, fetchOptions?: object) {
-		if (fetchOptions) {
+		if (fetchOptions && Object.keys(fetchOptions).length > 0) {
 			this.fetchOptions = fetchOptions
 		}
 
@@ -60,7 +60,7 @@ class SbFetch {
 	}
 
 	public post(url: string, params: ISbStoriesParams, fetchOptions?: object) {
-		if (fetchOptions) {
+		if (fetchOptions && Object.keys(fetchOptions).length > 0) {
 			this.fetchOptions = fetchOptions
 		}
 
@@ -70,7 +70,7 @@ class SbFetch {
 	}
 
 	public put(url: string, params: ISbStoriesParams, fetchOptions?: object) {
-		if (fetchOptions) {
+		if (fetchOptions && Object.keys(fetchOptions).length > 0) {
 			this.fetchOptions = fetchOptions
 		}
 
@@ -80,7 +80,7 @@ class SbFetch {
 	}
 
 	public delete(url: string, params: ISbStoriesParams, fetchOptions?: object) {
-		if (fetchOptions) {
+		if (fetchOptions && Object.keys(fetchOptions).length > 0) {
 			this.fetchOptions = fetchOptions
 		}
 
