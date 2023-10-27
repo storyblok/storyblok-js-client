@@ -174,12 +174,12 @@ class Storyblok {
 			const url = `/${slug}`
 			const query = this.factoryParamOptions(url, params)
 	
-			const response = await Object.assign({}, this.cacheResponse(url, query))
-			this.fetchOptions = {}
-	
+			const response = await this.cacheResponse(url, query)
 			return response
 		} catch (error: Error | any) {
 			return error
+		} finally {
+			this.fetchOptions = {}
 		}
 	}
 
