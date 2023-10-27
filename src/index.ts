@@ -159,24 +159,28 @@ class Storyblok {
 		})
 	}
 
-	public customFetch(
+	public async customFetch(
 		slug: string,
 		params?: ISbStoriesParams,
 		fetchOptions?: object
 	): Promise<any> {
-		if (fetchOptions && Object.keys(fetchOptions).length > 0) {
-			this.fetchOptions = fetchOptions
+		try {
+			if (fetchOptions && Object.keys(fetchOptions).length > 0) {
+				this.fetchOptions = fetchOptions
+			}
+	
+			if (!params) params = {} as ISbStoriesParams
+	
+			const url = `/${slug}`
+			const query = this.factoryParamOptions(url, params)
+	
+			const response = await this.cacheResponse(url, query)
+			this.fetchOptions = {}
+	
+			return response
+		} catch (error: Error | any) {
+			return error
 		}
-
-		if (!params) params = {} as ISbStoriesParams
-
-		const url = `/${slug}`
-		const query = this.factoryParamOptions(url, params)
-
-		const response = this.cacheResponse(url, query)
-		this.fetchOptions = {}
-
-		return response
 	}
 
 	public setComponentResolver(resolver: ComponentResolverFn): void {
