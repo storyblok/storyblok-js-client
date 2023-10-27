@@ -273,9 +273,9 @@ export interface LinkCustomAttributes {
 
 export interface ISbLink {
 	id?: number
-  slug?: string
-  name?: string
-  is_folder?: boolean
+	slug?: string
+	name?: string
+	is_folder?: boolean
 	parent_id?: number
 	published?: boolean
 	position?: number
@@ -285,7 +285,7 @@ export interface ISbLink {
 }
 
 export interface ISbLinks {
-  links?: {
+	links?: {
 		[key: string]: ISbLink
 	}
 }

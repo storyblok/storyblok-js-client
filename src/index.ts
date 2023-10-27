@@ -71,6 +71,7 @@ class Storyblok {
 	private cache: ISbCache
 	private helpers: SbHelpers
 	private resolveCounter: number
+	private fetchOptions: object
 	public relations: RelationsType
 	public links: LinksType
 	public richTextResolver: any
@@ -98,7 +99,6 @@ class Storyblok {
 				}`
 			}
 		}
-
 		const headers: Headers = new Headers()
 
 		headers.set('Content-Type', 'application/json')
@@ -148,6 +148,7 @@ class Storyblok {
 		this.helpers = new SbHelpers()
 		this.resolveCounter = 0
 		this.resolveNestedRelations = config.resolveNestedRelations || true
+		this.fetchOptions = {}
 
 		this.client = new SbFetch({
 			baseURL: endpoint,
@@ -156,6 +157,30 @@ class Storyblok {
 			responseInterceptor: config.responseInterceptor,
 			fetch: config.fetch,
 		})
+	}
+
+	public async customFetch(
+		slug: string,
+		params?: ISbStoriesParams,
+		fetchOptions?: object
+	): Promise<any> {
+		try {
+			if (fetchOptions && Object.keys(fetchOptions).length > 0) {
+				this.fetchOptions = fetchOptions
+			}
+	
+			if (!params) params = {} as ISbStoriesParams
+	
+			const url = `/${slug}`
+			const query = this.factoryParamOptions(url, params)
+	
+			const response = await this.cacheResponse(url, query)
+			return response
+		} catch (error: Error | any) {
+			return error
+		} finally {
+			this.fetchOptions = {}
+		}
 	}
 
 	public setComponentResolver(resolver: ComponentResolverFn): void {
@@ -223,7 +248,6 @@ class Storyblok {
 		if (!params) params = {} as ISbStoriesParams
 		const url = `/${slug}`
 		const query = this.factoryParamOptions(url, params)
-
 		return this.cacheResponse(url, query)
 	}
 
@@ -550,7 +574,9 @@ class Storyblok {
 			try {
 				const res = await this.throttle('get', url, params)
 
-				if (res.status !== 200) {
+				const statusOk = /20[0-6]/g
+
+				if (!statusOk.test(`${res.status}`)) {
 					return reject(res)
 				}
 
@@ -584,7 +610,6 @@ class Storyblok {
 
 					cacheVersions[params.token] = response.data.cv
 				}
-
 				return resolve(response)
 			} catch (error: Error | any) {
 				if (error.response && error.response.status === 429) {
@@ -608,7 +633,7 @@ class Storyblok {
 		url: string,
 		params: ISbStoriesParams
 	): Promise<unknown> {
-		return this.client[type](url, params)
+		return this.client[type](url, params, this.fetchOptions)
 	}
 
 	public cacheVersions(): CachedVersions {
