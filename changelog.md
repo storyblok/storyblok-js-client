@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [6.3.0] - 2023-10-31
+
+### Changed
+
+- Interface `ISbResponseData` now extends a Type called `DataProvider`
+- Post, Put and Delete methods returns the `ISbResponse` interface
+
 ## [6.0.0] - 2023-08-15
 
 ### Changed

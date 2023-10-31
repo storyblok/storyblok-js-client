@@ -224,9 +224,6 @@ interface ISbResponse {
 	data: any
 	status: number
 	statusText: string
-	headers: any
-	config: any
-	request: any
 }
 ```
 
@@ -263,7 +260,7 @@ With this method you can get single or multiple items. The multiple items are pa
 
 **Parameters**
 
-- `[return]` Promise, Object `response`
+- `[return]` Promise, Object `ISbResult`
 - `path` String, Path (can be `cdn/stories`, `cdn/tags`, `cdn/datasources`, `cdn/links`)
 - `options` Object, Options can be found in the [API documentation](https://www.storyblok.com/docs/api/content-delivery?utm_source=github.com&utm_medium=readme&utm_campaign=storyblok-js-client).
 
@@ -310,7 +307,7 @@ Storyblok.getAll('cdn/stories', {
 
 **Parameters**
 
-- `[return]` Promise, Object `response`
+- `[return]` Promise, Object `ISbResponse`
 - `path` String, Path (`spaces/*`, ... see more at https://www.storyblok.com/docs/management-api/authentication?utm_source=github.com&utm_medium=readme&utm_campaign=storyblok-js-client)
 - `payload` Object
 
@@ -332,7 +329,7 @@ Storyblok.post('spaces/<YOUR_SPACE_ID>/stories', {
 
 **Parameters**
 
-- `[return]` Promise, Object `response`
+- `[return]` Promise, Object `ISbResponse`
 - `path` String, Path (`spaces/*`, ... see more at https://www.storyblok.com/docs/management-api/authentication?utm_source=github.com&utm_medium=readme&utm_campaign=storyblok-js-client)
 - `payload` Object
 
@@ -354,7 +351,7 @@ Storyblok.put('spaces/<YOUR_SPACE_ID>/stories/1', {
 
 **Parameters**
 
-- `[return]` Promise, Object `response`
+- `[return]` Promise, Object `ISbResponse`
 - `path` String, Path (`spaces/*`, ... see more at https://www.storyblok.com/docs/management-api/authentication)
 - `payload` Object
 

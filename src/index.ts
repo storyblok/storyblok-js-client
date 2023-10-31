@@ -10,6 +10,8 @@ import {
 	ISbCache,
 	ISbConfig,
 	ISbLinkURLObject,
+	ISbResponse,
+	ISbResponseData,
 	ISbResult,
 	ISbStories,
 	ISbStory,
@@ -44,15 +46,6 @@ type RelationsType = {
 
 interface ISbFlatMapped {
 	data: any
-}
-
-interface ISbResponseData {
-	link_uuids: string[]
-	links: string[]
-	rel_uuids: string[]
-	rels: any
-	story: ISbStoryData
-	stories: Array<ISbStoryData>
 }
 
 const VERSION = {
@@ -256,7 +249,7 @@ class Storyblok {
 	public post(
 		slug: string,
 		params: ISbStoriesParams | ISbContentMangmntAPI
-	): Promise<ISbResponseData> {
+	): Promise<ISbResponse> {
 		const url = `/${slug}`
 		return Promise.resolve(this.throttle('post', url, params))
 	}
@@ -264,7 +257,7 @@ class Storyblok {
 	public put(
 		slug: string,
 		params: ISbStoriesParams | ISbContentMangmntAPI
-	): Promise<ISbResponseData> {
+	): Promise<ISbResponse> {
 		const url = `/${slug}`
 		return Promise.resolve(this.throttle('put', url, params))
 	}
@@ -272,7 +265,7 @@ class Storyblok {
 	public delete(
 		slug: string,
 		params: ISbStoriesParams | ISbContentMangmntAPI
-	): Promise<ISbResponseData> {
+	): Promise<ISbResponse> {
 		const url = `/${slug}`
 		return Promise.resolve(this.throttle('delete', url, params))
 	}
@@ -434,7 +427,7 @@ class Storyblok {
 		params: ISbStoriesParams,
 		resolveId: string
 	): Promise<void> {
-		let relations = []
+		let relations:ISbStoryData[] = []
 
 		if (responseData.rel_uuids) {
 			const relSize = responseData.rel_uuids.length

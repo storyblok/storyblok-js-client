@@ -123,25 +123,28 @@ export interface ISbLinkURLObject {
 	uuid: string
 }
 
+type DataProvider = {
+	cv?: number
+	links: (ISbStoryData | ISbLinkURLObject)[]
+	rels: ISbStoryData[]
+	stories: ISbStoryData[]
+}
+
+export interface ISbResponseData extends DataProvider {
+	link_uuids: string[]
+	rel_uuids: string[]
+	story: ISbStoryData
+}
+
 export interface ISbStories {
-	data: {
-		cv: number
-		links: (ISbStoryData | ISbLinkURLObject)[]
-		rels: ISbStoryData[]
-		stories: ISbStoryData[]
-	}
+	data: DataProvider
 	perPage: number
 	total: number
 	headers: any
 }
 
 export interface ISbStory {
-	data: {
-		cv: number
-		links: (ISbStoryData | ISbLinkURLObject)[]
-		rels: ISbStoryData[]
-		story: ISbStoryData
-	}
+	data: DataProvider
 	headers: any
 }
 
@@ -181,7 +184,7 @@ export interface ISbConfig {
 }
 
 export interface ISbResult {
-	data: any
+	data: ISbResponseData
 	perPage: number
 	total: number
 	headers: Headers
