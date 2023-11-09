@@ -161,7 +161,7 @@ class Storyblok {
 
 	public async customFetch(
 		slug: string,
-		params?: ISbStoriesParams,
+		params?: ISbStoriesParams | ISbContentMangmntAPI,
 		fetchOptions?: object
 	): Promise<any> {
 		try {
@@ -169,10 +169,10 @@ class Storyblok {
 				this.fetchOptions = fetchOptions
 			}
 	
-			if (!params) params = {} as ISbStoriesParams
+			if (!params) params = {} as ISbStoriesParams | ISbContentMangmntAPI
 	
 			const url = `/${slug}`
-			const query = this.factoryParamOptions(url, params)
+			const query = params ? SbHelpers.serializeQuery(params) : ''
 	
 			const response = await this.cacheResponse(url, query)
 			return response

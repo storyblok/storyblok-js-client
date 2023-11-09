@@ -39,7 +39,9 @@ export class SbHelpers {
 
 	public flatMap = (arr: ISbResult[] = [], func: FlatMapFn) =>
 		arr.map(func).reduce((xs, ys) => [...xs, ...ys], [])
-
+	
+	static serializeQuery: any
+	
 	/**
 	 * @method stringify
 	 * @param  {Object} params
