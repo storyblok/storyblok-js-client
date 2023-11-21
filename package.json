@@ -63,7 +63,7 @@
 		"isomorphic-fetch": "^3.0.0",
 		"prettier": "^3.0.0",
 		"typescript": "^5.0.2",
-		"vite": "^4.4.8",
+		"vite": "^5.0.0",
 		"vitest": "^0.34.1"
 	},
 	"release": {
