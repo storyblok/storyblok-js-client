@@ -15,12 +15,8 @@ interface ISbFetch {
 	fetch?: typeof fetch
 }
 
-type FetchOptions = {
-	[key: string]: any
-}
-
 class SbFetch {
-	private baseURL: string
+	public baseURL: string
 	private timeout?: number
 	private headers: Headers
 	private responseInterceptor?: ResponseFn
@@ -28,19 +24,16 @@ class SbFetch {
 	private ejectInterceptor?: boolean
 	private url: string
 	private parameters: ISbStoriesParams
-	private fetchOptions?: FetchOptions
 
 	public constructor(config: ISbFetch) {
 		this.baseURL = config.baseURL
 		this.headers = config.headers || new Headers()
 		this.timeout = config?.timeout ? config.timeout * 1000 : 0
 		this.responseInterceptor = config.responseInterceptor
-		this.fetch = (...args) =>
-			config.fetch ? config.fetch(...args) : fetch(...args)
+		this.fetch = config.fetch ? config.fetch : fetch
 		this.ejectInterceptor = false
 		this.url = ''
 		this.parameters = {} as ISbStoriesParams
-		this.fetchOptions = {}
 	}
 
 	/**
@@ -49,41 +42,25 @@ class SbFetch {
 	 * @param params ISbStoriesParams
 	 * @returns Promise<ISbResponse | Error>
 	 */
-	public get(url: string, params: ISbStoriesParams, fetchOptions?: object) {
-		if (fetchOptions && Object.keys(fetchOptions).length > 0) {
-			this.fetchOptions = fetchOptions
-		}
-
+	public get(url: string, params: ISbStoriesParams) {
 		this.url = url
 		this.parameters = params
 		return this._methodHandler('get')
 	}
 
-	public post(url: string, params: ISbStoriesParams, fetchOptions?: object) {
-		if (fetchOptions && Object.keys(fetchOptions).length > 0) {
-			this.fetchOptions = fetchOptions
-		}
-
+	public post(url: string, params: ISbStoriesParams) {
 		this.url = url
 		this.parameters = params
 		return this._methodHandler('post')
 	}
 
-	public put(url: string, params: ISbStoriesParams, fetchOptions?: object) {
-		if (fetchOptions && Object.keys(fetchOptions).length > 0) {
-			this.fetchOptions = fetchOptions
-		}
-
+	public put(url: string, params: ISbStoriesParams) {
 		this.url = url
 		this.parameters = params
 		return this._methodHandler('put')
 	}
 
-	public delete(url: string, params: ISbStoriesParams, fetchOptions?: object) {
-		if (fetchOptions && Object.keys(fetchOptions).length > 0) {
-			this.fetchOptions = fetchOptions
-		}
-
+	public delete(url: string, params: ISbStoriesParams) {
 		this.url = url
 		this.parameters = params
 		return this._methodHandler('delete')
@@ -143,27 +120,13 @@ class SbFetch {
 		}
 
 		try {
-			let response
-			if (this.fetchOptions && Object.keys(this.fetchOptions).length > 0) {
-				const { method } = this.fetchOptions
-				const getRegex = /get/gi
-
-				const fetchOptions = {
-					...this.fetchOptions,
-					headers: this.headers,
-					body: getRegex.test(method) ? null : JSON.stringify(this.parameters),
-					signal,
-				}
-				response = await this.fetch(`${url}`, fetchOptions)
-			} else {
-				const fetchOptions = {
-					method,
-					headers: this.headers,
-					body,
-					signal,
-				}
-				response = await this.fetch(`${url}`, fetchOptions)
+			const fetchOptions = {
+				method,
+				headers: this.headers,
+				body,
+				signal,
 			}
+			const response = await this.fetch(`${url}`, fetchOptions)
 
 			if (this.timeout) {
 				clearTimeout(timeout)

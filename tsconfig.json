@@ -12,7 +12,6 @@
 		"emitDeclarationOnly": true,
 		"lib": ["ESNext", "DOM", "DOM.Iterable"]
 	},
-	"extends": "@tsconfig/recommended/tsconfig.json",
 	"$schema": "https://json.schemastore.org/tsconfig",
 	"display": "Recommended",
 	"include": ["./src"],
