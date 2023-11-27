@@ -52,19 +52,19 @@
 	},
 	"homepage": "https://github.com/storyblok/storyblok-js-client#readme",
 	"devDependencies": {
-		"@commitlint/cli": "^18.0.0",
-		"@commitlint/config-conventional": "^18.0.0",
-		"@tsconfig/recommended": "^1.0.1",
-		"@typescript-eslint/eslint-plugin": "^5.43.0",
-		"@typescript-eslint/parser": "^5.43.0",
-		"eslint": "^8.27.0",
+		"@commitlint/cli": "^18.4.3",
+		"@commitlint/config-conventional": "^18.4.3",
+		"@tsconfig/recommended": "^1.0.3",
+		"@typescript-eslint/eslint-plugin": "^6.12.0",
+		"@typescript-eslint/parser": "^6.12.0",
+		"eslint": "^8.54.0",
 		"eslint-config-prettier": "^9.0.0",
-		"husky": "^8.0.2",
+		"husky": "^8.0.3",
 		"isomorphic-fetch": "^3.0.0",
-		"prettier": "^3.0.0",
-		"typescript": "^5.0.2",
-		"vite": "^5.0.0",
-		"vitest": "^0.34.1"
+		"prettier": "^3.1.0",
+		"typescript": "^5.3.2",
+		"vite": "^5.0.2",
+		"vitest": "^0.34.6"
 	},
 	"release": {
 		"branches": [
