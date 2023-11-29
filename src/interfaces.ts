@@ -102,10 +102,6 @@ export interface ISbStoryData<
     path?: string
     pinned: boolean
     position: number
-    preview_token: {
-        token: string
-        timestamp: string
-    }
     published: boolean
     published_at: string | null
     release_id: number
