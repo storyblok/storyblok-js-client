@@ -1,3 +1,5 @@
+import { version } from '../package.json'
+
 const METHOD = {
 	GET: 'get',
 	DELETE: 'delete',
@@ -15,5 +17,5 @@ export const STORYBLOK_AGENT = 'SB-Agent'
 export const STORYBLOK_JS_CLIENT_AGENT = {
 	defaultAgentName: 'SB-JS-CLIENT',
 	defaultAgentVersion: 'SB-Agent-Version',
-	packageVersion: process.env.npm_package_version || '5.0.0',
+	packageVersion: version || '5.0.0',
 }

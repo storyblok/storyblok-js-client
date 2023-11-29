@@ -71,6 +71,7 @@ class Storyblok {
 	private cache: ISbCache
 	private helpers: SbHelpers
 	private resolveCounter: number
+	private headers: Headers
 	public relations: RelationsType
 	public links: LinksType
 	public richTextResolver: any
@@ -148,6 +149,9 @@ class Storyblok {
 		this.resolveCounter = 0
 		this.resolveNestedRelations = config.resolveNestedRelations || true
 
+		this.headers = {...headers}
+		console.log('headers =>', headers)
+
 		this.client = new SbFetch({
 			baseURL: endpoint,
 			timeout: config.timeout || 0,
@@ -159,7 +163,7 @@ class Storyblok {
 
 	public async customFetch(
 		slug: string,
-		fetchOptions?: object
+		fetchOptions: object = {}
 	) {
 		// try {
 		// 	if (fetchOptions && Object.keys(fetchOptions).length > 0) {
@@ -175,9 +179,22 @@ class Storyblok {
 		// } finally {
 		// 	this.fetchOptions = {}
 		// }
-		console.log('customFetch', slug, fetchOptions)
-		const urlString = `${this.client.baseURL}${slug}`
-		return fetch(urlString, fetchOptions)
+		Object.assign(fetchOptions, {
+			headers: {
+				'Content-Type': 'application/json',
+				Accept: 'application/json',
+				Authorization: 'meWkYejN3HKX291k7WTRdAtt-76646-kcHesqDzj_ugHNWbzY7i',
+			},
+		})
+		const urlString = `${this.client.baseURL}/${slug}`
+		console.log(fetchOptions)
+		try {
+			const res = await fetch(urlString, fetchOptions)
+			const json = res.json()
+			return json
+		} catch (error: Error | any) {
+			return error
+		}
 	}
 
 	public setComponentResolver(resolver: ComponentResolverFn): void {
@@ -197,10 +214,6 @@ class Storyblok {
 	}
 
 	private parseParams(params: ISbStoriesParams): ISbStoriesParams {
-		if (!params.version) {
-			params.version = 'published'
-		}
-
 		if (!params.token) {
 			params.token = this.getToken()
 		}
@@ -473,6 +486,7 @@ class Storyblok {
 					language: params.language,
 					version: params.version,
 					by_uuids: chunks[chunkIndex].join(','),
+					excluding_fields: params.excluding_fields,
 				})
 
 				relationsRes.data.stories.forEach((rel: ISbStoryData) => {
@@ -598,13 +612,12 @@ class Storyblok {
 
 				if (response.data.cv && params.token) {
 					if (
-						params.version == 'draft' &&
+						params.version === 'draft' &&
 						cacheVersions[params.token] != response.data.cv
 					) {
 						await this.flushCache()
 					}
-
-					cacheVersions[params.token] = response.data.cv
+					cacheVersions[params.token] = params.cv ? params.cv : response.data.cv
 				}
 				return resolve(response)
 			} catch (error: Error | any) {
@@ -640,12 +653,6 @@ class Storyblok {
 		return cacheVersions[this.accessToken]
 	}
 
-	public setCacheVersion(cv: number): void {
-		if (this.accessToken) {
-			cacheVersions[this.accessToken] = cv
-		}
-	}
-
 	private cacheProvider(): ICacheProvider {
 		switch (this.cache.type) {
 			case 'memory':
@@ -671,7 +678,7 @@ class Storyblok {
 			default:
 				return {
 					get() {
-						return Promise.resolve(undefined)
+						return Promise.resolve()
 					},
 					getAll() {
 						return Promise.resolve(undefined)
