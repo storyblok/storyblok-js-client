@@ -175,10 +175,6 @@ class Storyblok {
 	}
 
 	private parseParams(params: ISbStoriesParams): ISbStoriesParams {
-		if (!params.version) {
-			params.version = 'published'
-		}
-
 		if (!params.token) {
 			params.token = this.getToken()
 		}
@@ -576,13 +572,12 @@ class Storyblok {
 
 				if (response.data.cv && params.token) {
 					if (
-						params.version == 'draft' &&
+						params.version === 'draft' &&
 						cacheVersions[params.token] != response.data.cv
 					) {
 						await this.flushCache()
 					}
-
-					cacheVersions[params.token] = response.data.cv
+					cacheVersions[params.token] = params.cv ? params.cv : response.data.cv
 				}
 
 				return resolve(response)
@@ -619,12 +614,6 @@ class Storyblok {
 		return cacheVersions[this.accessToken]
 	}
 
-	public setCacheVersion(cv: number): void {
-		if (this.accessToken) {
-			cacheVersions[this.accessToken] = cv
-		}
-	}
-
 	private cacheProvider(): ICacheProvider {
 		switch (this.cache.type) {
 			case 'memory':
@@ -650,7 +639,7 @@ class Storyblok {
 			default:
 				return {
 					get() {
-						return Promise.resolve(undefined)
+						return Promise.resolve()
 					},
 					getAll() {
 						return Promise.resolve(undefined)
