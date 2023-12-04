@@ -108,7 +108,7 @@ const bold: MarkSchema = () => {
 }
 const strike: MarkSchema = () => {
 	return {
-		tag: 'strike',
+		tag: 's',
 	}
 }
 const underline: MarkSchema = () => {
