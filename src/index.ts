@@ -71,7 +71,6 @@ class Storyblok {
 	private cache: ISbCache
 	private helpers: SbHelpers
 	private resolveCounter: number
-	private headers: Headers
 	public relations: RelationsType
 	public links: LinksType
 	public richTextResolver: any
@@ -140,17 +139,14 @@ class Storyblok {
 		}
 
 		this.maxRetries = config.maxRetries || 5
-		this.throttle = throttledQueue(this.throttledRequest, rateLimit, 1000)
 		this.accessToken = config.accessToken || ''
+		this.throttle = throttledQueue(this.throttledRequest, rateLimit, 1000)
 		this.relations = {} as RelationsType
 		this.links = {} as LinksType
 		this.cache = config.cache || { clear: 'manual' }
 		this.helpers = new SbHelpers()
 		this.resolveCounter = 0
 		this.resolveNestedRelations = config.resolveNestedRelations || true
-
-		this.headers = {...headers}
-		console.log('headers =>', headers)
 
 		this.client = new SbFetch({
 			baseURL: endpoint,
@@ -163,8 +159,16 @@ class Storyblok {
 
 	public async customFetch(
 		slug: string,
-		fetchOptions: object = {}
+		fetchOptions: typeof fetch,
 	) {
+		console.log('fetchOptions =>', fetchOptions)
+		console.log('slug =>', slug)
+		try {
+			this.client.fetch = fetchOptions
+			console.log('this.client.fetch =>', this.client)
+		} catch (error: Error | any) {
+			return error
+		}
 		// try {
 		// 	if (fetchOptions && Object.keys(fetchOptions).length > 0) {
 		// 		this.fetchOptions = fetchOptions
@@ -179,22 +183,6 @@ class Storyblok {
 		// } finally {
 		// 	this.fetchOptions = {}
 		// }
-		Object.assign(fetchOptions, {
-			headers: {
-				'Content-Type': 'application/json',
-				Accept: 'application/json',
-				Authorization: 'meWkYejN3HKX291k7WTRdAtt-76646-kcHesqDzj_ugHNWbzY7i',
-			},
-		})
-		const urlString = `${this.client.baseURL}/${slug}`
-		console.log(fetchOptions)
-		try {
-			const res = await fetch(urlString, fetchOptions)
-			const json = res.json()
-			return json
-		} catch (error: Error | any) {
-			return error
-		}
 	}
 
 	public setComponentResolver(resolver: ComponentResolverFn): void {

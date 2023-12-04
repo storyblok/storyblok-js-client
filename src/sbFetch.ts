@@ -20,7 +20,7 @@ class SbFetch {
 	private timeout?: number
 	private headers: Headers
 	private responseInterceptor?: ResponseFn
-	private fetch: typeof fetch
+	public fetch: typeof fetch
 	private ejectInterceptor?: boolean
 	private url: string
 	private parameters: ISbStoriesParams
