@@ -129,6 +129,7 @@ export interface ISbMultipleStoriesData {
 	in_release?: string
 	in_trash?: boolean
 	is_published?: boolean
+	in_workflow_stages?: string[] | number[]
 	page?: number
 	pinned?: '1' | unknown
 	search?: string
