@@ -358,7 +358,7 @@ test('link to generate a tag with achor', () => {
 test('Complex and immutability test', () => {
 	const result = resolver.render(LONG_TEXT_FOR_IMMUTABILITY_TEST)
 	const expected =
-		'<p><b>Lorem</b> ipsum, <strike>dolor</strike> sit amet <u>consectetur</u> adipisicing elit. <code>Eos architecto</code> asperiores temporibus <a href="/test/our-service#anchor-text" uuid="931e04b7-f701-4fe4-8ec0-78be0bee8809" target="_blank">suscipit harum </a>ut, fugit, cumque <a href="asdfsdfasf" target="_blank">molestiae </a>ratione non adipisci, <i>facilis</i> inventore optio dolores. Rem, perspiciatis <a href="/home" uuid="fc6a453f-9aa6-4a00-a22d-49c5878f7983" target="_self">deserunt!</a> Esse, maiores!</p>'
+		'<p><b>Lorem</b> ipsum, <s>dolor</s> sit amet <u>consectetur</u> adipisicing elit. <code>Eos architecto</code> asperiores temporibus <a href="/test/our-service#anchor-text" uuid="931e04b7-f701-4fe4-8ec0-78be0bee8809" target="_blank">suscipit harum </a>ut, fugit, cumque <a href="asdfsdfasf" target="_blank">molestiae </a>ratione non adipisci, <i>facilis</i> inventore optio dolores. Rem, perspiciatis <a href="/home" uuid="fc6a453f-9aa6-4a00-a22d-49c5878f7983" target="_self">deserunt!</a> Esse, maiores!</p>'
 
 	expect(result).toBe(expected)
 })

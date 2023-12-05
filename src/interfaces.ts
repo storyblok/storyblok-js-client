@@ -1,41 +1,41 @@
 import { ResponseFn } from './sbFetch'
 
-export interface ISbStoriesParams {
-	token?: string
-	with_tag?: string
-	is_startpage?: boolean
-	starts_with?: string
+export interface ISbStoriesParams extends Partial<ISbStoryData> {
+	_stopResolving?: boolean
+	by_slugs?: string
 	by_uuids?: string
 	by_uuids_ordered?: string
-	excluding_ids?: string
-	excluding_fields?: string
-	version?: 'draft' | 'published'
-	resolve_links?: 'link' | 'url' | 'story' | '0' | '1' | 'link'
-	resolve_relations?: string | string[]
-	resolve_assets?: number
-	cv?: number
-	sort_by?: string
-	search_term?: string
-	filter_query?: any
-	per_page?: number
-	page?: number
-	from_release?: string
-	language?: string
-	fallback_lang?: string
-	first_published_at_gt?: string
-	first_published_at_lt?: string
-	level?: number
-	published_at_gt?: string
-	published_at_lt?: string
-	by_slugs?: string
-	excluding_slugs?: string
-	_stopResolving?: boolean
 	component?: string
-	filename?: string
-	size?: string
+	content_type?: string
+	cv?: number
 	datasource?: string
 	dimension?: string
-	content_type?: string
+	excluding_fields?: string
+	excluding_ids?: string
+	excluding_slugs?: string
+	fallback_lang?: string
+	filename?: string
+	filter_query?: any
+	first_published_at_gt?: string
+	first_published_at_lt?: string
+	from_release?: string
+	is_startpage?: boolean
+	language?: string
+	level?: number
+	page?: number
+	per_page?: number
+	published_at_gt?: string
+	published_at_lt?: string
+	resolve_assets?: number
+	resolve_links?: 'link' | 'url' | 'story' | '0' | '1' | 'link'
+	resolve_relations?: string | string[]
+	search_term?: string
+	size?: string
+	sort_by?: string
+	starts_with?: string
+	token?: string
+	version?: 'draft' | 'published'
+	with_tag?: string
 }
 
 export interface ISbStoryParams {
@@ -75,33 +75,70 @@ export interface ISbComponentType<T extends string> {
 }
 
 export interface ISbStoryData<
-	Content = ISbComponentType<string> & { [index: string]: any }
-> {
-	alternates: ISbAlternateObject[]
-	content: Content
-	created_at: string
-	full_slug: string
-	group_id: string
-	id: number
-	is_startpage: boolean
-	meta_data: any
-	name: string
-	parent_id: number
-	position: number
-	published_at: string | null
-	first_published_at: string | null
-	slug: string
-	lang: string
-	default_full_slug?: string
-	path?: string
-	translated_slugs?: {
-		path: string
-		name: string | null
-		lang: ISbStoryData['lang']
-	}[]
-	sort_by_date: string | null
-	tag_list: string[]
-	uuid: string
+    Content = ISbComponentType<string> & { [index: string]: any }
+> extends Partial<ISbMultipleStoriesData> {
+    alternates: ISbAlternateObject[]
+    breadcrumbs: ISbLinkURLObject[]
+    content: Content
+    created_at: string
+    default_full_slug?: string
+    default_root: string
+    disble_fe_editor: boolean
+    full_slug: string
+    group_id: string
+    id: number
+    imported_at: string
+    is_folder: boolean
+    is_startpage?: boolean
+    lang: string
+    last_author: {
+        id: number
+        userid: string
+    }
+    meta_data: any
+    name: string
+    parent: ISbStoryData
+    parent_id: number
+    path?: string
+    pinned: boolean
+    position: number
+    published: boolean
+    published_at: string | null
+    release_id: number
+    slug: string
+    sort_by_date: string | null
+    tag_list: string[]
+    translated_slugs?: {
+        path: string
+        name: string | null
+        lang: ISbStoryData['lang']
+    }[]
+    unpublished_changes: boolean
+    updated_at: string
+    uuid: string
+}
+
+export interface ISbMultipleStoriesData {
+	by_ids?: string
+	by_uuids?: string
+	contain_component?: string
+	excluding_ids?: string
+	filter_query?: any
+	folder_only?: boolean
+	full_slug?: string
+	in_release?: string
+	in_trash?: boolean
+	is_published?: boolean
+	in_workflow_stages?: string
+	page?: number
+	pinned?: '1' | unknown
+	search?: string
+	sort_by?: string
+	starts_with?: string
+	story_only?: boolean
+	text_search?: string
+	with_parent?: number
+	with_tag?: string
 }
 
 export interface ISbAlternateObject {
