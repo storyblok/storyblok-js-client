@@ -157,32 +157,25 @@ class Storyblok {
 		})
 	}
 
-	public async customFetch(
-		slug: string,
-		fetchOptions: typeof fetch,
-	) {
-		console.log('fetchOptions =>', fetchOptions)
-		console.log('slug =>', slug)
+	public async customFetch(slug: string) {
 		try {
-			this.client.fetch = fetchOptions
-			console.log('this.client.fetch =>', this.client)
+			const { method }: any = this.client.fetch
+
+			switch (method) {
+				case 'get':
+					return this.get(slug, {})
+				case 'post':
+					return this.post(slug, {})
+				case 'put':
+					return this.put(slug, {})
+				case 'delete':
+					return this.delete(slug, {})
+				default:
+					return this.get(slug, {})
+			}
 		} catch (error: Error | any) {
 			return error
 		}
-		// try {
-		// 	if (fetchOptions && Object.keys(fetchOptions).length > 0) {
-		// 		this.fetchOptions = fetchOptions
-		// 	}
-	
-		// 	const url = `/${slug}`
-		// 	const response = await this.cacheResponse(url)
-
-		// 	return response
-		// } catch (error: Error | any) {
-		// 	return error
-		// } finally {
-		// 	this.fetchOptions = {}
-		// }
 	}
 
 	public setComponentResolver(resolver: ComponentResolverFn): void {
@@ -630,7 +623,9 @@ class Storyblok {
 		url: string,
 		params: ISbStoriesParams
 	): Promise<unknown> {
-		return this.client[type](url, params)
+		const clientReturn = this.client[type](url, params)
+		console.log('clientReturn', clientReturn)
+		return clientReturn
 	}
 
 	public cacheVersions(): CachedVersions {

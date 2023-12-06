@@ -126,7 +126,11 @@ class SbFetch {
 				body,
 				signal,
 			}
-			const response = await this.fetch(`${url}`, fetchOptions)
+			if (typeof this.fetch === 'object') {
+				Object.assign(fetchOptions, this.fetch)
+			}
+
+			const response = await fetch(`${url}`, fetchOptions)
 
 			if (this.timeout) {
 				clearTimeout(timeout)

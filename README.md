@@ -167,6 +167,7 @@ The default behavior of the cache is `clear: 'manual'`, that is, if you need to 
 ```javascript
 let Storyblok = new StoryblokClient({
   accessToken: <YOUR_SPACE_ACCESS_TOKEN>,
+	oauthToken: <YOUR_OAUTH_TOKEN>,
   cache: {
     clear: "auto",
     type: "memory",
@@ -176,15 +177,10 @@ let Storyblok = new StoryblokClient({
 
 #### NEW FEATURE - Custom Fetch
 
-You can now pass a custom fetch function per call. This can be used passing any options from the [fetch](https://developer.mozilla.org/en-US/docs/Web/API/fetch) API, like headers, etc.
+You can now pass a custom fetch inside the constructor. This can be used passing any options from the [fetch](https://developer.mozilla.org/en-US/docs/Web/API/fetch) API, like headers, etc.
 You can use like this:
 
 ```javascript
-const client = new StoryblokClient({
-	accessToken,
-	oauthToken,
-})
-
 const postObject = {
 	story: {
 		name: 'Story Name',
@@ -195,23 +191,28 @@ const postObject = {
 		},
 	},
 }
-try {
-	const res = await client.customFetch(
-		`spaces/${spaceId}/stories`,
-		postObject,
-		{
-			method: 'POST',
-			next: { // using with Next.js
-				tags: ['storyblok'],
-			},
-		}
-	)
 
+const fetch: RequestInit = {
+	method: 'POST',
+	body: JSON.stringify(postObject),
+}
+
+const client = new StoryblokClient({
+	accessToken,
+	oauthToken,
+	fetch,
+})
+
+try {
+	const res = await client.customFetch(`spaces/${spaceId}/stories`)
 	return res
 } catch (err) {
 	console.error('err =>', err)
 }
 ```
+
+Note that you must use just the options from the [fetch](https://developer.mozilla.org/en-US/docs/Web/API/fetch) API, like headers, etc. The `url` will be set when you call the client later on in your code.
+You can pass additional headers to the options but they will be merged with the default headers from the client.
 
 #### Passing response interceptor
 
