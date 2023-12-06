@@ -21,12 +21,13 @@ describe('test custom fetch calls', () => {
 	test('call with GET', async () => {
 		const client = new StoryblokClient({
 			accessToken,
+			fetch: {
+				method: 'GET',
+			},
 		})
 
 		try {
-			const res = await client.customFetch('cdn/stories', null, {
-				method: 'GET',
-			})
+			const res = await client.customFetch('cdn/stories')
 			expect(res.data.stories).toHaveLength(res.data.stories.length)
 		} catch (err) {
 			console.error(err)
@@ -34,11 +35,6 @@ describe('test custom fetch calls', () => {
 	})
 
 	test('call with POST', async () => {
-		const client = new StoryblokClient({
-			accessToken,
-			oauthToken,
-		})
-
 		const jibberish = generateJibberishWord(8)
 		const postObject = {
 			story: {
@@ -50,14 +46,17 @@ describe('test custom fetch calls', () => {
 				},
 			},
 		}
+		const client = new StoryblokClient({
+			accessToken,
+			oauthToken,
+			fetch: {
+				method: 'POST',
+				body: JSON.stringify(postObject),
+			},
+		})
+
 		try {
-			const res = await client.customFetch(
-				`spaces/${spaceId}/stories`,
-				postObject,
-				{
-					method: 'POST',
-				}
-			)
+			const res = await client.customFetch(`spaces/${spaceId}/stories`)
 			expect(res.data.story.id).toBeTruthy()
 		} catch (err) {
 			console.error('err =>', err)
