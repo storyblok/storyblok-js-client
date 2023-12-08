@@ -79,7 +79,7 @@ export class SbHelpers {
 
 	/**
 	 * @method getRegionURL
-	 * @param  {String} regionCode region code, could be eu, us or cn
+	 * @param  {String} regionCode region code, could be eu, us, cn, ap or ca
 	 * @return {String} The base URL of the region
 	 */
 	public getRegionURL(regionCode?: string): string {
