@@ -96,6 +96,8 @@ describe('getRegionURL function', () => {
 	const EU_API_URL = 'api.storyblok.com'
 	const US_API_URL = 'api-us.storyblok.com'
 	const CN_API_URL = 'app.storyblokchina.cn'
+	const AP_API_URL = 'api-ap.storyblok.com'
+	const CA_API_URL = 'api-ca.storyblok.com'
 
 	test('should return the europe url when pass a empty string', () => {
 		expect(helpers.getRegionURL('')).toEqual(EU_API_URL)
@@ -117,4 +119,11 @@ describe('getRegionURL function', () => {
 		expect(helpers.getRegionURL('cn')).toEqual(CN_API_URL)
 	})
 
+	test('should return the australia url when pass ap string', () => {
+		expect(helpers.getRegionURL('ap')).toEqual(AP_API_URL)
+	})
+
+	test('should return the canada url when pass ca string', () => {
+		expect(helpers.getRegionURL('ca')).toEqual(CA_API_URL)
+	})
 })
