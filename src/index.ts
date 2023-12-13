@@ -329,7 +329,11 @@ class Storyblok {
 				this.relations[resolveId][uuid] && { ...this.relations[resolveId][uuid] }
 
 			if (typeof jtree[treeItem] === 'string') {
-				jtree[treeItem] = cleanCopy(jtree[treeItem])
+				if (this.relations[resolveId][jtree[treeItem]]) {
+					jtree[treeItem] = this._cleanCopy(
+						this.relations[resolveId][jtree[treeItem]]
+					)
+				}
 			} else if (Array.isArray(jtree[treeItem])) {
 				jtree[treeItem] = jtree[treeItem].map((uuid: string) => cleanCopy(uuid)).filter(Boolean)
 			}
