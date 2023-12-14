@@ -75,6 +75,7 @@ class Storyblok {
 	public links: LinksType
 	public richTextResolver: any
 	public resolveNestedRelations: boolean
+	private stringifiedStoriesCache: Record<string, string>
 
 	/**
 	 *
@@ -148,6 +149,7 @@ class Storyblok {
 		this.helpers = new SbHelpers()
 		this.resolveCounter = 0
 		this.resolveNestedRelations = config.resolveNestedRelations || true
+		this.stringifiedStoriesCache = {} as Record<string, string>
 
 		this.client = new SbFetch({
 			baseURL: endpoint,
@@ -325,20 +327,17 @@ class Storyblok {
 		resolveId: string
 	): void {
 		if (fields.indexOf(`${jtree.component}.${treeItem}`) > -1) {
+
+			const cleanCopyStory = (uuid: string) => {
+				if (!this.relations[resolveId][uuid]) return uuid;
+				if(!this.stringifiedStoriesCache[uuid]) this.stringifiedStoriesCache[uuid] = JSON.stringify(this.relations[resolveId][uuid])
+				return JSON.parse(this.stringifiedStoriesCache[uuid])
+			}
+
 			if (typeof jtree[treeItem] === 'string') {
-				if (this.relations[resolveId][jtree[treeItem]]) {
-					jtree[treeItem] = this._cleanCopy(
-						this.relations[resolveId][jtree[treeItem]]
-					)
-				}
-			} else if (jtree[treeItem] && jtree[treeItem].constructor === Array) {
-				const stories: JSON[] = []
-				jtree[treeItem].forEach((uuid: string) => {
-					if (this.relations[resolveId][uuid]) {
-						stories.push(this._cleanCopy(this.relations[resolveId][uuid]))
-					}
-				})
-				jtree[treeItem] = stories
+				jtree[treeItem] = cleanCopyStory(jtree[treeItem])
+			} else if (Array.isArray(jtree[treeItem])) {
+				jtree[treeItem] = jtree[treeItem].map((uuid: string) => cleanCopyStory(uuid)).filter(Boolean)
 			}
 		}
 	}
@@ -514,6 +513,8 @@ class Storyblok {
 				this.iterateTree(story, relationParams, resolveId)
 			})
 		}
+
+		this.stringifiedStoriesCache = {}
 
 		delete this.links[resolveId]
 		delete this.relations[resolveId]
