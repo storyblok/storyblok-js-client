@@ -327,17 +327,21 @@ class Storyblok {
 		resolveId: string
 	): void {
 		if (fields.indexOf(`${jtree.component}.${treeItem}`) > -1) {
-
 			const cleanCopyStory = (uuid: string) => {
-				if (!this.relations[resolveId][uuid]) return uuid;
-				if(!this.stringifiedStoriesCache[uuid]) this.stringifiedStoriesCache[uuid] = JSON.stringify(this.relations[resolveId][uuid])
+				if (!this.relations[resolveId][uuid]) return uuid
+				if (!this.stringifiedStoriesCache[uuid])
+					this.stringifiedStoriesCache[uuid] = JSON.stringify(
+						this.relations[resolveId][uuid]
+					)
 				return JSON.parse(this.stringifiedStoriesCache[uuid])
 			}
 
 			if (typeof jtree[treeItem] === 'string') {
 				jtree[treeItem] = cleanCopyStory(jtree[treeItem])
 			} else if (Array.isArray(jtree[treeItem])) {
-				jtree[treeItem] = jtree[treeItem].map((uuid: string) => cleanCopyStory(uuid)).filter(Boolean)
+				jtree[treeItem] = jtree[treeItem]
+					.map((uuid: string) => cleanCopyStory(uuid))
+					.filter(Boolean)
 			}
 		}
 	}
