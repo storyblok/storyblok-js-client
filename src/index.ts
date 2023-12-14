@@ -320,6 +320,21 @@ class Storyblok {
 		}
 	}
 
+	/**
+	 *
+	 * @param resolveId A counter number as a string
+	 * @param uuid The uuid of the story
+	 * @returns string | object
+	 */
+	private getStoryReference(resolveId: string, uuid: string): string | JSON {
+		if (!this.relations[resolveId][uuid]) return uuid
+		if (!this.stringifiedStoriesCache[uuid])
+			this.stringifiedStoriesCache[uuid] = JSON.stringify(
+				this.relations[resolveId][uuid]
+			)
+		return JSON.parse(this.stringifiedStoriesCache[uuid])
+	}
+
 	private _insertRelations(
 		jtree: ISbStoriesParams,
 		treeItem: keyof ISbStoriesParams,
@@ -327,20 +342,11 @@ class Storyblok {
 		resolveId: string
 	): void {
 		if (fields.indexOf(`${jtree.component}.${treeItem}`) > -1) {
-			const cleanCopyStory = (uuid: string) => {
-				if (!this.relations[resolveId][uuid]) return uuid
-				if (!this.stringifiedStoriesCache[uuid])
-					this.stringifiedStoriesCache[uuid] = JSON.stringify(
-						this.relations[resolveId][uuid]
-					)
-				return JSON.parse(this.stringifiedStoriesCache[uuid])
-			}
-
 			if (typeof jtree[treeItem] === 'string') {
-				jtree[treeItem] = cleanCopyStory(jtree[treeItem])
+				jtree[treeItem] = this.getStoryReference(resolveId, jtree[treeItem])
 			} else if (Array.isArray(jtree[treeItem])) {
 				jtree[treeItem] = jtree[treeItem]
-					.map((uuid: string) => cleanCopyStory(uuid))
+					.map((uuid: string) => this.getStoryReference(resolveId, uuid))
 					.filter(Boolean)
 			}
 		}
