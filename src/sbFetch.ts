@@ -30,7 +30,7 @@ class SbFetch {
 		this.headers = $c.headers || new Headers()
 		this.timeout = $c?.timeout ? $c.timeout * 1000 : 0
 		this.responseInterceptor = $c.responseInterceptor
-		this.fetch = fetch
+		this.fetch = (...args) => ($c.fetch ? $c.fetch(...args) : fetch(...args))
 		this.ejectInterceptor = false
 		this.url = ''
 		this.parameters = {} as ISbStoriesParams
