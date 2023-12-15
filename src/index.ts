@@ -75,6 +75,7 @@ class Storyblok {
 	public links: LinksType
 	public richTextResolver: any
 	public resolveNestedRelations: boolean
+	private stringifiedStoriesCache: Record<string, string>
 
 	/**
 	 *
@@ -148,6 +149,7 @@ class Storyblok {
 		this.helpers = new SbHelpers()
 		this.resolveCounter = 0
 		this.resolveNestedRelations = config.resolveNestedRelations || true
+		this.stringifiedStoriesCache = {} as Record<string, string>
 
 		this.client = new SbFetch({
 			baseURL: endpoint,
@@ -318,6 +320,21 @@ class Storyblok {
 		}
 	}
 
+	/**
+	 *
+	 * @param resolveId A counter number as a string
+	 * @param uuid The uuid of the story
+	 * @returns string | object
+	 */
+	private getStoryReference(resolveId: string, uuid: string): string | JSON {
+		if (!this.relations[resolveId][uuid]) return uuid
+		if (!this.stringifiedStoriesCache[uuid])
+			this.stringifiedStoriesCache[uuid] = JSON.stringify(
+				this.relations[resolveId][uuid]
+			)
+		return JSON.parse(this.stringifiedStoriesCache[uuid])
+	}
+
 	private _insertRelations(
 		jtree: ISbStoriesParams,
 		treeItem: keyof ISbStoriesParams,
@@ -326,19 +343,11 @@ class Storyblok {
 	): void {
 		if (fields.indexOf(`${jtree.component}.${treeItem}`) > -1) {
 			if (typeof jtree[treeItem] === 'string') {
-				if (this.relations[resolveId][jtree[treeItem]]) {
-					jtree[treeItem] = this._cleanCopy(
-						this.relations[resolveId][jtree[treeItem]]
-					)
-				}
-			} else if (jtree[treeItem] && jtree[treeItem].constructor === Array) {
-				const stories: JSON[] = []
-				jtree[treeItem].forEach((uuid: string) => {
-					if (this.relations[resolveId][uuid]) {
-						stories.push(this._cleanCopy(this.relations[resolveId][uuid]))
-					}
-				})
-				jtree[treeItem] = stories
+				jtree[treeItem] = this.getStoryReference(resolveId, jtree[treeItem])
+			} else if (Array.isArray(jtree[treeItem])) {
+				jtree[treeItem] = jtree[treeItem]
+					.map((uuid: string) => this.getStoryReference(resolveId, uuid))
+					.filter(Boolean)
 			}
 		}
 	}
@@ -514,6 +523,8 @@ class Storyblok {
 				this.iterateTree(story, relationParams, resolveId)
 			})
 		}
+
+		this.stringifiedStoriesCache = {}
 
 		delete this.links[resolveId]
 		delete this.relations[resolveId]
