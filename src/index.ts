@@ -625,6 +625,12 @@ class Storyblok {
 		return cacheVersions[this.accessToken]
 	}
 
+	public setCacheVersion(cv: number): void {
+		if (this.accessToken) {
+			cacheVersions[this.accessToken] = cv
+		}
+	}
+
 	private cacheProvider(): ICacheProvider {
 		switch (this.cache.type) {
 			case 'memory':
