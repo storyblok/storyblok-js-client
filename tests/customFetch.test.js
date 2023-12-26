@@ -19,6 +19,8 @@ describe('define environment variables', () => {
     const oauthToken = import.meta.env.VITE_OAUTH_TOKEN;
     const spaceId = import.meta.env.VITE_SPACE_ID;
 
+    console.log('here =>', import.meta.env);
+
     expect(accessToken).not.toEqual('');
     expect(oauthToken).not.toEqual('');
     expect(spaceId).not.toEqual('');
