@@ -21,6 +21,7 @@ describe('customFetch', () => {
 		client = new StoryblokClient({
 			oauthToken: process.env.VITE_OAUTH_TOKEN,
 		})
+    console.log('url', client.client.baseURL)
 	})
 
 	test('should call GET method', async () => {
