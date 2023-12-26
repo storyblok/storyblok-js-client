@@ -87,7 +87,6 @@ class Storyblok {
 
 		const getRegion = new SbHelpers().getRegionURL
 		const protocol = config.https === false ? 'http' : 'https'
-		console.log('config.oauthToken', config.oauthToken)
 
 		if (!config.oauthToken) {
 			endpoint = `${protocol}://${getRegion(config.region)}/${'v2' as Version}`
