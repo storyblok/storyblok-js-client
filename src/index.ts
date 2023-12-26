@@ -85,19 +85,14 @@ class Storyblok {
 	public constructor(config: ISbConfig, pEndpoint?: string) {
 		let endpoint = config.endpoint || pEndpoint
 
-		if (!endpoint) {
-			const getRegion = new SbHelpers().getRegionURL
-			const protocol = config.https === false ? 'http' : 'https'
+		const getRegion = new SbHelpers().getRegionURL
+		const protocol = config.https === false ? 'http' : 'https'
+		console.log('config.oauthToken', config.oauthToken)
 
-			if (!config.oauthToken) {
-				endpoint = `${protocol}://${getRegion(config.region)}/${
-					'v2' as Version
-				}`
-			} else {
-				endpoint = `${protocol}://${getRegion(config.region)}/${
-					'v1' as Version
-				}`
-			}
+		if (!config.oauthToken) {
+			endpoint = `${protocol}://${getRegion(config.region)}/${'v2' as Version}`
+		} else {
+			endpoint = `${protocol}://${getRegion(config.region)}/${'v1' as Version}`
 		}
 
 		const headers: Headers = new Headers()
@@ -166,32 +161,32 @@ class Storyblok {
 			baseURL: this.client.baseURL,
 			headers: this.client.headers,
 			fetch: (...args: [any]) => fetch(...args),
-		});
-	
-		let method;
-		let params;
+		})
+
+		let method
+		let params
 		switch ((options.method || 'get').toLowerCase()) {
 			case 'get':
-				method = customClient.get.bind(customClient);
-				params = {}; // GET requests typically don't have a body
-				break;
+				method = customClient.get.bind(customClient)
+				params = {} // GET requests typically don't have a body
+				break
 			case 'post':
-				method = customClient.post.bind(customClient);
-				params = JSON.parse(options.body as string);
-				break;
+				method = customClient.post.bind(customClient)
+				params = JSON.parse(options.body as string)
+				break
 			case 'put':
-				method = customClient.put.bind(customClient);
-				params = JSON.parse(options.body as string);
-				break;
+				method = customClient.put.bind(customClient)
+				params = JSON.parse(options.body as string)
+				break
 			case 'delete':
-				method = customClient.delete.bind(customClient);
-				params = JSON.parse(options.body as string);
-				break;
+				method = customClient.delete.bind(customClient)
+				params = JSON.parse(options.body as string)
+				break
 			default:
-				throw new Error(`Invalid method: ${options.method}`);
+				throw new Error(`Invalid method: ${options.method}`)
 		}
-	
-		return method(`/${url}`, params);
+
+		return method(`/${url}`, params)
 	}
 
 	public setComponentResolver(resolver: ComponentResolverFn): void {
