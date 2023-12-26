@@ -1,5 +1,5 @@
 import { expect, test, describe, beforeEach } from 'vitest'
-import StoryblokClient from 'src/index.ts'
+import StoryblokClient from '../'
 
 const generateJibberishWord = (length) => {
 	const characters = 'abcdefghijklmnopqrstuvwxyz'
