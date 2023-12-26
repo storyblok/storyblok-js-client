@@ -15,7 +15,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    
+    environment: "test"
     steps:
     - name: "Test var"
       run: echo "This is test var value $TEST_VAR"
