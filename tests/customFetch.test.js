@@ -15,6 +15,7 @@ const generateJibberishWord = (length) => {
 
 describe('customFetch', () => {
 	let client
+  const url = `spaces/${process.env.VITE_SPACE_ID}/stories`
 
 	beforeEach(() => {
 		client = new StoryblokClient({
@@ -25,7 +26,7 @@ describe('customFetch', () => {
 
 	test('should call GET method', async () => {
 		const response = await client.customFetch(
-			`spaces/${process.env.VITE_SPACE_ID}/stories`,
+			url,
 			{
 				method: 'GET',
 				body: {},
@@ -47,7 +48,7 @@ describe('customFetch', () => {
 			},
 		}
 		const response = await client.customFetch(
-			`spaces/${process.env.VITE_SPACE_ID}/stories`,
+			url,
 			{
 				method: 'POST',
 				body: JSON.stringify(postObject),
@@ -58,7 +59,7 @@ describe('customFetch', () => {
 
 	test('should return an error for invalid method', async () => {
 		try {
-			await client.customFetch(`spaces/${process.env.VITE_SPACE_ID}/stories`, {
+			await client.customFetch(url, {
 				method: 'INVALID',
 			})
 		} catch (error) {
