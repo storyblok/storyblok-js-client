@@ -10,7 +10,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-    - name: Use variables
+    - run: echo "Use variables"
       env:
         VITE_ACCESS_TOKEN: ${{ vars.VITE_ACCESS_TOKEN }}
         VITE_OAUTH_TOKEN: ${{ vars.VITE_OAUTH_TOKEN }}
