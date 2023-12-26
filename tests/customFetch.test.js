@@ -15,9 +15,9 @@ const generateJibberishWord = (length) => {
 
 describe('define environment variables', () => {
   test('Accessing Environment Variables', () => {
-    const accessToken = process.env.VITE_ACCESS_TOKEN;
-    const oauthToken = process.env.VITE_OAUTH_TOKEN;
-    const spaceId = process.env.VITE_SPACE_ID;
+    const accessToken = import.meta.env.VITE_ACCESS_TOKEN;
+    const oauthToken = import.meta.env.VITE_OAUTH_TOKEN;
+    const spaceId = import.meta.env.VITE_SPACE_ID;
 
     expect(accessToken).not.toEqual('');
     expect(oauthToken).not.toEqual('');
@@ -27,11 +27,11 @@ describe('define environment variables', () => {
 
 describe('customFetch', () => {
 	let client
-  const url = `spaces/${process.env.VITE_SPACE_ID}/stories`
+  const url = `spaces/${import.meta.env.VITE_SPACE_ID}/stories`
 
 	beforeEach(() => {
 		client = new StoryblokClient({
-			oauthToken: process.env.VITE_OAUTH_TOKEN,
+			oauthToken: import.meta.env.VITE_OAUTH_TOKEN,
 		})
 	})
 
