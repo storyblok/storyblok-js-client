@@ -13,7 +13,7 @@ const generateJibberishWord = (length) => {
 	return jibberishWord
 }
 
-console.log('env =>', process.env)
+console.log('test env =>', process.env)
 
 describe('define environment variables', () => {
   test('Accessing Environment Variables', () => {
