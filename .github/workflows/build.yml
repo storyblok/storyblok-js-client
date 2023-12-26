@@ -9,12 +9,11 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    steps:
-    - run: echo "Use variables"
-      env:
+    env:
         VITE_ACCESS_TOKEN: ${{ vars.VITE_ACCESS_TOKEN }}
         VITE_OAUTH_TOKEN: ${{ vars.VITE_OAUTH_TOKEN }}
         VITE_SPACE_ID: ${{ vars.VITE_SPACE_ID }}
+    steps:
     - uses: actions/checkout@v3
     - name: Setup Node
       uses: actions/setup-node@v3
