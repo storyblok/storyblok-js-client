@@ -5,15 +5,20 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
-  
+
+env:
+  VITE_ACCESS_TOKEN: ${{ vars.VITE_ACCESS_TOKEN }}
+  VITE_OAUTH_TOKEN: ${{ vars.VITE_OAUTH_TOKEN }}
+  VITE_SPACE_ID: ${{ vars.VITE_SPACE_ID }}
+  TEST_VAR: ${{ vars.TEST_VAR }}
+
 jobs:
   test:
     runs-on: ubuntu-latest
-    env:
-        VITE_ACCESS_TOKEN: ${{ vars.VITE_ACCESS_TOKEN }}
-        VITE_OAUTH_TOKEN: ${{ vars.VITE_OAUTH_TOKEN }}
-        VITE_SPACE_ID: ${{ vars.VITE_SPACE_ID }}
+    
     steps:
+    - name: "Test var"
+      run: echo "This is test var value $TEST_VAR"
     - uses: actions/checkout@v3
     - name: Setup Node
       uses: actions/setup-node@v3
