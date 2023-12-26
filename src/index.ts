@@ -160,6 +160,40 @@ class Storyblok {
 		})
 	}
 
+	public customFetch(url: string, options: RequestInit) {
+		// Create a new SbFetch instance with the custom fetch function
+		const customClient = new SbFetch({
+			baseURL: this.client.baseURL,
+			headers: this.client.headers,
+			fetch: (...args: [any]) => fetch(...args),
+		});
+	
+		let method;
+		let params;
+		switch ((options.method || 'get').toLowerCase()) {
+			case 'get':
+				method = customClient.get.bind(customClient);
+				params = {}; // GET requests typically don't have a body
+				break;
+			case 'post':
+				method = customClient.post.bind(customClient);
+				params = JSON.parse(options.body as string);
+				break;
+			case 'put':
+				method = customClient.put.bind(customClient);
+				params = JSON.parse(options.body as string);
+				break;
+			case 'delete':
+				method = customClient.delete.bind(customClient);
+				params = JSON.parse(options.body as string);
+				break;
+			default:
+				throw new Error(`Invalid method: ${options.method}`);
+		}
+	
+		return method(`/${url}`, params);
+	}
+
 	public setComponentResolver(resolver: ComponentResolverFn): void {
 		this.richTextResolver.addNode('blok', (node: ISbNode) => {
 			let html = ''

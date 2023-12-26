@@ -16,9 +16,9 @@ interface ISbFetch {
 }
 
 class SbFetch {
-	private baseURL: string
+	public baseURL: string
 	private timeout?: number
-	private headers: Headers
+	public headers: Headers
 	private responseInterceptor?: ResponseFn
 	private fetch: typeof fetch
 	private ejectInterceptor?: boolean
