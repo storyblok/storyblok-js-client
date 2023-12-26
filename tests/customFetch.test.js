@@ -13,8 +13,6 @@ const generateJibberishWord = (length) => {
 	return jibberishWord
 }
 
-console.log('test env =>', process.env)
-
 describe.skip('define environment variables', () => {
   test('Accessing Environment Variables', () => {
     const accessToken = process.env.VITE_ACCESS_TOKEN;
