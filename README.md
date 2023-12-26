@@ -257,6 +257,36 @@ window.storyblok.on('input', (event) => {
 })
 ```
 
+## customFetch Function
+
+The `customFetch` function is a custom implementation of the fetch API to be used alongside the client's calls. It is designed to handle different types of `BodyInit` in the `SbFetch` methods (`get`, `post`, `put`, `delete`).
+
+### Examples
+
+Here's an example of how to use the `customFetch` function:
+
+```typescript
+const client = new StoryblokClient({
+	accessToken: ACCESS_TOKEN,
+	oauthToken: OAUTH_TOKEN,
+})
+
+// GET request
+client
+	.customFetch(`spaces/${SPACE_ID}/stories`, { method: 'GET' })
+	.then((response) => console.log(response))
+	.catch((error) => console.error(error))
+
+// POST request with JSON body
+client
+	.customFetch(`spaces/${SPACE_ID}/stories`, {
+		method: 'POST',
+		body: JSON.stringify({ key: 'value' }),
+	})
+	.then((response) => console.log(response))
+	.catch((error) => console.error(error))
+```
+
 ### Method `Storyblok#get`
 
 With this method you can get single or multiple items. The multiple items are paginated and you will receive 25 items per page by default. If you want to get all items at once use the `getAll` method.
