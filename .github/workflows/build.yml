@@ -6,21 +6,10 @@ on:
   pull_request:
     branches: [main]
 
-env:
-  VITE_ACCESS_TOKEN: ${{ vars.VITE_ACCESS_TOKEN }}
-  VITE_OAUTH_TOKEN: ${{ vars.VITE_OAUTH_TOKEN }}
-  VITE_SPACE_ID: ${{ vars.VITE_SPACE_ID }}
-
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-    - name: "Sets variables"
-      run: echo "Sets variables"
-      env:
-        VITE_ACCESS_TOKEN: ${{ vars.VITE_ACCESS_TOKEN }}
-        VITE_OAUTH_TOKEN: ${{ vars.VITE_OAUTH_TOKEN }}
-        VITE_SPACE_ID: ${{ vars.VITE_SPACE_ID }}
     - uses: actions/checkout@v3
     - name: Setup Node
       uses: actions/setup-node@v3
@@ -31,5 +20,11 @@ jobs:
       run: npm ci
     - run: npm run lint
     - run: npm run prettier -- --check
+    - name: "Sets variables to unit tests"
+      run: echo "Sets variables"
+      env:
+        VITE_ACCESS_TOKEN: ${{ vars.VITE_ACCESS_TOKEN }}
+        VITE_OAUTH_TOKEN: ${{ vars.VITE_OAUTH_TOKEN }}
+        VITE_SPACE_ID: ${{ vars.VITE_SPACE_ID }}
     - run: npm run test
     - run: npm run build
