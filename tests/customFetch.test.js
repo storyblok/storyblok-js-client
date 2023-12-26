@@ -22,6 +22,7 @@ describe('customFetch', () => {
 			oauthToken: process.env.VITE_OAUTH_TOKEN,
 		})
 	})
+  console.log('env =>', process.env.VITE_OAUTH_TOKEN)
 
 	test('should call GET method', async () => {
 		const response = await client.customFetch(
