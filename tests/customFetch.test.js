@@ -15,11 +15,11 @@ const generateJibberishWord = (length) => {
 
 describe('customFetch', () => {
 	let client
-  const url = `spaces/${$VITE_SPACE_ID}/stories`
+  const url = `spaces/${process.env.VITE_SPACE_ID}/stories`
 
 	beforeEach(() => {
 		client = new StoryblokClient({
-			oauthToken: $VITE_OAUTH_TOKEN,
+			oauthToken: process.env.VITE_OAUTH_TOKEN,
 		})
 	})
 
