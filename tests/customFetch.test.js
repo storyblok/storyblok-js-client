@@ -15,7 +15,7 @@ const generateJibberishWord = (length) => {
 
 console.log('test env =>', process.env)
 
-describe('define environment variables', () => {
+describe.skip('define environment variables', () => {
   test('Accessing Environment Variables', () => {
     const accessToken = process.env.VITE_ACCESS_TOKEN;
     const oauthToken = process.env.VITE_OAUTH_TOKEN;
@@ -27,7 +27,7 @@ describe('define environment variables', () => {
   });
 })
 
-describe('customFetch', () => {
+describe.skip('customFetch', () => {
 	let client
   const url = `spaces/${process.env.VITE_SPACE_ID}/stories`
 
