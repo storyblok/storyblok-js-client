@@ -1,6 +1,18 @@
 import { expect, test, describe, beforeEach } from 'vitest'
 import StoryblokClient from 'src/index.ts'
 
+const generateJibberishWord = (length) => {
+	const characters = 'abcdefghijklmnopqrstuvwxyz'
+	let jibberishWord = ''
+
+	for (let i = 0; i < length; i++) {
+		const randomIndex = Math.floor(Math.random() * characters.length)
+		jibberishWord += characters.charAt(randomIndex)
+	}
+
+	return jibberishWord
+}
+
 describe('customFetch', () => {
 	let client
 
@@ -22,14 +34,24 @@ describe('customFetch', () => {
 		expect(response).toHaveProperty('data')
 	})
 
-	// Uncomment and adjust the following test if your API supports POST method for the endpoint
-	// test('should call POST method', async () => {
-	//   const response = await client.customFetch(`spaces/${process.env.VITE_SPACE_ID}/stories`, {
-	//     method: 'POST',
-	//     body: JSON.stringify({ key: 'value' }),
-	//   })
-	//   expect(response).toHaveProperty('data')
-	// })
+	test('should call POST method', async () => {
+    const jibberish = generateJibberishWord(8)
+		const postObject = {
+			story: {
+				name: 'Test',
+				slug: jibberish,
+				content: {
+					component: 'page',
+					text: 'test',
+				},
+			},
+		}
+	  const response = await client.customFetch(`spaces/${process.env.VITE_SPACE_ID}/stories`, {
+	    method: 'POST',
+	    body: JSON.stringify(postObject),
+	  })
+	  expect(response.data.story.id).toBeTruthy()
+	})
 
 	test('should return an error for invalid method', async () => {
 		try {
