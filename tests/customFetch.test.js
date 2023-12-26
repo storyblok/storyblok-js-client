@@ -35,7 +35,7 @@ describe('customFetch', () => {
 	})
 
 	test('should call POST method', async () => {
-    const jibberish = generateJibberishWord(8)
+		const jibberish = generateJibberishWord(8)
 		const postObject = {
 			story: {
 				name: 'Test',
@@ -46,11 +46,14 @@ describe('customFetch', () => {
 				},
 			},
 		}
-	  const response = await client.customFetch(`spaces/${process.env.VITE_SPACE_ID}/stories`, {
-	    method: 'POST',
-	    body: JSON.stringify(postObject),
-	  })
-	  expect(response.data.story.id).toBeTruthy()
+		const response = await client.customFetch(
+			`spaces/${process.env.VITE_SPACE_ID}/stories`,
+			{
+				method: 'POST',
+				body: JSON.stringify(postObject),
+			}
+		)
+		expect(response.data.story.id).toBeTruthy()
 	})
 
 	test('should return an error for invalid method', async () => {
