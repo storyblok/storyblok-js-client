@@ -18,7 +18,7 @@ jobs:
     environment: "test"
     steps:
     - name: "Test var"
-      run: echo "This is test var value $TEST_VAR"
+      run: echo "This is test var value $VITE_SPACE_ID"
     - uses: actions/checkout@v3
     - name: Setup Node
       uses: actions/setup-node@v3
