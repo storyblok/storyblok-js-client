@@ -7,6 +7,7 @@ on:
     branches: [main]
 
 env:
+  CI: true
   VITE_ACCESS_TOKEN: ${{ vars.VITE_ACCESS_TOKEN }}
   VITE_OAUTH_TOKEN: ${{ vars.VITE_OAUTH_TOKEN }}
   VITE_SPACE_ID: ${{ vars.VITE_SPACE_ID }}
