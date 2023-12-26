@@ -19,7 +19,6 @@ describe('customFetch', () => {
 
 	beforeEach(() => {
 		client = new StoryblokClient({
-			accessToken: process.env.VITE_ACCESS_TOKEN,
 			oauthToken: process.env.VITE_OAUTH_TOKEN,
 		})
 	})
