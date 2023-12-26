@@ -19,11 +19,9 @@ describe('define environment variables', () => {
     const oauthToken = process.env.VITE_OAUTH_TOKEN;
     const spaceId = process.env.VITE_SPACE_ID;
 
-    console.log('env =>', process.env);
-  
-    expect(accessToken).toBeDefined();
-    expect(oauthToken).toBeDefined();
-    expect(spaceId).toBeDefined();
+    expect(accessToken).not.toEqual('');
+    expect(oauthToken).not.toEqual('');
+    expect(spaceId).not.toEqual('');
   });
 })
 
