@@ -1,6 +1,8 @@
 import { expect, test, describe, beforeEach } from 'vitest'
 import StoryblokClient from '../'
 
+import fs from 'fs'
+
 const generateJibberishWord = (length) => {
 	const characters = 'abcdefghijklmnopqrstuvwxyz'
 	let jibberishWord = ''
@@ -13,12 +15,23 @@ const generateJibberishWord = (length) => {
 	return jibberishWord
 }
 
+try {
+  const data = fs.readFileSync('.env', 'utf8')
+  const lines = data.split(/\r?\n/)
+  lines.forEach((line) => {
+    const [key, value] = line.split('=')
+    process.env[key] = value
+  })
+  console.log('Environment variables loaded', lines)
+} catch (err) {
+  console.error(err)
+}
+
 describe('define environment variables', () => {
   test('Accessing Environment Variables', () => {
     const accessToken = process.env.VITE_ACCESS_TOKEN;
     const oauthToken = process.env.VITE_OAUTH_TOKEN;
     const spaceId = process.env.VITE_SPACE_ID;
-    console.log('vars & secrets =>', accessToken, oauthToken, spaceId);
 
     expect(accessToken).toBeDefined();
     expect(oauthToken).toBeDefined();
