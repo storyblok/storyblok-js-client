@@ -13,7 +13,17 @@ const generateJibberishWord = (length) => {
 	return jibberishWord
 }
 
-describe.skip('define environment variables', () => {
+describe('define environment variables', () => {
+  test('Accessing Environment Variables', () => {
+    const accessToken = process.env.VITE_ACCESS_TOKEN;
+    const oauthToken = process.env.VITE_OAUTH_TOKEN;
+    const spaceId = process.env.VITE_SPACE_ID;
+
+    expect(accessToken).toBeDefined();
+    expect(oauthToken).toBeDefined();
+    expect(spaceId).toBeDefined();
+  });
+
   test('Accessing Environment Variables', () => {
     const accessToken = process.env.VITE_ACCESS_TOKEN;
     const oauthToken = process.env.VITE_OAUTH_TOKEN;
@@ -25,7 +35,7 @@ describe.skip('define environment variables', () => {
   });
 })
 
-describe.skip('customFetch', () => {
+describe('customFetch', () => {
 	let client
   const url = `spaces/${process.env.VITE_SPACE_ID}/stories`
 
