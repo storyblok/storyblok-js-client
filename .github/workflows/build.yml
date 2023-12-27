@@ -23,10 +23,12 @@ jobs:
       run: npm ci
     - run: npm run lint
     - run: npm run prettier -- --check
-    - name: Sets variables to test
+
+    - name: Sets all variables to unit tests
       env:
         VITE_ACCESS_TOKEN: ${{ secrets.VITE_ACCESS_TOKEN }}
         VITE_OAUTH_TOKEN: ${{ secrets.VITE_OAUTH_TOKEN }}
         VITE_SPACE_ID: ${{ vars.VITE_SPACE_ID }}
       run: npm run test
+
     - run: npm run build
