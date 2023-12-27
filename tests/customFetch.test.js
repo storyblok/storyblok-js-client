@@ -1,5 +1,6 @@
 import { expect, test, describe, beforeEach } from 'vitest'
 import StoryblokClient from '../'
+import fs from 'fs'
 
 const generateJibberishWord = (length) => {
 	const characters = 'abcdefghijklmnopqrstuvwxyz'
@@ -13,7 +14,11 @@ const generateJibberishWord = (length) => {
 	return jibberishWord
 }
 
-describe.skip('define environment variables', () => {
+fs.readdirSync('.').forEach((file) => {
+  console.log(file);
+})
+
+describe('define environment variables', () => {
   test('Accessing Environment Variables', () => {
     const accessToken = process.env.VITE_ACCESS_TOKEN;
     const oauthToken = process.env.VITE_OAUTH_TOKEN;
@@ -35,7 +40,7 @@ describe.skip('define environment variables', () => {
   });
 })
 
-describe.skip('customFetch', () => {
+describe('customFetch', () => {
 	let client
   const url = `spaces/${process.env.VITE_SPACE_ID}/stories`
 
