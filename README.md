@@ -261,6 +261,16 @@ window.storyblok.on('input', (event) => {
 
 The `customFetch` function is a custom implementation of the fetch API to be used alongside the client's calls. It is designed to handle different types of `BodyInit` in the `SbFetch` methods (`get`, `post`, `put`, `delete`).
 
+### Function Signature
+
+```typescript
+customFetch(
+	path: string,
+	fetchOptions?: RequestInit,
+	config?: ISbConfig,
+): Promise<ISbResponse | ISbError>
+```
+
 ### Examples
 
 Here's an example of how to use the `customFetch` function:
@@ -273,16 +283,27 @@ const client = new StoryblokClient({
 
 // GET request
 client
-	.customFetch(`spaces/${SPACE_ID}/stories`, { method: 'GET' })
+	.customFetch(
+		`spaces/${SPACE_ID}/stories`,
+		{ method: 'GET',
+			// ...other fetch options
+		},
+		{
+			timeout: 5000,
+		}
+	)
 	.then((response) => console.log(response))
 	.catch((error) => console.error(error))
 
 // POST request with JSON body
 client
-	.customFetch(`spaces/${SPACE_ID}/stories`, {
-		method: 'POST',
-		body: JSON.stringify({ key: 'value' }),
-	})
+	.customFetch(
+		`spaces/${SPACE_ID}/stories`,
+		{
+			method: 'POST',
+			body: JSON.stringify({ key: 'value' }),
+		}
+	)
 	.then((response) => console.log(response))
 	.catch((error) => console.error(error))
 ```

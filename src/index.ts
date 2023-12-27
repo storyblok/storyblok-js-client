@@ -20,6 +20,8 @@ import {
 	ThrottleFn,
 	IMemoryType,
 	ICacheProvider,
+	ISbResponse,
+	ISbError,
 } from './interfaces'
 
 let memory: Partial<IMemoryType> = {}
@@ -154,36 +156,44 @@ class Storyblok {
 		})
 	}
 
-	public customFetch(url: string, options: RequestInit) {
+	/**
+	 *
+	 * @param url string
+	 * @param options RequestInit
+	 * @param config ISbConfig
+	 * @returns Promise<ISbResponse | ISbError>
+	 *
+	 */
+	public customFetch(
+		url: string,
+		options: RequestInit,
+		config: ISbConfig
+	): Promise<ISbResponse | ISbError> {
 		// Create a new SbFetch instance with the custom fetch function
-		const customClient = new SbFetch({
+		const mergedConfig = {
 			baseURL: this.client.baseURL,
 			headers: this.client.headers,
-			fetch: (...args: [any]) => fetch(...args),
-		})
-
-		let method
-		let params
-		switch ((options.method || 'get').toLowerCase()) {
-			case 'get':
-				method = customClient.get.bind(customClient)
-				params = {} // GET requests typically don't have a body
-				break
-			case 'post':
-				method = customClient.post.bind(customClient)
-				params = JSON.parse(options.body as string)
-				break
-			case 'put':
-				method = customClient.put.bind(customClient)
-				params = JSON.parse(options.body as string)
-				break
-			case 'delete':
-				method = customClient.delete.bind(customClient)
-				params = JSON.parse(options.body as string)
-				break
-			default:
-				throw new Error(`Invalid method: ${options.method}`)
+			...config,
 		}
+
+		const customClient = new SbFetch(mergedConfig)
+
+		const methodType = (options.method || 'get').toLowerCase()
+
+		const methods: { [key: string]: (url: string, params: ISbStoriesParams) => Promise<ISbResponse | ISbError> } = {
+			get: customClient.get.bind(customClient),
+			post: customClient.post.bind(customClient),
+			put: customClient.put.bind(customClient),
+			delete: customClient.delete.bind(customClient),
+		};
+
+		if (!(methodType in methods)) {
+			throw new Error(`Invalid method: ${options.method}`)
+		}
+
+		const method = methods[methodType]
+		const params =
+			methodType === 'get' ? {} : JSON.parse(options.body as string)
 
 		return method(`/${url}`, params)
 	}
