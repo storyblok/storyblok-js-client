@@ -1,6 +1,5 @@
 import { expect, test, describe, beforeEach } from 'vitest'
 import StoryblokClient from '../'
-import fs from 'fs'
 
 const generateJibberishWord = (length) => {
 	const characters = 'abcdefghijklmnopqrstuvwxyz'
@@ -13,10 +12,6 @@ const generateJibberishWord = (length) => {
 
 	return jibberishWord
 }
-
-fs.readdirSync('.').forEach((file) => {
-  console.log(file);
-})
 
 describe('define environment variables', () => {
   test('Accessing Environment Variables', () => {

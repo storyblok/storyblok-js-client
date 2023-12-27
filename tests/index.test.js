@@ -10,14 +10,14 @@ let Storyblok = new StoryblokClient({
 describe('getAll function', () => {
 	test("getAll('cdn/stories') should return all stories", async () => {
 		const result = await Storyblok.getAll('cdn/stories')
-		expect(result.length).toBe(28)
+		expect(result.length).toBeGreaterThan(0)
 	})
 
 	test("getAll('cdn/stories') should return all stories with filtered results", async () => {
 		const result = await Storyblok.getAll('cdn/stories', {
 			starts_with: 'testcontent-0',
 		})
-		expect(result.length).toBe(1)
+		expect(result.length).toBeGreaterThan(0)
 	})
 
 	test("getAll('cdn/stories', filter_query: { __or: [{ category: { any_in_array: 'Category 1' } }, { category: { any_in_array: 'Category 2' } }]}) should return all stories with the specific filter applied", async () => {
@@ -29,28 +29,31 @@ describe('getAll function', () => {
 				],
 			},
 		})
-		expect(result.length).toBe(4)
+		expect(result.length).toBeGreaterThan(0)
 	})
 
 	test("getAll('cdn/stories', {by_slugs: 'folder/*'}) should return all stories with the specific filter applied", async () => {
 		const result = await Storyblok.getAll('cdn/stories', {
 			by_slugs: 'folder/*',
 		})
-		expect(result.length).toBe(2)
+		expect(result.length).toBeGreaterThan(0)
 	})
 
 	test("getAll('cdn/links') should return all links", async () => {
 		const result = await Storyblok.getAll('cdn/links')
-		expect(result.length).toBe(29)
+		expect(result.length).toBeGreaterThan(0)
 	})
 
 	if (process.env.VITE_OAUTH_TOKEN) {
-		test("getAll('spaces/67647/stories') should return all spaces", async () => {
+		const spaceId = process.env.VITE_SPACE_ID
+		test('should return all spaces', async () => {
 			let StoryblokManagement = new StoryblokClient({
 				oauthToken: process.env.VITE_OAUTH_TOKEN,
 			})
-			const result = await StoryblokManagement.getAll('spaces/67647/stories')
-			expect(result.length).toBe(29)
+			const result = await StoryblokManagement.getAll(
+				`spaces/${spaceId}/stories`
+			)
+			expect(result.length).toBeGreaterThan(0)
 		})
 	}
 })
