@@ -30,12 +30,13 @@ jobs:
         OAUTH_TOKEN: ${{ secrets.VITE_OAUTH_TOKEN }}
         SPACE_ID: ${{ vars.VITE_SPACE_ID }}
       run: |
-        echo VITE_ACCESS_TOKEN="$ACCESS_TOKEN" >> ~/.env
-        echo VITE_OAUTH_TOKEN="$OAUTH_TOKEN" >> ~/.env
-        echo VITE_SPACE_ID="$SPACE_ID" >> ~/.env
+        touch ~/.env.test
+        echo VITE_ACCESS_TOKEN="$ACCESS_TOKEN" >> ~/.env.test
+        echo VITE_OAUTH_TOKEN="$OAUTH_TOKEN" >> ~/.env.test
+        echo VITE_SPACE_ID="$SPACE_ID" >> ~/.env.test
 
         echo "cat .env"
-        cat ~/.env
+        cat ~/.env.test
 
         echo "ls -a ."
         ls -a ~/.
@@ -46,7 +47,7 @@ jobs:
       shell: bash
 
     - run: |
-        cat ~/.env
+        cat ~/.env.test
         npm run test
 
     - run: npm run build
