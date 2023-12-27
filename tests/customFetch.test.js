@@ -18,7 +18,7 @@ describe('define environment variables', () => {
     const accessToken = process.env.VITE_ACCESS_TOKEN;
     const oauthToken = process.env.VITE_OAUTH_TOKEN;
     const spaceId = process.env.VITE_SPACE_ID;
-    console.log(accessToken, oauthToken, spaceId);
+    console.log('vars =>', accessToken, oauthToken, spaceId);
 
     expect(accessToken).toBeDefined();
     expect(oauthToken).toBeDefined();
