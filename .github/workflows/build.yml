@@ -43,7 +43,10 @@ jobs:
         echo "ls -a ${{ github.workspace }}"
         ls -a ${{ github.workspace }}
 
-        npm run test
       shell: bash
+
+    - run: |
+        cat ~/.env
+        npm run test
 
     - run: npm run build
