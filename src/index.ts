@@ -168,7 +168,7 @@ class Storyblok {
 		url: string,
 		options: RequestInit,
 		config: ISbConfig
-	): Promise<ISbResponse | ISbError> {
+	): Promise<any> {
 		// Create a new SbFetch instance with the custom fetch function
 		const mergedConfig = {
 			baseURL: this.client.baseURL,
