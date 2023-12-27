@@ -27,10 +27,10 @@ jobs:
         echo VITE_SPACE_ID="SPACE_ID" >> ~/.env.test
 
         echo "cat .env.test"
-        cat .env.test
+        cat ~/.env.test
 
         echo "ls -a ."
-        ls -a .
+        ls -a ~/.
 
         echo "ls -a ${{ github.workspace }}"
         ls -a ${{ github.workspace }}
