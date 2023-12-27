@@ -12,6 +12,18 @@ jobs:
     environment: test
     steps:
     - uses: actions/checkout@v3
+
+    - name: Setup Node
+      uses: actions/setup-node@v3
+      with:
+        node-version: "^18.4.0"
+        cache: "npm"
+
+    - name: Install dependencies
+      run: npm ci
+    - run: npm run lint
+    - run: npm run prettier -- --check
+    
     - name: Create .env file and Sets variables to unit tests
       env:
         ACCESS_TOKEN: ${{ secrets.VITE_ACCESS_TOKEN }}
@@ -30,18 +42,8 @@ jobs:
 
         echo "ls -a ${{ github.workspace }}"
         ls -a ${{ github.workspace }}
+
+        npm run test
       shell: bash
 
-    - name: Setup Node
-      uses: actions/setup-node@v3
-      with:
-        node-version: "^18.4.0"
-        cache: "npm"
-
-    - name: Install dependencies
-      run: npm ci
-    - run: npm run lint
-    - run: npm run prettier -- --check
-    
-    - run: npm run test
     - run: npm run build
