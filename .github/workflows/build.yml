@@ -20,11 +20,24 @@ jobs:
       run: npm ci
     - run: npm run lint
     - run: npm run prettier -- --check
-    - name: "Sets variables to unit tests"
-      run: echo "Sets variables"
+    - name: "Create env file and Sets variables to unit tests"
+      run: |
+        echo VITE_ACCESS_TOKEN="$ACCESS_TOKEN" >> ~/.env.test
+        echo VITE_OAUTH_TOKEN="OAUTH_TOKEN" >> ~/.env.test
+        echo VITE_SPACE_ID="SPACE_ID" >> ~/.env.test
+
+        echo "cat .env.test"
+        cat .env.test
+
+        echo "ls -a ."
+        ls -a .
+
+        echo "ls -a ${{ github.workspace }}"
+        ls -a ${{ github.workspace }}
+      shell: bash
       env:
-        VITE_ACCESS_TOKEN: ${{ vars.VITE_ACCESS_TOKEN }}
-        VITE_OAUTH_TOKEN: ${{ vars.VITE_OAUTH_TOKEN }}
-        VITE_SPACE_ID: ${{ vars.VITE_SPACE_ID }}
+        ACCESS_TOKEN: ${{ secrets.VITE_ACCESS_TOKEN }}
+        OAUTH_TOKEN: ${{ secrets.VITE_OAUTH_TOKEN }}
+        SPACE_ID: ${{ vars.VITE_SPACE_ID }}
     - run: npm run test
     - run: npm run build
