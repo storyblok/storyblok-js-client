@@ -16,7 +16,7 @@ const generateJibberishWord = (length) => {
 }
 
 try {
-  const data = fs.readFileSync('.env', 'utf8')
+  const data = fs.readFileSync('~/.env', 'utf8')
   const lines = data.split(/\r?\n/)
   lines.forEach((line) => {
     const [key, value] = line.split('=')
