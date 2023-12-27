@@ -28,6 +28,5 @@ jobs:
         ACCESS_TOKEN: ${{ secrets.VITE_ACCESS_TOKEN }}
         OAUTH_TOKEN: ${{ secrets.VITE_OAUTH_TOKEN }}
         SPACE_ID: ${{ vars.VITE_SPACE_ID }}
-      with:
-        test: npm run test
+      run: npm run test
     - run: npm run build
