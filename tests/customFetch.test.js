@@ -13,22 +13,18 @@ const generateJibberishWord = (length) => {
 	return jibberishWord
 }
 
+const accessToken = process.env.VITE_ACCESS_TOKEN;
+const oauthToken = process.env.VITE_OAUTH_TOKEN;
+const spaceId = process.env.VITE_SPACE_ID;
+
 describe('define environment variables', () => {
   test('Accessing Environment Variables', () => {
-    const accessToken = process.env.VITE_ACCESS_TOKEN;
-    const oauthToken = process.env.VITE_OAUTH_TOKEN;
-    const spaceId = process.env.VITE_SPACE_ID;
-
     expect(accessToken).toBeDefined();
     expect(oauthToken).toBeDefined();
     expect(spaceId).toBeDefined();
   });
 
   test('Accessing Environment Variables', () => {
-    const accessToken = process.env.VITE_ACCESS_TOKEN;
-    const oauthToken = process.env.VITE_OAUTH_TOKEN;
-    const spaceId = process.env.VITE_SPACE_ID;
-
     expect(accessToken).not.toEqual('');
     expect(oauthToken).not.toEqual('');
     expect(spaceId).not.toEqual('');
@@ -87,4 +83,22 @@ describe('customFetch', () => {
 			expect(error).toHaveProperty('message')
 		}
 	})
+
+  test('should call GET method with config', async () => {
+    const config = {
+      timeout: 5000,
+    };
+  
+    const response = await client.customFetch(
+      url,
+      {
+        method: 'GET',
+        body: {},
+      },
+      config
+    );
+
+    expect(response).toHaveProperty('data');
+    expect(response.data.stories.length).toBeGreaterThan(0);
+  });
 })
