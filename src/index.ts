@@ -556,7 +556,18 @@ class Storyblok {
 		return new Promise(async (resolve, reject) => {
 			try {
 				const res = await this.throttle('get', url, params)
+				if (res.status === 429) {
+					retries = retries ? retries + 1 : 0
 
+					if (retries < this.maxRetries) {
+						console.log(`Hit rate limit. Retrying in ${retries} seconds.`)
+						await this.helpers.delay(1000 * retries)
+						return this.cacheResponse(url, params, retries)
+							.then(resolve)
+							.catch(reject)
+					}
+				}
+				
 				if (res.status !== 200) {
 					return reject(res)
 				}
@@ -593,17 +604,6 @@ class Storyblok {
 
 				return resolve(response)
 			} catch (error: Error | any) {
-				if (error.response && error.response.status === 429) {
-					retries = retries ? retries + 1 : 0
-
-					if (retries < this.maxRetries) {
-						console.log(`Hit rate limit. Retrying in ${retries} seconds.`)
-						await this.helpers.delay(1000 * retries)
-						return this.cacheResponse(url, params, retries)
-							.then(resolve)
-							.catch(reject)
-					}
-				}
 				reject(error)
 			}
 		})
