@@ -20,8 +20,6 @@ import {
 	ThrottleFn,
 	IMemoryType,
 	ICacheProvider,
-	ISbResponse,
-	ISbError,
 } from './interfaces'
 
 let memory: Partial<IMemoryType> = {}
@@ -156,48 +154,6 @@ class Storyblok {
 		})
 	}
 
-	/**
-	 *
-	 * @param url string
-	 * @param options RequestInit
-	 * @param config ISbConfig
-	 * @returns Promise<ISbResponse | ISbError>
-	 *
-	 */
-	public customFetch(
-		url: string,
-		options: RequestInit,
-		config: ISbConfig
-	): Promise<ISbResponse | ISbError> {
-		// Create a new SbFetch instance with the custom fetch function
-		const mergedConfig = {
-			baseURL: this.client.baseURL,
-			headers: this.client.headers,
-			...config,
-		}
-
-		const customClient = new SbFetch(mergedConfig)
-
-		const methodType = (options.method || 'get').toLowerCase()
-
-		const methods: { [key: string]: (url: string, params: ISbStoriesParams) => Promise<ISbResponse | ISbError> } = {
-			get: customClient.get.bind(customClient),
-			post: customClient.post.bind(customClient),
-			put: customClient.put.bind(customClient),
-			delete: customClient.delete.bind(customClient),
-		};
-
-		if (!(methodType in methods)) {
-			throw new Error(`Invalid method: ${options.method}`)
-		}
-
-		const method = methods[methodType]
-		const params =
-			methodType === 'get' ? {} : JSON.parse(options.body as string)
-
-		return method(`/${url}`, params)
-	}
-
 	public setComponentResolver(resolver: ComponentResolverFn): void {
 		this.richTextResolver.addNode('blok', (node: ISbNode) => {
 			let html = ''
@@ -247,18 +203,26 @@ class Storyblok {
 		per_page: number,
 		page: number
 	): Promise<ISbResult> {
-		const options = this.factoryParamOptions(
+		const query = this.factoryParamOptions(
 			url,
 			this.helpers.getOptionsPage(params, per_page, page)
 		)
 
-		return this.cacheResponse(url, options)
+		return this.cacheResponse(url, query)
 	}
 
-	public get(slug: string, params?: ISbStoriesParams): Promise<ISbResult> {
+	public get(
+		slug: string,
+		params?: ISbStoriesParams,
+		fetchOptions?: RequestInit
+	): Promise<ISbResult> {
 		if (!params) params = {} as ISbStoriesParams
 		const url = `/${slug}`
 		const query = this.factoryParamOptions(url, params)
+
+		if (fetchOptions) {
+			this.client.setOptions(fetchOptions)
+		}
 
 		return this.cacheResponse(url, query)
 	}
@@ -266,7 +230,8 @@ class Storyblok {
 	public async getAll(
 		slug: string,
 		params: ISbStoriesParams,
-		entity?: string
+		entity?: string,
+		fetchOptions?: RequestInit
 	): Promise<any[]> {
 		const perPage = params?.per_page || 25
 		const url = `/${slug}`
@@ -276,6 +241,10 @@ class Storyblok {
 		const firstPage = 1
 		const firstRes = await this.makeRequest(url, params, perPage, firstPage)
 		const lastPage = firstRes.total ? Math.ceil(firstRes.total / perPage) : 1
+
+		if (fetchOptions) {
+			this.client.setOptions(fetchOptions)
+		}
 
 		const restRes: any = await this.helpers.asyncMap(
 			this.helpers.range(firstPage, lastPage),
@@ -291,33 +260,65 @@ class Storyblok {
 
 	public post(
 		slug: string,
-		params: ISbStoriesParams | ISbContentMangmntAPI
+		params: ISbStoriesParams | ISbContentMangmntAPI,
+		fetchOptions?: RequestInit
 	): Promise<ISbResponseData> {
 		const url = `/${slug}`
+
+		if (fetchOptions) {
+			this.client.setOptions(fetchOptions)
+		}
+
 		return Promise.resolve(this.throttle('post', url, params))
 	}
 
 	public put(
 		slug: string,
-		params: ISbStoriesParams | ISbContentMangmntAPI
+		params: ISbStoriesParams | ISbContentMangmntAPI,
+		fetchOptions?: RequestInit
 	): Promise<ISbResponseData> {
 		const url = `/${slug}`
+
+		if (fetchOptions) {
+			this.client.setOptions(fetchOptions)
+		}
 		return Promise.resolve(this.throttle('put', url, params))
 	}
 
 	public delete(
 		slug: string,
-		params: ISbStoriesParams | ISbContentMangmntAPI
+		params: ISbStoriesParams | ISbContentMangmntAPI,
+		fetchOptions?: RequestInit
 	): Promise<ISbResponseData> {
 		const url = `/${slug}`
+
+		if (fetchOptions) {
+			this.client.setOptions(fetchOptions)
+		}
+
 		return Promise.resolve(this.throttle('delete', url, params))
 	}
 
-	public getStories(params: ISbStoriesParams): Promise<ISbStories> {
+	public getStories(
+		params: ISbStoriesParams,
+		fetchOptions?: RequestInit
+	): Promise<ISbStories> {
+		if (fetchOptions) {
+			this.client.setOptions(fetchOptions)
+		}
+
 		return this.get('cdn/stories', params)
 	}
 
-	public getStory(slug: string, params: ISbStoryParams): Promise<ISbStory> {
+	public getStory(
+		slug: string,
+		params: ISbStoryParams,
+		fetchOptions?: RequestInit
+	): Promise<ISbStory> {
+		if (fetchOptions) {
+			this.client.setOptions(fetchOptions)
+		}
+
 		return this.get(`cdn/stories/${slug}`, params)
 	}
 
@@ -516,6 +517,15 @@ class Storyblok {
 		}
 	}
 
+	/**
+	 *
+	 * @param responseData
+	 * @param params
+	 * @param resolveId
+	 * @description Resolves the relations and links of the stories
+	 * @returns Promise<void>
+	 *
+	 */
 	private async resolveStories(
 		responseData: ISbResponseData,
 		params: ISbStoriesParams,

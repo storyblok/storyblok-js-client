@@ -257,57 +257,6 @@ window.storyblok.on('input', (event) => {
 })
 ```
 
-## customFetch Function
-
-The `customFetch` function is a custom implementation of the fetch API to be used alongside the client's calls. It is designed to handle different types of `BodyInit` in the `SbFetch` methods (`get`, `post`, `put`, `delete`).
-
-### Function Signature
-
-```typescript
-customFetch(
-	path: string,
-	fetchOptions?: RequestInit,
-	config?: ISbConfig,
-): Promise<ISbResponse | ISbError>
-```
-
-### Examples
-
-Here's an example of how to use the `customFetch` function:
-
-```typescript
-const client = new StoryblokClient({
-	accessToken: ACCESS_TOKEN,
-	oauthToken: OAUTH_TOKEN,
-})
-
-// GET request
-client
-	.customFetch(
-		`spaces/${SPACE_ID}/stories`,
-		{ method: 'GET',
-			// ...other fetch options
-		},
-		{
-			timeout: 5000,
-		}
-	)
-	.then((response) => console.log(response))
-	.catch((error) => console.error(error))
-
-// POST request with JSON body
-client
-	.customFetch(
-		`spaces/${SPACE_ID}/stories`,
-		{
-			method: 'POST',
-			body: JSON.stringify({ key: 'value' }),
-		}
-	)
-	.then((response) => console.log(response))
-	.catch((error) => console.error(error))
-```
-
 ### Method `Storyblok#get`
 
 With this method you can get single or multiple items. The multiple items are paginated and you will receive 25 items per page by default. If you want to get all items at once use the `getAll` method.
@@ -317,6 +266,7 @@ With this method you can get single or multiple items. The multiple items are pa
 - `[return]` Promise, Object `response`
 - `path` String, Path (can be `cdn/stories`, `cdn/tags`, `cdn/datasources`, `cdn/links`)
 - `options` Object, Options can be found in the [API documentation](https://www.storyblok.com/docs/api/content-delivery?utm_source=github.com&utm_medium=readme&utm_campaign=storyblok-js-client).
+- `fetchOptions` Object, optional, Fetch options can be found in the [Fetch API documentation](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch).
 
 **Example**
 
@@ -342,6 +292,7 @@ With this method you can get all items at once.
 - `path` String, Path (can be `cdn/stories`, `cdn/tags`, `cdn/datasources`, `cdn/links`)
 - `options` Object, Options can be found in the [API documentation](https://www.storyblok.com/docs/api/content-delivery?utm_source=github.com&utm_medium=readme&utm_campaign=storyblok-js-client).
 - `entity` String, Storyblok entity like stories, links or datasource. It's optional.
+- `fetchOptions` Object, optional, Fetch options can be found in the [Fetch API documentation](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch).
 
 **Example**
 
@@ -364,6 +315,7 @@ Storyblok.getAll('cdn/stories', {
 - `[return]` Promise, Object `response`
 - `path` String, Path (`spaces/*`, ... see more at https://www.storyblok.com/docs/management-api/authentication?utm_source=github.com&utm_medium=readme&utm_campaign=storyblok-js-client)
 - `payload` Object
+- `fetchOptions` Object, optional, Fetch options can be found in the [Fetch API documentation](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch).
 
 **Example**
 
@@ -386,6 +338,7 @@ Storyblok.post('spaces/<YOUR_SPACE_ID>/stories', {
 - `[return]` Promise, Object `response`
 - `path` String, Path (`spaces/*`, ... see more at https://www.storyblok.com/docs/management-api/authentication?utm_source=github.com&utm_medium=readme&utm_campaign=storyblok-js-client)
 - `payload` Object
+- `fetchOptions` Object, optional, Fetch options can be found in the [Fetch API documentation](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch).
 
 **Example**
 
@@ -408,6 +361,7 @@ Storyblok.put('spaces/<YOUR_SPACE_ID>/stories/1', {
 - `[return]` Promise, Object `response`
 - `path` String, Path (`spaces/*`, ... see more at https://www.storyblok.com/docs/management-api/authentication)
 - `payload` Object
+- `fetchOptions` Object, optional, Fetch options can be found in the [Fetch API documentation](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch).
 
 **Example**
 

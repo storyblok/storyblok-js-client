@@ -24,6 +24,7 @@ class SbFetch {
 	private ejectInterceptor?: boolean
 	private url: string
 	private parameters: ISbStoriesParams
+	private fetchOptions: RequestInit
 
 	public constructor($c: ISbFetch) {
 		this.baseURL = $c.baseURL
@@ -35,6 +36,7 @@ class SbFetch {
 		this.ejectInterceptor = false
 		this.url = ''
 		this.parameters = {} as ISbStoriesParams
+		this.fetchOptions = {}
 	}
 
 	/**
@@ -126,6 +128,7 @@ class SbFetch {
 				headers: this.headers,
 				body,
 				signal,
+				...this.fetchOptions,
 			})
 
 			if (this.timeout) {
@@ -145,6 +148,10 @@ class SbFetch {
 			}
 			return error
 		}
+	}
+
+	public setOptions(fetchOptions: RequestInit) {
+		this.fetchOptions = {...fetchOptions}
 	}
 
 	public eject() {
