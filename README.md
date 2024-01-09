@@ -257,6 +257,36 @@ window.storyblok.on('input', (event) => {
 })
 ```
 
+### Custom Fetch parameter
+
+You can now pass an aditional paramater to the following calls: `get`, `getAll`, `post`, `put`, `delete`, `getStory` and `getStories`. This parameter is optional and it is the same as the [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch) [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request) parameter.
+
+**Example**
+
+```javascript
+const data = {
+	story: {
+		name: 'xy',
+		slug: 'xy',
+	},
+}
+
+Storyblok.get('cdn/stories/home', {
+	version: 'draft',
+	{
+		mode: 'cors',
+    cache: 'no-cache',
+		body: JSON.stringify(data),
+	}
+})
+	.then((response) => {
+		console.log(response)
+	})
+	.catch((error) => {
+		console.error(error)
+	})
+```
+
 ### Method `Storyblok#get`
 
 With this method you can get single or multiple items. The multiple items are paginated and you will receive 25 items per page by default. If you want to get all items at once use the `getAll` method.
