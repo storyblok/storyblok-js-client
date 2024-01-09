@@ -259,7 +259,7 @@ window.storyblok.on('input', (event) => {
 
 ### Custom Fetch parameter
 
-You can now pass an aditional paramater to the following calls: `get`, `getAll`, `post`, `put`, `delete`, `getStory` and `getStories`. This parameter is optional and it is the same as the [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch) [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request) parameter.
+You can now pass an aditional paramater to the following calls: `get`, `getAll`, `post`, `put`, `delete`, `getStory` and `getStories`. This parameter is optional and it is the same as the Fetch API [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request) parameter.
 
 **Example**
 
