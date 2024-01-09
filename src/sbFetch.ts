@@ -150,7 +150,7 @@ class SbFetch {
 		}
 	}
 
-	public setOptions(fetchOptions: RequestInit) {
+	public setFetchOptions(fetchOptions: RequestInit) {
 		this.fetchOptions = {...fetchOptions}
 	}
 
