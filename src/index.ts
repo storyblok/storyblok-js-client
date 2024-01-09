@@ -220,11 +220,7 @@ class Storyblok {
 		const url = `/${slug}`
 		const query = this.factoryParamOptions(url, params)
 
-		if (fetchOptions) {
-			this.client.setFetchOptions(fetchOptions)
-		} else {
-			this.client.setFetchOptions()
-		}
+		this.client.setFetchOptions(fetchOptions)
 
 		return this.cacheResponse(url, query)
 	}
@@ -244,11 +240,7 @@ class Storyblok {
 		const firstRes = await this.makeRequest(url, params, perPage, firstPage)
 		const lastPage = firstRes.total ? Math.ceil(firstRes.total / perPage) : 1
 
-		if (fetchOptions) {
-			this.client.setFetchOptions(fetchOptions)
-		} else {
-			this.client.setFetchOptions()
-		}
+		this.client.setFetchOptions(fetchOptions)
 
 		const restRes: any = await this.helpers.asyncMap(
 			this.helpers.range(firstPage, lastPage),
@@ -269,11 +261,7 @@ class Storyblok {
 	): Promise<ISbResponseData> {
 		const url = `/${slug}`
 
-		if (fetchOptions) {
-			this.client.setFetchOptions(fetchOptions)
-		} else {
-			this.client.setFetchOptions()
-		}
+		this.client.setFetchOptions(fetchOptions)
 
 		return Promise.resolve(this.throttle('post', url, params))
 	}
@@ -285,11 +273,7 @@ class Storyblok {
 	): Promise<ISbResponseData> {
 		const url = `/${slug}`
 
-		if (fetchOptions) {
-			this.client.setFetchOptions(fetchOptions)
-		} else {
-			this.client.setFetchOptions()
-		}
+		this.client.setFetchOptions(fetchOptions)
 
 		return Promise.resolve(this.throttle('put', url, params))
 	}
@@ -301,11 +285,7 @@ class Storyblok {
 	): Promise<ISbResponseData> {
 		const url = `/${slug}`
 
-		if (fetchOptions) {
-			this.client.setFetchOptions(fetchOptions)
-		} else {
-			this.client.setFetchOptions()
-		}
+		this.client.setFetchOptions(fetchOptions)
 
 		return Promise.resolve(this.throttle('delete', url, params))
 	}
@@ -314,11 +294,7 @@ class Storyblok {
 		params: ISbStoriesParams,
 		fetchOptions?: RequestInit
 	): Promise<ISbStories> {
-		if (fetchOptions) {
-			this.client.setFetchOptions(fetchOptions)
-		} else {
-			this.client.setFetchOptions()
-		}
+		this.client.setFetchOptions(fetchOptions)
 
 		return this.get('cdn/stories', params)
 	}
@@ -328,11 +304,7 @@ class Storyblok {
 		params: ISbStoryParams,
 		fetchOptions?: RequestInit
 	): Promise<ISbStory> {
-		if (fetchOptions) {
-			this.client.setFetchOptions(fetchOptions)
-		} else {
-			this.client.setFetchOptions()
-		}
+		this.client.setFetchOptions(fetchOptions)
 
 		return this.get(`cdn/stories/${slug}`, params)
 	}
