@@ -222,6 +222,8 @@ class Storyblok {
 
 		if (fetchOptions) {
 			this.client.setFetchOptions(fetchOptions)
+		} else {
+			this.client.setFetchOptions()
 		}
 
 		return this.cacheResponse(url, query)
@@ -244,6 +246,8 @@ class Storyblok {
 
 		if (fetchOptions) {
 			this.client.setFetchOptions(fetchOptions)
+		} else {
+			this.client.setFetchOptions()
 		}
 
 		const restRes: any = await this.helpers.asyncMap(
@@ -267,6 +271,8 @@ class Storyblok {
 
 		if (fetchOptions) {
 			this.client.setFetchOptions(fetchOptions)
+		} else {
+			this.client.setFetchOptions()
 		}
 
 		return Promise.resolve(this.throttle('post', url, params))
@@ -281,7 +287,10 @@ class Storyblok {
 
 		if (fetchOptions) {
 			this.client.setFetchOptions(fetchOptions)
+		} else {
+			this.client.setFetchOptions()
 		}
+
 		return Promise.resolve(this.throttle('put', url, params))
 	}
 
@@ -294,6 +303,8 @@ class Storyblok {
 
 		if (fetchOptions) {
 			this.client.setFetchOptions(fetchOptions)
+		} else {
+			this.client.setFetchOptions()
 		}
 
 		return Promise.resolve(this.throttle('delete', url, params))
@@ -305,6 +316,8 @@ class Storyblok {
 	): Promise<ISbStories> {
 		if (fetchOptions) {
 			this.client.setFetchOptions(fetchOptions)
+		} else {
+			this.client.setFetchOptions()
 		}
 
 		return this.get('cdn/stories', params)
@@ -317,6 +330,8 @@ class Storyblok {
 	): Promise<ISbStory> {
 		if (fetchOptions) {
 			this.client.setFetchOptions(fetchOptions)
+		} else {
+			this.client.setFetchOptions()
 		}
 
 		return this.get(`cdn/stories/${slug}`, params)

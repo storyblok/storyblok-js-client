@@ -123,7 +123,7 @@ class SbFetch {
 		}
 
 		try {
-			const response = await fetch(`${url}`, {
+			const fetchResponse = await fetch(`${url}`, {
 				method,
 				headers: this.headers,
 				body,
@@ -135,14 +135,14 @@ class SbFetch {
 				clearTimeout(timeout)
 			}
 
-			const res = (await this._responseHandler(response)) as ISbResponse
+			const response = (await this._responseHandler(fetchResponse)) as ISbResponse
 
 			if (this.responseInterceptor && !this.ejectInterceptor) {
-				return this._statusHandler(this.responseInterceptor(res))
+				return this._statusHandler(this.responseInterceptor(response))
 			} else {
-				return this._statusHandler(res)
+				return this._statusHandler(response)
 			}
-		} catch (err: TypeError | RangeError | EvalError | any) {
+		} catch (err: any) {
 			const error: ISbError = {
 				message: err,
 			}
@@ -150,7 +150,7 @@ class SbFetch {
 		}
 	}
 
-	public setFetchOptions(fetchOptions: RequestInit) {
+	public setFetchOptions(fetchOptions: RequestInit = {}) {
 		this.fetchOptions = {...fetchOptions}
 	}
 
