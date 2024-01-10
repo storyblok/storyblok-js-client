@@ -260,7 +260,7 @@ window.storyblok.on('input', (event) => {
 ### Custom Fetch parameter
 
 You can now pass an aditional paramater to the following calls: `get`, `getAll`, `post`, `put`, `delete`, `getStory` and `getStories`. This parameter is optional and it is the same as the Fetch API [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request) parameter.
-**It's important to note that we extended the `RequestInit` interface omitting the `method` parameter. This is because the method is already defined by the Storyblok client.**
+***It's important to note that we extended the `RequestInit` interface omitting the `method` parameter. This is because the method is already defined by the Storyblok client.***
 
 **Example**
 
@@ -297,7 +297,7 @@ With this method you can get single or multiple items. The multiple items are pa
 - `[return]` Promise, Object `response`
 - `path` String, Path (can be `cdn/stories`, `cdn/tags`, `cdn/datasources`, `cdn/links`)
 - `options` Object, Options can be found in the [API documentation](https://www.storyblok.com/docs/api/content-delivery?utm_source=github.com&utm_medium=readme&utm_campaign=storyblok-js-client).
-- `fetchOptions` Object, optional, Fetch options can be found in the [Fetch API documentation](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch). **It's important to note that we extended the `RequestInit` interface omitting the `method` parameter. This is because the method is already defined by the Storyblok client.**
+- `fetchOptions` Object, optional, Fetch options can be found in the [Fetch API documentation](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch). ***It's important to note that we extended the `RequestInit` interface omitting the `method` parameter. This is because the method is already defined by the Storyblok client.***
 
 **Example**
 
@@ -323,7 +323,7 @@ With this method you can get all items at once.
 - `path` String, Path (can be `cdn/stories`, `cdn/tags`, `cdn/datasources`, `cdn/links`)
 - `options` Object, Options can be found in the [API documentation](https://www.storyblok.com/docs/api/content-delivery?utm_source=github.com&utm_medium=readme&utm_campaign=storyblok-js-client).
 - `entity` String, Storyblok entity like stories, links or datasource. It's optional.
-- `fetchOptions` Object, optional, Fetch options can be found in the [Fetch API documentation](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch). **It's important to note that we extended the `RequestInit` interface omitting the `method` parameter. This is because the method is already defined by the Storyblok client.**
+- `fetchOptions` Object, optional, Fetch options can be found in the [Fetch API documentation](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch). ***It's important to note that we extended the `RequestInit` interface omitting the `method` parameter. This is because the method is already defined by the Storyblok client.***
 
 **Example**
 
@@ -346,7 +346,7 @@ Storyblok.getAll('cdn/stories', {
 - `[return]` Promise, Object `response`
 - `path` String, Path (`spaces/*`, ... see more at https://www.storyblok.com/docs/management-api/authentication?utm_source=github.com&utm_medium=readme&utm_campaign=storyblok-js-client)
 - `payload` Object
-- `fetchOptions` Object, optional, Fetch options can be found in the [Fetch API documentation](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch). **It's important to note that we extended the `RequestInit` interface omitting the `method` parameter. This is because the method is already defined by the Storyblok client.**
+- `fetchOptions` Object, optional, Fetch options can be found in the [Fetch API documentation](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch). ***It's important to note that we extended the `RequestInit` interface omitting the `method` parameter. This is because the method is already defined by the Storyblok client.***
 
 **Example**
 
@@ -369,7 +369,7 @@ Storyblok.post('spaces/<YOUR_SPACE_ID>/stories', {
 - `[return]` Promise, Object `response`
 - `path` String, Path (`spaces/*`, ... see more at https://www.storyblok.com/docs/management-api/authentication?utm_source=github.com&utm_medium=readme&utm_campaign=storyblok-js-client)
 - `payload` Object
-- `fetchOptions` Object, optional, Fetch options can be found in the [Fetch API documentation](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch). **It's important to note that we extended the `RequestInit` interface omitting the `method` parameter. This is because the method is already defined by the Storyblok client.**
+- `fetchOptions` Object, optional, Fetch options can be found in the [Fetch API documentation](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch). ***It's important to note that we extended the `RequestInit` interface omitting the `method` parameter. This is because the method is already defined by the Storyblok client.***
 
 **Example**
 
@@ -392,7 +392,7 @@ Storyblok.put('spaces/<YOUR_SPACE_ID>/stories/1', {
 - `[return]` Promise, Object `response`
 - `path` String, Path (`spaces/*`, ... see more at https://www.storyblok.com/docs/management-api/authentication)
 - `payload` Object
-- `fetchOptions` Object, optional, Fetch options can be found in the [Fetch API documentation](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch). **It's important to note that we extended the `RequestInit` interface omitting the `method` parameter. This is because the method is already defined by the Storyblok client.**
+- `fetchOptions` Object, optional, Fetch options can be found in the [Fetch API documentation](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch). ***It's important to note that we extended the `RequestInit` interface omitting the `method` parameter. This is because the method is already defined by the Storyblok client.***
 
 **Example**
 
