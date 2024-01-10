@@ -20,6 +20,7 @@ import {
 	ThrottleFn,
 	IMemoryType,
 	ICacheProvider,
+	ISbCustomFetch,
 } from './interfaces'
 
 let memory: Partial<IMemoryType> = {}
@@ -214,7 +215,7 @@ class Storyblok {
 	public get(
 		slug: string,
 		params?: ISbStoriesParams,
-		fetchOptions?: RequestInit
+		fetchOptions?: ISbCustomFetch
 	): Promise<ISbResult> {
 		if (!params) params = {} as ISbStoriesParams
 		const url = `/${slug}`
@@ -229,7 +230,7 @@ class Storyblok {
 		slug: string,
 		params: ISbStoriesParams,
 		entity?: string,
-		fetchOptions?: RequestInit
+		fetchOptions?: ISbCustomFetch
 	): Promise<any[]> {
 		const perPage = params?.per_page || 25
 		const url = `/${slug}`
@@ -257,7 +258,7 @@ class Storyblok {
 	public post(
 		slug: string,
 		params: ISbStoriesParams | ISbContentMangmntAPI,
-		fetchOptions?: RequestInit
+		fetchOptions?: ISbCustomFetch
 	): Promise<ISbResponseData> {
 		const url = `/${slug}`
 
@@ -269,7 +270,7 @@ class Storyblok {
 	public put(
 		slug: string,
 		params: ISbStoriesParams | ISbContentMangmntAPI,
-		fetchOptions?: RequestInit
+		fetchOptions?: ISbCustomFetch
 	): Promise<ISbResponseData> {
 		const url = `/${slug}`
 
@@ -281,7 +282,7 @@ class Storyblok {
 	public delete(
 		slug: string,
 		params: ISbStoriesParams | ISbContentMangmntAPI,
-		fetchOptions?: RequestInit
+		fetchOptions?: ISbCustomFetch
 	): Promise<ISbResponseData> {
 		const url = `/${slug}`
 
@@ -292,7 +293,7 @@ class Storyblok {
 
 	public getStories(
 		params: ISbStoriesParams,
-		fetchOptions?: RequestInit
+		fetchOptions?: ISbCustomFetch
 	): Promise<ISbStories> {
 		this.client.setFetchOptions(fetchOptions)
 
@@ -302,7 +303,7 @@ class Storyblok {
 	public getStory(
 		slug: string,
 		params: ISbStoryParams,
-		fetchOptions?: RequestInit
+		fetchOptions?: ISbCustomFetch
 	): Promise<ISbStory> {
 		this.client.setFetchOptions(fetchOptions)
 

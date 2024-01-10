@@ -1,6 +1,11 @@
 import { SbHelpers } from './sbHelpers'
 
-import { ISbResponse, ISbError, ISbStoriesParams } from './interfaces'
+import {
+	ISbResponse,
+	ISbError,
+	ISbStoriesParams,
+	ISbCustomFetch,
+} from './interfaces'
 import Method from './constants'
 
 export type ResponseFn = {
@@ -24,7 +29,7 @@ class SbFetch {
 	private ejectInterceptor?: boolean
 	private url: string
 	private parameters: ISbStoriesParams
-	private fetchOptions: RequestInit
+	private fetchOptions: ISbCustomFetch
 
 	public constructor($c: ISbFetch) {
 		this.baseURL = $c.baseURL
@@ -135,7 +140,9 @@ class SbFetch {
 				clearTimeout(timeout)
 			}
 
-			const response = (await this._responseHandler(fetchResponse)) as ISbResponse
+			const response = (await this._responseHandler(
+				fetchResponse
+			)) as ISbResponse
 
 			if (this.responseInterceptor && !this.ejectInterceptor) {
 				return this._statusHandler(this.responseInterceptor(response))
@@ -150,8 +157,11 @@ class SbFetch {
 		}
 	}
 
-	public setFetchOptions(fetchOptions: RequestInit = {}) {
-		this.fetchOptions = {...fetchOptions}
+	public setFetchOptions(fetchOptions: ISbCustomFetch = {}) {
+		if (Object.keys(fetchOptions).length > 0 && 'method' in fetchOptions) {
+			delete fetchOptions.method
+		}
+		this.fetchOptions = { ...fetchOptions }
 	}
 
 	public eject() {
