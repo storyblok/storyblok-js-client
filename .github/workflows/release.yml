@@ -13,15 +13,15 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-          cache: 'yarn'
+          cache: 'npm'
       - name: Install dependencies
-        run: yarn
+        run: npm install
       - name: Runing tests
         env:
           VITE_ACCESS_TOKEN: ${{ secrets.VITE_ACCESS_TOKEN }}
           VITE_OAUTH_TOKEN: ${{ secrets.VITE_OAUTH_TOKEN }}
           VITE_SPACE_ID: ${{ vars.VITE_SPACE_ID }}
-        run: yarn test
+        run: npm test
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
