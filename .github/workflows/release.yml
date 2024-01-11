@@ -2,15 +2,14 @@ name: Release
 
 on:
   push:
-    branches: 
-      - main
+    branches: [main]
   pull_request:
-    branches: 
-      - main
+    branches: [main]
 
 jobs:
   release:
     runs-on: ubuntu-latest
+    environment: production
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -22,5 +21,5 @@ jobs:
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NODE_OAUTH_TOKEN }}
-        run: npx semantic-release@19.0.5 --branches main
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npx semantic-release --branches main
