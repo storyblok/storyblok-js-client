@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+
+## [6.5.0] - 2024-01-11
+
+### Added
+
+- New custom fetch function added.
+- [Storyblok-JS-client](https://github.com/storyblok/storyblok-js-client/releases/tag/v6.5.0)
+
 ## [6.0.0] - 2023-08-15
 
 ### Changed
