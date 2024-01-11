@@ -27,4 +27,4 @@ jobs:
         run: npm ci
 
       - name: Semantic Release
-        run: npm run semantic-release
+        run: npx semantic-release
