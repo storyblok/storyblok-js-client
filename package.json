@@ -71,6 +71,9 @@
 			"main"
 		]
 	},
+	"publishConfig": {
+		"access": "public"
+	},
 	"lint-staged": {
 		"*.{js,jsx,css,ts,tsx}": [
 			"prettier --write",
