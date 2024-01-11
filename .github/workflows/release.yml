@@ -22,5 +22,5 @@ jobs:
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ vars.NPM_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NODE_OAUTH_TOKEN }}
         run: npx semantic-release@19.0.5 --branches main
