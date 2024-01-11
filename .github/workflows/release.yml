@@ -1,8 +1,8 @@
 name: release
 
-env:
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+# env:
+#   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#   NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
 on:
   push:
@@ -33,4 +33,7 @@ jobs:
         run: npm install
 
       - name: Semantic Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npx semantic-release
