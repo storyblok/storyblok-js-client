@@ -2,12 +2,11 @@ name: release
 
 on:
   push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+    branches:
+      - main
 
 jobs:
-  test:
+  release:
     runs-on: ubuntu-latest
     environment: production
     steps:
