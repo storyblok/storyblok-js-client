@@ -1,5 +1,9 @@
 name: release
 
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
 on:
   push:
     branches:
@@ -22,7 +26,4 @@ jobs:
       run: npm install
 
     - name: Sets all variables to semver
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-      run: npx semantic-release
+    - run: npx semantic-release --branches main
