@@ -22,7 +22,7 @@ jobs:
         node-version: 18.x
 
     - name: Install dependencies
-      run: npm install
+      run: npm ci --ignore-scripts
 
     - name: Sets all variables to semver
       run: npx semantic-release --branches main
