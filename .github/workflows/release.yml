@@ -26,4 +26,4 @@ jobs:
       run: npm install
 
     - name: Sets all variables to semver
-    - run: npx semantic-release --branches main
+      run: npx semantic-release --branches main
