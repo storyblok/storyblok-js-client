@@ -9,9 +9,6 @@
 	"unpkg": "./dist/index.umd.js",
 	"jsdelivr": "./dist/index.umd.js",
 	"source": "src/index.ts",
-	"publishConfig": {
-		"access": "public"
-	},
 	"exports": {
 		".": {
 			"import": "./dist/index.mjs",
