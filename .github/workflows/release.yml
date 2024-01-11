@@ -2,8 +2,9 @@ name: Release
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
+  pull_request:
+    branches: [main]
 
 jobs:
   release:
@@ -17,4 +18,7 @@ jobs:
       - name: Install dependencies
         run: npm install
       - name: Release
-        run: npx semantic-release --gh-token="${{secrets.GITHUB_TOKEN}}" --npm-token="${{secrets.NPM_TOKEN}}" --branches main --debug
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npx semantic-release@19.0.5
