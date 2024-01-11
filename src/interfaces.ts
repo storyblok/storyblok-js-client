@@ -337,3 +337,5 @@ export type ArrayFn = (...args: any) => void
 export type HtmlEscapes = {
 	[key: string]: string
 }
+
+export interface ISbCustomFetch extends Omit<RequestInit, 'method'> {}

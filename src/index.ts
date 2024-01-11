@@ -20,6 +20,7 @@ import {
 	ThrottleFn,
 	IMemoryType,
 	ICacheProvider,
+	ISbCustomFetch,
 } from './interfaces'
 
 let memory: Partial<IMemoryType> = {}
@@ -85,19 +86,13 @@ class Storyblok {
 	public constructor(config: ISbConfig, pEndpoint?: string) {
 		let endpoint = config.endpoint || pEndpoint
 
-		if (!endpoint) {
-			const getRegion = new SbHelpers().getRegionURL
-			const protocol = config.https === false ? 'http' : 'https'
+		const getRegion = new SbHelpers().getRegionURL
+		const protocol = config.https === false ? 'http' : 'https'
 
-			if (!config.oauthToken) {
-				endpoint = `${protocol}://${getRegion(config.region)}/${
-					'v2' as Version
-				}`
-			} else {
-				endpoint = `${protocol}://${getRegion(config.region)}/${
-					'v1' as Version
-				}`
-			}
+		if (!config.oauthToken) {
+			endpoint = `${protocol}://${getRegion(config.region)}/${'v2' as Version}`
+		} else {
+			endpoint = `${protocol}://${getRegion(config.region)}/${'v1' as Version}`
 		}
 
 		const headers: Headers = new Headers()
@@ -209,18 +204,24 @@ class Storyblok {
 		per_page: number,
 		page: number
 	): Promise<ISbResult> {
-		const options = this.factoryParamOptions(
+		const query = this.factoryParamOptions(
 			url,
 			this.helpers.getOptionsPage(params, per_page, page)
 		)
 
-		return this.cacheResponse(url, options)
+		return this.cacheResponse(url, query)
 	}
 
-	public get(slug: string, params?: ISbStoriesParams): Promise<ISbResult> {
+	public get(
+		slug: string,
+		params?: ISbStoriesParams,
+		fetchOptions?: ISbCustomFetch
+	): Promise<ISbResult> {
 		if (!params) params = {} as ISbStoriesParams
 		const url = `/${slug}`
 		const query = this.factoryParamOptions(url, params)
+
+		this.client.setFetchOptions(fetchOptions)
 
 		return this.cacheResponse(url, query)
 	}
@@ -228,7 +229,8 @@ class Storyblok {
 	public async getAll(
 		slug: string,
 		params: ISbStoriesParams,
-		entity?: string
+		entity?: string,
+		fetchOptions?: ISbCustomFetch
 	): Promise<any[]> {
 		const perPage = params?.per_page || 25
 		const url = `/${slug}`
@@ -238,6 +240,8 @@ class Storyblok {
 		const firstPage = 1
 		const firstRes = await this.makeRequest(url, params, perPage, firstPage)
 		const lastPage = firstRes.total ? Math.ceil(firstRes.total / perPage) : 1
+
+		this.client.setFetchOptions(fetchOptions)
 
 		const restRes: any = await this.helpers.asyncMap(
 			this.helpers.range(firstPage, lastPage),
@@ -253,33 +257,56 @@ class Storyblok {
 
 	public post(
 		slug: string,
-		params: ISbStoriesParams | ISbContentMangmntAPI
+		params: ISbStoriesParams | ISbContentMangmntAPI,
+		fetchOptions?: ISbCustomFetch
 	): Promise<ISbResponseData> {
 		const url = `/${slug}`
+
+		this.client.setFetchOptions(fetchOptions)
+
 		return Promise.resolve(this.throttle('post', url, params))
 	}
 
 	public put(
 		slug: string,
-		params: ISbStoriesParams | ISbContentMangmntAPI
+		params: ISbStoriesParams | ISbContentMangmntAPI,
+		fetchOptions?: ISbCustomFetch
 	): Promise<ISbResponseData> {
 		const url = `/${slug}`
+
+		this.client.setFetchOptions(fetchOptions)
+
 		return Promise.resolve(this.throttle('put', url, params))
 	}
 
 	public delete(
 		slug: string,
-		params: ISbStoriesParams | ISbContentMangmntAPI
+		params: ISbStoriesParams | ISbContentMangmntAPI,
+		fetchOptions?: ISbCustomFetch
 	): Promise<ISbResponseData> {
 		const url = `/${slug}`
+
+		this.client.setFetchOptions(fetchOptions)
+
 		return Promise.resolve(this.throttle('delete', url, params))
 	}
 
-	public getStories(params: ISbStoriesParams): Promise<ISbStories> {
+	public getStories(
+		params: ISbStoriesParams,
+		fetchOptions?: ISbCustomFetch
+	): Promise<ISbStories> {
+		this.client.setFetchOptions(fetchOptions)
+
 		return this.get('cdn/stories', params)
 	}
 
-	public getStory(slug: string, params: ISbStoryParams): Promise<ISbStory> {
+	public getStory(
+		slug: string,
+		params: ISbStoryParams,
+		fetchOptions?: ISbCustomFetch
+	): Promise<ISbStory> {
+		this.client.setFetchOptions(fetchOptions)
+
 		return this.get(`cdn/stories/${slug}`, params)
 	}
 
@@ -478,6 +505,15 @@ class Storyblok {
 		}
 	}
 
+	/**
+	 *
+	 * @param responseData
+	 * @param params
+	 * @param resolveId
+	 * @description Resolves the relations and links of the stories
+	 * @returns Promise<void>
+	 *
+	 */
 	private async resolveStories(
 		responseData: ISbResponseData,
 		params: ISbStoriesParams,

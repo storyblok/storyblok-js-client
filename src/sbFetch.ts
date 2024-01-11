@@ -1,6 +1,11 @@
 import { SbHelpers } from './sbHelpers'
 
-import { ISbResponse, ISbError, ISbStoriesParams } from './interfaces'
+import {
+	ISbResponse,
+	ISbError,
+	ISbStoriesParams,
+	ISbCustomFetch,
+} from './interfaces'
 import Method from './constants'
 
 export type ResponseFn = {
@@ -24,6 +29,7 @@ class SbFetch {
 	private ejectInterceptor?: boolean
 	private url: string
 	private parameters: ISbStoriesParams
+	private fetchOptions: ISbCustomFetch
 
 	public constructor($c: ISbFetch) {
 		this.baseURL = $c.baseURL
@@ -35,6 +41,7 @@ class SbFetch {
 		this.ejectInterceptor = false
 		this.url = ''
 		this.parameters = {} as ISbStoriesParams
+		this.fetchOptions = {}
 	}
 
 	/**
@@ -121,30 +128,40 @@ class SbFetch {
 		}
 
 		try {
-			const response = await fetch(`${url}`, {
+			const fetchResponse = await fetch(`${url}`, {
 				method,
 				headers: this.headers,
 				body,
 				signal,
+				...this.fetchOptions,
 			})
 
 			if (this.timeout) {
 				clearTimeout(timeout)
 			}
 
-			const res = (await this._responseHandler(response)) as ISbResponse
+			const response = (await this._responseHandler(
+				fetchResponse
+			)) as ISbResponse
 
 			if (this.responseInterceptor && !this.ejectInterceptor) {
-				return this._statusHandler(this.responseInterceptor(res))
+				return this._statusHandler(this.responseInterceptor(response))
 			} else {
-				return this._statusHandler(res)
+				return this._statusHandler(response)
 			}
-		} catch (err: TypeError | RangeError | EvalError | any) {
+		} catch (err: any) {
 			const error: ISbError = {
 				message: err,
 			}
 			return error
 		}
+	}
+
+	public setFetchOptions(fetchOptions: ISbCustomFetch = {}) {
+		if (Object.keys(fetchOptions).length > 0 && 'method' in fetchOptions) {
+			delete fetchOptions.method
+		}
+		this.fetchOptions = { ...fetchOptions }
 	}
 
 	public eject() {
