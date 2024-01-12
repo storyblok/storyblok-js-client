@@ -44,6 +44,11 @@ const bundles = [
 				},
 				emptyOutDir: !firstRunCounter++,
 			},
+			define: {
+				'process.env': {
+					npm_package_version: process.env.npm_package_version,
+				},
+			},
 		})
 	}
 })()
