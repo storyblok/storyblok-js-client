@@ -44,9 +44,6 @@ const bundles = [
 				},
 				emptyOutDir: !firstRunCounter++,
 			},
-			define: {
-				'process.env': process.env,
-			},
 		})
 	}
 })()
