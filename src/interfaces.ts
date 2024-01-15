@@ -84,6 +84,7 @@ export interface ISbStoryData<
     default_full_slug?: string
     default_root: string
     disble_fe_editor: boolean
+    first_published_at?: string
     full_slug: string
     group_id: string
     id: number
