@@ -42,7 +42,7 @@ npm install storyblok-js-client # yarn add storyblok-js-client
 
 ### How to use it
 
-#### Using the Content Deliver API
+#### Using the Content Delivery API
 
 ```javascript
 // 1. Import the Storyblok client
@@ -55,7 +55,7 @@ const Storyblok = new StoryblokClient({
 });
 ```
 
-#### Using the Content Management API
+#### Using the Management API
 
 ```javascript
 // 1. Import the Storyblok client
