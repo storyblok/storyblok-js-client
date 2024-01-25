@@ -80,34 +80,34 @@ export interface ISbStoryData<
 	Content = ISbComponentType<string> & { [index: string]: any },
 > extends ISbMultipleStoriesData {
 	alternates: ISbAlternateObject[]
-	breadcrumbs: ISbLinkURLObject[]
+	breadcrumbs?: ISbLinkURLObject[]
 	content: Content
 	created_at: string
 	default_full_slug?: string
-	default_root: string
-	disble_fe_editor: boolean
+	default_root?: string
+	disble_fe_editor?: boolean
 	first_published_at?: string
 	full_slug: string
 	group_id: string
 	id: number
-	imported_at: string
-	is_folder: boolean
+	imported_at?: string
+	is_folder?: boolean
 	is_startpage?: boolean
 	lang: string
-	last_author: {
+	last_author?: {
 		id: number
 		userid: string
 	}
 	meta_data: any
 	name: string
-	parent: ISbStoryData
+	parent?: ISbStoryData
 	parent_id: number
 	path?: string
-	pinned: '1' | boolean
+	pinned?: '1' | boolean
 	position: number
-	published: boolean
+	published?: boolean
 	published_at: string | null
-	release_id: number
+	release_id?: number
 	slug: string
 	sort_by_date: string | null
 	tag_list: string[]
@@ -116,8 +116,8 @@ export interface ISbStoryData<
 		name: string | null
 		lang: ISbStoryData['lang']
 	}[]
-	unpublished_changes: boolean
-	updated_at: string
+	unpublished_changes?: boolean
+	updated_at?: string
 	uuid: string
 }
 
