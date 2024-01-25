@@ -274,11 +274,11 @@ const data = {
 
 Storyblok.get('cdn/stories/home', {
 	version: 'draft',
-	{
-		mode: 'cors',
-    cache: 'no-cache',
-		body: JSON.stringify(data),
-	}
+},
+{
+	mode: 'cors',
+	cache: 'no-cache',
+	body: JSON.stringify(data),
 })
 	.then((response) => {
 		console.log(response)
