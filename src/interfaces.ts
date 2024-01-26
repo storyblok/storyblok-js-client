@@ -1,6 +1,8 @@
 import { ResponseFn } from './sbFetch'
 
-export interface ISbStoriesParams extends Partial<ISbStoryData> {
+export interface ISbStoriesParams
+	extends Partial<ISbStoryData>,
+		ISbMultipleStoriesData {
 	_stopResolving?: boolean
 	by_slugs?: string
 	by_uuids?: string
@@ -75,48 +77,48 @@ export interface ISbComponentType<T extends string> {
 }
 
 export interface ISbStoryData<
-    Content = ISbComponentType<string> & { [index: string]: any }
-> extends Partial<ISbMultipleStoriesData> {
-    alternates: ISbAlternateObject[]
-    breadcrumbs: ISbLinkURLObject[]
-    content: Content
-    created_at: string
-    default_full_slug?: string
-    default_root: string
-    disble_fe_editor: boolean
-    first_published_at?: string
-    full_slug: string
-    group_id: string
-    id: number
-    imported_at: string
-    is_folder: boolean
-    is_startpage?: boolean
-    lang: string
-    last_author: {
-        id: number
-        userid: string
-    }
-    meta_data: any
-    name: string
-    parent: ISbStoryData
-    parent_id: number
-    path?: string
-    pinned: boolean
-    position: number
-    published: boolean
-    published_at: string | null
-    release_id: number
-    slug: string
-    sort_by_date: string | null
-    tag_list: string[]
-    translated_slugs?: {
-        path: string
-        name: string | null
-        lang: ISbStoryData['lang']
-    }[]
-    unpublished_changes: boolean
-    updated_at: string
-    uuid: string
+	Content = ISbComponentType<string> & { [index: string]: any },
+> extends ISbMultipleStoriesData {
+	alternates: ISbAlternateObject[]
+	breadcrumbs: ISbLinkURLObject[]
+	content: Content
+	created_at: string
+	default_full_slug?: string
+	default_root: string
+	disble_fe_editor: boolean
+	first_published_at?: string
+	full_slug: string
+	group_id: string
+	id: number
+	imported_at: string
+	is_folder: boolean
+	is_startpage?: boolean
+	lang: string
+	last_author: {
+		id: number
+		userid: string
+	}
+	meta_data: any
+	name: string
+	parent: ISbStoryData
+	parent_id: number
+	path?: string
+	pinned: '1' | boolean
+	position: number
+	published: boolean
+	published_at: string | null
+	release_id: number
+	slug: string
+	sort_by_date: string | null
+	tag_list: string[]
+	translated_slugs?: {
+		path: string
+		name: string | null
+		lang: ISbStoryData['lang']
+	}[]
+	unpublished_changes: boolean
+	updated_at: string
+	uuid: string
 }
 
 export interface ISbMultipleStoriesData {
@@ -132,13 +134,14 @@ export interface ISbMultipleStoriesData {
 	is_published?: boolean
 	in_workflow_stages?: string
 	page?: number
-	pinned?: '1' | unknown
+	pinned?: '1' | boolean
 	search?: string
 	sort_by?: string
 	starts_with?: string
 	story_only?: boolean
 	text_search?: string
 	with_parent?: number
+	with_slug?: string
 	with_tag?: string
 }
 
@@ -259,7 +262,7 @@ export type MarkSchema = {
 }
 
 export interface ISbContentMangmntAPI<
-	Content = ISbComponentType<string> & { [index: string]: any }
+	Content = ISbComponentType<string> & { [index: string]: any },
 > {
 	story: {
 		name: string
@@ -311,9 +314,9 @@ export interface LinkCustomAttributes {
 
 export interface ISbLink {
 	id?: number
-  slug?: string
-  name?: string
-  is_folder?: boolean
+	slug?: string
+	name?: string
+	is_folder?: boolean
 	parent_id?: number
 	published?: boolean
 	position?: number
@@ -322,7 +325,7 @@ export interface ISbLink {
 }
 
 export interface ISbLinks {
-  links?: {
+	links?: {
 		[key: string]: ISbLink
 	}
 }
