@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 
 
+## [6.6.4] - 2024-01-26
+
+### Added
+
+- Extending ISbStoriesParams interface with ISbMultipleStoriesData types.
+
+
 ## [6.5.0] - 2024-01-11
 
 ### Added
