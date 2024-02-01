@@ -72,6 +72,7 @@ class Storyblok {
 	private cache: ISbCache
 	private helpers: SbHelpers
 	private resolveCounter: number
+	private programmaticallyResolvedDepthCounter: number;
 	public relations: RelationsType
 	public links: LinksType
 	public richTextResolver: RichTextResolver
@@ -143,6 +144,7 @@ class Storyblok {
 		this.cache = config.cache || { clear: 'manual' }
 		this.helpers = new SbHelpers()
 		this.resolveCounter = 0
+		this.programmaticallyResolvedDepthCounter = 0
 		this.resolveNestedRelations = config.resolveNestedRelations || true
 		this.stringifiedStoriesCache = {} as Record<string, string>
 
@@ -217,6 +219,7 @@ class Storyblok {
 		params?: ISbStoriesParams,
 		fetchOptions?: ISbCustomFetch
 	): Promise<ISbResult> {
+		console.log(this.programmaticallyResolvedDepthCounter)
 		if (!params) params = {} as ISbStoriesParams
 		const url = `/${slug}`
 		const query = this.factoryParamOptions(url, params)
@@ -472,8 +475,8 @@ class Storyblok {
 			const relSize = responseData.rel_uuids.length
 			const chunks = []
 			const chunkSize = 50
-			const resolveRelationsParameter = this.resolveCounter > 0 ? {} : {resolve_relations: params.resolve_relations}
-			this.resolveCounter++
+			const resolveRelationsParameter = this.programmaticallyResolvedDepthCounter < 2 ? {resolve_relations: params.resolve_relations} : {}
+			this.programmaticallyResolvedDepthCounter++
 
 			for (let i = 0; i < relSize; i += chunkSize) {
 				const end = Math.min(relSize, i + chunkSize)
@@ -577,7 +580,7 @@ class Storyblok {
 		if (typeof retries === 'undefined' || !retries) {
 			retries = 0
 		}
-
+		const clearDepthCounter = this.programmaticallyResolvedDepthCounter === 0
 		const cacheKey = this.helpers.stringify({ url: url, params: params })
 		const provider = this.cacheProvider()
 
@@ -628,7 +631,7 @@ class Storyblok {
 					}
 					cacheVersions[params.token] = params.cv ? params.cv : response.data.cv
 				}
-
+				if (clearDepthCounter) this.programmaticallyResolvedDepthCounter = 0;
 				return resolve(response)
 			} catch (error: Error | any) {
 				if (error.response && error.status === 429) {
@@ -642,6 +645,7 @@ class Storyblok {
 							.catch(reject)
 					}
 				}
+				if (clearDepthCounter) this.programmaticallyResolvedDepthCounter = 0;
 				reject(error)
 			}
 		})
