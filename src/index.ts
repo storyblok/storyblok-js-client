@@ -219,7 +219,6 @@ class Storyblok {
 		params?: ISbStoriesParams,
 		fetchOptions?: ISbCustomFetch
 	): Promise<ISbResult> {
-		console.log(this.programmaticallyResolvedDepthCounter)
 		if (!params) params = {} as ISbStoriesParams
 		const url = `/${slug}`
 		const query = this.factoryParamOptions(url, params)
