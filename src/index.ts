@@ -472,6 +472,8 @@ class Storyblok {
 			const relSize = responseData.rel_uuids.length
 			const chunks = []
 			const chunkSize = 50
+			const resolveRelationsParameter = this.resolveCounter > 0 ? {} : {resolve_relations: params.resolve_relations}
+			this.resolveCounter++
 
 			for (let i = 0; i < relSize; i += chunkSize) {
 				const end = Math.min(relSize, i + chunkSize)
@@ -485,6 +487,7 @@ class Storyblok {
 					version: params.version,
 					by_uuids: chunks[chunkIndex].join(','),
 					excluding_fields: params.excluding_fields,
+					...resolveRelationsParameter
 				})
 
 				relationsRes.data.stories.forEach((rel: ISbStoryData) => {
