@@ -3,6 +3,7 @@ import { ResponseFn } from './sbFetch'
 export interface ISbStoriesParams
 	extends Partial<ISbStoryData>,
 		ISbMultipleStoriesData {
+	resolve_level?: number
 	_stopResolving?: boolean
 	by_slugs?: string
 	by_uuids?: string
@@ -41,6 +42,7 @@ export interface ISbStoriesParams
 }
 
 export interface ISbStoryParams {
+	resolve_level?: number
 	token?: string
 	find_by?: 'uuid'
 	version?: 'draft' | 'published'

@@ -86,13 +86,15 @@ class Storyblok {
 	public constructor(config: ISbConfig, pEndpoint?: string) {
 		let endpoint = config.endpoint || pEndpoint
 
-		const getRegion = new SbHelpers().getRegionURL
-		const protocol = config.https === false ? 'http' : 'https'
+		if (!endpoint) {
+			const getRegion = new SbHelpers().getRegionURL
+			const protocol = config.https === false ? 'http' : 'https'
 
-		if (!config.oauthToken) {
-			endpoint = `${protocol}://${getRegion(config.region)}/${'v2' as Version}`
-		} else {
-			endpoint = `${protocol}://${getRegion(config.region)}/${'v1' as Version}`
+			if (!config.oauthToken) {
+				endpoint = `${protocol}://${getRegion(config.region)}/${'v2' as Version}`
+			} else {
+				endpoint = `${protocol}://${getRegion(config.region)}/${'v1' as Version}`
+			}
 		}
 
 		const headers: Headers = new Headers()
@@ -182,6 +184,10 @@ class Storyblok {
 
 		if (Array.isArray(params.resolve_relations)) {
 			params.resolve_relations = params.resolve_relations.join(',')
+		}
+
+		if (typeof params.resolve_relations !== 'undefined') {
+			params.resolve_level = 2
 		}
 
 		return params
@@ -296,6 +302,7 @@ class Storyblok {
 		fetchOptions?: ISbCustomFetch
 	): Promise<ISbStories> {
 		this.client.setFetchOptions(fetchOptions)
+		this._addResolveLevel(params)
 
 		return this.get('cdn/stories', params)
 	}
@@ -306,6 +313,7 @@ class Storyblok {
 		fetchOptions?: ISbCustomFetch
 	): Promise<ISbStory> {
 		this.client.setFetchOptions(fetchOptions)
+		this._addResolveLevel(params)
 
 		return this.get(`cdn/stories/${slug}`, params)
 	}
@@ -316,6 +324,12 @@ class Storyblok {
 
 	public ejectInterceptor(): void {
 		this.client.eject()
+	}
+
+	private _addResolveLevel(params: ISbStoriesParams | ISbStoryParams): void {
+		if (typeof params.resolve_relations !== 'undefined') {
+			params.resolve_level = 2
+		}
 	}
 
 	private _cleanCopy(value: LinksType): JSON {
