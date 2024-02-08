@@ -128,7 +128,7 @@ class SbFetch {
 		}
 
 		try {
-			const fetchResponse = await fetch(`${url}`, {
+			const fetchResponse = await this.fetch(`${url}`, {
 				method,
 				headers: this.headers,
 				body,
