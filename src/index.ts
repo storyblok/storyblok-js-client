@@ -3,6 +3,7 @@ import RichTextResolver from './richTextResolver'
 import { SbHelpers } from './sbHelpers'
 import SbFetch from './sbFetch'
 import { STORYBLOK_AGENT, STORYBLOK_JS_CLIENT_AGENT } from './constants'
+import { getRegionUrl, type Region } from '@storyblok/region-helper'
 
 import Method from './constants'
 import {
@@ -87,13 +88,12 @@ class Storyblok {
 		let endpoint = config.endpoint || pEndpoint
 
 		if (!endpoint) {
-			const getRegion = new SbHelpers().getRegionURL
 			const protocol = config.https === false ? 'http' : 'https'
 
 			if (!config.oauthToken) {
-				endpoint = `${protocol}://${getRegion(config.region)}/${'v2' as Version}`
+				endpoint = `${protocol}://${getRegionUrl(config.region as Region)}/${'v2' as Version}`
 			} else {
-				endpoint = `${protocol}://${getRegion(config.region)}/${'v1' as Version}`
+				endpoint = `${protocol}://${getRegionUrl(config.region as Region)}/${'v1' as Version}`
 			}
 		}
 

@@ -120,5 +120,8 @@
 		"tabWidth": 2,
 		"trailingComma": "es5",
 		"useTabs": true
+	},
+	"dependencies": {
+		"@storyblok/region-helper": "^0.1.0"
 	}
 }
