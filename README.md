@@ -234,7 +234,9 @@ One should catch the exception and handle it accordingly.
 
 ### Resolve relations using the Storyblok Bridge
 
-With this parameter, you can resolve relations with live updates in the Storyblok JS Bridge input event. With the `resolve_relations` parameter, you can resolve content entries that are two levels deep, such as `resolve_relations=page.author,page.products`. Resolved relations can be found in the root of the response under the property `rels`. You can learn more about `resolve_relations` in [this tutorial](https://www.storyblok.com/tp/using-relationship-resolving-to-include-other-content-entries)
+With this parameter, you can resolve relations with live updates in the Storyblok JavaScript Bridge input event. It is possible to resolve content entries that are two levels deep, such as `resolve_relations=page.author,page.products`. Resolved relations can be found in the root of the API response, in the property `rels`. You can learn more about `resolve_relations` in [this tutorial](https://www.storyblok.com/tp/using-relationship-resolving-to-include-other-content-entries)
+
+> It is important to note that when using the `storyblok-js-client` and other framework-specific SDKs, you don’t need to look for the `rels` array after resolving relations. The resolved relations are injected into the properties and, hence, are directly accessible through the properties. For example, you can access the authors array directly with `page.author` once it is resolved.
 
 ```javascript
 window.storyblok.resolveRelations(
