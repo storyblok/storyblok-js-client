@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import { expect, test, describe } from 'vitest'
+import { describe, expect, vi, test, beforeEach } from 'vitest'
 import StoryblokClient, { RichtextResolver } from '../'
 
 let Storyblok = new StoryblokClient({
@@ -102,5 +102,38 @@ describe('Test for cdn/links with simultaneous requests', () => {
 				})
 				.catch()
 		}
+	})
+})
+
+describe('test StoryblokClient fetchOptions', () => {
+	beforeEach(() => {
+		vi.spyOn(global, 'fetch')
+	})
+
+	test('getStory should call fetch with correct cache value', async () => {
+		await Storyblok.getStory(
+			'testcontent-0',
+			{ version: 'draft' },
+			{ cache: 'no-cache' }
+		)
+
+		expect(fetch).toHaveBeenCalled()
+		const fetchCall = fetch.mock.calls[0]
+		const fetchOptions = fetchCall[1]
+
+		expect(fetchOptions.cache).toBe('no-cache')
+	})
+
+	test('getStories should call fetch with correct custom header value', async () => {
+		await Storyblok.getStories(
+			{ version: 'draft' },
+			{ headers: { 'custom-header': 'custom-value' } }
+		)
+
+		expect(fetch).toHaveBeenCalled()
+		const fetchCall = fetch.mock.calls[0]
+		const fetchOptions = fetchCall[1]
+
+		expect(fetchOptions.headers['custom-header']).toBe('custom-value')
 	})
 })
