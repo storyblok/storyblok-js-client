@@ -122,6 +122,6 @@
 		"useTabs": true
 	},
 	"dependencies": {
-		"@storyblok/region-helper": "^0.2.0"
+		"@storyblok/region-helper": "^1.0.0"
 	}
 }
