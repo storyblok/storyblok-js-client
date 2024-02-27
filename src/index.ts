@@ -47,7 +47,7 @@ interface ISbFlatMapped {
 	data: any
 }
 
-interface ISbResponseData {
+export interface ISbResponseData {
 	link_uuids: string[]
 	links: string[]
 	rel_uuids: string[]
