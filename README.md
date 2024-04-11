@@ -136,9 +136,7 @@ require('isomorphic-fetch') // in CJS environments
 
 We added retro-compatibility when using `resolve_assets: 1` parameter under V2. Now, if you are using our V2 client, you should receive the assets structure just the same as V1.
 
-### Documentation
-
-#### Class `Storyblok`
+### Class `Storyblok`
 
 **Parameters**
 
@@ -157,7 +155,7 @@ We added retro-compatibility when using `resolve_assets: 1` parameter under V2. 
   - (`resolveNestedRelations` Boolean, optional - By default is true)
 - (`endpoint` String, optional)
 
-#### Activating request cache
+### Activating request cache
 
 The Storyblok client comes with a caching mechanism.
 When initializing the Storyblok client you can define a cache provider for caching the requests in memory.
@@ -174,7 +172,7 @@ let Storyblok = new StoryblokClient({
 });
 ```
 
-#### Passing response interceptor
+### Passing response interceptor
 
 The Storyblok client lets you pass a function that serves as a response interceptor to it.
 Usage:
@@ -262,7 +260,7 @@ window.storyblok.on('input', (event) => {
 ### Custom Fetch parameter
 
 You can now pass an aditional paramater to the following calls: `get`, `getAll`, `post`, `put`, `delete`, `getStory` and `getStories`. This parameter is optional and it is the same as the Fetch API [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request) parameter.
-***It's important to note that we extended the `RequestInit` interface omitting the `method` parameter. This is because the method is already defined by the Storyblok client.***
+**_It's important to note that we extended the `RequestInit` interface omitting the `method` parameter. This is because the method is already defined by the Storyblok client._**
 
 **Example**
 
@@ -274,14 +272,17 @@ const data = {
 	},
 }
 
-Storyblok.get('cdn/stories/home', {
-	version: 'draft',
-},
-{
-	mode: 'cors',
-	cache: 'no-cache',
-	body: JSON.stringify(data),
-})
+Storyblok.get(
+	'cdn/stories/home',
+	{
+		version: 'draft',
+	},
+	{
+		mode: 'cors',
+		cache: 'no-cache',
+		body: JSON.stringify(data),
+	}
+)
 	.then((response) => {
 		console.log(response)
 	})
@@ -297,9 +298,9 @@ With this method you can get single or multiple items. The multiple items are pa
 **Parameters**
 
 - `[return]` Promise, Object `response`
-- `slug` String, *required*. Path (can be `cdn/stories`, `cdn/tags`, `cdn/datasources`, `cdn/links`)
-- `params` Object, *optional*. Options can be found in the [API documentation](https://www.storyblok.com/docs/api/content-delivery?utm_source=github.com&utm_medium=readme&utm_campaign=storyblok-js-client).
-- `fetchOptions` Object, *optional*, Fetch options can be found in the [Fetch API documentation](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch). ***It's important to note that we extended the `RequestInit` interface omitting the `method` parameter. This is because the method is already defined by the Storyblok client.***
+- `slug` String, _required_. Path (can be `cdn/stories`, `cdn/tags`, `cdn/datasources`, `cdn/links`)
+- `params` Object, _optional_. Options can be found in the [API documentation](https://www.storyblok.com/docs/api/content-delivery?utm_source=github.com&utm_medium=readme&utm_campaign=storyblok-js-client).
+- `fetchOptions` Object, _optional_, Fetch options can be found in the [Fetch API documentation](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch). **_It's important to note that we extended the `RequestInit` interface omitting the `method` parameter. This is because the method is already defined by the Storyblok client._**
 
 **Example**
 
@@ -322,10 +323,10 @@ With this method you can get all items at once.
 **Parameters**
 
 - `[return]` Promise, Array of entities
-- `slug` String, *required*. Path (can be `cdn/stories`, `cdn/tags`, `cdn/datasources`, `cdn/links`)
-- `params` Object, *required*. Options can be found in the [API documentation](https://www.storyblok.com/docs/api/content-delivery?utm_source=github.com&utm_medium=readme&utm_campaign=storyblok-js-client).
-- `entity` String, *optional*. Storyblok entity like stories, links or datasource. It's optional.
-- `fetchOptions` Object, *optional*, Fetch options can be found in the [Fetch API documentation](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch). ***It's important to note that we extended the `RequestInit` interface omitting the `method` parameter. This is because the method is already defined by the Storyblok client.***
+- `slug` String, _required_. Path (can be `cdn/stories`, `cdn/tags`, `cdn/datasources`, `cdn/links`)
+- `params` Object, _required_. Options can be found in the [API documentation](https://www.storyblok.com/docs/api/content-delivery?utm_source=github.com&utm_medium=readme&utm_campaign=storyblok-js-client).
+- `entity` String, _optional_. Storyblok entity like stories, links or datasource. It's optional.
+- `fetchOptions` Object, _optional_, Fetch options can be found in the [Fetch API documentation](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch). **_It's important to note that we extended the `RequestInit` interface omitting the `method` parameter. This is because the method is already defined by the Storyblok client._**
 
 **Example**
 
@@ -346,9 +347,9 @@ Storyblok.getAll('cdn/stories', {
 **Parameters**
 
 - `[return]` Promise, Object `response`
-- `slug` String, *required*. Path (can be `cdn/stories`, `cdn/tags`, `cdn/datasources`, `cdn/links`)
-- `params` Object, *required*. Options can be found in the [API documentation](https://www.storyblok.com/docs/api/content-delivery?utm_source=github.com&utm_medium=readme&utm_campaign=storyblok-js-client).
-- `fetchOptions` Object, *optional*, Fetch options can be found in the [Fetch API documentation](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch). ***It's important to note that we extended the `RequestInit` interface omitting the `method` parameter. This is because the method is already defined by the Storyblok client.***
+- `slug` String, _required_. Path (can be `cdn/stories`, `cdn/tags`, `cdn/datasources`, `cdn/links`)
+- `params` Object, _required_. Options can be found in the [API documentation](https://www.storyblok.com/docs/api/content-delivery?utm_source=github.com&utm_medium=readme&utm_campaign=storyblok-js-client).
+- `fetchOptions` Object, _optional_, Fetch options can be found in the [Fetch API documentation](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch). **_It's important to note that we extended the `RequestInit` interface omitting the `method` parameter. This is because the method is already defined by the Storyblok client._**
 
 **Example**
 
@@ -369,9 +370,9 @@ Storyblok.post('spaces/<YOUR_SPACE_ID>/stories', {
 **Parameters**
 
 - `[return]` Promise, Object `response`
-- `slug` String, *required*. Path (can be `cdn/stories`, `cdn/tags`, `cdn/datasources`, `cdn/links`)
-- `params` Object, *required*. Options can be found in the [API documentation](https://www.storyblok.com/docs/api/content-delivery?utm_source=github.com&utm_medium=readme&utm_campaign=storyblok-js-client).
-- `fetchOptions` Object, *optional*, Fetch options can be found in the [Fetch API documentation](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch). ***It's important to note that we extended the `RequestInit` interface omitting the `method` parameter. This is because the method is already defined by the Storyblok client.***
+- `slug` String, _required_. Path (can be `cdn/stories`, `cdn/tags`, `cdn/datasources`, `cdn/links`)
+- `params` Object, _required_. Options can be found in the [API documentation](https://www.storyblok.com/docs/api/content-delivery?utm_source=github.com&utm_medium=readme&utm_campaign=storyblok-js-client).
+- `fetchOptions` Object, _optional_, Fetch options can be found in the [Fetch API documentation](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch). **_It's important to note that we extended the `RequestInit` interface omitting the `method` parameter. This is because the method is already defined by the Storyblok client._**
 
 **Example**
 
@@ -392,9 +393,9 @@ Storyblok.put('spaces/<YOUR_SPACE_ID>/stories/1', {
 **Parameters**
 
 - `[return]` Promise, Object `response`
-- `slug` String, *required*. Path (can be `cdn/stories`, `cdn/tags`, `cdn/datasources`, `cdn/links`)
-- `params` Object, *required*. Options can be found in the [API documentation](https://www.storyblok.com/docs/api/content-delivery?utm_source=github.com&utm_medium=readme&utm_campaign=storyblok-js-client).
-- `fetchOptions` Object, *optional*, Fetch options can be found in the [Fetch API documentation](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch). ***It's important to note that we extended the `RequestInit` interface omitting the `method` parameter. This is because the method is already defined by the Storyblok client.***
+- `slug` String, _required_. Path (can be `cdn/stories`, `cdn/tags`, `cdn/datasources`, `cdn/links`)
+- `params` Object, _required_. Options can be found in the [API documentation](https://www.storyblok.com/docs/api/content-delivery?utm_source=github.com&utm_medium=readme&utm_campaign=storyblok-js-client).
+- `fetchOptions` Object, _optional_, Fetch options can be found in the [Fetch API documentation](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch). **_It's important to note that we extended the `RequestInit` interface omitting the `method` parameter. This is because the method is already defined by the Storyblok client._**
 
 **Example**
 
@@ -513,6 +514,37 @@ Storyblok.richTextResolver.render(blok.richtext, options)
 ```
 
 ### Code examples
+
+#### Define a custom cache for fine-grained control caching
+
+Sometimes you want a custom cache implemention, for instance, when you want to host it on Redit for a distributed cache.
+
+In such cases, you can use the `custom` cache and redefine the methods:
+
+```js
+new StoryblokClient({
+  accessToken: <YOUR_SPACE_ACCESS_TOKEN>,
+  cache: {
+    clear: "manual",
+    type: "custom",
+    custom: {
+      get () {
+        // example: get here cache from Redis
+        return Promise.resolve(0);
+      },
+      getAll () {
+        return Promise.resolve(0);
+      },
+      set () {
+        return Promise.resolve(0);
+      },
+      flush () {
+        return Promise.resolve(0);
+      },
+    }
+  }
+}
+```
 
 #### Filter by content type values and path
 
