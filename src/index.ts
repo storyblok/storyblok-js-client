@@ -728,7 +728,7 @@ class Storyblok {
 
 	public async flushCache(): Promise<this> {
 		await this.cacheProvider().flush()
-		this.clearCacheVersion();
+		this.clearCacheVersion()
 		return this
 	}
 }
