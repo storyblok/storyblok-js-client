@@ -680,6 +680,12 @@ class Storyblok {
 		}
 	}
 
+	public clearCacheVersion(): void {
+		if (this.accessToken) {
+			cacheVersions[this.accessToken] = 0
+		}
+	}
+
 	private cacheProvider(): ICacheProvider {
 		switch (this.cache.type) {
 			case 'memory':
@@ -722,6 +728,7 @@ class Storyblok {
 
 	public async flushCache(): Promise<this> {
 		await this.cacheProvider().flush()
+		this.clearCacheVersion();
 		return this
 	}
 }
