@@ -67,6 +67,7 @@ type Version = ObjectValues<typeof VERSION>
 class Storyblok {
 	private client: SbFetch
 	private maxRetries: number
+	private retriesDelay: number
 	private throttle: ThrottleFn
 	private accessToken: string
 	private cache: ISbCache
@@ -138,6 +139,7 @@ class Storyblok {
 		}
 
 		this.maxRetries = config.maxRetries || 5
+		this.retriesDelay = 100
 		this.throttle = throttledQueue(this.throttledRequest, rateLimit, 1000)
 		this.accessToken = config.accessToken || ''
 		this.relations = {} as RelationsType
@@ -585,10 +587,6 @@ class Storyblok {
 		params: ISbStoriesParams,
 		retries?: number
 	): Promise<ISbResult> {
-		if (typeof retries === 'undefined' || !retries) {
-			retries = 0
-		}
-
 		const cacheKey = this.helpers.stringify({ url: url, params: params })
 		const provider = this.cacheProvider()
 
@@ -625,7 +623,7 @@ class Storyblok {
 					const resolveId = (this.resolveCounter = ++this.resolveCounter % 1000)
 					await this.resolveStories(response.data, params, `${resolveId}`)
 				}
-
+				
 				if (params.version === 'published' && url != '/cdn/spaces/me') {
 					await provider.set(cacheKey, response)
 				}
@@ -643,11 +641,11 @@ class Storyblok {
 				return resolve(response)
 			} catch (error: Error | any) {
 				if (error.response && error.status === 429) {
-					retries = retries ? retries + 1 : 0
+					retries = typeof retries === 'undefined' ? 0 : retries + 1
 
 					if (retries < this.maxRetries) {
-						console.log(`Hit rate limit. Retrying in ${retries} seconds.`)
-						await this.helpers.delay(1000 * retries)
+						console.log(`Hit rate limit. Retrying in ${this.retriesDelay/1000} seconds.`)
+						await this.helpers.delay(this.retriesDelay)
 						return this.cacheResponse(url, params, retries)
 							.then(resolve)
 							.catch(reject)
