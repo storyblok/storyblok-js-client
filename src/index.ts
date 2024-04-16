@@ -623,7 +623,7 @@ class Storyblok {
 					const resolveId = (this.resolveCounter = ++this.resolveCounter % 1000)
 					await this.resolveStories(response.data, params, `${resolveId}`)
 				}
-				
+
 				if (params.version === 'published' && url != '/cdn/spaces/me') {
 					await provider.set(cacheKey, response)
 				}
