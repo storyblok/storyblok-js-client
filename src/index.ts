@@ -139,7 +139,7 @@ class Storyblok {
 		}
 
 		this.maxRetries = config.maxRetries || 10
-		this.retriesDelay = 200
+		this.retriesDelay = 300
 		this.throttle = throttledQueue(this.throttledRequest, rateLimit, 1000)
 		this.accessToken = config.accessToken || ''
 		this.relations = {} as RelationsType
