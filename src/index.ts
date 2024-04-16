@@ -138,8 +138,8 @@ class Storyblok {
 			this.setComponentResolver(config.componentResolver)
 		}
 
-		this.maxRetries = config.maxRetries || 5
-		this.retriesDelay = 100
+		this.maxRetries = config.maxRetries || 10
+		this.retriesDelay = 200
 		this.throttle = throttledQueue(this.throttledRequest, rateLimit, 1000)
 		this.accessToken = config.accessToken || ''
 		this.relations = {} as RelationsType
