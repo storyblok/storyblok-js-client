@@ -3,7 +3,7 @@
 	"version": "0.1.0",
 	"private": true,
 	"scripts": {
-		"demo": "next dev",
+		"dev": "next dev",
 		"build": "next build",
 		"start": "next start",
 		"lint": "next lint"
@@ -15,7 +15,9 @@
 		"next": "^13.4.2",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
-		"storyblok-js-client": "file:..",
 		"swr": "^2.2.4"
-	}
+	},
+	"dependencies": {
+    "storyblok-js-client": "workspace:^"
+  }
 }
