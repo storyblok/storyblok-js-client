@@ -87,7 +87,7 @@ const emoji: NodeSchema = (node: ISbNode) => {
 	const attrs = {
 		['data-type']: 'emoji',
 		['data-name']: node.attrs.name,
-		emoji: node.attrs.emoji
+		emoji: node.attrs.emoji,
 	}
 
 	return {
@@ -157,7 +157,7 @@ const link: MarkSchema = (node: ISbNode) => {
 
 	if (attrs.custom) {
 		for (const key in attrs.custom) {
-		  attrs[key] = attrs.custom[key]
+			attrs[key] = attrs.custom[key]
 		}
 		delete attrs.custom
 	}
@@ -191,7 +191,7 @@ const subscript: MarkSchema = () => {
 
 const superscript: MarkSchema = () => {
 	return {
-		tag: 'sup'
+		tag: 'sup',
 	}
 }
 
@@ -207,9 +207,10 @@ const anchor: MarkSchema = (node: ISbNode) => {
 }
 
 const highlight: MarkSchema = (node: ISbNode) => {
-	if (!node.attrs?.color) return {
-		tag: '',
-	}
+	if (!node.attrs?.color)
+		return {
+			tag: '',
+		}
 
 	const attrs = {
 		['style']: `background-color:${node.attrs.color};`,
@@ -225,9 +226,10 @@ const highlight: MarkSchema = (node: ISbNode) => {
 }
 
 const textStyle: MarkSchema = (node: ISbNode) => {
-	if (!node.attrs?.color) return {
-		tag: '',
-	}
+	if (!node.attrs?.color)
+		return {
+			tag: '',
+		}
 
 	const attrs = {
 		['style']: `color:${node.attrs.color}`,
@@ -254,7 +256,7 @@ export default {
 		list_item,
 		ordered_list,
 		paragraph,
-		emoji
+		emoji,
 	},
 	marks: {
 		bold,

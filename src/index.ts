@@ -644,7 +644,9 @@ class Storyblok {
 					retries = typeof retries === 'undefined' ? 0 : retries + 1
 
 					if (retries < this.maxRetries) {
-						console.log(`Hit rate limit. Retrying in ${this.retriesDelay/1000} seconds.`)
+						console.log(
+							`Hit rate limit. Retrying in ${this.retriesDelay / 1000} seconds.`
+						)
 						await this.helpers.delay(this.retriesDelay)
 						return this.cacheResponse(url, params, retries)
 							.then(resolve)
