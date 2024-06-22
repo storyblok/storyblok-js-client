@@ -168,24 +168,28 @@ export interface ISbLinkURLObject {
 	uuid: string
 }
 
-export interface ISbStories {
+export interface ISbStories<
+	Content = ISbComponentType<string> & { [index: string]: any },
+> {
 	data: {
 		cv: number
 		links: (ISbStoryData | ISbLinkURLObject)[]
 		rels: ISbStoryData[]
-		stories: ISbStoryData[]
+		stories: ISbStoryData<Content>[]
 	}
 	perPage: number
 	total: number
 	headers: any
 }
 
-export interface ISbStory {
+export interface ISbStory<
+	Content = ISbComponentType<string> & { [index: string]: any },
+> {
 	data: {
 		cv: number
 		links: (ISbStoryData | ISbLinkURLObject)[]
 		rels: ISbStoryData[]
-		story: ISbStoryData
+		story: ISbStoryData<Content>
 	}
 	headers: any
 }
