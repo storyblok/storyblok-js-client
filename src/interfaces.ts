@@ -80,9 +80,12 @@ export interface ISbComponentType<T extends string> {
   _editable?: string
 }
 
-export interface ISbStoryData<
-  Content = ISbComponentType<string> & { [index: string]: any },
-> extends ISbMultipleStoriesData {
+export interface ISbContentType extends ISbComponentType<string> {
+  [index: string]: any
+}
+
+export interface ISbStoryData<Content = ISbContentType>
+  extends ISbMultipleStoriesData {
   alternates: ISbAlternateObject[]
   breadcrumbs?: ISbLinkURLObject[]
   content: Content
@@ -168,9 +171,7 @@ export interface ISbLinkURLObject {
   uuid: string
 }
 
-export interface ISbStories<
-  Content = ISbComponentType<string> & { [index: string]: any },
-> {
+export interface ISbStories<Content = ISbContentType> {
   data: {
     cv: number
     links: (ISbStoryData | ISbLinkURLObject)[]
@@ -182,9 +183,7 @@ export interface ISbStories<
   headers: any
 }
 
-export interface ISbStory<
-  Content = ISbComponentType<string> & { [index: string]: any },
-> {
+export interface ISbStory<Content = ISbContentType> {
   data: {
     cv: number
     links: (ISbStoryData | ISbLinkURLObject)[]
@@ -269,9 +268,7 @@ export type MarkSchema = {
   (node: ISbNode): object
 }
 
-export interface ISbContentMangmntAPI<
-  Content = ISbComponentType<string> & { [index: string]: any },
-> {
+export interface ISbContentMangmntAPI<Content = ISbContentType> {
   story: {
     name: string
     slug: string
@@ -351,3 +348,12 @@ export type HtmlEscapes = {
 }
 
 export interface ISbCustomFetch extends Omit<RequestInit, 'method'> {}
+
+export interface ISbResponseData<Content = ISbContentType> {
+  link_uuids: string[]
+  links: string[]
+  rel_uuids: string[]
+  rels: any
+  story: ISbStoryData<Content>
+  stories: Array<ISbStoryData<Content>>
+}

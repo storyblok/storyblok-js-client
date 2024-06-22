@@ -21,6 +21,7 @@ import {
   IMemoryType,
   ICacheProvider,
   ISbCustomFetch,
+  ISbResponseData,
 } from './interfaces'
 
 let memory: Partial<IMemoryType> = {}
@@ -45,15 +46,6 @@ type RelationsType = {
 
 interface ISbFlatMapped {
   data: any
-}
-
-export interface ISbResponseData {
-  link_uuids: string[]
-  links: string[]
-  rel_uuids: string[]
-  rels: any
-  story: ISbStoryData
-  stories: Array<ISbStoryData>
 }
 
 const VERSION = {
