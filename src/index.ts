@@ -21,6 +21,7 @@ import {
   IMemoryType,
   ICacheProvider,
   ISbCustomFetch,
+  ISbContentType,
   ISbResponseData,
 } from './interfaces'
 
@@ -56,7 +57,7 @@ const VERSION = {
 type ObjectValues<T> = T[keyof T]
 type Version = ObjectValues<typeof VERSION>
 
-class Storyblok {
+class Storyblok<Content = ISbContentType> {
   private client: SbFetch
   private maxRetries: number
   private retriesDelay: number
@@ -259,7 +260,7 @@ class Storyblok {
     slug: string,
     params: ISbStoriesParams | ISbContentMangmntAPI,
     fetchOptions?: ISbCustomFetch
-  ): Promise<ISbResponseData> {
+  ): Promise<ISbResponseData<Content>> {
     const url = `/${slug}`
 
     this.client.setFetchOptions(fetchOptions)
@@ -271,7 +272,7 @@ class Storyblok {
     slug: string,
     params: ISbStoriesParams | ISbContentMangmntAPI,
     fetchOptions?: ISbCustomFetch
-  ): Promise<ISbResponseData> {
+  ): Promise<ISbResponseData<Content>> {
     const url = `/${slug}`
 
     this.client.setFetchOptions(fetchOptions)
@@ -283,7 +284,7 @@ class Storyblok {
     slug: string,
     params: ISbStoriesParams | ISbContentMangmntAPI,
     fetchOptions?: ISbCustomFetch
-  ): Promise<ISbResponseData> {
+  ): Promise<ISbResponseData<Content>> {
     const url = `/${slug}`
 
     this.client.setFetchOptions(fetchOptions)
@@ -294,7 +295,7 @@ class Storyblok {
   public getStories(
     params: ISbStoriesParams,
     fetchOptions?: ISbCustomFetch
-  ): Promise<ISbStories> {
+  ): Promise<ISbStories<Content>> {
     this.client.setFetchOptions(fetchOptions)
     this._addResolveLevel(params)
 
@@ -305,7 +306,7 @@ class Storyblok {
     slug: string,
     params: ISbStoryParams,
     fetchOptions?: ISbCustomFetch
-  ): Promise<ISbStory> {
+  ): Promise<ISbStory<Content>> {
     this.client.setFetchOptions(fetchOptions)
     this._addResolveLevel(params)
 
@@ -388,7 +389,7 @@ class Storyblok {
   }
 
   private iterateTree(
-    story: ISbStoryData,
+    story: ISbStoryData<Content>,
     fields: string | Array<string>,
     resolveId: string
   ): void {
@@ -427,11 +428,11 @@ class Storyblok {
   }
 
   private async resolveLinks(
-    responseData: ISbResponseData,
+    responseData: ISbResponseData<Content>,
     params: ISbStoriesParams,
     resolveId: string
   ): Promise<void> {
-    let links: (ISbStoryData | ISbLinkURLObject | string)[] = []
+    let links: (ISbStoryData<Content> | ISbLinkURLObject | string)[] = []
 
     if (responseData.link_uuids) {
       const relSize = responseData.link_uuids.length
@@ -452,7 +453,7 @@ class Storyblok {
         })
 
         linksRes.data.stories.forEach(
-          (rel: ISbStoryData | ISbLinkURLObject | string) => {
+          (rel: ISbStoryData<Content> | ISbLinkURLObject | string) => {
             links.push(rel)
           }
         )
@@ -461,7 +462,7 @@ class Storyblok {
       links = responseData.links
     }
 
-    links.forEach((story: ISbStoryData | any) => {
+    links.forEach((story: ISbStoryData<Content> | any) => {
       this.links[resolveId][story.uuid] = {
         ...story,
         ...{ _stopResolving: true },
@@ -470,7 +471,7 @@ class Storyblok {
   }
 
   private async resolveRelations(
-    responseData: ISbResponseData,
+    responseData: ISbResponseData<Content>,
     params: ISbStoriesParams,
     resolveId: string
   ): Promise<void> {
@@ -495,7 +496,7 @@ class Storyblok {
           excluding_fields: params.excluding_fields,
         })
 
-        relationsRes.data.stories.forEach((rel: ISbStoryData) => {
+        relationsRes.data.stories.forEach((rel: ISbStoryData<Content>) => {
           relations.push(rel)
         })
       }
@@ -504,7 +505,7 @@ class Storyblok {
     }
 
     if (relations && relations.length > 0) {
-      relations.forEach((story: ISbStoryData) => {
+      relations.forEach((story: ISbStoryData<Content>) => {
         this.relations[resolveId][story.uuid] = {
           ...story,
           ...{ _stopResolving: true },
@@ -523,7 +524,7 @@ class Storyblok {
    *
    */
   private async resolveStories(
-    responseData: ISbResponseData,
+    responseData: ISbResponseData<Content>,
     params: ISbStoriesParams,
     resolveId: string
   ): Promise<void> {
@@ -563,7 +564,7 @@ class Storyblok {
     if (responseData.story) {
       this.iterateTree(responseData.story, relationParams, resolveId)
     } else {
-      responseData.stories.forEach((story: ISbStoryData) => {
+      responseData.stories.forEach((story: ISbStoryData<Content>) => {
         this.iterateTree(story, relationParams, resolveId)
       })
     }

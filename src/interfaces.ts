@@ -174,7 +174,7 @@ export interface ISbLinkURLObject {
 export interface ISbStories<Content = ISbContentType> {
   data: {
     cv: number
-    links: (ISbStoryData | ISbLinkURLObject)[]
+    links: (ISbStoryData<Content> | ISbLinkURLObject)[]
     rels: ISbStoryData[]
     stories: ISbStoryData<Content>[]
   }
