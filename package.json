@@ -33,7 +33,7 @@
 	],
 	"scripts": {
 		"lint": "eslint --max-warnings=0 './src/**/*.{ts,js}'",
-		"prettier": "prettier './**/*.js' './src/**/*.ts' './**/*.md' --write",
+		"prettier": "prettier . --write",
 		"build": "node vite.build.mjs && tsc",
 		"demo": "vite serve playground",
 		"test": "vitest run",
