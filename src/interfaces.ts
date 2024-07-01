@@ -31,6 +31,7 @@ export interface ISbStoriesParams
 	published_at_lt?: string
 	resolve_assets?: number
 	resolve_links?: 'link' | 'url' | 'story' | '0' | '1' | 'link'
+	resolve_links_level?: 1 | 2
 	resolve_relations?: string | string[]
 	search_term?: string
 	size?: string
@@ -47,6 +48,7 @@ export interface ISbStoryParams {
 	find_by?: 'uuid'
 	version?: 'draft' | 'published'
 	resolve_links?: 'link' | 'url' | 'story' | '0' | '1'
+	resolve_links_level?: 1 | 2
 	resolve_relations?: string | string[]
 	cv?: number
 	from_release?: string
