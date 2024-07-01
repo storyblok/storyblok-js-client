@@ -303,10 +303,9 @@ class Storyblok {
 		params: ISbStoriesParams,
 		fetchOptions?: ISbCustomFetch
 	): Promise<ISbStories> {
-		this.client.setFetchOptions(fetchOptions)
 		this._addResolveLevel(params)
 
-		return this.get('cdn/stories', params)
+		return this.get('cdn/stories', params, fetchOptions)
 	}
 
 	public getStory(
@@ -314,10 +313,9 @@ class Storyblok {
 		params: ISbStoryParams,
 		fetchOptions?: ISbCustomFetch
 	): Promise<ISbStory> {
-		this.client.setFetchOptions(fetchOptions)
 		this._addResolveLevel(params)
 
-		return this.get(`cdn/stories/${slug}`, params)
+		return this.get(`cdn/stories/${slug}`, params, fetchOptions)
 	}
 
 	private getToken(): string {
