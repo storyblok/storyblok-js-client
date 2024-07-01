@@ -77,7 +77,7 @@ export interface ISbDimensions {
 export interface ISbComponentType<T extends string> {
 	_uid?: string
 	component?: T
-	_editable?: string
+	_editable?: string | null
 }
 
 export interface ISbStoryData<
