@@ -228,7 +228,6 @@ class Storyblok {
     params: ISbStoriesParams = {},
     fetchOptions?: ISbCustomFetch
   ): Promise<ISbResult> {
-    if (!params) params = {} as ISbStoriesParams
     const url = `/${slug}`
     const query = this.factoryParamOptions(url, params)
 
