@@ -223,12 +223,12 @@ export const CUSTOM_ATTRIBUTE_DATA = {
               title: 'nice test',
             },
             target: '_blank',
-            linktype: 'url'
-          }
-        }
-      ]
-    }
-  ]
+            linktype: 'url',
+          },
+        },
+      ],
+    },
+  ],
 }
 
 export const LINK_WITH_ANCHOR_FOR_CUSTOM_SCHEMA = {
@@ -262,14 +262,14 @@ export const LONG_TEXT_WITH_LINKS_SUB_SUP_SCRIPTS = {
           type: 'text',
           marks: [
             {
-              type: 'bold'
-            }
+              type: 'bold',
+            },
           ],
-          text: 'Lorem Ipsum'
+          text: 'Lorem Ipsum',
         },
         {
           type: 'text',
-          text: ' is simply dummy text of the '
+          text: ' is simply dummy text of the ',
         },
         {
           type: 'text',
@@ -284,126 +284,126 @@ export const LONG_TEXT_WITH_LINKS_SUB_SUP_SCRIPTS = {
                 anchor: null,
                 custom: {
                   title: 'test one',
-                  rel: 'test two'
-                }
-              }
-            }
+                  rel: 'test two',
+                },
+              },
+            },
           ],
-          text: 'printing and typesetting industry'
+          text: 'printing and typesetting industry',
         },
-          {
-            type: 'text',
-            text: `. Lorem Ipsum has been the industry's standard dummy text ever since the `
-          },
-          {
-            type: 'text',
-            marks: [
-              {
-                type: 'superscript'
-              }
-            ],
-            text: '1500s'
-          },
-          {
-            type: 'text',
-            text: ', when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the '
-          },
-          {
-            type: 'text',
-            marks: [
-              {
-                type: 'subscript'
-              }
-            ],
-            text: '1960s'
-          },
-          {
-            type: 'text',
-            text: ' with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like '
-          },
-          {
-            type: 'text',
-            marks: [
-              {
-                type: 'superscript'
-              }
-            ],
-            text: 'Aldus PageMaker'
-          },
-          {
-            type: 'text',
-            text: ' including versions of '
-          },
-          {
-            type: 'text',
-            marks: [
-              {
-                type: 'subscript'
-              }
-            ],
-            text: 'Lorem Ipsum'
-          },
-          {
-            type: 'text',
-            text: '.'
-          }
-      ]
-    }
-  ]
+        {
+          type: 'text',
+          text: `. Lorem Ipsum has been the industry's standard dummy text ever since the `,
+        },
+        {
+          type: 'text',
+          marks: [
+            {
+              type: 'superscript',
+            },
+          ],
+          text: '1500s',
+        },
+        {
+          type: 'text',
+          text: ', when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the ',
+        },
+        {
+          type: 'text',
+          marks: [
+            {
+              type: 'subscript',
+            },
+          ],
+          text: '1960s',
+        },
+        {
+          type: 'text',
+          text: ' with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like ',
+        },
+        {
+          type: 'text',
+          marks: [
+            {
+              type: 'superscript',
+            },
+          ],
+          text: 'Aldus PageMaker',
+        },
+        {
+          type: 'text',
+          text: ' including versions of ',
+        },
+        {
+          type: 'text',
+          marks: [
+            {
+              type: 'subscript',
+            },
+          ],
+          text: 'Lorem Ipsum',
+        },
+        {
+          type: 'text',
+          text: '.',
+        },
+      ],
+    },
+  ],
 }
 
 export const PARAGRAPH_WITH_ANCHOR_IN_THE_MIDDLE = {
-  "type": "doc",
-  "content": [
+  type: 'doc',
+  content: [
     {
-      "type": "paragraph",
-      "content": [
+      type: 'paragraph',
+      content: [
         {
-          "text": "a long text with a super nice ",
-          "type": "text"
+          text: 'a long text with a super nice ',
+          type: 'text',
         },
         {
-          "text": "anchor here",
-          "type": "text",
-          "marks": [
+          text: 'anchor here',
+          type: 'text',
+          marks: [
             {
-              "type": "anchor",
-              "attrs": {
-                "id": "test2"
-              }
-            }
-          ]
+              type: 'anchor',
+              attrs: {
+                id: 'test2',
+              },
+            },
+          ],
         },
         {
-          "text": ", and at the end of the text is a normal tag",
-          "type": "text"
-        }
-      ]
-    }
-  ]
+          text: ', and at the end of the text is a normal tag',
+          type: 'text',
+        },
+      ],
+    },
+  ],
 }
 
 export const PARAGRAPH_WITH_ANCHOR = {
-  "type": "doc",
-  "content": [
+  type: 'doc',
+  content: [
     {
-      "type": "paragraph",
-      "content": [
+      type: 'paragraph',
+      content: [
         {
-          "text": "Paragraph with anchor in the midle",
-          "type": "text",
-          "marks": [
+          text: 'Paragraph with anchor in the midle',
+          type: 'text',
+          marks: [
             {
-              "type": "anchor",
-              "attrs": {
-                "id": "test"
-              }
-            }
-          ]
-        }
-      ]
-    }
-  ]
+              type: 'anchor',
+              attrs: {
+                id: 'test',
+              },
+            },
+          ],
+        },
+      ],
+    },
+  ],
 }
 
 export const TEXT_COLOR_DATA = {
@@ -458,231 +458,233 @@ export const BOLD_TEXT = {
 }
 
 export const TEXT_WITH_EMOJI = {
-  "type": "doc",
-  "content": [
+  type: 'doc',
+  content: [
     {
-      "type": "paragraph",
-      "content": [
+      type: 'paragraph',
+      content: [
         {
-          "text": "Text with a emoji in the end ",
-          "type": "text"
+          text: 'Text with a emoji in the end ',
+          type: 'text',
         },
         {
-          "type": "emoji",
-          "attrs": {
-            "name": "smile",
-            "emoji": "😄",
-            "fallbackImage": "https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/1f604.png"
-          }
+          type: 'emoji',
+          attrs: {
+            name: 'smile',
+            emoji: '😄',
+            fallbackImage:
+              'https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/1f604.png',
+          },
         },
-      ]
-    }
-  ]
+      ],
+    },
+  ],
 }
 
 export const TEXT_WITH_EMOJI_VIA_FALLBACKIMAGE = {
-  "type": "doc",
-  "content": [
+  type: 'doc',
+  content: [
     {
-      "type": "paragraph",
-      "content": [
+      type: 'paragraph',
+      content: [
         {
-          "text": "Text with a emoji in the end ",
-          "type": "text"
+          text: 'Text with a emoji in the end ',
+          type: 'text',
         },
         {
-          "type": "emoji",
-          "attrs": {
-            "name": "trollface",
-            "emoji": null,
-            "fallbackImage": "https://github.githubassets.com/images/icons/emoji/trollface.png"
-          }
+          type: 'emoji',
+          attrs: {
+            name: 'trollface',
+            emoji: null,
+            fallbackImage:
+              'https://github.githubassets.com/images/icons/emoji/trollface.png',
+          },
         },
-      ]
-    }
-  ]
+      ],
+    },
+  ],
 }
 
 export const TEXT_WITH_COLORS_MISSING_PARAMETERS = {
-  "type": "doc",
-  "content": [
+  type: 'doc',
+  content: [
     {
-      "type": "paragraph",
-      "content": [
+      type: 'paragraph',
+      content: [
         {
-          "text": "Text with ",
-          "type": "text"
+          text: 'Text with ',
+          type: 'text',
         },
         {
-          "text": "highlight",
-          "type": "text",
-          "marks": [
+          text: 'highlight',
+          type: 'text',
+          marks: [
             {
-              "type": "highlight",
-              "attrs": {
-                "color": ""
-              }
-            }
-          ]
+              type: 'highlight',
+              attrs: {
+                color: '',
+              },
+            },
+          ],
         },
         {
-          "text": " colors. And another text ",
-          "type": "text"
+          text: ' colors. And another text ',
+          type: 'text',
         },
         {
-          "text": "with text",
-          "type": "text",
-          "marks": [
+          text: 'with text',
+          type: 'text',
+          marks: [
             {
-              "type": "textStyle",
-              "attrs": {
-                "color": null
-              }
-            }
-          ]
+              type: 'textStyle',
+              attrs: {
+                color: null,
+              },
+            },
+          ],
         },
         {
-          "text": " color.",
-          "type": "text"
-        }
-      ]
-    }
-  ]
+          text: ' color.',
+          type: 'text',
+        },
+      ],
+    },
+  ],
 }
 
 export const TEXT_MISSING_PARAMETERS = {
-  "type": "doc",
-  "content": [
+  type: 'doc',
+  content: [
     {
-      "type": "paragraph",
-      "content": [
+      type: 'paragraph',
+      content: [
         {
-          "text": "Text with ",
-          "type": "text"
+          text: 'Text with ',
+          type: 'text',
         },
         {
-          "text": "highlight",
-          "type": "text",
-          "marks": [
+          text: 'highlight',
+          type: 'text',
+          marks: [
             {
-              "type": "highlight",
-              "attrs": {
-                "color": undefined
-              }
-            }
-          ]
+              type: 'highlight',
+              attrs: {
+                color: undefined,
+              },
+            },
+          ],
         },
         {
-          "text": " colors. And another text ",
-          "type": "text"
+          text: ' colors. And another text ',
+          type: 'text',
         },
         {
-          "text": "with text",
-          "type": "text",
-          "marks": [
+          text: 'with text',
+          type: 'text',
+          marks: [
             {
-              "type": "textStyle",
-              "attrs": {}
-            }
-          ]
+              type: 'textStyle',
+              attrs: {},
+            },
+          ],
         },
         {
-          "text": " color.",
-          "type": "text"
-        }
-      ]
+          text: ' color.',
+          type: 'text',
+        },
+      ],
     },
     {
-      "type": "paragraph",
-      "content": [
+      type: 'paragraph',
+      content: [
         {
-          "text": "Text with ",
-          "type": "text"
+          text: 'Text with ',
+          type: 'text',
         },
         {
-          "text": "highlight",
-          "type": "text",
-          "marks": [
+          text: 'highlight',
+          type: 'text',
+          marks: [
             {
-              "type": "highlight",
-              "attrs": {
-                "color": null
-              }
-            }
-          ]
+              type: 'highlight',
+              attrs: {
+                color: null,
+              },
+            },
+          ],
         },
         {
-          "text": " colors. And another text ",
-          "type": "text"
+          text: ' colors. And another text ',
+          type: 'text',
         },
         {
-          "text": "with text",
-          "type": "text",
-          "marks": [
+          text: 'with text',
+          type: 'text',
+          marks: [
             {
-              "type": "textStyle",
-            }
-          ]
+              type: 'textStyle',
+            },
+          ],
         },
         {
-          "text": " color.",
-          "type": "text"
-        }
-      ]
-    }
-  ]
+          text: ' color.',
+          type: 'text',
+        },
+      ],
+    },
+  ],
 }
 
 export const TEXT_WITH_BROKEN_LINK = {
-  "type": "doc",
-  "content": [
+  type: 'doc',
+  content: [
     {
-      "type": "paragraph",
-      "content": [
+      type: 'paragraph',
+      content: [
         {
-          "text": "...",
-          "type": "text",
-          "marks": [
+          text: '...',
+          type: 'text',
+          marks: [
             {
-              "type": "textStyle",
-              "attrs": {
-                  "color": "rgb(23, 43, 77)"
-              }
-            }
-          ]
+              type: 'textStyle',
+              attrs: {
+                color: 'rgb(23, 43, 77)',
+              },
+            },
+          ],
         },
         {
-          "type": "hard_break"
+          type: 'hard_break',
         },
         {
-          "text": "...",
-          "type": "text",
-          "marks": [
+          text: '...',
+          type: 'text',
+          marks: [
             {
-              "type": "link",
-              "attrs": {
-                "href": "...",
-                "uuid": null,
-                "anchor": null,
-                "target": null,
-                "linktype": "url"
-              }
-            }
-          ]
+              type: 'link',
+              attrs: {
+                href: '...',
+                uuid: null,
+                anchor: null,
+                target: null,
+                linktype: 'url',
+              },
+            },
+          ],
         },
         {
-          "type": "hard_break"
+          type: 'hard_break',
         },
         {
-          "text": "...",
-          "type": "text",
-          "marks": [
+          text: '...',
+          type: 'text',
+          marks: [
             {
-              "type": "link"
-            }
-          ]
-        }
-      ]
-    }
-  ] 
+              type: 'link',
+            },
+          ],
+        },
+      ],
+    },
+  ],
 }

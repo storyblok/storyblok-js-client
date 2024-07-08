@@ -25,6 +25,7 @@
 </p>
 
 ## Kickstart a new project
+
 Are you eager to dive into coding? **[Follow these steps to kickstart a new project with Storyblok and a JavaScript frontend framework](https://www.storyblok.com/technologies?utm_source=github.com&utm_medium=readme&utm_campaign=storyblok-js)**, and get started in just a few minutes!
 
 ## Installation
@@ -102,9 +103,9 @@ Error handling from fetch has changed. Exceptions will be thrown as an object wi
 
 ```javascript
 {
-	message: string
-	status: number
-	response: ISbResponse
+  message: string
+  status: number
+  response: ISbResponse
 }
 ```
 
@@ -213,6 +214,9 @@ Exceptions will be thrown as an object with the following structure:
   message: Error // an Error object with the error message
   status: number
   response: ISbResponse
+  message: Error // an Error object with the error message
+  status: number
+  response: ISbResponse
 }
 ```
 
@@ -238,7 +242,11 @@ With this parameter, you can resolve relations with live updates in the Storyblo
 > It is important to note that when using the `storyblok-js-client` and other framework-specific SDKs, you don’t need to look for the `rels` array after resolving relations. The resolved relations are injected into the properties and, hence, are directly accessible through the properties. For example, you can access the authors array directly with `page.author` once it is resolved.
 
 ```javascript
-window.storyblok.resolveRelations(storyObject, relationsToResolve, callbackWhenResolved)
+window.storyblok.resolveRelations(
+  storyObject,
+  relationsToResolve,
+  callbackWhenResolved
+)
 ```
 
 **Example**
@@ -246,7 +254,11 @@ window.storyblok.resolveRelations(storyObject, relationsToResolve, callbackWhenR
 ```javascript
 window.storyblok.on('input', (event) => {
   window.storyblok.addComments(event.story.content, event.story.id)
-  window.storyblok.resolveRelations(event.story, ['post.author', 'post.categories'], () => {})
+  window.storyblok.resolveRelations(
+    event.story,
+    ['post.author', 'post.categories'],
+    () => {}
+  )
 })
 ```
 
@@ -263,6 +275,10 @@ const data = {
     name: 'xy',
     slug: 'xy',
   },
+  story: {
+    name: 'xy',
+    slug: 'xy',
+  },
 }
 
 Storyblok.get(
@@ -275,7 +291,22 @@ Storyblok.get(
     cache: 'no-cache',
     body: JSON.stringify(data),
   }
+  'cdn/stories/home',
+  {
+    version: 'draft',
+  },
+  {
+    mode: 'cors',
+    cache: 'no-cache',
+    body: JSON.stringify(data),
+  }
 )
+  .then((response) => {
+    console.log(response)
+  })
+  .catch((error) => {
+    console.error(error)
+  })
   .then((response) => {
     console.log(response)
   })
@@ -300,7 +331,14 @@ With this method you can get single or multiple items. The multiple items are pa
 ```javascript
 Storyblok.get('cdn/stories/home', {
   version: 'draft',
+  version: 'draft',
 })
+  .then((response) => {
+    console.log(response)
+  })
+  .catch((error) => {
+    console.log(error)
+  })
   .then((response) => {
     console.log(response)
   })
@@ -326,7 +364,14 @@ With this method you can get all items at once.
 ```javascript
 Storyblok.getAll('cdn/stories', {
   version: 'draft',
+  version: 'draft',
 })
+  .then((stories) => {
+    console.log(stories) // an array
+  })
+  .catch((error) => {
+    console.log(error)
+  })
   .then((stories) => {
     console.log(stories) // an array
   })
@@ -349,7 +394,14 @@ Storyblok.getAll('cdn/stories', {
 ```javascript
 Storyblok.post('spaces/<YOUR_SPACE_ID>/stories', {
   story: { name: 'xy', slug: 'xy' },
+  story: { name: 'xy', slug: 'xy' },
 })
+  .then((response) => {
+    console.log(response)
+  })
+  .catch((error) => {
+    console.log(error)
+  })
   .then((response) => {
     console.log(response)
   })
@@ -372,7 +424,14 @@ Storyblok.post('spaces/<YOUR_SPACE_ID>/stories', {
 ```javascript
 Storyblok.put('spaces/<YOUR_SPACE_ID>/stories/1', {
   story: { name: 'xy', slug: 'xy' },
+  story: { name: 'xy', slug: 'xy' },
 })
+  .then((response) => {
+    console.log(response)
+  })
+  .catch((error) => {
+    console.log(error)
+  })
   .then((response) => {
     console.log(response)
   })
@@ -394,6 +453,12 @@ Storyblok.put('spaces/<YOUR_SPACE_ID>/stories/1', {
 
 ```javascript
 Storyblok.delete('spaces/<YOUR_SPACE_ID>/stories/1', null)
+  .then((response) => {
+    console.log(response)
+  })
+  .catch((error) => {
+    console.log(error)
+  })
   .then((response) => {
     console.log(response)
   })
@@ -424,6 +489,16 @@ Option 1: Use a switch case definition to render different components:
 
 ```javascript
 Storyblok.setComponentResolver((component, blok) => {
+  switch (component) {
+    case 'my-custom-component':
+      return `<div class="my-component-class">${blok.text}</div>`
+      break
+    case 'my-header':
+      return `<h1 class="my-class">${blok.title}</h1>`
+      break
+    default:
+      return 'Resolver not defined'
+  }
   switch (component) {
     case 'my-custom-component':
       return `<div class="my-component-class">${blok.text}</div>`
@@ -477,6 +552,29 @@ All properties are optional and will be applied to each image in the field.
 
 ```js
 const options = {
+  optimizeImages: {
+    class: 'w-full my-8 border-b border-black',
+    width: 640, // image width
+    height: 360, // image height
+    loading: 'lazy', // 'lazy' | 'eager'
+    filters: {
+      blur: 0, // 0 to 100
+      brightness: 0, // -100 to 100
+      fill: 'transparent', // Or any hexadecimal value like FFCC99
+      format: 'webp', // 'webp' | 'jpeg' | 'png'
+      grayscale: false,
+      quality: 95, // 0 to 100
+      rotate: 0, // 0 | 90 | 180 | 270
+    },
+    // srcset accepts an array with image widths.
+    // Example: [720, 1024, 1533]
+    // will render srcset="//../m/720x0 720w", "//../m/1024x0 1024w", "//../m/1533x0 1280w"
+    // Also accept an array to pass width and height.
+    // Example: [[720,500], 1024, [1500, 1000]]
+    // will render srcset="//../m/720x500 720w", "//../m/1024x0 1024w", "//../m/1500x1000 1280w"
+    srcset: [720, 1024, 1533],
+    sizes: ['(max-width: 767px) 100vw', '(max-width: 1024px) 768px', '1500px'],
+  },
   optimizeImages: {
     class: 'w-full my-8 border-b border-black',
     width: 640, // image width
@@ -609,11 +707,15 @@ let getStories = (page) => {
     .then((res) => {
       let stories = res.data.stories
       stories.forEach((story) => {
-        fs.writeFile('./backup/' + story.id + '.json', JSON.stringify(story), (err) => {
-          if (err) throw err
+        fs.writeFile(
+          './backup/' + story.id + '.json',
+          JSON.stringify(story),
+          (err) => {
+            if (err) throw err
 
-          console.log(story.full_slug + ' backed up')
-        })
+            console.log(story.full_slug + ' backed up')
+          }
+        )
       })
 
       let total = res.total
@@ -659,7 +761,18 @@ import MySchema from 'storyblok-js-client/schema'
 
 MySchema.nodes.heading = function (node) {
   let attrs = {}
+  let attrs = {}
 
+  if (
+    node.content &&
+    node.content.length === 1 &&
+    node.content[0].marks &&
+    node.content[0].marks.length === 1 &&
+    node.content[0].marks[0].type === 'styled'
+  ) {
+    attrs = node.content[0].marks[0].attrs
+    delete node.content[0].marks
+  }
   if (
     node.content &&
     node.content.length === 1 &&
@@ -679,10 +792,50 @@ MySchema.nodes.heading = function (node) {
       },
     ],
   }
+  return {
+    tag: [
+      {
+        tag: `h${node.attrs.level}`,
+        attrs: attrs,
+      },
+    ],
+  }
 }
 
 let rteResolver = new RichTextResolver(MySchema)
 let rendered = rteResolver.render({
+  content: [
+    {
+      content: [
+        {
+          text: 'Normal headline',
+          type: 'text',
+        },
+      ],
+      type: 'paragraph',
+    },
+    {
+      attrs: {
+        level: 3,
+      },
+      content: [
+        {
+          marks: [
+            {
+              attrs: {
+                class: 'margin-bottom-fdsafdsada',
+              },
+              type: 'styled',
+            },
+          ],
+          text: 'Styled headline',
+          type: 'text',
+        },
+      ],
+      type: 'heading',
+    },
+  ],
+  type: 'doc',
   content: [
     {
       content: [
