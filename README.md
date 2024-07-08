@@ -101,9 +101,9 @@ Error handling from fetch has changed. Exceptions will be thrown as an object wi
 
 ```javascript
 {
-	message: string
-	status: number
-	response: ISbResponse
+  message: string
+  status: number
+  response: ISbResponse
 }
 ```
 
@@ -209,9 +209,9 @@ Exceptions will be thrown as an object with the following structure:
 
 ```javascript
 {
-	message: Error // an Error object with the error message
-	status: number
-	response: ISbResponse
+  message: Error // an Error object with the error message
+  status: number
+  response: ISbResponse
 }
 ```
 
@@ -219,12 +219,12 @@ where,
 
 ```typescript
 interface ISbResponse {
-	data: any
-	status: number
-	statusText: string
-	headers: any
-	config: any
-	request: any
+  data: any
+  status: number
+  statusText: string
+  headers: any
+  config: any
+  request: any
 }
 ```
 
@@ -238,9 +238,9 @@ With this parameter, you can resolve relations with live updates in the Storyblo
 
 ```javascript
 window.storyblok.resolveRelations(
-	storyObject,
-	relationsToResolve,
-	callbackWhenResolved
+  storyObject,
+  relationsToResolve,
+  callbackWhenResolved,
 )
 ```
 
@@ -248,12 +248,12 @@ window.storyblok.resolveRelations(
 
 ```javascript
 window.storyblok.on('input', (event) => {
-	window.storyblok.addComments(event.story.content, event.story.id)
-	window.storyblok.resolveRelations(
-		event.story,
-		['post.author', 'post.categories'],
-		() => {}
-	)
+  window.storyblok.addComments(event.story.content, event.story.id)
+  window.storyblok.resolveRelations(
+    event.story,
+    ['post.author', 'post.categories'],
+    () => {},
+  )
 })
 ```
 
@@ -266,29 +266,29 @@ You can now pass an aditional paramater to the following calls: `get`, `getAll`,
 
 ```javascript
 const data = {
-	story: {
-		name: 'xy',
-		slug: 'xy',
-	},
+  story: {
+    name: 'xy',
+    slug: 'xy',
+  },
 }
 
 Storyblok.get(
-	'cdn/stories/home',
-	{
-		version: 'draft',
-	},
-	{
-		mode: 'cors',
-		cache: 'no-cache',
-		body: JSON.stringify(data),
-	}
+  'cdn/stories/home',
+  {
+    version: 'draft',
+  },
+  {
+    mode: 'cors',
+    cache: 'no-cache',
+    body: JSON.stringify(data),
+  },
 )
-	.then((response) => {
-		console.log(response)
-	})
-	.catch((error) => {
-		console.error(error)
-	})
+  .then((response) => {
+    console.log(response)
+  })
+  .catch((error) => {
+    console.error(error)
+  })
 ```
 
 ### Method `Storyblok#get`
@@ -306,14 +306,14 @@ With this method you can get single or multiple items. The multiple items are pa
 
 ```javascript
 Storyblok.get('cdn/stories/home', {
-	version: 'draft',
+  version: 'draft',
 })
-	.then((response) => {
-		console.log(response)
-	})
-	.catch((error) => {
-		console.log(error)
-	})
+  .then((response) => {
+    console.log(response)
+  })
+  .catch((error) => {
+    console.log(error)
+  })
 ```
 
 #### Method `Storyblok#getAll`
@@ -332,14 +332,14 @@ With this method you can get all items at once.
 
 ```javascript
 Storyblok.getAll('cdn/stories', {
-	version: 'draft',
+  version: 'draft',
 })
-	.then((stories) => {
-		console.log(stories) // an array
-	})
-	.catch((error) => {
-		console.log(error)
-	})
+  .then((stories) => {
+    console.log(stories) // an array
+  })
+  .catch((error) => {
+    console.log(error)
+  })
 ```
 
 #### Method `Storyblok#post` (only management api)
@@ -355,14 +355,14 @@ Storyblok.getAll('cdn/stories', {
 
 ```javascript
 Storyblok.post('spaces/<YOUR_SPACE_ID>/stories', {
-	story: { name: 'xy', slug: 'xy' },
+  story: { name: 'xy', slug: 'xy' },
 })
-	.then((response) => {
-		console.log(response)
-	})
-	.catch((error) => {
-		console.log(error)
-	})
+  .then((response) => {
+    console.log(response)
+  })
+  .catch((error) => {
+    console.log(error)
+  })
 ```
 
 #### Method `Storyblok#put` (only management api)
@@ -378,14 +378,14 @@ Storyblok.post('spaces/<YOUR_SPACE_ID>/stories', {
 
 ```javascript
 Storyblok.put('spaces/<YOUR_SPACE_ID>/stories/1', {
-	story: { name: 'xy', slug: 'xy' },
+  story: { name: 'xy', slug: 'xy' },
 })
-	.then((response) => {
-		console.log(response)
-	})
-	.catch((error) => {
-		console.log(error)
-	})
+  .then((response) => {
+    console.log(response)
+  })
+  .catch((error) => {
+    console.log(error)
+  })
 ```
 
 #### Method `Storyblok#delete` (only management api)
@@ -401,12 +401,12 @@ Storyblok.put('spaces/<YOUR_SPACE_ID>/stories/1', {
 
 ```javascript
 Storyblok.delete('spaces/<YOUR_SPACE_ID>/stories/1', null)
-	.then((response) => {
-		console.log(response)
-	})
-	.catch((error) => {
-		console.log(error)
-	})
+  .then((response) => {
+    console.log(response)
+  })
+  .catch((error) => {
+    console.log(error)
+  })
 ```
 
 #### Method `Storyblok#flushCache`
@@ -431,16 +431,16 @@ Option 1: Use a switch case definition to render different components:
 
 ```javascript
 Storyblok.setComponentResolver((component, blok) => {
-	switch (component) {
-		case 'my-custom-component':
-			return `<div class="my-component-class">${blok.text}</div>`
-			break
-		case 'my-header':
-			return `<h1 class="my-class">${blok.title}</h1>`
-			break
-		default:
-			return 'Resolver not defined'
-	}
+  switch (component) {
+    case 'my-custom-component':
+      return `<div class="my-component-class">${blok.text}</div>`
+      break
+    case 'my-header':
+      return `<h1 class="my-class">${blok.title}</h1>`
+      break
+    default:
+      return 'Resolver not defined'
+  }
 })
 ```
 
@@ -448,7 +448,7 @@ Option 2: Dynamically render a component (Example in Vue.js, which will only wor
 
 ```javascript
 Storyblok.setComponentResolver((component, blok) => {
-	return `<component :blok='${JSON.stringify(blok)}'
+  return `<component :blok='${JSON.stringify(blok)}'
                      is="${component}"></component>`
 })
 ```
@@ -485,29 +485,29 @@ All properties are optional and will be applied to each image in the field.
 
 ```js
 const options = {
-	optimizeImages: {
-		class: 'w-full my-8 border-b border-black',
-		width: 640, // image width
-		height: 360, // image height
-		loading: 'lazy', // 'lazy' | 'eager'
-		filters: {
-			blur: 0, // 0 to 100
-			brightness: 0, // -100 to 100
-			fill: 'transparent', // Or any hexadecimal value like FFCC99
-			format: 'webp', // 'webp' | 'jpeg' | 'png'
-			grayscale: false,
-			quality: 95, // 0 to 100
-			rotate: 0, // 0 | 90 | 180 | 270
-		},
-		// srcset accepts an array with image widths.
-		// Example: [720, 1024, 1533]
-		// will render srcset="//../m/720x0 720w", "//../m/1024x0 1024w", "//../m/1533x0 1280w"
-		// Also accept an array to pass width and height.
-		// Example: [[720,500], 1024, [1500, 1000]]
-		// will render srcset="//../m/720x500 720w", "//../m/1024x0 1024w", "//../m/1500x1000 1280w"
-		srcset: [720, 1024, 1533],
-		sizes: ['(max-width: 767px) 100vw', '(max-width: 1024px) 768px', '1500px'],
-	},
+  optimizeImages: {
+    class: 'w-full my-8 border-b border-black',
+    width: 640, // image width
+    height: 360, // image height
+    loading: 'lazy', // 'lazy' | 'eager'
+    filters: {
+      blur: 0, // 0 to 100
+      brightness: 0, // -100 to 100
+      fill: 'transparent', // Or any hexadecimal value like FFCC99
+      format: 'webp', // 'webp' | 'jpeg' | 'png'
+      grayscale: false,
+      quality: 95, // 0 to 100
+      rotate: 0, // 0 | 90 | 180 | 270
+    },
+    // srcset accepts an array with image widths.
+    // Example: [720, 1024, 1533]
+    // will render srcset="//../m/720x0 720w", "//../m/1024x0 1024w", "//../m/1533x0 1280w"
+    // Also accept an array to pass width and height.
+    // Example: [[720,500], 1024, [1500, 1000]]
+    // will render srcset="//../m/720x500 720w", "//../m/1024x0 1024w", "//../m/1500x1000 1280w"
+    srcset: [720, 1024, 1533],
+    sizes: ['(max-width: 767px) 100vw', '(max-width: 1024px) 768px', '1500px'],
+  },
 }
 
 Storyblok.richTextResolver.render(blok.richtext, options)
@@ -670,63 +670,63 @@ import RichTextResolver from 'storyblok-js-client/richTextResolver'
 import MySchema from 'storyblok-js-client/schema'
 
 MySchema.nodes.heading = function (node) {
-	let attrs = {}
+  let attrs = {}
 
-	if (
-		node.content &&
-		node.content.length === 1 &&
-		node.content[0].marks &&
-		node.content[0].marks.length === 1 &&
-		node.content[0].marks[0].type === 'styled'
-	) {
-		attrs = node.content[0].marks[0].attrs
-		delete node.content[0].marks
-	}
+  if (
+    node.content &&
+    node.content.length === 1 &&
+    node.content[0].marks &&
+    node.content[0].marks.length === 1 &&
+    node.content[0].marks[0].type === 'styled'
+  ) {
+    attrs = node.content[0].marks[0].attrs
+    delete node.content[0].marks
+  }
 
-	return {
-		tag: [
-			{
-				tag: `h${node.attrs.level}`,
-				attrs: attrs,
-			},
-		],
-	}
+  return {
+    tag: [
+      {
+        tag: `h${node.attrs.level}`,
+        attrs: attrs,
+      },
+    ],
+  }
 }
 
 let rteResolver = new RichTextResolver(MySchema)
 let rendered = rteResolver.render({
-	content: [
-		{
-			content: [
-				{
-					text: 'Normal headline',
-					type: 'text',
-				},
-			],
-			type: 'paragraph',
-		},
-		{
-			attrs: {
-				level: 3,
-			},
-			content: [
-				{
-					marks: [
-						{
-							attrs: {
-								class: 'margin-bottom-fdsafdsada',
-							},
-							type: 'styled',
-						},
-					],
-					text: 'Styled headline',
-					type: 'text',
-				},
-			],
-			type: 'heading',
-		},
-	],
-	type: 'doc',
+  content: [
+    {
+      content: [
+        {
+          text: 'Normal headline',
+          type: 'text',
+        },
+      ],
+      type: 'paragraph',
+    },
+    {
+      attrs: {
+        level: 3,
+      },
+      content: [
+        {
+          marks: [
+            {
+              attrs: {
+                class: 'margin-bottom-fdsafdsada',
+              },
+              type: 'styled',
+            },
+          ],
+          text: 'Styled headline',
+          type: 'text',
+        },
+      ],
+      type: 'heading',
+    },
+  ],
+  type: 'doc',
 })
 
 console.log(rendered)

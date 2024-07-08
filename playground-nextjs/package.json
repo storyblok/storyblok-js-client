@@ -1,21 +1,21 @@
 {
-	"name": "next13-live-editing",
-	"version": "0.1.0",
-	"private": true,
-	"scripts": {
-		"demo": "next dev",
-		"build": "next build",
-		"start": "next start",
-		"lint": "next lint"
-	},
-	"devDependencies": {
-		"@types/react": "18.2.47",
-		"eslint": "8.55.0",
-		"eslint-config-next": "14.0.4",
-		"next": "^13.4.2",
-		"react": "^18.2.0",
-		"react-dom": "^18.2.0",
-		"storyblok-js-client": "file:..",
-		"swr": "^2.2.4"
-	}
+  "name": "next13-live-editing",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "demo": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "devDependencies": {
+    "@types/react": "18.2.47",
+    "eslint": "8.55.0",
+    "eslint-config-next": "14.0.4",
+    "next": "^13.4.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "storyblok-js-client": "file:..",
+    "swr": "^2.2.4"
+  }
 }

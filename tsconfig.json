@@ -1,20 +1,20 @@
 {
-	"compilerOptions": {
-		"module": "commonjs",
-		"isolatedModules": true,
-		"target": "ESNext",
-		"strict": true,
-		"esModuleInterop": true,
-		"skipLibCheck": true,
-		"forceConsistentCasingInFileNames": true,
-		"declaration": true,
-		"declarationDir": "dist/types",
-		"emitDeclarationOnly": true,
-		"lib": ["ESNext", "DOM", "DOM.Iterable"]
-	},
-	"extends": "@tsconfig/recommended/tsconfig.json",
-	"$schema": "https://json.schemastore.org/tsconfig",
-	"display": "Recommended",
-	"include": ["./src"],
-	"exclude": ["node_modules"]
+  "compilerOptions": {
+    "module": "commonjs",
+    "isolatedModules": true,
+    "target": "ESNext",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "declaration": true,
+    "declarationDir": "dist/types",
+    "emitDeclarationOnly": true,
+    "lib": ["ESNext", "DOM", "DOM.Iterable"]
+  },
+  "extends": "@tsconfig/recommended/tsconfig.json",
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "Recommended",
+  "include": ["./src"],
+  "exclude": ["node_modules"]
 }

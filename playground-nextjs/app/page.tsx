@@ -1,35 +1,35 @@
 import StoryblokClient from 'storyblok-js-client'
 
 export default async function Home() {
-	const { data } = await fetchData()
+  const { data } = await fetchData()
 
-	return (
-		<div>
-			<h1>Story: {data.story.content.headline}</h1>
-		</div>
-	)
+  return (
+    <div>
+      <h1>Story: {data.story.content.headline}</h1>
+    </div>
+  )
 }
 
 export async function fetchData() {
-	const storyblokApi = new StoryblokClient({
-		accessToken: 'OurklwV5XsDJTIE1NJaD2wtt',
-	})
+  const storyblokApi = new StoryblokClient({
+    accessToken: 'OurklwV5XsDJTIE1NJaD2wtt',
+  })
 
-	const res = await storyblokApi.get(
-		`cdn/stories/home`,
-		{ version: 'draft' },
-		{
-			// cache: 'no-store',
-			next: {
-				revalidate: 3600,
-			},
-		}
-	)
-	const { date, etag } = res.headers as any
+  const res = await storyblokApi.get(
+    `cdn/stories/home`,
+    { version: 'draft' },
+    {
+      // cache: 'no-store',
+      next: {
+        revalidate: 3600,
+      },
+    },
+  )
+  const { date, etag } = res.headers as any
 
-	console.log(date, etag)
+  console.log(date, etag)
 
-	return res
+  return res
 }
 
 /**

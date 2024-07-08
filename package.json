@@ -1,124 +1,122 @@
 {
-	"name": "storyblok-js-client",
-	"version": "5.0.0",
-	"description": "Universal JavaScript SDK for Storyblok's API",
-	"license": "MIT",
-	"types": "./dist/types/entry.esm.d.ts",
-	"main": "./dist/index.umd.js",
-	"module": "./dist/index.mjs",
-	"unpkg": "./dist/index.umd.js",
-	"jsdelivr": "./dist/index.umd.js",
-	"source": "src/index.ts",
-	"exports": {
-		".": {
-			"import": "./dist/index.mjs",
-			"require": "./dist/index.umd.js",
-			"types": "./dist/types/entry.esm.d.ts"
-		},
-		"./richTextResolver": {
-			"import": "./dist/richTextResolver.mjs",
-			"require": "./dist/richTextResolver.umd.js",
-			"types": "./dist/types/richTextResolver.d.ts"
-		},
-		"./schema": {
-			"import": "./dist/schema.mjs",
-			"require": "./dist/schema.umd.js",
-			"types": "./dist/types/schema.d.ts"
-		}
-	},
-	"files": [
-		"dist",
-		"src",
-		"tests"
-	],
-	"scripts": {
-		"lint": "eslint --max-warnings=0 './src/**/*.{ts,js}'",
-		"prettier": "prettier . --write",
-		"build": "node vite.build.mjs && tsc",
-		"demo": "vite serve playground",
-		"test": "vitest run",
-		"prepare": "npm run build"
-	},
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/storyblok/storyblok-js-client.git"
-	},
-	"keywords": [
-		"storyblok"
-	],
-	"author": "Alexander Feiglstorfer <delooks@gmail.com>",
-	"bugs": {
-		"url": "https://github.com/storyblok/storyblok-js-client/issues"
-	},
-	"homepage": "https://github.com/storyblok/storyblok-js-client#readme",
-	"devDependencies": {
-		"@commitlint/cli": "^18.4.3",
-		"@commitlint/config-conventional": "^18.4.3",
-		"@tsconfig/recommended": "^1.0.3",
-		"@typescript-eslint/eslint-plugin": "^6.12.0",
-		"@typescript-eslint/parser": "^6.12.0",
-		"eslint": "^8.54.0",
-		"eslint-config-prettier": "^9.0.0",
-		"husky": "^9.0.6",
-		"isomorphic-fetch": "^3.0.0",
-		"prettier": "^3.1.0",
-		"typescript": "^5.3.2",
-		"vite": "^5.0.2",
-		"vitest": "^1.0.4"
-	},
-	"release": {
-		"branches": [
-			"main"
-		]
-	},
-	"publishConfig": {
-		"access": "public"
-	},
-	"lint-staged": {
-		"*.{js,jsx,css,ts,tsx}": [
-			"prettier --write",
-			"eslint"
-		],
-		"*.md": [
-			"prettier --write"
-		]
-	},
-	"commitlint": {
-		"extends": [
-			"@commitlint/config-conventional"
-		]
-	},
-	"eslintConfig": {
-		"env": {
-			"browser": true,
-			"es2021": true,
-			"node": true
-		},
-		"extends": [
-			"eslint:recommended",
-			"plugin:@typescript-eslint/recommended",
-			"prettier"
-		],
-		"parser": "@typescript-eslint/parser",
-		"parserOptions": {
-			"ecmaVersion": "latest",
-			"sourceType": "module"
-		},
-		"plugins": [
-			"@typescript-eslint"
-		],
-		"rules": {
-			"@typescript-eslint/no-explicit-any": "off",
-			"@typescript-eslint/no-var-requires": 1,
-			"no-async-promise-executor": 0,
-			"no-undef": 0
-		}
-	},
-	"prettier": {
-		"semi": false,
-		"singleQuote": true,
-		"tabWidth": 2,
-		"trailingComma": "es5",
-		"useTabs": true
-	}
+  "name": "storyblok-js-client",
+  "version": "5.0.0",
+  "description": "Universal JavaScript SDK for Storyblok's API",
+  "license": "MIT",
+  "types": "./dist/types/entry.esm.d.ts",
+  "main": "./dist/index.umd.js",
+  "module": "./dist/index.mjs",
+  "unpkg": "./dist/index.umd.js",
+  "jsdelivr": "./dist/index.umd.js",
+  "source": "src/index.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.umd.js",
+      "types": "./dist/types/entry.esm.d.ts"
+    },
+    "./richTextResolver": {
+      "import": "./dist/richTextResolver.mjs",
+      "require": "./dist/richTextResolver.umd.js",
+      "types": "./dist/types/richTextResolver.d.ts"
+    },
+    "./schema": {
+      "import": "./dist/schema.mjs",
+      "require": "./dist/schema.umd.js",
+      "types": "./dist/types/schema.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "src",
+    "tests"
+  ],
+  "scripts": {
+    "lint": "eslint --max-warnings=0 './src/**/*.{ts,js}'",
+    "prettier": "prettier . --write",
+    "build": "node vite.build.mjs && tsc",
+    "demo": "vite serve playground",
+    "test": "vitest run",
+    "prepare": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/storyblok/storyblok-js-client.git"
+  },
+  "keywords": [
+    "storyblok"
+  ],
+  "author": "Alexander Feiglstorfer <delooks@gmail.com>",
+  "bugs": {
+    "url": "https://github.com/storyblok/storyblok-js-client/issues"
+  },
+  "homepage": "https://github.com/storyblok/storyblok-js-client#readme",
+  "devDependencies": {
+    "@commitlint/cli": "^18.4.3",
+    "@commitlint/config-conventional": "^18.4.3",
+    "@tsconfig/recommended": "^1.0.3",
+    "@typescript-eslint/eslint-plugin": "^6.12.0",
+    "@typescript-eslint/parser": "^6.12.0",
+    "eslint": "^8.54.0",
+    "eslint-config-prettier": "^9.0.0",
+    "husky": "^9.0.6",
+    "isomorphic-fetch": "^3.0.0",
+    "prettier": "^3.1.0",
+    "typescript": "^5.3.2",
+    "vite": "^5.0.2",
+    "vitest": "^1.0.4"
+  },
+  "release": {
+    "branches": [
+      "main"
+    ]
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "lint-staged": {
+    "*.{js,jsx,css,ts,tsx}": [
+      "prettier --write",
+      "eslint"
+    ],
+    "*.md": [
+      "prettier --write"
+    ]
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "eslintConfig": {
+    "env": {
+      "browser": true,
+      "es2021": true,
+      "node": true
+    },
+    "extends": [
+      "eslint:recommended",
+      "plugin:@typescript-eslint/recommended",
+      "prettier"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+      "ecmaVersion": "latest",
+      "sourceType": "module"
+    },
+    "plugins": [
+      "@typescript-eslint"
+    ],
+    "rules": {
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-var-requires": 1,
+      "no-async-promise-executor": 0,
+      "no-undef": 0
+    }
+  },
+  "prettier": {
+    "semi": false,
+    "singleQuote": true,
+    "tabWidth": 2
+  }
 }
