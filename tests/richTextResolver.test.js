@@ -48,7 +48,7 @@ test('call render function with an object.content equals an empty return an empt
 
 test('styled mark to add span with red class', () => {
   expect(resolver.render(SPAN_WITH_RED_CLASS)).toBe(
-    '<span class="red">red text</span>',
+    '<span class="red">red text</span>'
   )
 })
 
@@ -96,43 +96,43 @@ const docWithImage = {
 
 test('image to generate img tag with optimization', () => {
   expect(resolver.render(docWithImage, { optimizeImages: true })).toBe(
-    '<img src="https://a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/" />',
+    '<img src="https://a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/" />'
   )
 })
 
 test('image to generate img tag with optimization and loading lazy', () => {
   expect(
-    resolver.render(docWithImage, { optimizeImages: { loading: 'lazy' } }),
+    resolver.render(docWithImage, { optimizeImages: { loading: 'lazy' } })
   ).toBe(
-    '<img loading="lazy" src="https://a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/" />',
+    '<img loading="lazy" src="https://a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/" />'
   )
 })
 
 test('image to generate img tag with optimization and width', () => {
   expect(
-    resolver.render(docWithImage, { optimizeImages: { width: 500 } }),
+    resolver.render(docWithImage, { optimizeImages: { width: 500 } })
   ).toBe(
-    '<img width="500" src="https://a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/500x0" />',
+    '<img width="500" src="https://a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/500x0" />'
   )
 })
 
 test('image to generate img tag with optimization and height', () => {
   expect(
-    resolver.render(docWithImage, { optimizeImages: { height: 350 } }),
+    resolver.render(docWithImage, { optimizeImages: { height: 350 } })
   ).toBe(
-    '<img height="350" src="https://a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/0x350" />',
+    '<img height="350" src="https://a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/0x350" />'
   )
 })
 
 test('image to generate img tag with optimization and custom class', () => {
   expect(
-    resolver.render(docWithImage, { optimizeImages: { class: 'w-full my-8' } }),
+    resolver.render(docWithImage, { optimizeImages: { class: 'w-full my-8' } })
   ).toBe(
-    '<img class="w-full my-8" src="https://a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/" />',
+    '<img class="w-full my-8" src="https://a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/" />'
   )
 
   expect(resolver.render(docWithImage, { optimizeImages: { class: '' } })).toBe(
-    '<img src="https://a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/" />',
+    '<img src="https://a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/" />'
   )
 })
 
@@ -140,9 +140,9 @@ test('image to generate img tag with optimization and filter blur', () => {
   expect(
     resolver.render(docWithImage, {
       optimizeImages: { filters: { blur: 10 } },
-    }),
+    })
   ).toBe(
-    '<img src="https://a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/0x0/filters:blur(10)" />',
+    '<img src="https://a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/0x0/filters:blur(10)" />'
   )
 })
 
@@ -150,9 +150,9 @@ test('image to generate img tag with optimization and filter brightness', () => 
   expect(
     resolver.render(docWithImage, {
       optimizeImages: { filters: { brightness: 15 } },
-    }),
+    })
   ).toBe(
-    '<img src="https://a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/0x0/filters:brightness(15)" />',
+    '<img src="https://a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/0x0/filters:brightness(15)" />'
   )
 })
 
@@ -160,25 +160,25 @@ test('image to generate img tag with optimization and filter fill', () => {
   expect(
     resolver.render(docWithImage, {
       optimizeImages: { filters: { fill: 'transparent' } },
-    }),
+    })
   ).toBe(
-    '<img src="https://a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/0x0/filters:fill(transparent)" />',
+    '<img src="https://a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/0x0/filters:fill(transparent)" />'
   )
 
   expect(
     resolver.render(docWithImage, {
       optimizeImages: { filters: { fill: 'FFCC99' } },
-    }),
+    })
   ).toBe(
-    '<img src="https://a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/0x0/filters:fill(FFCC99)" />',
+    '<img src="https://a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/0x0/filters:fill(FFCC99)" />'
   )
 
   expect(
     resolver.render(docWithImage, {
       optimizeImages: { filters: { fill: 'INVALID' } },
-    }),
+    })
   ).toBe(
-    '<img src="https://a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/" />',
+    '<img src="https://a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/" />'
   )
 })
 
@@ -186,33 +186,33 @@ test('image to generate img tag with optimization and filter format', () => {
   expect(
     resolver.render(docWithImage, {
       optimizeImages: { filters: { format: 'png' } },
-    }),
+    })
   ).toBe(
-    '<img src="https://a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/0x0/filters:format(png)" />',
+    '<img src="https://a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/0x0/filters:format(png)" />'
   )
 
   expect(
     resolver.render(docWithImage, {
       optimizeImages: { filters: { format: 'webp' } },
-    }),
+    })
   ).toBe(
-    '<img src="https://a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/0x0/filters:format(webp)" />',
+    '<img src="https://a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/0x0/filters:format(webp)" />'
   )
 
   expect(
     resolver.render(docWithImage, {
       optimizeImages: { filters: { format: 'jpeg' } },
-    }),
+    })
   ).toBe(
-    '<img src="https://a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/0x0/filters:format(jpeg)" />',
+    '<img src="https://a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/0x0/filters:format(jpeg)" />'
   )
 
   expect(
     resolver.render(docWithImage, {
       optimizeImages: { filters: { format: 'invalidFormat' } },
-    }),
+    })
   ).toBe(
-    '<img src="https://a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/" />',
+    '<img src="https://a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/" />'
   )
 })
 
@@ -220,9 +220,9 @@ test('image to generate img tag with optimization and filter grayscale', () => {
   expect(
     resolver.render(docWithImage, {
       optimizeImages: { filters: { grayscale: true } },
-    }),
+    })
   ).toBe(
-    '<img src="https://a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/0x0/filters:grayscale()" />',
+    '<img src="https://a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/0x0/filters:grayscale()" />'
   )
 })
 
@@ -230,9 +230,9 @@ test('image to generate img tag with optimization and filter quality', () => {
   expect(
     resolver.render(docWithImage, {
       optimizeImages: { filters: { quality: 90 } },
-    }),
+    })
   ).toBe(
-    '<img src="https://a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/0x0/filters:quality(90)" />',
+    '<img src="https://a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/0x0/filters:quality(90)" />'
   )
 })
 
@@ -240,30 +240,30 @@ test('image to generate img tag with optimization and filter rotate', () => {
   expect(
     resolver.render(docWithImage, {
       optimizeImages: { filters: { rotate: 90 } },
-    }),
+    })
   ).toBe(
-    '<img src="https://a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/0x0/filters:rotate(90)" />',
+    '<img src="https://a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/0x0/filters:rotate(90)" />'
   )
   expect(
     resolver.render(docWithImage, {
       optimizeImages: { filters: { rotate: 180 } },
-    }),
+    })
   ).toBe(
-    '<img src="https://a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/0x0/filters:rotate(180)" />',
+    '<img src="https://a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/0x0/filters:rotate(180)" />'
   )
   expect(
     resolver.render(docWithImage, {
       optimizeImages: { filters: { rotate: 270 } },
-    }),
+    })
   ).toBe(
-    '<img src="https://a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/0x0/filters:rotate(270)" />',
+    '<img src="https://a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/0x0/filters:rotate(270)" />'
   )
   expect(
     resolver.render(docWithImage, {
       optimizeImages: { filters: { rotate: 9999 } },
-    }),
+    })
   ).toBe(
-    '<img src="https://a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/" />',
+    '<img src="https://a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/" />'
   )
 })
 
@@ -271,17 +271,17 @@ test('image to generate img tag with optimization and srcset', () => {
   expect(
     resolver.render(docWithImage, {
       optimizeImages: { srcset: [360, 1024, 1500] },
-    }),
+    })
   ).toBe(
-    '<img srcset="//a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/360x0 360w, //a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/1024x0 1024w, //a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/1500x0 1500w" src="https://a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/" />',
+    '<img srcset="//a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/360x0 360w, //a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/1024x0 1024w, //a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/1500x0 1500w" src="https://a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/" />'
   )
 
   expect(
     resolver.render(docWithImage, {
       optimizeImages: { srcset: [[360, 360], 1024, 1500] },
-    }),
+    })
   ).toBe(
-    '<img srcset="//a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/360x360 360w, //a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/1024x0 1024w, //a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/1500x0 1500w" src="https://a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/" />',
+    '<img srcset="//a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/360x360 360w, //a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/1024x0 1024w, //a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/1500x0 1500w" src="https://a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/" />'
   )
 })
 
@@ -295,9 +295,9 @@ test('image to generate img tag with optimization and sizes', () => {
           '1500px',
         ],
       },
-    }),
+    })
   ).toBe(
-    '<img sizes="(max-width: 767px) 100vw, (max-width: 1024px) 768px, 1500px" src="https://a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/" />',
+    '<img sizes="(max-width: 767px) 100vw, (max-width: 1024px) 768px, 1500px" src="https://a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/" />'
   )
 })
 
@@ -312,9 +312,9 @@ test('image to generate img tag with optimization and srcset and sizes', () => {
           '1500px',
         ],
       },
-    }),
+    })
   ).toBe(
-    '<img srcset="//a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/360x0 360w, //a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/1024x0 1024w, //a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/1500x0 1500w" sizes="(max-width: 767px) 100vw, (max-width: 1024px) 768px, 1500px" src="https://a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/" />',
+    '<img srcset="//a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/360x0 360w, //a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/1024x0 1024w, //a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/1500x0 1500w" sizes="(max-width: 767px) 100vw, (max-width: 1024px) 768px, 1500px" src="https://a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/" />'
   )
 })
 
@@ -344,7 +344,7 @@ test('image to generate img tag with optimization and multiple options', () => {
   }
 
   expect(resolver.render(docWithImage, options)).toBe(
-    '<img srcset="//a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/360x0/filters:blur(1):brightness(5):fill(transparent):format(webp):grayscale():quality(95):rotate(180) 360w, //a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/1024x0/filters:blur(1):brightness(5):fill(transparent):format(webp):grayscale():quality(95):rotate(180) 1024w, //a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/1500x0/filters:blur(1):brightness(5):fill(transparent):format(webp):grayscale():quality(95):rotate(180) 1500w" sizes="(max-width: 767px) 100vw, (max-width: 1024px) 768px, 1500px" width="640" height="360" loading="lazy" class="w-full" src="https://a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/640x360/filters:blur(1):brightness(5):fill(transparent):format(webp):grayscale():quality(95):rotate(180)" />',
+    '<img srcset="//a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/360x0/filters:blur(1):brightness(5):fill(transparent):format(webp):grayscale():quality(95):rotate(180) 360w, //a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/1024x0/filters:blur(1):brightness(5):fill(transparent):format(webp):grayscale():quality(95):rotate(180) 1024w, //a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/1500x0/filters:blur(1):brightness(5):fill(transparent):format(webp):grayscale():quality(95):rotate(180) 1500w" sizes="(max-width: 767px) 100vw, (max-width: 1024px) 768px, 1500px" width="640" height="360" loading="lazy" class="w-full" src="https://a.storyblok.com/f/000000/00a00a00a0/image-name.png/m/640x360/filters:blur(1):brightness(5):fill(transparent):format(webp):grayscale():quality(95):rotate(180)" />'
   )
 })
 
@@ -447,7 +447,7 @@ test('escape html marks from text', () => {
   }
 
   expect(resolver.render(doc)).toBe(
-    '<p>Simple phrases to test escapes:</p><ul><li><p>A dummy apostrophe&#39;s test</p></li><li><p>&lt;p&gt;Just a tag&lt;/p&gt;</p></li><li><p>&lt;p&gt;Dummy &amp; test&lt;/p&gt;</p></li></ul>',
+    '<p>Simple phrases to test escapes:</p><ul><li><p>A dummy apostrophe&#39;s test</p></li><li><p>&lt;p&gt;Just a tag&lt;/p&gt;</p></li><li><p>&lt;p&gt;Dummy &amp; test&lt;/p&gt;</p></li></ul>'
   )
 })
 
@@ -495,7 +495,7 @@ test('test with a custom schema from StoryblokRich', () => {
   })
 
   const result = internalClient.richTextResolver.render(
-    LINK_WITH_ANCHOR_FOR_CUSTOM_SCHEMA,
+    LINK_WITH_ANCHOR_FOR_CUSTOM_SCHEMA
   )
   const expected =
     '<a href="/link%anchor-text" target="_blank" uuid="300aeadc-c82d-4529-9484-f3f8f09cf9f5">link text from custom schema</a>'

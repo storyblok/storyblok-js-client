@@ -15,7 +15,7 @@ export class SbHelpers {
   public getOptionsPage = (
     options: ISbStoriesParams,
     perPage = 25,
-    page = 1,
+    page = 1
   ) => {
     return {
       ...options,
@@ -50,7 +50,7 @@ export class SbHelpers {
   public stringify(
     params: ISbParams,
     prefix?: string,
-    isArray?: boolean,
+    isArray?: boolean
   ): string {
     const pairs = []
     for (const key in params) {
@@ -64,7 +64,7 @@ export class SbHelpers {
         pair = this.stringify(
           value,
           prefix ? prefix + encodeURIComponent('[' + enkey + ']') : enkey,
-          Array.isArray(value),
+          Array.isArray(value)
         )
       } else {
         pair =

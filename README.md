@@ -240,7 +240,7 @@ With this parameter, you can resolve relations with live updates in the Storyblo
 window.storyblok.resolveRelations(
   storyObject,
   relationsToResolve,
-  callbackWhenResolved,
+  callbackWhenResolved
 )
 ```
 
@@ -252,7 +252,7 @@ window.storyblok.on('input', (event) => {
   window.storyblok.resolveRelations(
     event.story,
     ['post.author', 'post.categories'],
-    () => {},
+    () => {}
   )
 })
 ```
@@ -281,7 +281,7 @@ Storyblok.get(
     mode: 'cors',
     cache: 'no-cache',
     body: JSON.stringify(data),
-  },
+  }
 )
   .then((response) => {
     console.log(response)

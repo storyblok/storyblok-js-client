@@ -51,7 +51,7 @@ describe('getAll function', () => {
         oauthToken: process.env.VITE_OAUTH_TOKEN,
       })
       const result = await StoryblokManagement.getAll(
-        `spaces/${spaceId}/stories`,
+        `spaces/${spaceId}/stories`
       )
       expect(result.length).toBeGreaterThan(0)
     })

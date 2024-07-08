@@ -113,7 +113,7 @@ class Storyblok {
       headers.set(STORYBLOK_AGENT, STORYBLOK_JS_CLIENT_AGENT.defaultAgentName)
       headers.set(
         STORYBLOK_JS_CLIENT_AGENT.defaultAgentVersion,
-        STORYBLOK_JS_CLIENT_AGENT.packageVersion,
+        STORYBLOK_JS_CLIENT_AGENT.packageVersion
       )
     }
 
@@ -197,7 +197,7 @@ class Storyblok {
 
   private factoryParamOptions(
     url: string,
-    params: ISbStoriesParams,
+    params: ISbStoriesParams
   ): ISbStoriesParams {
     if (this.helpers.isCDNUrl(url)) {
       return this.parseParams(params)
@@ -210,11 +210,11 @@ class Storyblok {
     url: string,
     params: ISbStoriesParams,
     per_page: number,
-    page: number,
+    page: number
   ): Promise<ISbResult> {
     const query = this.factoryParamOptions(
       url,
-      this.helpers.getOptionsPage(params, per_page, page),
+      this.helpers.getOptionsPage(params, per_page, page)
     )
 
     return this.cacheResponse(url, query)
@@ -223,7 +223,7 @@ class Storyblok {
   public get(
     slug: string,
     params?: ISbStoriesParams,
-    fetchOptions?: ISbCustomFetch,
+    fetchOptions?: ISbCustomFetch
   ): Promise<ISbResult> {
     if (!params) params = {} as ISbStoriesParams
     const url = `/${slug}`
@@ -238,7 +238,7 @@ class Storyblok {
     slug: string,
     params: ISbStoriesParams,
     entity?: string,
-    fetchOptions?: ISbCustomFetch,
+    fetchOptions?: ISbCustomFetch
   ): Promise<any[]> {
     const perPage = params?.per_page || 25
     const url = `/${slug}`
@@ -255,18 +255,18 @@ class Storyblok {
       this.helpers.range(firstPage, lastPage),
       (i: number) => {
         return this.makeRequest(url, params, perPage, i + 1)
-      },
+      }
     )
 
     return this.helpers.flatMap([firstRes, ...restRes], (res: ISbFlatMapped) =>
-      Object.values(res.data[e]),
+      Object.values(res.data[e])
     )
   }
 
   public post(
     slug: string,
     params: ISbStoriesParams | ISbContentMangmntAPI,
-    fetchOptions?: ISbCustomFetch,
+    fetchOptions?: ISbCustomFetch
   ): Promise<ISbResponseData> {
     const url = `/${slug}`
 
@@ -278,7 +278,7 @@ class Storyblok {
   public put(
     slug: string,
     params: ISbStoriesParams | ISbContentMangmntAPI,
-    fetchOptions?: ISbCustomFetch,
+    fetchOptions?: ISbCustomFetch
   ): Promise<ISbResponseData> {
     const url = `/${slug}`
 
@@ -290,7 +290,7 @@ class Storyblok {
   public delete(
     slug: string,
     params: ISbStoriesParams | ISbContentMangmntAPI,
-    fetchOptions?: ISbCustomFetch,
+    fetchOptions?: ISbCustomFetch
   ): Promise<ISbResponseData> {
     const url = `/${slug}`
 
@@ -301,7 +301,7 @@ class Storyblok {
 
   public getStories(
     params: ISbStoriesParams,
-    fetchOptions?: ISbCustomFetch,
+    fetchOptions?: ISbCustomFetch
   ): Promise<ISbStories> {
     this.client.setFetchOptions(fetchOptions)
     this._addResolveLevel(params)
@@ -312,7 +312,7 @@ class Storyblok {
   public getStory(
     slug: string,
     params: ISbStoryParams,
-    fetchOptions?: ISbCustomFetch,
+    fetchOptions?: ISbCustomFetch
   ): Promise<ISbStory> {
     this.client.setFetchOptions(fetchOptions)
     this._addResolveLevel(params)
@@ -341,7 +341,7 @@ class Storyblok {
   private _insertLinks(
     jtree: ISbStoriesParams,
     treeItem: keyof ISbStoriesParams,
-    resolveId: string,
+    resolveId: string
   ): void {
     const node = jtree[treeItem]
 
@@ -373,7 +373,7 @@ class Storyblok {
     if (!this.relations[resolveId][uuid]) return uuid
     if (!this.stringifiedStoriesCache[uuid])
       this.stringifiedStoriesCache[uuid] = JSON.stringify(
-        this.relations[resolveId][uuid],
+        this.relations[resolveId][uuid]
       )
     return JSON.parse(this.stringifiedStoriesCache[uuid])
   }
@@ -382,7 +382,7 @@ class Storyblok {
     jtree: ISbStoriesParams,
     treeItem: keyof ISbStoriesParams,
     fields: string | Array<string>,
-    resolveId: string,
+    resolveId: string
   ): void {
     if (fields.indexOf(`${jtree.component}.${treeItem}`) > -1) {
       if (typeof jtree[treeItem] === 'string') {
@@ -398,7 +398,7 @@ class Storyblok {
   private iterateTree(
     story: ISbStoryData,
     fields: string | Array<string>,
-    resolveId: string,
+    resolveId: string
   ): void {
     const enrich = (jtree: ISbStoriesParams | any) => {
       if (jtree == null) {
@@ -418,12 +418,12 @@ class Storyblok {
               jtree,
               treeItem as keyof ISbStoriesParams,
               fields,
-              resolveId,
+              resolveId
             )
             this._insertLinks(
               jtree,
               treeItem as keyof ISbStoriesParams,
-              resolveId,
+              resolveId
             )
           }
           enrich(jtree[treeItem])
@@ -437,7 +437,7 @@ class Storyblok {
   private async resolveLinks(
     responseData: ISbResponseData,
     params: ISbStoriesParams,
-    resolveId: string,
+    resolveId: string
   ): Promise<void> {
     let links: (ISbStoryData | ISbLinkURLObject | string)[] = []
 
@@ -462,7 +462,7 @@ class Storyblok {
         linksRes.data.stories.forEach(
           (rel: ISbStoryData | ISbLinkURLObject | string) => {
             links.push(rel)
-          },
+          }
         )
       }
     } else {
@@ -480,7 +480,7 @@ class Storyblok {
   private async resolveRelations(
     responseData: ISbResponseData,
     params: ISbStoriesParams,
-    resolveId: string,
+    resolveId: string
   ): Promise<void> {
     let relations = []
 
@@ -533,7 +533,7 @@ class Storyblok {
   private async resolveStories(
     responseData: ISbResponseData,
     params: ISbStoriesParams,
-    resolveId: string,
+    resolveId: string
   ): Promise<void> {
     let relationParams: string[] = []
 
@@ -563,7 +563,7 @@ class Storyblok {
         this.iterateTree(
           this.relations[resolveId][relUuid],
           relationParams,
-          resolveId,
+          resolveId
         )
       }
     }
@@ -585,7 +585,7 @@ class Storyblok {
   private async cacheResponse(
     url: string,
     params: ISbStoriesParams,
-    retries?: number,
+    retries?: number
   ): Promise<ISbResult> {
     const cacheKey = this.helpers.stringify({ url: url, params: params })
     const provider = this.cacheProvider()
@@ -645,7 +645,7 @@ class Storyblok {
 
           if (retries < this.maxRetries) {
             console.log(
-              `Hit rate limit. Retrying in ${this.retriesDelay / 1000} seconds.`,
+              `Hit rate limit. Retrying in ${this.retriesDelay / 1000} seconds.`
             )
             await this.helpers.delay(this.retriesDelay)
             return this.cacheResponse(url, params, retries)
@@ -661,7 +661,7 @@ class Storyblok {
   private throttledRequest(
     type: Method,
     url: string,
-    params: ISbStoriesParams,
+    params: ISbStoriesParams
   ): Promise<unknown> {
     return this.client[type](url, params)
   }

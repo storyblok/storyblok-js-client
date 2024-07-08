@@ -81,7 +81,7 @@ class RichTextResolver {
 
   public render(
     data?: ISbRichtext,
-    options: RenderOptions = { optimizeImages: false },
+    options: RenderOptions = { optimizeImages: false }
   ) {
     if (data && data.content && Array.isArray(data.content)) {
       let html = ''
@@ -121,7 +121,7 @@ class RichTextResolver {
 						}
 					],
 					type: 'doc'
-				}`,
+				}`
     )
     return ''
   }
@@ -218,13 +218,13 @@ class RichTextResolver {
 
     html = html.replace(
       /a.storyblok.com\/f\/(\d+)\/([^.]+)\.(gif|jpg|jpeg|png|tif|tiff|bmp)/g,
-      `a.storyblok.com/f/$1/$2.$3/m/${parameters}`,
+      `a.storyblok.com/f/$1/$2.$3/m/${parameters}`
     )
 
     if (typeof options !== 'boolean' && (options.sizes || options.srcset)) {
       html = html.replace(/<img.*?src=["|'](.*?)["|']/g, (value: string) => {
         const url = value.match(
-          /a.storyblok.com\/f\/(\d+)\/([^.]+)\.(gif|jpg|jpeg|png|tif|tiff|bmp)/g,
+          /a.storyblok.com\/f\/(\d+)\/([^.]+)\.(gif|jpg|jpeg|png|tif|tiff|bmp)/g
         )
 
         if (url && url.length > 0) {

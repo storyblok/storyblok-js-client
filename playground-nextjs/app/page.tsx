@@ -23,7 +23,7 @@ export async function fetchData() {
       next: {
         revalidate: 3600,
       },
-    },
+    }
   )
   const { date, etag } = res.headers as any
 

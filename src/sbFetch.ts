@@ -101,7 +101,7 @@ class SbFetch {
   }
 
   private async _methodHandler(
-    method: Method,
+    method: Method
   ): Promise<ISbResponse | ISbError> {
     let urlString = `${this.baseURL}${this.url}`
 
@@ -110,7 +110,7 @@ class SbFetch {
     if (method === 'get') {
       const helper = new SbHelpers()
       urlString = `${this.baseURL}${this.url}?${helper.stringify(
-        this.parameters,
+        this.parameters
       )}`
     } else {
       body = JSON.stringify(this.parameters)
@@ -141,7 +141,7 @@ class SbFetch {
       }
 
       const response = (await this._responseHandler(
-        fetchResponse,
+        fetchResponse
       )) as ISbResponse
 
       if (this.responseInterceptor && !this.ejectInterceptor) {

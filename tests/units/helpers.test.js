@@ -55,7 +55,7 @@ describe('range function', () => {
 describe('asyncMap function', () => {
   test('asyncMap(undefined, v => v)) should be an empty array', async () => {
     await expect(helpers.asyncMap(undefined, (v) => v)).rejects.toThrow(
-      TypeError,
+      TypeError
     )
   })
 
@@ -69,7 +69,7 @@ describe('asyncMap function', () => {
 
   test('asyncMap([delay(100), delay(200)], v => v) should be an array with undefined values', async () => {
     await expect(
-      helpers.asyncMap([helpers.delay(100), helpers.delay(200)], (v) => v),
+      helpers.asyncMap([helpers.delay(100), helpers.delay(200)], (v) => v)
     ).rejects
   })
 })
