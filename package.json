@@ -45,6 +45,7 @@
     "demo": "vite serve playground",
     "dev:umd": "npx serve ./",
     "test": "vitest run",
+    "test:ui": "vitest --ui",
     "prepare": "npm run build"
   },
   "repository": {
@@ -62,6 +63,7 @@
     "@tsconfig/recommended": "^1.0.3",
     "@typescript-eslint/eslint-plugin": "^6.12.0",
     "@typescript-eslint/parser": "^6.12.0",
+    "@vitest/ui": "^2.0.2",
     "eslint": "^8.54.0",
     "eslint-config-prettier": "^9.0.0",
     "husky": "^9.0.6",
@@ -72,7 +74,7 @@
     "vite": "^5.0.2",
     "vite-plugin-banner": "^0.7.1",
     "vite-plugin-dts": "^3.9.1",
-    "vitest": "^1.0.4"
+    "vitest": "^1.6.0"
   },
   "release": {
     "branches": [
