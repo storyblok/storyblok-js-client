@@ -1,5 +1,5 @@
-import { defineConfig } from "vite";
-import { svelte } from "@sveltejs/vite-plugin-svelte";
+import { defineConfig } from 'vite'
+import { svelte } from '@sveltejs/vite-plugin-svelte'
 import { qrcode } from 'vite-plugin-qrcode'
 import { resolve } from 'pathe'
 
@@ -13,4 +13,4 @@ export default defineConfig({
       'storyblok-js-client': resolve(__dirname, '../../src/index.ts'),
     },
   },
-});
+})
