@@ -323,7 +323,7 @@ With this method you can get single or multiple items. The multiple items are pa
 
 - `[return]` Promise, Object `response`
 - `slug` String, _required_. Path (can be `cdn/stories`, `cdn/tags`, `cdn/datasources`, `cdn/links`)
-- `params` Object, _optional_. Options can be found in the [API documentation](https://www.storyblok.com/docs/api/content-delivery?utm_source=github.com&utm_medium=readme&utm_campaign=storyblok-js-client).
+- `params` Object, _optional_. Options can be found in the [API documentation](https://www.storyblok.com/docs/api/content-delivery/v2?utm_source=github.com&utm_medium=readme&utm_campaign=storyblok-js-client).
 - `fetchOptions` Object, _optional_, Fetch options can be found in the [Fetch API documentation](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch). **_It's important to note that we extended the `RequestInit` interface omitting the `method` parameter. This is because the method is already defined by the Storyblok client._**
 
 **Example**
@@ -355,7 +355,7 @@ With this method you can get all items at once.
 
 - `[return]` Promise, Array of entities
 - `slug` String, _required_. Path (can be `cdn/stories`, `cdn/tags`, `cdn/datasources`, `cdn/links`)
-- `params` Object, _required_. Options can be found in the [API documentation](https://www.storyblok.com/docs/api/content-delivery?utm_source=github.com&utm_medium=readme&utm_campaign=storyblok-js-client).
+- `params` Object, _required_. Options can be found in the [API documentation](https://www.storyblok.com/docs/api/content-delivery/v2?utm_source=github.com&utm_medium=readme&utm_campaign=storyblok-js-client).
 - `entity` String, _optional_. Storyblok entity like stories, links or datasource. It's optional.
 - `fetchOptions` Object, _optional_, Fetch options can be found in the [Fetch API documentation](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch). **_It's important to note that we extended the `RequestInit` interface omitting the `method` parameter. This is because the method is already defined by the Storyblok client._**
 
@@ -386,7 +386,7 @@ Storyblok.getAll('cdn/stories', {
 
 - `[return]` Promise, Object `response`
 - `slug` String, _required_. Path (can be `cdn/stories`, `cdn/tags`, `cdn/datasources`, `cdn/links`)
-- `params` Object, _required_. Options can be found in the [API documentation](https://www.storyblok.com/docs/api/content-delivery?utm_source=github.com&utm_medium=readme&utm_campaign=storyblok-js-client).
+- `params` Object, _required_. Options can be found in the [API documentation](https://www.storyblok.com/docs/api/content-delivery/v2?utm_source=github.com&utm_medium=readme&utm_campaign=storyblok-js-client).
 - `fetchOptions` Object, _optional_, Fetch options can be found in the [Fetch API documentation](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch). **_It's important to note that we extended the `RequestInit` interface omitting the `method` parameter. This is because the method is already defined by the Storyblok client._**
 
 **Example**
@@ -416,7 +416,7 @@ Storyblok.post('spaces/<YOUR_SPACE_ID>/stories', {
 
 - `[return]` Promise, Object `response`
 - `slug` String, _required_. Path (can be `cdn/stories`, `cdn/tags`, `cdn/datasources`, `cdn/links`)
-- `params` Object, _required_. Options can be found in the [API documentation](https://www.storyblok.com/docs/api/content-delivery?utm_source=github.com&utm_medium=readme&utm_campaign=storyblok-js-client).
+- `params` Object, _required_. Options can be found in the [API documentation](https://www.storyblok.com/docs/api/content-delivery/v2?utm_source=github.com&utm_medium=readme&utm_campaign=storyblok-js-client).
 - `fetchOptions` Object, _optional_, Fetch options can be found in the [Fetch API documentation](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch). **_It's important to note that we extended the `RequestInit` interface omitting the `method` parameter. This is because the method is already defined by the Storyblok client._**
 
 **Example**
@@ -446,7 +446,7 @@ Storyblok.put('spaces/<YOUR_SPACE_ID>/stories/1', {
 
 - `[return]` Promise, Object `response`
 - `slug` String, _required_. Path (can be `cdn/stories`, `cdn/tags`, `cdn/datasources`, `cdn/links`)
-- `params` Object, _required_. Options can be found in the [API documentation](https://www.storyblok.com/docs/api/content-delivery?utm_source=github.com&utm_medium=readme&utm_campaign=storyblok-js-client).
+- `params` Object, _required_. Options can be found in the [API documentation](https://www.storyblok.com/docs/api/content-delivery/v2?utm_source=github.com&utm_medium=readme&utm_campaign=storyblok-js-client).
 - `fetchOptions` Object, _optional_, Fetch options can be found in the [Fetch API documentation](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch). **_It's important to note that we extended the `RequestInit` interface omitting the `method` parameter. This is because the method is already defined by the Storyblok client._**
 
 **Example**
