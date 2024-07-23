@@ -223,7 +223,7 @@ Exceptions will be thrown as an object with the following structure:
 where,
 
 ```typescript
-iinterface ISbResponse {
+interface ISbResponse {
   data: any
   status: number
   statusText: string
