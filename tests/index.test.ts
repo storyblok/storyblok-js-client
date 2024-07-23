@@ -1,6 +1,5 @@
-import { SbHelpers } from './../src/sbHelpers';
 import StoryblokClient from '../';
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, beforeEach } from "vitest";
 
 describe('StoryblokClient', () => {
   let client;

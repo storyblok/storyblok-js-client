@@ -1,10 +1,14 @@
 import StoryblokClient from 'storyblok-js-client'
 import './style.css'
 
+const headers = new Headers()
+headers.append('Awiwi', 'Awiwi')
+
 // 2. Initialize the client with the preview token
 // from your space dashboard at https://app.storyblok.com
 const Storyblok = new StoryblokClient({
   accessToken: import.meta.env.VITE_ACCESS_TOKEN as string,
+  headers
 })
 
 try {
