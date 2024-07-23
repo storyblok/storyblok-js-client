@@ -1,9 +1,9 @@
 <div align="center">
-	<a  href="https://www.storyblok.com?utm_source=github.com&utm_medium=readme&utm_campaign=storyblok-js-client"  align="center">
-		<img  src="https://a.storyblok.com/f/88751/1776x360/4d075611c6/sb-js-sdk.png"  alt="Storyblok Logo">
-	</a>
-	<h1 align="center">Universal JavaScript Client for Storyblok's API</h1>
-	<p align="center">This client is a thin wrapper for the <a href="http://www.storyblok.com?utm_source=github.com&utm_medium=readme&utm_campaign=storyblok-js-client" target="_blank">Storyblok</a> API's to use in Node.js and the browser.</p>
+    <a  href="https://www.storyblok.com?utm_source=github.com&utm_medium=readme&utm_campaign=storyblok-js-client"  align="center">
+        <img  src="https://a.storyblok.com/f/88751/1776x360/4d075611c6/sb-js-sdk.png"  alt="Storyblok Logo">
+    </a>
+    <h1 align="center">Universal JavaScript Client for Storyblok's API</h1>
+    <p align="center">This client is a thin wrapper for the <a href="http://www.storyblok.com?utm_source=github.com&utm_medium=readme&utm_campaign=storyblok-js-client" target="_blank">Storyblok</a> API's to use in Node.js and the browser.</p>
 </div>
 
 <p align="center">
@@ -214,9 +214,6 @@ Exceptions will be thrown as an object with the following structure:
   message: Error // an Error object with the error message
   status: number
   response: ISbResponse
-  message: Error // an Error object with the error message
-  status: number
-  response: ISbResponse
 }
 ```
 
@@ -275,10 +272,6 @@ const data = {
     name: 'xy',
     slug: 'xy',
   },
-  story: {
-    name: 'xy',
-    slug: 'xy',
-  },
 }
 
 Storyblok.get(
@@ -291,22 +284,7 @@ Storyblok.get(
     cache: 'no-cache',
     body: JSON.stringify(data),
   }
-  'cdn/stories/home',
-  {
-    version: 'draft',
-  },
-  {
-    mode: 'cors',
-    cache: 'no-cache',
-    body: JSON.stringify(data),
-  }
 )
-  .then((response) => {
-    console.log(response)
-  })
-  .catch((error) => {
-    console.error(error)
-  })
   .then((response) => {
     console.log(response)
   })
@@ -331,14 +309,7 @@ With this method you can get single or multiple items. The multiple items are pa
 ```javascript
 Storyblok.get('cdn/stories/home', {
   version: 'draft',
-  version: 'draft',
 })
-  .then((response) => {
-    console.log(response)
-  })
-  .catch((error) => {
-    console.log(error)
-  })
   .then((response) => {
     console.log(response)
   })
@@ -364,14 +335,7 @@ With this method you can get all items at once.
 ```javascript
 Storyblok.getAll('cdn/stories', {
   version: 'draft',
-  version: 'draft',
 })
-  .then((stories) => {
-    console.log(stories) // an array
-  })
-  .catch((error) => {
-    console.log(error)
-  })
   .then((stories) => {
     console.log(stories) // an array
   })
@@ -394,14 +358,7 @@ Storyblok.getAll('cdn/stories', {
 ```javascript
 Storyblok.post('spaces/<YOUR_SPACE_ID>/stories', {
   story: { name: 'xy', slug: 'xy' },
-  story: { name: 'xy', slug: 'xy' },
 })
-  .then((response) => {
-    console.log(response)
-  })
-  .catch((error) => {
-    console.log(error)
-  })
   .then((response) => {
     console.log(response)
   })
@@ -424,14 +381,7 @@ Storyblok.post('spaces/<YOUR_SPACE_ID>/stories', {
 ```javascript
 Storyblok.put('spaces/<YOUR_SPACE_ID>/stories/1', {
   story: { name: 'xy', slug: 'xy' },
-  story: { name: 'xy', slug: 'xy' },
 })
-  .then((response) => {
-    console.log(response)
-  })
-  .catch((error) => {
-    console.log(error)
-  })
   .then((response) => {
     console.log(response)
   })
@@ -453,12 +403,6 @@ Storyblok.put('spaces/<YOUR_SPACE_ID>/stories/1', {
 
 ```javascript
 Storyblok.delete('spaces/<YOUR_SPACE_ID>/stories/1', null)
-  .then((response) => {
-    console.log(response)
-  })
-  .catch((error) => {
-    console.log(error)
-  })
   .then((response) => {
     console.log(response)
   })
@@ -761,7 +705,6 @@ import MySchema from 'storyblok-js-client/schema'
 
 MySchema.nodes.heading = function (node) {
   let attrs = {}
-  let attrs = {}
 
   if (
     node.content &&
@@ -773,25 +716,7 @@ MySchema.nodes.heading = function (node) {
     attrs = node.content[0].marks[0].attrs
     delete node.content[0].marks
   }
-  if (
-    node.content &&
-    node.content.length === 1 &&
-    node.content[0].marks &&
-    node.content[0].marks.length === 1 &&
-    node.content[0].marks[0].type === 'styled'
-  ) {
-    attrs = node.content[0].marks[0].attrs
-    delete node.content[0].marks
-  }
 
-  return {
-    tag: [
-      {
-        tag: `h${node.attrs.level}`,
-        attrs: attrs,
-      },
-    ],
-  }
   return {
     tag: [
       {
@@ -804,38 +729,6 @@ MySchema.nodes.heading = function (node) {
 
 let rteResolver = new RichTextResolver(MySchema)
 let rendered = rteResolver.render({
-  content: [
-    {
-      content: [
-        {
-          text: 'Normal headline',
-          type: 'text',
-        },
-      ],
-      type: 'paragraph',
-    },
-    {
-      attrs: {
-        level: 3,
-      },
-      content: [
-        {
-          marks: [
-            {
-              attrs: {
-                class: 'margin-bottom-fdsafdsada',
-              },
-              type: 'styled',
-            },
-          ],
-          text: 'Styled headline',
-          type: 'text',
-        },
-      ],
-      type: 'heading',
-    },
-  ],
-  type: 'doc',
   content: [
     {
       content: [
