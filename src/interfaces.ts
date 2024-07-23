@@ -2,7 +2,8 @@ import { ResponseFn } from './sbFetch'
 
 export interface ISbStoriesParams
   extends Partial<ISbStoryData>,
-    ISbMultipleStoriesData {
+    ISbMultipleStoriesData,
+    ISbAssetsParams {
   resolve_level?: number
   _stopResolving?: boolean
   by_slugs?: string
@@ -356,4 +357,12 @@ export interface ISbResponseData<Content = ISbContentType> {
   rels: any
   story: ISbStoryData<Content>
   stories: Array<ISbStoryData<Content>>
+}
+
+export interface ISbAssetsParams {
+  in_folder?: string
+  is_private?: boolean
+  by_alt?: string
+  by_copyright?: string
+  by_title?: string
 }
