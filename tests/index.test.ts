@@ -1,11 +1,44 @@
-import StoryblokClient from '../';
-import { describe, it, expect, beforeEach } from "vitest";
+import StoryblokClient from '../src/';
+import { describe, it, expect, beforeEach, vi } from "vitest";
+import SbFetch from '../src/sbFetch';
+
+// Mocking external dependencies
+vi.mock('../src/sbFetch', () => {
+  const mockGet = vi.fn().mockResolvedValue({ 
+    data: 'Test data', headers: {},
+    status: 200,
+  });
+  const mockPost = vi.fn();
+  const mockSetFetchOptions = vi.fn();
+
+  // Define a mock class with baseURL property
+  class MockSbFetch {
+    private baseURL: string
+    private timeout?: number
+    private headers: Headers
+    constructor() {
+      this.baseURL = 'https://api.storyblok.com/v2';
+    }
+    public get = mockGet;
+    public post = mockPost;
+    public setFetchOptions = mockSetFetchOptions;
+  }
+
+  return {
+    default: MockSbFetch
+  };
+});
 
 describe('StoryblokClient', () => {
   let client;
 
   beforeEach(() => {
-    client = new StoryblokClient({ accessToken: 'test-token' });
+     // Setup default mocks
+    client = new StoryblokClient({ 
+      endpoint: 'https://api.storyblok.com/v2',
+      accessToken: 'test-token',
+      /* fetch: mockFetch, */
+     });
   });
 
   describe('initialization', () => {
@@ -32,6 +65,20 @@ describe('StoryblokClient', () => {
     it('should initialize with an accessToken', () => {
       expect(client.accessToken).toBe('test-token');
     })
+
+    it('should initialize with an endpoint', () => {
+      expect(client.client.baseURL).toBe('https://api.storyblok.com/v2');
+    })
+
+    it('should initialize with a fetch instance', () => {
+      expect(client.client).toBeInstanceOf(SbFetch);
+    })
   })
 
+  describe('get', () => {
+    it('should fetch data from the API', async () => {
+      const result = await client.get('test');
+      expect(result).toEqual({ data: 'Test data', headers: {} });
+    });
+  })
 })
