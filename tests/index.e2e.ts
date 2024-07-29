@@ -1,8 +1,8 @@
-import StoryblokClient from '../src/';
-import { describe, it, expect, beforeEach } from 'vitest';
+import StoryblokClient from '../src/'
+import { describe, it, expect, beforeEach } from 'vitest'
 
 describe('StoryblokClient', () => {
-  let client;
+  let client
 
   beforeEach(() => {
     // Setup default mocks
@@ -10,7 +10,7 @@ describe('StoryblokClient', () => {
       accessToken: 'w0yFvs04aKF2rpz6F8OfIQtt',
       cache: { type: 'memory', clear: 'auto' },
     })
-  });
+  })
 
   describe('getAll function', () => {
     it("getAll('cdn/stories') should return all stories", async () => {
@@ -61,19 +61,19 @@ describe('StoryblokClient', () => {
 
     it("get('cdn/stories') should be cached when is a published version", async () => {
       const cacheVersion = client.cacheVersion()
-  
+
       await client.get('cdn/stories')
-  
+
       expect(cacheVersion).not.toBe(undefined)
-  
+
       const newCacheVersion = client.cacheVersion()
-  
+
       await client.get('cdn/stories')
-  
+
       expect(newCacheVersion).toBe(client.cacheVersion())
-  
+
       await client.get('cdn/stories')
-  
+
       expect(newCacheVersion).toBe(client.cacheVersion())
     })
   })

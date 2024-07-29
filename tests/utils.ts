@@ -1,7 +1,7 @@
 export function headersToObject(headers) {
-  const obj = {};
+  const obj = {}
   for (const [key, value] of headers.entries()) {
-    obj[key] = value;
+    obj[key] = value
   }
-  return obj;
+  return obj
 }

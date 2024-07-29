@@ -105,8 +105,8 @@ class Storyblok {
 
     if (config.headers) {
       const entries = config.headers.entries().toArray()
-      
-      entries.forEach(([key, value]: [string,string]) => {
+
+      entries.forEach(([key, value]: [string, string]) => {
         headers.set(key, value)
       })
     }

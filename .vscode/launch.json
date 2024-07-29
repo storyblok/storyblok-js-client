@@ -6,16 +6,12 @@
       "request": "launch",
       "name": "Debug Vitest Tests",
       "program": "${workspaceFolder}/node_modules/vitest/vitest.mjs",
-      "args": [
-        "run"
-      ],
+      "args": ["run"],
       "autoAttachChildProcesses": true,
       "smartStep": true,
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
-      "skipFiles": [
-        "<node_internals>/**"
-      ]
+      "skipFiles": ["<node_internals>/**"]
     }
   ]
 }

@@ -8,7 +8,7 @@ headers.append('Awiwi', 'Awiwi')
 // from your space dashboard at https://app.storyblok.com
 const Storyblok = new StoryblokClient({
   accessToken: import.meta.env.VITE_ACCESS_TOKEN as string,
-  headers
+  headers,
 })
 
 try {
