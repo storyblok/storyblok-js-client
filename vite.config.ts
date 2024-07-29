@@ -17,10 +17,5 @@ export default defineConfig(() => ({
     banner({
       content: `/**\n * name: ${pkg.name}\n * (c) ${new Date().getFullYear()}\n * description: ${pkg.description}\n * author: ${pkg.author}\n */`,
     }),
-  ],
-  test: {
-    include: ['./tests/**/*.test.ts'],
-    exclude: ['./old-tests'],
-    setupFiles: ['./tests/setup.js'],
-  },
+  ]
 }))

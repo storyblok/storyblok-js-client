@@ -45,6 +45,7 @@
     "demo": "vite serve playground",
     "dev:umd": "npx serve ./",
     "test": "vitest run",
+    "test:e2e": "vitest run -c vitest.config.e2e.ts",
     "test:ui": "vitest --ui",
     "prepare": "npm run build"
   },

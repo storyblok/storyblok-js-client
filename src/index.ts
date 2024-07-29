@@ -232,7 +232,6 @@ class Storyblok {
     const query = this.factoryParamOptions(url, params)
 
     this.client.setFetchOptions(fetchOptions)
-
     return this.cacheResponse(url, query)
   }
 
