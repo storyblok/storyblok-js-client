@@ -24,12 +24,11 @@ jobs:
         run: pnpm install
       - run: pnpm run lint
       - run: pnpm run prettier . --check
+      - name: Sets all variables to unit tests
+        env:
+          VITE_ACCESS_TOKEN: ${{ secrets.VITE_ACCESS_TOKEN }}
+          VITE_OAUTH_TOKEN: ${{ secrets.VITE_OAUTH_TOKEN }}
+          VITE_SPACE_ID: ${{ vars.VITE_SPACE_ID }}
+        run: pnpm run test
 
-    - name: Sets all variables to unit tests
-      env:
-        VITE_ACCESS_TOKEN: ${{ secrets.VITE_ACCESS_TOKEN }}
-        VITE_OAUTH_TOKEN: ${{ secrets.VITE_OAUTH_TOKEN }}
-        VITE_SPACE_ID: ${{ vars.VITE_SPACE_ID }}
-      run: pnpm run test
-
-    - run: pnpm run build
+      - run: pnpm run build
