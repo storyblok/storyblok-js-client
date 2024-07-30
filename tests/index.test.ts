@@ -1,11 +1,14 @@
 import StoryblokClient from '../src/'
 import { describe, it, expect, beforeEach, vi } from 'vitest'
-import SbFetch from '../src/sbFetch'
+import SbFetch, { ResponseFn } from '../src/sbFetch'
+import { SbHelpers } from '../src/sbHelpers'
 
 // Mocking external dependencies
 vi.mock('../src/sbFetch', () => {
   const mockGet = vi.fn().mockResolvedValue({
-    data: 'Test data',
+    data: {
+      links: 'Test data',
+    },
     headers: {},
     status: 200,
   })
@@ -17,8 +20,12 @@ vi.mock('../src/sbFetch', () => {
     private baseURL: string
     private timeout?: number
     private headers: Headers
+    private helpers: any
+    private responseInterceptor?: ResponseFn
     constructor(config: any) {
+      this.helpers = new SbHelpers()
       this.baseURL = config.baseURL || 'https://api.storyblok.com/v2'
+      this.responseInterceptor = config.responseInterceptor
     }
     public get = mockGet
     public post = mockPost
@@ -131,12 +138,26 @@ describe('StoryblokClient', () => {
 
       expect(client.cache.clear).toBe('auto')
     })
+
+    it('should set a responseInterceptor', async () => {
+      const responseInterceptor = (response) => {
+        return response
+      }
+
+      client = new StoryblokClient({
+        responseInterceptor,
+      })
+      await client.getAll('cdn/links')
+      expect(client.client.responseInterceptor).toBe(responseInterceptor)
+    })
   })
 
   describe('get', () => {
     it('should fetch data from the API', async () => {
       const result = await client.get('test')
-      expect(result).toEqual({ data: 'Test data', headers: {} })
+      expect(result).toEqual({ data: {
+        links: 'Test data',
+      }, headers: {} })
     })
   })
 })
