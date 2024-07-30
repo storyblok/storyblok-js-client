@@ -17,8 +17,8 @@ vi.mock('../src/sbFetch', () => {
     private baseURL: string
     private timeout?: number
     private headers: Headers
-    constructor() {
-      this.baseURL = 'https://api.storyblok.com/v2'
+    constructor(config: any) {
+      this.baseURL = config.baseURL || 'https://api.storyblok.com/v2'
     }
     public get = mockGet
     public post = mockPost
@@ -36,7 +36,6 @@ describe('StoryblokClient', () => {
   beforeEach(() => {
     // Setup default mocks
     client = new StoryblokClient({
-      endpoint: 'https://api.storyblok.com/v2',
       accessToken: 'test-token',
       /* fetch: mockFetch, */
     })
@@ -73,6 +72,64 @@ describe('StoryblokClient', () => {
 
     it('should initialize with a fetch instance', () => {
       expect(client.client).toBeInstanceOf(SbFetch)
+    })
+  })
+
+  describe('configuration via options', () => {
+    it('should set a custom endpoint', () => {
+      client = new StoryblokClient({
+        endpoint: 'https://api-custom.storyblok.com/v2',
+      })
+
+      expect(client.client.baseURL).toBe('https://api-custom.storyblok.com/v2')
+
+    })
+    it('https: should set the http endpoint if option is set to false', () => {
+      client = new StoryblokClient({
+        accessToken: 'test-token',
+        https: false,
+      })
+
+      expect(client.client.baseURL).toBe('http://api.storyblok.com/v2')
+    })
+    it('should set the management endpoint v1 if oauthToken is available', () => {
+      client = new StoryblokClient({
+        oauthToken: 'test-token',
+      })
+
+      expect(client.client.baseURL).toBe('https://api.storyblok.com/v1')
+    })
+    it('should set the correct region endpoint', () => {
+      client = new StoryblokClient({
+        region: 'us',
+      })
+
+      expect(client.client.baseURL).toBe('https://api-us.storyblok.com/v2')
+    })
+    it('should set maxRetries', () => {
+      client = new StoryblokClient({
+        maxRetries: 5,
+      })
+
+      expect(client.maxRetries).toBe(5)
+    })
+    // TODO: seems like implmentation is missing
+    it.skip('should desactivate resolveNestedRelations', () => {
+      client = new StoryblokClient({
+        resolveNestedRelations: false,
+      })
+
+      expect(client.resolveNestedRelations).toBeFalsy()
+    })
+
+    it('should set automatic cache clearing', () => {
+      client = new StoryblokClient({
+        cache: {
+          clear: 'auto',
+        },
+      })
+
+      expect(client.cache.clear).toBe('auto')
     })
   })
 
