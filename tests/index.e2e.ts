@@ -7,7 +7,7 @@ describe('StoryblokClient', () => {
   beforeEach(() => {
     // Setup default mocks
     client = new StoryblokClient({
-      accessToken: 'w0yFvs04aKF2rpz6F8OfIQtt',
+      accessToken: process.env.VITE_ACCESS_TOKEN,
       cache: { type: 'memory', clear: 'auto' },
     })
   })
@@ -22,7 +22,6 @@ describe('StoryblokClient', () => {
       const result = await client.getAll('cdn/stories', {
         starts_with: 'testcontent-0',
       })
-      console.log(result.length)
       expect(result.length).toBe(1)
     })
 
