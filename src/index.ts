@@ -75,6 +75,7 @@ class Storyblok {
   private resolveCounter: number
   public relations: RelationsType
   public links: LinksType
+  // TODO: Remove on v7.x.x
   public richTextResolver: RichTextResolver
   public resolveNestedRelations: boolean
   private stringifiedStoriesCache: Record<string, string>

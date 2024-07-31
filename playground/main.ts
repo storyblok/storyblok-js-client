@@ -1,4 +1,6 @@
-import StoryblokClient, { RichtextSchema } from '../'
+import StoryblokClient, { RichtextResolver, RichtextSchema } from '../'
 
 const client = new StoryblokClient({})
-console.log(client, RichtextSchema)
+
+// TODO: Remove when deprecation of `RichtextResolver` is done
+console.log(new RichtextResolver().render())
