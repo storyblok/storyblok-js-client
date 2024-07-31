@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, afterEach } from 'vitest'
-import { SbFetch, ISbFetch } from '../'
+import SbFetch, { ISbFetch } from '../src/sbFetch'
 import { headersToObject } from './utils'
 
 describe('SbFetch', () => {

@@ -5,5 +5,10 @@ export default defineConfig({
     include: ['./tests/**/*.test.ts'],
     exclude: ['./old-tests'],
     setupFiles: ['./tests/setup.js'],
+    coverage: {
+      include: ['src'],
+      reporter: ['text', 'json', 'html'],
+      reportsDirectory: './tests/unit/coverage'
+    },
   },
 })

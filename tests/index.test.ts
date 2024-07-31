@@ -2,6 +2,7 @@ import StoryblokClient from '../src/'
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import SbFetch, { ResponseFn } from '../src/sbFetch'
 import { SbHelpers } from '../src/sbHelpers'
+import { afterEach } from 'vitest'
 
 // Mocking external dependencies
 vi.mock('../src/sbFetch', () => {
@@ -69,15 +70,15 @@ describe('StoryblokClient', () => {
       expect(client.stringifiedStoriesCache).toEqual({})
     })
 
-    it('should initialize with an accessToken', () => {
+    it('should set an accessToken', () => {
       expect(client.accessToken).toBe('test-token')
     })
 
-    it('should initialize with an endpoint', () => {
+    it('should set an endpoint', () => {
       expect(client.client.baseURL).toBe('https://api.storyblok.com/v2')
     })
 
-    it('should initialize with a fetch instance', () => {
+    it('should set a fetch instance', () => {
       expect(client.client).toBeInstanceOf(SbFetch)
     })
   })
@@ -152,6 +153,37 @@ describe('StoryblokClient', () => {
     })
   })
 
+  describe('cache', () => {
+
+    it('should clear the cache', async () => {
+       // Mock the cacheProvider and its flush method
+      client.cacheProvider = vi.fn().mockReturnValue({
+        flush: vi.fn().mockResolvedValue(undefined),
+      });
+      // Mock the clearCacheVersion method
+      client.clearCacheVersion = vi.fn();
+        await client.flushCache();
+
+      expect(client.cacheProvider().flush).toHaveBeenCalled();
+      expect(client.clearCacheVersion).toHaveBeenCalled();
+
+    })
+
+    it('should flush the cache when the draft version is requested and clear is auto', async () => {
+      client = new StoryblokClient({ cache: { clear: 'auto' } });
+      client.cacheProvider = vi.fn().mockReturnValue({
+        flush: vi.fn().mockResolvedValue(undefined),
+      });
+      client.clearCacheVersion = vi.fn();
+      // Setup scenario where draft version triggers cache flush
+      await client.get('test-draft', { version: 'draft' });
+      // Ensure cache flush method was called
+      expect(client.cacheProvider().flush).toHaveBeenCalled();
+      expect(client.clearCacheVersion).toHaveBeenCalled();
+    });
+    
+  })
+
   describe('get', () => {
     it('should fetch data from the API', async () => {
       const result = await client.get('test')
@@ -160,4 +192,23 @@ describe('StoryblokClient', () => {
       }, headers: {} })
     })
   })
+
+  it('should resolve stories when response contains a story or stories', async () => {
+    const mockThrottle = vi.fn().mockResolvedValue({
+      data: { stories: [{ id: 1, title: 'Test Story' }] },
+      headers: {},
+      status: 200
+    });
+    client.throttle = mockThrottle;
+    client.resolveStories = vi.fn().mockResolvedValue({
+      id: 1,
+      title: 'Test Story',
+    });
+  
+    await client.cacheResponse('/test-url', { token: 'test-token', version: 'published' });
+  
+    expect(client.resolveStories).toHaveBeenCalled();
+    expect(client.resolveCounter).toBe(1);
+  });
+
 })
