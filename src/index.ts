@@ -628,13 +628,12 @@ class Storyblok {
           await provider.set(cacheKey, response)
         }
 
-        if (response.data.cv && params.token) {
-          if (
-            params.version === 'draft' &&
-            cacheVersions[params.token] != response.data.cv
-          ) {
-            await this.flushCache()
-          }
+        if (
+            response.data.cv
+            && params.token
+            && cacheVersions[params.token] != response.data.cv
+        ) {
+          await this.flushCache()
           cacheVersions[params.token] = params.cv ? params.cv : response.data.cv
         }
 
