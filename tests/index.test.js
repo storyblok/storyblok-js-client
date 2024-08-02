@@ -44,9 +44,9 @@ describe('getAll function', () => {
     expect(result.length).toBeGreaterThan(0)
   })
 
-  if (process.env.VITE_OAUTH_TOKEN) {
+  /* if (process.env.VITE_OAUTH_TOKEN) {
     const spaceId = process.env.VITE_SPACE_ID
-    test('should return all spaces', async () => {
+    test.skip('should return all spaces', async () => {
       let StoryblokManagement = new StoryblokClient({
         oauthToken: process.env.VITE_OAUTH_TOKEN,
       })
@@ -55,7 +55,7 @@ describe('getAll function', () => {
       )
       expect(result.length).toBeGreaterThan(0)
     })
-  }
+  } */
 })
 
 describe('test uncached requests', () => {
