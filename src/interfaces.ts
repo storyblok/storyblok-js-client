@@ -179,7 +179,7 @@ export interface ISbStories<
   }
   perPage: number
   total: number
-  headers: any
+  headers: Headers
 }
 
 export interface ISbStory<
@@ -191,7 +191,7 @@ export interface ISbStory<
     rels: ISbStoryData[]
     story: ISbStoryData<Content>
   }
-  headers: any
+  headers: Headers
 }
 
 export interface IMemoryType extends ISbResult {
@@ -219,7 +219,7 @@ export interface ISbConfig {
   responseInterceptor?: ResponseFn
   fetch?: typeof fetch
   timeout?: number
-  headers?: any
+  headers?: Record<string, string>
   region?: string
   maxRetries?: number
   https?: boolean
@@ -298,7 +298,7 @@ export interface ISbContentMangmntAPI<
 
 export interface ISbManagmentApiResult {
   data: any
-  headers: any
+  headers: Headers
 }
 
 export interface ISbSchema {
