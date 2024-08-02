@@ -104,9 +104,11 @@ class Storyblok {
     headers.set('Accept', 'application/json')
 
     if (config.headers) {
-      for (const header in config.headers) {
-        headers.set(header, config.headers[header])
-      }
+      const entries = config.headers.entries().toArray()
+
+      entries.forEach(([key, value]: [string, string]) => {
+        headers.set(key, value)
+      })
     }
 
     if (!headers.has(STORYBLOK_AGENT)) {
@@ -230,7 +232,6 @@ class Storyblok {
     const query = this.factoryParamOptions(url, params)
 
     this.client.setFetchOptions(fetchOptions)
-
     return this.cacheResponse(url, query)
   }
 

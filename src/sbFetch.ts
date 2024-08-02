@@ -12,7 +12,7 @@ export type ResponseFn = {
   (arg?: ISbResponse | any): any
 }
 
-interface ISbFetch {
+export interface ISbFetch {
   baseURL: string
   timeout?: number
   headers: Headers
