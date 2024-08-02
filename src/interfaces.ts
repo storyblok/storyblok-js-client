@@ -269,7 +269,7 @@ export type MarkSchema = {
   (node: ISbNode): object
 }
 
-export interface ISbContentMangmntAPI<
+export interface ISbContentManagementAPI<
   Content = ISbComponentType<string> & { [index: string]: any },
 > {
   story: {
@@ -287,7 +287,7 @@ export interface ISbContentMangmntAPI<
     translated_slugs_attributes?: {
       path: string
       name: string | null
-      lang: ISbContentMangmntAPI['lang']
+      lang: ISbContentManagementAPI['lang']
     }[]
   }
   force_update?: '1' | unknown
@@ -296,7 +296,7 @@ export interface ISbContentMangmntAPI<
   lang?: string
 }
 
-export interface ISbManagmentApiResult {
+export interface ISbManagementApiResult {
   data: any
   headers: any
 }
