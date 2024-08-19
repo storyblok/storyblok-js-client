@@ -16,6 +16,8 @@ try {
     version: 'draft',
   })
 
+  console.log(Storyblok.cacheVersions())
+
   document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <pre>
     <code>
