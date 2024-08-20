@@ -2,7 +2,8 @@ import { ResponseFn } from './sbFetch'
 
 export interface ISbStoriesParams
   extends Partial<ISbStoryData>,
-    ISbMultipleStoriesData, ISbAssetsParams {
+    ISbMultipleStoriesData,
+    ISbAssetsParams {
   resolve_level?: number
   _stopResolving?: boolean
   by_slugs?: string
