@@ -1,11 +1,18 @@
 {
   "name": "storyblok-js-client",
+  "module": "./dist/index.mjs",
   "version": "5.0.0",
+  "packageManager": "pnpm@9.1.4",
   "description": "Universal JavaScript SDK for Storyblok's API",
   "license": "MIT",
+  "keywords": [
+    "storyblok",
+    "javascript",
+    "api"
+  ],
+  "sideEffects": false,
   "types": "./dist/types/entry.esm.d.ts",
   "main": "./dist/index.umd.js",
-  "module": "./dist/index.mjs",
   "unpkg": "./dist/index.umd.js",
   "jsdelivr": "./dist/index.umd.js",
   "source": "src/index.ts",
@@ -36,6 +43,7 @@
     "prettier": "prettier . --write",
     "build": "node vite.build.mjs && tsc",
     "demo": "vite serve playground",
+    "dev:umd": "npx serve ./",
     "test": "vitest run",
     "prepare": "npm run build"
   },
@@ -43,9 +51,6 @@
     "type": "git",
     "url": "https://github.com/storyblok/storyblok-js-client.git"
   },
-  "keywords": [
-    "storyblok"
-  ],
   "author": "Alexander Feiglstorfer <delooks@gmail.com>",
   "bugs": {
     "url": "https://github.com/storyblok/storyblok-js-client/issues"
@@ -61,9 +66,12 @@
     "eslint-config-prettier": "^9.0.0",
     "husky": "^9.0.6",
     "isomorphic-fetch": "^3.0.0",
-    "prettier": "^3.3.2",
+    "kolorist": "^1.8.0",
+    "prettier": "^3.1.0",
     "typescript": "^5.3.2",
     "vite": "^5.0.2",
+    "vite-plugin-banner": "^0.7.1",
+    "vite-plugin-dts": "^3.9.1",
     "vitest": "^1.0.4"
   },
   "release": {
