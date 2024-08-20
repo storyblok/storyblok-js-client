@@ -2,7 +2,8 @@ import { ResponseFn } from './sbFetch'
 
 export interface ISbStoriesParams
   extends Partial<ISbStoryData>,
-    ISbMultipleStoriesData {
+    ISbMultipleStoriesData,
+    ISbAssetsParams {
   resolve_level?: number
   _stopResolving?: boolean
   by_slugs?: string
@@ -351,3 +352,11 @@ export type HtmlEscapes = {
 }
 
 export interface ISbCustomFetch extends Omit<RequestInit, 'method'> {}
+
+export interface ISbAssetsParams {
+  in_folder?: string
+  is_private?: boolean
+  by_alt?: string
+  by_copyright?: string
+  by_title?: string
+}

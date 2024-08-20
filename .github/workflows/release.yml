@@ -1,4 +1,4 @@
-name: release
+name: Release CI
 
 # env:
 #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -6,8 +6,9 @@ name: release
 
 on:
   push:
-    branches:
-      - main
+    branches: [main, next, beta]
+  pull_request:
+    branches: [main, next, beta]
 
 jobs:
   publish:
