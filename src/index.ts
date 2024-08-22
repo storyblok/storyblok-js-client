@@ -211,14 +211,15 @@ class Storyblok {
     url: string,
     params: ISbStoriesParams,
     per_page: number,
-    page: number
+    page: number,
+    fetchOptions?: ISbCustomFetch
   ): Promise<ISbResult> {
     const query = this.factoryParamOptions(
       url,
       this.helpers.getOptionsPage(params, per_page, page)
     )
 
-    return this.cacheResponse(url, query)
+    return this.cacheResponse(url, query, undefined, fetchOptions)
   }
 
   public get(
@@ -230,9 +231,7 @@ class Storyblok {
     const url = `/${slug}`
     const query = this.factoryParamOptions(url, params)
 
-    this.client.setFetchOptions(fetchOptions)
-
-    return this.cacheResponse(url, query)
+    return this.cacheResponse(url, query, undefined, fetchOptions)
   }
 
   public async getAll(
@@ -247,15 +246,19 @@ class Storyblok {
     const e = entity || urlParts[urlParts.length - 1]
 
     const firstPage = 1
-    const firstRes = await this.makeRequest(url, params, perPage, firstPage)
+    const firstRes = await this.makeRequest(
+      url,
+      params,
+      perPage,
+      firstPage,
+      fetchOptions
+    )
     const lastPage = firstRes.total ? Math.ceil(firstRes.total / perPage) : 1
-
-    this.client.setFetchOptions(fetchOptions)
 
     const restRes: any = await this.helpers.asyncMap(
       this.helpers.range(firstPage, lastPage),
       (i: number) => {
-        return this.makeRequest(url, params, perPage, i + 1)
+        return this.makeRequest(url, params, perPage, i + 1, fetchOptions)
       }
     )
 
@@ -271,9 +274,7 @@ class Storyblok {
   ): Promise<ISbResponseData> {
     const url = `/${slug}`
 
-    this.client.setFetchOptions(fetchOptions)
-
-    return Promise.resolve(this.throttle('post', url, params))
+    return Promise.resolve(this.throttle('post', url, params, fetchOptions))
   }
 
   public put(
@@ -283,9 +284,7 @@ class Storyblok {
   ): Promise<ISbResponseData> {
     const url = `/${slug}`
 
-    this.client.setFetchOptions(fetchOptions)
-
-    return Promise.resolve(this.throttle('put', url, params))
+    return Promise.resolve(this.throttle('put', url, params, fetchOptions))
   }
 
   public delete(
@@ -295,19 +294,16 @@ class Storyblok {
   ): Promise<ISbResponseData> {
     const url = `/${slug}`
 
-    this.client.setFetchOptions(fetchOptions)
-
-    return Promise.resolve(this.throttle('delete', url, params))
+    return Promise.resolve(this.throttle('delete', url, params, fetchOptions))
   }
 
   public getStories(
     params: ISbStoriesParams,
     fetchOptions?: ISbCustomFetch
   ): Promise<ISbStories> {
-    this.client.setFetchOptions(fetchOptions)
     this._addResolveLevel(params)
 
-    return this.get('cdn/stories', params)
+    return this.get('cdn/stories', params, fetchOptions)
   }
 
   public getStory(
@@ -315,10 +311,9 @@ class Storyblok {
     params: ISbStoryParams,
     fetchOptions?: ISbCustomFetch
   ): Promise<ISbStory> {
-    this.client.setFetchOptions(fetchOptions)
     this._addResolveLevel(params)
 
-    return this.get(`cdn/stories/${slug}`, params)
+    return this.get(`cdn/stories/${slug}`, params, fetchOptions)
   }
 
   private getToken(): string {
@@ -586,7 +581,8 @@ class Storyblok {
   private async cacheResponse(
     url: string,
     params: ISbStoriesParams,
-    retries?: number
+    retries?: number,
+    fetchOptions?: ISbCustomFetch
   ): Promise<ISbResult> {
     const cacheKey = this.helpers.stringify({ url: url, params: params })
     const provider = this.cacheProvider()
@@ -604,7 +600,7 @@ class Storyblok {
 
     return new Promise(async (resolve, reject) => {
       try {
-        const res = await this.throttle('get', url, params)
+        const res = await this.throttle('get', url, params, fetchOptions)
         if (res.status !== 200) {
           return reject(res)
         }
@@ -662,8 +658,10 @@ class Storyblok {
   private throttledRequest(
     type: Method,
     url: string,
-    params: ISbStoriesParams
+    params: ISbStoriesParams,
+    fetchOptions?: ISbCustomFetch
   ): Promise<unknown> {
+    this.client.setFetchOptions(fetchOptions)
     return this.client[type](url, params)
   }
 

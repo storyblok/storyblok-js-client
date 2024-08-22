@@ -4,6 +4,7 @@ test.js
 test.ts
 test-manager.js
 dist/
+example-dist/
 *.log
 .DS_Store
 .nuxt

@@ -333,9 +333,11 @@ class RichTextResolver {
         let h = `<${tag.tag}`
         if (tag.attrs) {
           for (const key in tag.attrs) {
-            const value = tag.attrs[key]
-            if (value !== null) {
-              h += ` ${key}="${value}"`
+            if (Object.prototype.hasOwnProperty.call(tag.attrs, key)) {
+              const value = tag.attrs[key]
+              if (value !== null) {
+                h += ` ${key}="${value}"`
+              }
             }
           }
         }
