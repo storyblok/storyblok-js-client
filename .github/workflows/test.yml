@@ -9,6 +9,7 @@ jobs:
   test:
     name: Tests
     runs-on: ubuntu-latest
+    environment: test
     strategy:
       matrix:
         node-version: [20]
