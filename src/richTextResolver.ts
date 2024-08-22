@@ -84,7 +84,7 @@ class RichTextResolver {
     options: RenderOptions = { optimizeImages: false }
   ) {
     console.warn(
-      "Warning ⚠️: The RichTextResolver class is deprecated and will be removed in the next major release. Please use the `@storyblok/richtext` instead. https://github.com/storyblok/richtext/"
+      "Warning ⚠️: The RichTextResolver class is deprecated and will be removed in the next major release. Please use the `@storyblok/richtext` package instead. https://github.com/storyblok/richtext/"
     );
     if (data && data.content && Array.isArray(data.content)) {
       let html = ''

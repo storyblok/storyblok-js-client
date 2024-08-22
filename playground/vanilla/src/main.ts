@@ -1,4 +1,5 @@
 import StoryblokClient from 'storyblok-js-client'
+import RichTextResolver from 'storyblok-js-client/richTextResolver'
 import './style.css'
 
 // 2. Initialize the client with the preview token
@@ -11,6 +12,20 @@ try {
   const result = await Storyblok.get('cdn/stories/', {
     version: 'draft',
   })
+  const resolver = new RichTextResolver()
+  
+  const paragraph = {
+    type: 'paragraph',
+    content: [
+      {
+        text: 'Bold and italic',
+        type: 'text',
+        marks: [{ type: 'bold' }, { type: 'italic' }],
+      },
+    ],
+  }
+
+  const html = resolver.render(paragraph)
 
   document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <pre>
@@ -23,4 +38,4 @@ try {
   console.error(error)
 }
 
-console.log(Storyblok)
+
