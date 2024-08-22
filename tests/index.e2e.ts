@@ -64,6 +64,14 @@ describe('StoryblokClient', () => {
       expect(data.story.slug).toBe('testcontent-0')
     })
 
+    it('cdn/stories/testcontent-0 should resolve author relations', async () => {
+      const { data } = await client.get('cdn/stories/testcontent-0', {
+        resolve_relations: 'root.author',
+      })
+      console.log(data)
+      expect(data.story.content.author[0].slug).toBe('edgar-allan-poe')
+    })
+
     it("get('cdn/stories', { by_slugs: 'folder/*' }) should return the specific story", async () => {
       const { data } = await client.get('cdn/stories', {
         by_slugs: 'folder/*',
