@@ -384,7 +384,7 @@ class Storyblok {
       if (typeof jtree[treeItem] === 'string') {
         jtree[treeItem] = this.getStoryReference(resolveId, jtree[treeItem])
       } else if (Array.isArray(jtree[treeItem])) {
-        jtree[treeItem] = jtree[treeItem]
+        jtree[treeItem] = jtree[treeItem as keyof ISbStoriesParams]
           .map((uuid: string) => this.getStoryReference(resolveId, uuid))
           .filter(Boolean)
       }
