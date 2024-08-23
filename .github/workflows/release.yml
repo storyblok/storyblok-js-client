@@ -7,8 +7,6 @@ name: Release CI
 on:
   push:
     branches: [main, next, beta]
-  pull_request:
-    branches: [main, next, beta]
 
 jobs:
   publish:
