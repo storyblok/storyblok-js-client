@@ -104,9 +104,11 @@ class Storyblok {
     headers.set('Accept', 'application/json')
 
     if (config.headers) {
-      for (const header in config.headers) {
-        headers.set(header, config.headers[header])
-      }
+      const entries = config.headers.entries().toArray()
+
+      entries.forEach(([key, value]: [string, string]) => {
+        headers.set(key, value)
+      })
     }
 
     if (!headers.has(STORYBLOK_AGENT)) {
@@ -383,7 +385,7 @@ class Storyblok {
       if (typeof jtree[treeItem] === 'string') {
         jtree[treeItem] = this.getStoryReference(resolveId, jtree[treeItem])
       } else if (Array.isArray(jtree[treeItem])) {
-        jtree[treeItem] = jtree[treeItem]
+        jtree[treeItem] = jtree[treeItem as keyof ISbStoriesParams]
           .map((uuid: string) => this.getStoryReference(resolveId, uuid))
           .filter(Boolean)
       }

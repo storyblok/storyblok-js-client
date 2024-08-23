@@ -14,3 +14,5 @@ gitcommit.fish
 .env.test
 .env
 .next
+
+old-tests/

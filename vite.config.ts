@@ -18,7 +18,4 @@ export default defineConfig(() => ({
       content: `/**\n * name: ${pkg.name}\n * (c) ${new Date().getFullYear()}\n * description: ${pkg.description}\n * author: ${pkg.author}\n */`,
     }),
   ],
-  test: {
-    setupFiles: ['./tests/setup.js'],
-  },
 }))
