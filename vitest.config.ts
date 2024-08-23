@@ -2,7 +2,7 @@ import { defineConfig } from 'vite'
 
 export default defineConfig({
   test: {
-    include: ['./tests/**/*.test.ts'],
+    include: ['./src/**/*.test.ts'],
     setupFiles: ['./tests/setup.js'],
     coverage: {
       include: ['src'],
