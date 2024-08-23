@@ -1,7 +1,7 @@
-import StoryblokClient from '../src/'
+import StoryblokClient from '.'
 import { describe, it, expect, beforeEach, vi } from 'vitest'
-import SbFetch, { ResponseFn } from '../src/sbFetch'
-import { SbHelpers } from '../src/sbHelpers'
+import SbFetch, { ResponseFn } from './sbFetch'
+import { SbHelpers } from './sbHelpers'
 
 // Mocking external dependencies
 vi.mock('../src/sbFetch', () => {

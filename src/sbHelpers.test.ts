@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
-import { SbHelpers } from '../src/sbHelpers'
+import { SbHelpers } from './sbHelpers'
 
 describe('SbHelpers', () => {
   let helpers: SbHelpers

@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, afterEach } from 'vitest'
-import SbFetch, { ISbFetch } from '../src/sbFetch'
-import { headersToObject } from './utils'
+import SbFetch, { ISbFetch } from './sbFetch'
+import { headersToObject } from '../tests/utils'
 
 describe('SbFetch', () => {
   let sbFetch: SbFetch
