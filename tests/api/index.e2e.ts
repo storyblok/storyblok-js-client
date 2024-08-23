@@ -1,4 +1,4 @@
-import StoryblokClient from '../dist/index.mjs'
+import StoryblokClient from 'storyblok-js-client'
 import { describe, it, expect, beforeEach } from 'vitest'
 
 describe('StoryblokClient', () => {
