@@ -1,4 +1,5 @@
 import StoryblokClient from 'storyblok-js-client'
+import RichTextResolver from 'storyblok-js-client/richTextResolver'
 import './style.css'
 
 const headers = new Headers()
@@ -16,6 +17,20 @@ try {
     version: 'draft',
     resolve_relations: 'root.author',
   })
+  const resolver = new RichTextResolver()
+  
+  const paragraph = {
+    type: 'paragraph',
+    content: [
+      {
+        text: 'Bold and italic',
+        type: 'text',
+        marks: [{ type: 'bold' }, { type: 'italic' }],
+      },
+    ],
+  }
+
+  const html = resolver.render(paragraph)
 
   console.log(Storyblok.cacheVersions())
 
@@ -30,4 +45,4 @@ try {
   console.error(error)
 }
 
-console.log(Storyblok)
+
