@@ -4,7 +4,10 @@ import './style.css'
 
 const headers = new Headers()
 headers.append('Awiwi', 'Awiwi')
-
+const headers2 = {
+  'Awiwi': 'Awiwi'
+}
+console.log(headers2.constructor.name)
 // 2. Initialize the client with the preview token
 // from your space dashboard at https://app.storyblok.com
 const Storyblok = new StoryblokClient({
