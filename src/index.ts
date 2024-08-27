@@ -105,7 +105,7 @@ class Storyblok {
     headers.set('Accept', 'application/json')
 
     if (config.headers) {
-      const entries = config.headers.entries().toArray()
+      const entries = (config.headers.constructor.name === 'Headers') ? config.headers.entries().toArray() : Object.entries(config.headers)
 
       entries.forEach(([key, value]: [string, string]) => {
         headers.set(key, value)
