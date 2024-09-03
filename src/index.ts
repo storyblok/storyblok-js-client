@@ -634,7 +634,7 @@ class Storyblok {
             && cacheVersions[params.token] != response.data.cv
         ) {
           await this.flushCache()
-          cacheVersions[params.token] = params.cv || response.data.cv
+          cacheVersions[params.token] = response.data.cv
         }
 
         return resolve(response)
