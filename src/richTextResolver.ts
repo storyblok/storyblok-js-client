@@ -58,6 +58,8 @@ interface ISbFunction<T extends any[], R> {
   (...args: T): R
 }
 
+let hasWarnedAboutDeprecation = false; 
+
 class RichTextResolver {
   private marks: ISbNode
   private nodes: ISbNode
@@ -81,11 +83,15 @@ class RichTextResolver {
 
   public render(
     data?: ISbRichtext,
-    options: RenderOptions = { optimizeImages: false }
+    options: RenderOptions = { optimizeImages: false },
+    deprecationWarning = true
   ) {
-    console.warn(
-      "Warning ⚠️: The RichTextResolver class is deprecated and will be removed in the next major release. Please use the `@storyblok/richtext` package instead. https://github.com/storyblok/richtext/"
-    );
+    if(!hasWarnedAboutDeprecation && deprecationWarning) {
+      console.warn(
+        "Warning ⚠️: The RichTextResolver class is deprecated and will be removed in the next major release. Please use the `@storyblok/richtext` package instead. https://github.com/storyblok/richtext/"
+      );
+      hasWarnedAboutDeprecation = true
+    }
     if (data && data.content && Array.isArray(data.content)) {
       let html = ''
 
