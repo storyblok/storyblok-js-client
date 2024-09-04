@@ -33,9 +33,8 @@ try {
     ],
   }
 
-  const html = resolver.render(paragraph)
-
-  console.log(Storyblok.cacheVersions())
+  const html = resolver.render(paragraph, {}, false)
+  
 
   document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <pre>
