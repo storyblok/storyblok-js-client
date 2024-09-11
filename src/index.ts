@@ -224,11 +224,11 @@ class Storyblok {
     return this.cacheResponse(url, query, undefined, fetchOptions)
   }
 
-  public get(
+  public get<T = any>(
     slug: string,
     params?: ISbStoriesParams,
     fetchOptions?: ISbCustomFetch
-  ): Promise<ISbResult> {
+  ): Promise<ISbResult<T>> {
     if (!params) params = {} as ISbStoriesParams
     const url = `/${slug}`
     const query = this.factoryParamOptions(url, params)
@@ -236,12 +236,12 @@ class Storyblok {
     return this.cacheResponse(url, query, undefined, fetchOptions)
   }
 
-  public async getAll(
+  public async getAll<T = any>(
     slug: string,
     params: ISbStoriesParams,
     entity?: string,
     fetchOptions?: ISbCustomFetch
-  ): Promise<any[]> {
+  ): Promise<T[]> {
     const perPage = params?.per_page || 25
     const url = `/${slug}`
     const urlParts = url.split('/')
@@ -299,20 +299,20 @@ class Storyblok {
     return Promise.resolve(this.throttle('delete', url, params, fetchOptions))
   }
 
-  public getStories(
+  public getStories<T = any>(
     params: ISbStoriesParams,
     fetchOptions?: ISbCustomFetch
-  ): Promise<ISbStories> {
+  ): Promise<ISbStories<T>> {
     this._addResolveLevel(params)
 
     return this.get('cdn/stories', params, fetchOptions)
   }
 
-  public getStory(
+  public getStory<T = any>(
     slug: string,
     params: ISbStoryParams,
     fetchOptions?: ISbCustomFetch
-  ): Promise<ISbStory> {
+  ): Promise<ISbStory<T>> {
     this._addResolveLevel(params)
 
     return this.get(`cdn/stories/${slug}`, params, fetchOptions)
