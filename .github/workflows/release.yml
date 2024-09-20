@@ -7,26 +7,21 @@ name: Release CI
 on:
   push:
     branches: [main, next, beta]
-  pull_request:
-    branches: [main, next, beta]
 
 jobs:
   publish:
     name: Publish to npm
     runs-on: ubuntu-latest
     environment: production
-    strategy:
-      matrix:
-        node-version: [20]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 20
           cache: pnpm
       - name: Install dependencies
         run: pnpm install
