@@ -226,10 +226,9 @@ class Storyblok {
 
   public get(
     slug: string,
-    params?: ISbStoriesParams,
+    params: ISbStoriesParams = {},
     fetchOptions?: ISbCustomFetch
   ): Promise<ISbResult> {
-    if (!params) params = {} as ISbStoriesParams
     const url = `/${slug}`
     const query = this.factoryParamOptions(url, params)
 
@@ -238,7 +237,7 @@ class Storyblok {
 
   public async getAll(
     slug: string,
-    params: ISbStoriesParams,
+    params: ISbStoriesParams = {},
     entity?: string,
     fetchOptions?: ISbCustomFetch
   ): Promise<any[]> {
@@ -271,7 +270,7 @@ class Storyblok {
 
   public post(
     slug: string,
-    params: ISbStoriesParams | ISbContentMangmntAPI,
+    params: ISbStoriesParams | ISbContentMangmntAPI = {},
     fetchOptions?: ISbCustomFetch
   ): Promise<ISbResponseData> {
     const url = `/${slug}`
@@ -281,7 +280,7 @@ class Storyblok {
 
   public put(
     slug: string,
-    params: ISbStoriesParams | ISbContentMangmntAPI,
+    params: ISbStoriesParams | ISbContentMangmntAPI = {},
     fetchOptions?: ISbCustomFetch
   ): Promise<ISbResponseData> {
     const url = `/${slug}`
@@ -291,7 +290,7 @@ class Storyblok {
 
   public delete(
     slug: string,
-    params: ISbStoriesParams | ISbContentMangmntAPI,
+    params: ISbStoriesParams | ISbContentMangmntAPI = {},
     fetchOptions?: ISbCustomFetch
   ): Promise<ISbResponseData> {
     const url = `/${slug}`
@@ -300,7 +299,7 @@ class Storyblok {
   }
 
   public getStories(
-    params: ISbStoriesParams,
+    params: ISbStoriesParams = {},
     fetchOptions?: ISbCustomFetch
   ): Promise<ISbStories> {
     this._addResolveLevel(params)
@@ -310,7 +309,7 @@ class Storyblok {
 
   public getStory(
     slug: string,
-    params: ISbStoryParams,
+    params: ISbStoryParams = {},
     fetchOptions?: ISbCustomFetch
   ): Promise<ISbStory> {
     this._addResolveLevel(params)
