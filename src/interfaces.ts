@@ -230,8 +230,8 @@ export interface ISbConfig {
   endpoint?: string
 }
 
-export interface ISbResult {
-  data: any
+export interface ISbResult<T = any> {
+  data: T
   perPage: number
   total: number
   headers: Headers
