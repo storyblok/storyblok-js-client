@@ -9,7 +9,7 @@ import dts from 'vite-plugin-dts';
 // eslint-disable-next-line no-console
 console.log(`${lightGreen('Storyblok Richtext')} v${pkg.version}`);
 
-export default defineConfig(() => ({
+export default defineConfig({
   plugins: [
     dts({
       insertTypesEntry: true,
@@ -18,4 +18,4 @@ export default defineConfig(() => ({
       content: `/**\n * name: ${pkg.name}\n * (c) ${new Date().getFullYear()}\n * description: ${pkg.description}\n * author: ${pkg.author}\n */`,
     }),
   ],
-}));
+});
