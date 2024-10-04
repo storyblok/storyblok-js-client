@@ -1,19 +1,19 @@
 {
   "name": "vanilla",
-  "private": true,
-  "version": "0.0.0",
   "type": "module",
+  "version": "0.0.0",
+  "private": true,
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview"
   },
+  "dependencies": {
+    "storyblok-js-client": "workspace:^"
+  },
   "devDependencies": {
     "typescript": "^5.4.5",
     "vite": "^5.2.11",
     "vite-plugin-qrcode": "^0.2.3"
-  },
-  "dependencies": {
-    "storyblok-js-client": "workspace:^"
   }
 }

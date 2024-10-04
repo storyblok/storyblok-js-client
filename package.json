@@ -1,45 +1,54 @@
 {
   "name": "storyblok-js-client",
-  "module": "./dist/index.mjs",
+  "type": "module",
   "version": "5.0.0",
   "packageManager": "pnpm@9.1.4",
   "description": "Universal JavaScript SDK for Storyblok's API",
+  "author": "Alexander Feiglstorfer <delooks@gmail.com>",
   "license": "MIT",
+  "homepage": "https://github.com/storyblok/storyblok-js-client#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/storyblok/storyblok-js-client.git"
+  },
+  "bugs": {
+    "url": "https://github.com/storyblok/storyblok-js-client/issues"
+  },
   "keywords": [
     "storyblok",
     "javascript",
     "api"
   ],
   "sideEffects": false,
-  "types": "./dist/types/entry.esm.d.ts",
-  "main": "./dist/index.umd.js",
-  "unpkg": "./dist/index.umd.js",
-  "jsdelivr": "./dist/index.umd.js",
-  "source": "src/index.ts",
   "exports": {
     ".": {
+      "types": "./dist/types/entry.esm.d.ts",
       "import": "./dist/index.mjs",
-      "require": "./dist/index.umd.js",
-      "types": "./dist/types/entry.esm.d.ts"
+      "require": "./dist/index.umd.js"
     },
     "./richTextResolver": {
+      "types": "./dist/types/richTextResolver.d.ts",
       "import": "./dist/richTextResolver.mjs",
-      "require": "./dist/richTextResolver.umd.js",
-      "types": "./dist/types/richTextResolver.d.ts"
+      "require": "./dist/richTextResolver.umd.js"
     },
     "./schema": {
+      "types": "./dist/types/schema.d.ts",
       "import": "./dist/schema.mjs",
-      "require": "./dist/schema.umd.js",
-      "types": "./dist/types/schema.d.ts"
+      "require": "./dist/schema.umd.js"
     }
   },
+  "main": "./dist/index.umd.js",
+  "module": "./dist/index.mjs",
+  "unpkg": "./dist/index.umd.js",
+  "jsdelivr": "./dist/index.umd.js",
+  "types": "./dist/types/entry.esm.d.ts",
+  "source": "src/index.ts",
   "files": [
     "dist",
     "src",
     "tests"
   ],
   "scripts": {
-    "lint": "eslint --max-warnings=0 './src/**/*.{ts,js}'",
     "prettier": "prettier . --write",
     "build": "node vite.build.mjs && tsc",
     "demo": "vite serve playground",
@@ -48,36 +57,27 @@
     "test:e2e": "vitest run -c vitest.config.e2e.ts",
     "test:ui": "vitest --ui --coverage.enabled=true",
     "coverage": "vitest run --coverage",
-    "prepare": "npm run build"
+    "prepare": "npm run build",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/storyblok/storyblok-js-client.git"
-  },
-  "author": "Alexander Feiglstorfer <delooks@gmail.com>",
-  "bugs": {
-    "url": "https://github.com/storyblok/storyblok-js-client/issues"
-  },
-  "homepage": "https://github.com/storyblok/storyblok-js-client#readme",
   "devDependencies": {
-    "@commitlint/cli": "^18.4.3",
-    "@commitlint/config-conventional": "^18.4.3",
+    "@commitlint/cli": "^19.5.0",
+    "@commitlint/config-conventional": "^19.5.0",
+    "@storyblok/eslint-config": "^0.3.0",
     "@tsconfig/recommended": "^1.0.7",
-    "@typescript-eslint/eslint-plugin": "^6.12.0",
-    "@typescript-eslint/parser": "^6.12.0",
-    "@vitest/coverage-v8": "^2.0.5",
-    "@vitest/ui": "^2.0.5",
-    "eslint": "^8.54.0",
-    "eslint-config-prettier": "^9.0.0",
-    "husky": "^9.1.5",
+    "@typescript-eslint/eslint-plugin": "^8.8.0",
+    "@typescript-eslint/parser": "^8.8.0",
+    "@vitest/coverage-v8": "^2.1.2",
+    "@vitest/ui": "^2.1.2",
+    "eslint": "^9.11.1",
     "isomorphic-fetch": "^3.0.0",
     "kolorist": "^1.8.0",
-    "prettier": "^3.3.3",
-    "typescript": "^5.5.4",
-    "vite": "^5.4.2",
-    "vite-plugin-banner": "^0.7.1",
-    "vite-plugin-dts": "^4.0.3",
-    "vitest": "^2.0.5"
+    "typescript": "^5.6.2",
+    "vite": "^5.4.8",
+    "vite-plugin-banner": "^0.8.0",
+    "vite-plugin-dts": "^4.2.3",
+    "vitest": "^2.1.2"
   },
   "release": {
     "branches": [
@@ -95,50 +95,9 @@
   "publishConfig": {
     "access": "public"
   },
-  "lint-staged": {
-    "*.{js,jsx,css,ts,tsx}": [
-      "prettier --write",
-      "eslint"
-    ],
-    "*.md": [
-      "prettier --write"
-    ]
-  },
   "commitlint": {
     "extends": [
       "@commitlint/config-conventional"
     ]
-  },
-  "eslintConfig": {
-    "env": {
-      "browser": true,
-      "es2021": true,
-      "node": true
-    },
-    "extends": [
-      "eslint:recommended",
-      "plugin:@typescript-eslint/recommended",
-      "prettier"
-    ],
-    "parser": "@typescript-eslint/parser",
-    "parserOptions": {
-      "ecmaVersion": "latest",
-      "sourceType": "module"
-    },
-    "plugins": [
-      "@typescript-eslint"
-    ],
-    "rules": {
-      "@typescript-eslint/no-explicit-any": "off",
-      "@typescript-eslint/no-var-requires": 1,
-      "no-async-promise-executor": 0,
-      "no-undef": 0
-    }
-  },
-  "prettier": {
-    "semi": false,
-    "singleQuote": true,
-    "tabWidth": 2,
-    "trailingComma": "es5"
   }
 }

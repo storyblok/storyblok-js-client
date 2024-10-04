@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite'
+import { defineConfig } from 'vite';
 
 export default defineConfig({
   test: {
@@ -7,7 +7,7 @@ export default defineConfig({
     coverage: {
       include: ['src'],
       reporter: ['text', 'json', 'html'],
-      reportsDirectory: './tests/unit/coverage'
+      reportsDirectory: './tests/unit/coverage',
     },
   },
-})
+});

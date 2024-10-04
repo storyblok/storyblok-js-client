@@ -1,16 +1,16 @@
 {
+  "extends": "@tsconfig/svelte/tsconfig.json",
   "compilerOptions": {
-    "module": "ESNext",
-    "isolatedModules": true,
     "target": "ESNext",
+    "module": "ESNext",
     "strict": false,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
     "declaration": true,
     "declarationDir": "dist",
-    "emitDeclarationOnly": true
+    "emitDeclarationOnly": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true
   },
-  "extends": "@tsconfig/svelte/tsconfig.json",
   "$schema": "https://json.schemastore.org/tsconfig",
   "display": "Svelte",
   "include": ["./*.svelte", "./**/*.ts"],
