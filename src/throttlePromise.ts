@@ -21,7 +21,8 @@ interface ISbThrottle {
 }
 
 function isFinite(value: number) {
-  if (value || value === Infinity || value === -Infinity) {
+  // eslint-disable-next-line no-self-compare
+  if (value !== value || value === Infinity || value === -Infinity) {
     return false;
   }
 
