@@ -1,112 +1,114 @@
-import { ISbStoriesParams, ISbResult, AsyncFn, HtmlEscapes } from './interfaces'
+import type { AsyncFn, HtmlEscapes, ISbResult, ISbStoriesParams } from './interfaces';
+
 interface ISbParams extends ISbStoriesParams {
-  [key: string]: any
+  [key: string]: any;
 }
 
-type ArrayFn = (...args: any) => void
+type ArrayFn = (...args: any) => void;
 
-type FlatMapFn = (...args: any) => [] | any
+type FlatMapFn = (...args: any) => [] | any;
 
-type RangeFn = (...args: any) => []
+type RangeFn = (...args: any) => [];
 
 export class SbHelpers {
-  public isCDNUrl = (url = '') => url.indexOf('/cdn/') > -1
+  public isCDNUrl = (url = '') => url.includes('/cdn/');
 
   public getOptionsPage = (
     options: ISbStoriesParams,
     perPage = 25,
-    page = 1
+    page = 1,
   ) => {
     return {
       ...options,
       per_page: perPage,
       page,
-    }
-  }
+    };
+  };
 
-  public delay = (ms: number) => new Promise((res) => setTimeout(res, ms))
+  public delay = (ms: number) => new Promise(res => setTimeout(res, ms));
 
-  public arrayFrom = (length = 0, func: ArrayFn) => [...Array(length)].map(func)
+  public arrayFrom = (length = 0, func: ArrayFn) => Array.from({ length }, func);
 
   public range = (start = 0, end = start): Array<any> => {
-    const length = Math.abs(end - start) || 0
-    const step = start < end ? 1 : -1
-    return this.arrayFrom(length, (_, i: number) => i * step + start)
-  }
+    const length = Math.abs(end - start) || 0;
+    const step = start < end ? 1 : -1;
+    return this.arrayFrom(length, (_, i: number) => i * step + start);
+  };
 
   public asyncMap = async (arr: RangeFn[], func: AsyncFn) =>
-    Promise.all(arr.map(func))
+    Promise.all(arr.map(func));
 
   public flatMap = (arr: ISbResult[] = [], func: FlatMapFn) =>
-    arr.map(func).reduce((xs, ys) => [...xs, ...ys], [])
+    arr.map(func).reduce((xs, ys) => [...xs, ...ys], []);
 
   /**
    * @method stringify
-   * @param  {Object} params
-   * @param  {String} prefix
-   * @param  {Boolean} isArray
-   * @return {String} Stringified object
+   * @param  {object} params
+   * @param  {string} prefix
+   * @param  {boolean} isArray
+   * @return {string} Stringified object
    */
   public stringify(
     params: ISbParams,
     prefix?: string,
-    isArray?: boolean
+    isArray?: boolean,
   ): string {
-    const pairs = []
+    const pairs = [];
     for (const key in params) {
       if (!Object.prototype.hasOwnProperty.call(params, key)) {
-        continue
+        continue;
       }
-      const value = params[key]
-      const enkey = isArray ? '' : encodeURIComponent(key)
-      let pair
+      const value = params[key];
+      const enkey = isArray ? '' : encodeURIComponent(key);
+      let pair;
       if (typeof value === 'object') {
         pair = this.stringify(
           value,
-          prefix ? prefix + encodeURIComponent('[' + enkey + ']') : enkey,
-          Array.isArray(value)
-        )
-      } else {
-        pair =
-          (prefix ? prefix + encodeURIComponent('[' + enkey + ']') : enkey) +
-          '=' +
-          encodeURIComponent(value)
+          prefix ? prefix + encodeURIComponent(`[${enkey}]`) : enkey,
+          Array.isArray(value),
+        );
       }
-      pairs.push(pair)
+      else {
+        pair
+          = `${prefix ? prefix + encodeURIComponent(`[${enkey}]`) : enkey
+          }=${
+            encodeURIComponent(value)}`;
+      }
+      pairs.push(pair);
     }
-    return pairs.join('&')
+    return pairs.join('&');
   }
 
   /**
    * @method getRegionURL
-   * @param  {String} regionCode region code, could be eu, us, cn, ap or ca
-   * @return {String} The base URL of the region
+   * @param  {string} regionCode region code, could be eu, us, cn, ap or ca
+   * @return {string} The base URL of the region
    */
   public getRegionURL(regionCode?: string): string {
-    const EU_API_URL = 'api.storyblok.com'
-    const US_API_URL = 'api-us.storyblok.com'
-    const CN_API_URL = 'app.storyblokchina.cn'
-    const AP_API_URL = 'api-ap.storyblok.com'
-    const CA_API_URL = 'api-ca.storyblok.com'
+    const EU_API_URL = 'api.storyblok.com';
+    const US_API_URL = 'api-us.storyblok.com';
+    const CN_API_URL = 'app.storyblokchina.cn';
+    const AP_API_URL = 'api-ap.storyblok.com';
+    const CA_API_URL = 'api-ca.storyblok.com';
 
     switch (regionCode) {
       case 'us':
-        return US_API_URL
+        return US_API_URL;
       case 'cn':
-        return CN_API_URL
+        return CN_API_URL;
       case 'ap':
-        return AP_API_URL
+        return AP_API_URL;
       case 'ca':
-        return CA_API_URL
+        return CA_API_URL;
       default:
-        return EU_API_URL
+        return EU_API_URL;
     }
   }
 
   /**
    * @method escapeHTML
-   * @param  {String} string text to be parsed
-   * @return {String} Text parsed
+   * @param  {string} string text to be parsed
+   * @return {string} Text parsed
    */
   public escapeHTML = function (string: string) {
     const htmlEscapes = {
@@ -114,14 +116,14 @@ export class SbHelpers {
       '<': '&lt;',
       '>': '&gt;',
       '"': '&quot;',
-      "'": '&#39;',
-    } as HtmlEscapes
+      '\'': '&#39;',
+    } as HtmlEscapes;
 
-    const reUnescapedHtml = /[&<>"']/g
-    const reHasUnescapedHtml = RegExp(reUnescapedHtml.source)
+    const reUnescapedHtml = /[&<>"']/g;
+    const reHasUnescapedHtml = new RegExp(reUnescapedHtml.source);
 
     return string && reHasUnescapedHtml.test(string)
-      ? string.replace(reUnescapedHtml, (chr) => htmlEscapes[chr])
-      : string
-  }
+      ? string.replace(reUnescapedHtml, chr => htmlEscapes[chr])
+      : string;
+  };
 }

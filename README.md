@@ -84,11 +84,11 @@ Storyblok.delete(`spaces/${spaceId}/stories/1`, null);
 You can import and use the `RichTextResolver` directly:
 
 ```js
-import RichTextResolver from 'storyblok-js-client/richTextResolver'
+import RichTextResolver from 'storyblok-js-client/richTextResolver';
 
-const resolver = new RichTextResolver()
+const resolver = new RichTextResolver();
 
-const html = resolver.render(data)
+const html = resolver.render(data);
 ```
 
 ## NEW BRANCHES AND VERSIONS
@@ -103,9 +103,9 @@ Error handling from fetch has changed. Exceptions will be thrown as an object wi
 
 ```javascript
 {
-  message: string
-  status: number
-  response: ISbResponse
+  message: string;
+  status: number;
+  response: ISbResponse;
 }
 ```
 
@@ -128,8 +128,8 @@ The proxy feature was also removed in this version.
 Version 5 is using native `fetch` API, supported by modern browsers and Node >= 18. If you are using an environment with no `fetch` API support, you can use a polyfill like [isomorphic-fetch](https://github.com/matthew-andrews/isomorphic-fetch) at the very beginning of your app entry point:
 
 ```js
-import 'isomorphic-fetch'
-require('isomorphic-fetch') // in CJS environments
+import 'isomorphic-fetch';
+require('isomorphic-fetch'); // in CJS environments
 ```
 
 ## Documentation
@@ -202,7 +202,7 @@ let Storyblok = new StoryblokClient({
 One can remove the reponseInterceptor at any time, by calling the function `ejectInterceptor` as shown below:
 
 ```javascript
-Storyblok.ejectInterceptor()
+Storyblok.ejectInterceptor();
 ```
 
 ### Error handling
@@ -211,9 +211,9 @@ Exceptions will be thrown as an object with the following structure:
 
 ```javascript
 {
-  message: Error // an Error object with the error message
-  status: number
-  response: ISbResponse
+  message: Error; // an Error object with the error message
+  status: number;
+  response: ISbResponse;
 }
 ```
 
@@ -221,12 +221,12 @@ where,
 
 ```typescript
 interface ISbResponse {
-  data: any
-  status: number
-  statusText: string
-  headers: any
-  config: any
-  request: any
+  data: any;
+  status: number;
+  statusText: string;
+  headers: any;
+  config: any;
+  request: any;
 }
 ```
 
@@ -243,20 +243,20 @@ window.storyblok.resolveRelations(
   storyObject,
   relationsToResolve,
   callbackWhenResolved
-)
+);
 ```
 
 **Example**
 
 ```javascript
 window.storyblok.on('input', (event) => {
-  window.storyblok.addComments(event.story.content, event.story.id)
+  window.storyblok.addComments(event.story.content, event.story.id);
   window.storyblok.resolveRelations(
     event.story,
     ['post.author', 'post.categories'],
     () => {}
-  )
-})
+  );
+});
 ```
 
 ### Custom Fetch parameter
@@ -272,7 +272,7 @@ const data = {
     name: 'xy',
     slug: 'xy',
   },
-}
+};
 
 Storyblok.get(
   'cdn/stories/home',
@@ -286,11 +286,11 @@ Storyblok.get(
   }
 )
   .then((response) => {
-    console.log(response)
+    console.log(response);
   })
   .catch((error) => {
-    console.error(error)
-  })
+    console.error(error);
+  });
 ```
 
 ### Method `Storyblok#get`
@@ -311,11 +311,11 @@ Storyblok.get('cdn/stories/home', {
   version: 'draft',
 })
   .then((response) => {
-    console.log(response)
+    console.log(response);
   })
   .catch((error) => {
-    console.log(error)
-  })
+    console.log(error);
+  });
 ```
 
 #### Method `Storyblok#getAll`
@@ -337,11 +337,11 @@ Storyblok.getAll('cdn/stories', {
   version: 'draft',
 })
   .then((stories) => {
-    console.log(stories) // an array
+    console.log(stories); // an array
   })
   .catch((error) => {
-    console.log(error)
-  })
+    console.log(error);
+  });
 ```
 
 #### Method `Storyblok#post` (only management api)
@@ -360,11 +360,11 @@ Storyblok.post('spaces/<YOUR_SPACE_ID>/stories', {
   story: { name: 'xy', slug: 'xy' },
 })
   .then((response) => {
-    console.log(response)
+    console.log(response);
   })
   .catch((error) => {
-    console.log(error)
-  })
+    console.log(error);
+  });
 ```
 
 #### Method `Storyblok#put` (only management api)
@@ -383,11 +383,11 @@ Storyblok.put('spaces/<YOUR_SPACE_ID>/stories/1', {
   story: { name: 'xy', slug: 'xy' },
 })
   .then((response) => {
-    console.log(response)
+    console.log(response);
   })
   .catch((error) => {
-    console.log(error)
-  })
+    console.log(error);
+  });
 ```
 
 #### Method `Storyblok#delete` (only management api)
@@ -404,11 +404,11 @@ Storyblok.put('spaces/<YOUR_SPACE_ID>/stories/1', {
 ```javascript
 Storyblok.delete('spaces/<YOUR_SPACE_ID>/stories/1', null)
   .then((response) => {
-    console.log(response)
+    console.log(response);
   })
   .catch((error) => {
-    console.log(error)
-  })
+    console.log(error);
+  });
 ```
 
 #### Method `Storyblok#flushCache`
@@ -420,7 +420,7 @@ Storyblok.delete('spaces/<YOUR_SPACE_ID>/stories/1', null)
 **Example**
 
 ```javascript
-Storyblok.flushCache()
+Storyblok.flushCache();
 ```
 
 #### Method `Storyblok#setComponentResolver`
@@ -435,33 +435,33 @@ Option 1: Use a switch case definition to render different components:
 Storyblok.setComponentResolver((component, blok) => {
   switch (component) {
     case 'my-custom-component':
-      return `<div class="my-component-class">${blok.text}</div>`
-      break
+      return `<div class="my-component-class">${blok.text}</div>`;
+      break;
     case 'my-header':
-      return `<h1 class="my-class">${blok.title}</h1>`
-      break
+      return `<h1 class="my-class">${blok.title}</h1>`;
+      break;
     default:
-      return 'Resolver not defined'
+      return 'Resolver not defined';
   }
   switch (component) {
     case 'my-custom-component':
-      return `<div class="my-component-class">${blok.text}</div>`
-      break
+      return `<div class="my-component-class">${blok.text}</div>`;
+      break;
     case 'my-header':
-      return `<h1 class="my-class">${blok.title}</h1>`
-      break
+      return `<h1 class="my-class">${blok.title}</h1>`;
+      break;
     default:
-      return 'Resolver not defined'
+      return 'Resolver not defined';
   }
-})
+});
 ```
 
 Option 2: Dynamically render a component (Example in Vue.js, which will only work with runtime template rendering enabled):
 
 ```javascript
 Storyblok.setComponentResolver((component, blok) => {
-  return `<component :blok='${JSON.stringify(blok)}' is="${component}"></component>`
-})
+  return `<component :blok='${JSON.stringify(blok)}' is="${component}"></component>`;
+});
 ```
 
 #### Method `Storyblok#richTextResolver.render`
@@ -475,7 +475,7 @@ Storyblok.setComponentResolver((component, blok) => {
 **Example**
 
 ```javascript
-Storyblok.richTextResolver.render(blok.richtext)
+Storyblok.richTextResolver.render(blok.richtext);
 ```
 
 **Optimizing images**
@@ -486,7 +486,7 @@ passing the option `optimizeImages: true`.
 **Example**
 
 ```javascript
-Storyblok.richTextResolver.render(blok.richtext, { optimizeImages: true })
+Storyblok.richTextResolver.render(blok.richtext, { optimizeImages: true });
 ```
 
 Also, it is possible to customize this option passing an object.
@@ -519,32 +519,9 @@ const options = {
     srcset: [720, 1024, 1533],
     sizes: ['(max-width: 767px) 100vw', '(max-width: 1024px) 768px', '1500px'],
   },
-  optimizeImages: {
-    class: 'w-full my-8 border-b border-black',
-    width: 640, // image width
-    height: 360, // image height
-    loading: 'lazy', // 'lazy' | 'eager'
-    filters: {
-      blur: 0, // 0 to 100
-      brightness: 0, // -100 to 100
-      fill: 'transparent', // Or any hexadecimal value like FFCC99
-      format: 'webp', // 'webp' | 'jpeg' | 'png'
-      grayscale: false,
-      quality: 95, // 0 to 100
-      rotate: 0, // 0 | 90 | 180 | 270
-    },
-    // srcset accepts an array with image widths.
-    // Example: [720, 1024, 1533]
-    // will render srcset="//../m/720x0 720w", "//../m/1024x0 1024w", "//../m/1533x0 1280w"
-    // Also accept an array to pass width and height.
-    // Example: [[720,500], 1024, [1500, 1000]]
-    // will render srcset="//../m/720x500 720w", "//../m/1024x0 1024w", "//../m/1500x1000 1280w"
-    srcset: [720, 1024, 1533],
-    sizes: ['(max-width: 767px) 100vw', '(max-width: 1024px) 768px', '1500px'],
-  },
-}
+};
 
-Storyblok.richTextResolver.render(blok.richtext, options)
+Storyblok.richTextResolver.render(blok.richtext, options);
 ```
 
 ## Code examples
@@ -583,11 +560,11 @@ new StoryblokClient({
 ### Filter by content type values and path
 
 ```javascript
-import StoryblokClient from 'storyblok-js-client'
+import StoryblokClient from 'storyblok-js-client';
 
-let client = new StoryblokClient({
+const client = new StoryblokClient({
   accessToken: '<YOUR_SPACE_ACCESS_TOKEN>',
-})
+});
 
 // Filter by boolean value in content type
 client
@@ -600,8 +577,8 @@ client
     },
   })
   .then((res) => {
-    console.log(res.data.stories)
-  })
+    console.log(res.data.stories);
+  });
 
 // Get all news and author contents
 client
@@ -614,8 +591,8 @@ client
     },
   })
   .then((res) => {
-    console.log(res.data.stories)
-  })
+    console.log(res.data.stories);
+  });
 
 // Get all content from the news folder
 client
@@ -624,8 +601,8 @@ client
     starts_with: 'news/',
   })
   .then((res) => {
-    console.log(res.data.stories)
-  })
+    console.log(res.data.stories);
+  });
 ```
 
 ### Download all content from Storyblok
@@ -633,46 +610,46 @@ client
 Following a code example using the storyblok-js-client to back up all content on your local filesystem inside a 'backup' folder.
 
 ```javascript
-import StoryblokClient from 'storyblok-js-client'
-import fs from 'fs'
+import StoryblokClient from 'storyblok-js-client';
+import fs from 'node:fs';
 
-let client = new StoryblokClient({
+const client = new StoryblokClient({
   accessToken: '<YOUR_SPACE_ACCESS_TOKEN>',
-})
+});
 
-let lastPage = 1
-let getStories = (page) => {
+let lastPage = 1;
+const getStories = (page) => {
   client
     .get('cdn/stories', {
       version: 'draft',
       per_page: 25,
-      page: page,
+      page,
     })
     .then((res) => {
-      let stories = res.data.stories
+      const stories = res.data.stories;
       stories.forEach((story) => {
         fs.writeFile(
-          './backup/' + story.id + '.json',
+          `./backup/${story.id}.json`,
           JSON.stringify(story),
           (err) => {
-            if (err) throw err
+            if (err) { throw err; }
 
-            console.log(story.full_slug + ' backed up')
+            console.log(`${story.full_slug} backed up`);
           }
-        )
-      })
+        );
+      });
 
-      let total = res.total
-      lastPage = Math.ceil(res.total / res.perPage)
+      const total = res.total;
+      lastPage = Math.ceil(res.total / res.perPage);
 
       if (page <= lastPage) {
-        page++
-        getStories(page)
+        page++;
+        getStories(page);
       }
-    })
-}
+    });
+};
 
-getStories(1)
+getStories(1);
 ```
 
 ### How to define a custom schema for the RichTextRenderer
@@ -682,17 +659,17 @@ To define how to add some classes to specific html attributes rendered by the ri
 Below, you can check an example:
 
 ```javascript
-import StoryblokClient from 'storyblok-js-client'
+import StoryblokClient from 'storyblok-js-client';
 
 // the default schema copied and updated
-import MySchema from './my-schema'
+import MySchema from './my-schema';
 
-let client = new StoryblokClient({
+const client = new StoryblokClient({
   accessToken: '<YOUR_SPACE_ACCESS_TOKEN>',
   richTextSchema: MySchema,
-})
+});
 
-client.richTextResolver.render(data)
+client.richTextResolver.render(data);
 ```
 
 If you just want to change the way a specific tag is rendered you can import the default schema and extend it. Following an example that will render headlines with classes:
@@ -700,35 +677,35 @@ If you just want to change the way a specific tag is rendered you can import the
 Instead of `<p>Normal headline</p><h3><span class="margin-bottom-fdsafdsada">Styled headline</span></h3>` it will render `<p>Normal headline</p><h3 class="margin-bottom-fdsafdsada">Styled headline</h3>`.
 
 ```javascript
-import RichTextResolver from 'storyblok-js-client/richTextResolver'
-import MySchema from 'storyblok-js-client/schema'
+import RichTextResolver from 'storyblok-js-client/richTextResolver';
+import MySchema from 'storyblok-js-client/schema';
 
 MySchema.nodes.heading = function (node) {
-  let attrs = {}
+  let attrs = {};
 
   if (
-    node.content &&
-    node.content.length === 1 &&
-    node.content[0].marks &&
-    node.content[0].marks.length === 1 &&
-    node.content[0].marks[0].type === 'styled'
+    node.content
+    && node.content.length === 1
+    && node.content[0].marks
+    && node.content[0].marks.length === 1
+    && node.content[0].marks[0].type === 'styled'
   ) {
-    attrs = node.content[0].marks[0].attrs
-    delete node.content[0].marks
+    attrs = node.content[0].marks[0].attrs;
+    delete node.content[0].marks;
   }
 
   return {
     tag: [
       {
         tag: `h${node.attrs.level}`,
-        attrs: attrs,
+        attrs,
       },
     ],
-  }
-}
+  };
+};
 
-let rteResolver = new RichTextResolver(MySchema)
-let rendered = rteResolver.render({
+const rteResolver = new RichTextResolver(MySchema);
+const rendered = rteResolver.render({
   content: [
     {
       content: [
@@ -761,9 +738,9 @@ let rendered = rteResolver.render({
     },
   ],
   type: 'doc',
-})
+});
 
-console.log(rendered)
+console.log(rendered);
 ```
 
 ### Handling access token overwrite

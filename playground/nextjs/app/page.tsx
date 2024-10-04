@@ -1,19 +1,22 @@
-import StoryblokClient from 'storyblok-js-client'
+import StoryblokClient from 'storyblok-js-client';
 
 export default async function Home() {
-  const { data } = await fetchData()
+  const { data } = await fetchData();
 
   return (
     <div>
-      <h1>Story: {data.story.content.headline}</h1>
+      <h1>
+        Story:
+        {data.story.content.headline}
+      </h1>
     </div>
-  )
+  );
 }
 
 export async function fetchData() {
   const storyblokApi = new StoryblokClient({
     accessToken: 'OurklwV5XsDJTIE1NJaD2wtt',
-  })
+  });
 
   const res = await storyblokApi.get(
     `cdn/stories/home`,
@@ -23,13 +26,10 @@ export async function fetchData() {
       next: {
         revalidate: 3600,
       },
-    }
-  )
-  const { date, etag } = res.headers as any
+    },
+  );
 
-  console.log(date, etag)
-
-  return res
+  return res;
 }
 
 /**

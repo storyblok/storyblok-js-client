@@ -1,8 +1,8 @@
-import { defineConfig } from 'vite'
+import { defineConfig } from 'vite';
 
 /* import { resolve } from 'pathe' */
 
-import { qrcode } from 'vite-plugin-qrcode'
+import { qrcode } from 'vite-plugin-qrcode';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -14,4 +14,4 @@ export default defineConfig({
       'storyblok-js-client': resolve(__dirname, '../../src/index.ts'),
     },
   }, */
-})
+});
