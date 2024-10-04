@@ -725,7 +725,7 @@ class Storyblok {
         if (this.cache.custom) {
           return this.cache.custom;
         }
-      // eslint-disable-next-line no-fallthrough
+        break;
       default:
         return {
           get() {
@@ -742,6 +742,20 @@ class Storyblok {
           },
         };
     }
+    return {
+      get() {
+        return Promise.resolve();
+      },
+      getAll() {
+        return Promise.resolve(undefined);
+      },
+      set() {
+        return Promise.resolve(undefined);
+      },
+      flush() {
+        return Promise.resolve(undefined);
+      },
+    };
   }
 
   public async flushCache(): Promise<this> {
