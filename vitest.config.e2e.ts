@@ -7,7 +7,7 @@ export default defineConfig({
     include: ['./tests/**/*.e2e.ts'],
     setupFiles: ['./tests/setup.js'],
     alias: {
-      'storyblok-js-client': '/dist/index.mjs',
+      'storyblok-js-client': './dist/index.mjs',
     },
   },
 });
