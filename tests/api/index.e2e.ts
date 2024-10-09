@@ -3,6 +3,7 @@ import { describe, it, expect, beforeEach } from 'vitest'
 
 describe('StoryblokClient', () => {
   let client
+  let managementClient
 
   beforeEach(() => {
     // Setup default mocks
@@ -10,22 +11,45 @@ describe('StoryblokClient', () => {
       accessToken: process.env.VITE_ACCESS_TOKEN,
       cache: { type: 'memory', clear: 'auto' },
     })
+    managementClient = new StoryblokClient({
+      oauthToken: process.env.VITE_OAUTH_TOKEN,
+    })
   })
   // TODO: Uncomment when we have a valid token
-  /* if (process.env.VITE_OAUTH_TOKEN) {
-      describe('management API', () => {
-        const spaceId = process.env.VITE_SPACE_ID
-        describe('should return all spaces', async () => {
-          const StoryblokManagement = new StoryblokClient({
-            oauthToken: process.env.VITE_OAUTH_TOKEN,
-          })
-          const result = await StoryblokManagement.getAll(
-            `spaces/${spaceId}/stories`
-          )
-          expect(result.length).toBeGreaterThan(0)
-        })
+  if (process.env.VITE_OAUTH_TOKEN) {
+    describe('management API', () => {
+      const spaceId = process.env.VITE_SPACE_ID
+      it('should return all spaces', async () => {
+        const result = await managementClient.getAll(
+          `spaces/${spaceId}/stories`
+        )
+        expect(result.length).toBeGreaterThan(0)
       })
-  } */
+      it("post('spaces/${spaceId}/stories', { story: { name: 'Test Story', slug: 'test-story', content: { component: 'page', body: [] }, translated_slugs_attributes: [{ lang: 'de', name: 'Test Geschichte', slug: 'test-geschichte' }]}, published: true } }) should create story with translated slug", async () => {
+        const translatedSlug = {
+          lang: 'de',
+          name: 'Test Geschichte',
+          slug: 'test-geschichte',
+        }
+      
+        const result = await managementClient.post(`spaces/${spaceId}/stories`, {
+          story: {
+            name: 'Test Story',
+            slug: 'test-story',
+            content: {
+              component: 'page',
+              body: [],
+            },
+            translated_slugs_attributes: [
+              translatedSlug,
+            ],
+          },
+          published: true,
+        })
+        expect(result.data.story.translated_slugs[0].slug).toBe(translatedSlug.slug)
+      })
+    })
+  }
 
   describe('get function', () => {
     it("get('cdn/spaces/me') should return the space information", async () => {
