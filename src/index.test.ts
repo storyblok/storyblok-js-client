@@ -289,6 +289,25 @@ describe('StoryblokClient', () => {
       await client.getAll('links', { per_page: 1 })
       expect(mockMakeRequest).toBeCalledTimes(2)
     })
+
+    it('should get all stories if the slug is passed with the trailing slash', async () => {
+      const mockMakeRequest = vi.fn().mockResolvedValue({
+        data: {
+          stories: [
+            { id: 1, name: 'Test Story 1' },
+            { id: 2, name: 'Test Story 2' },
+          ],
+        },
+        total: 2,
+        status: 200,
+      })
+      client.makeRequest = mockMakeRequest
+      const result = await client.getAll('cdn/stories/', { version: 'draft' })
+      expect(result).toEqual([
+        { id: 1, name: 'Test Story 1' },
+        { id: 2, name: 'Test Story 2' },
+      ])
+    })
   })
 
   describe('post', () => {

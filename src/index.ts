@@ -243,9 +243,8 @@ class Storyblok {
     fetchOptions?: ISbCustomFetch
   ): Promise<any[]> {
     const perPage = params?.per_page || 25
-    const url = `/${slug}`
-    const urlParts = url.split('/')
-    const e = entity || urlParts[urlParts.length - 1]
+    const url = `/${slug}`.replace(/\/$/, '')
+    const e = entity ?? url.substring(url.lastIndexOf('/') + 1)
 
     const firstPage = 1
     const firstRes = await this.makeRequest(
