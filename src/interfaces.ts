@@ -88,10 +88,10 @@ export interface ISbStoryData<
   breadcrumbs?: ISbLinkURLObject[]
   content: Content
   created_at: string
-  default_full_slug?: string
+  default_full_slug?: string | null
   default_root?: string
   disble_fe_editor?: boolean
-  first_published_at?: string
+  first_published_at?: string | null
   full_slug: string
   group_id: string
   id: number
@@ -106,13 +106,13 @@ export interface ISbStoryData<
   meta_data: any
   name: string
   parent?: ISbStoryData
-  parent_id: number
+  parent_id: number | null
   path?: string
   pinned?: '1' | boolean
   position: number
   published?: boolean
   published_at: string | null
-  release_id?: number
+  release_id?: number | null
   slug: string
   sort_by_date: string | null
   tag_list: string[]
@@ -120,7 +120,7 @@ export interface ISbStoryData<
     path: string
     name: string | null
     lang: ISbStoryData['lang']
-  }[]
+  }[] | null
   unpublished_changes?: boolean
   updated_at?: string
   uuid: string
