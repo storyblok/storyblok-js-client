@@ -117,7 +117,7 @@ export interface ISbStoryData<
   sort_by_date: string | null
   tag_list: string[]
   translated_slugs?: {
-    path: string
+    slug: string
     name: string | null
     lang: ISbStoryData['lang']
   }[]
@@ -286,7 +286,7 @@ export interface ISbContentMangmntAPI<
     position?: number
     first_published_at?: string
     translated_slugs_attributes?: {
-      path: string
+      slug: string
       name: string | null
       lang: ISbContentMangmntAPI['lang']
     }[]
