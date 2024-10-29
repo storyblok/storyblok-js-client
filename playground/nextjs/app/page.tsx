@@ -1,4 +1,4 @@
-import StoryblokClient from 'storyblok-js-client'
+import StoryblokClient from '@eurocamp/storyblok-js-client'
 
 export default async function Home() {
   const { data } = await fetchData()

@@ -1,5 +1,5 @@
-import StoryblokClient from 'storyblok-js-client'
-import RichTextResolver from 'storyblok-js-client/richTextResolver'
+import StoryblokClient from '@eurocamp/storyblok-js-client'
+import RichTextResolver from '@eurocamp/storyblok-js-client/richTextResolver'
 import './style.css'
 
 const headers = new Headers()
@@ -21,7 +21,7 @@ try {
     resolve_relations: 'root.author',
   })
   const resolver = new RichTextResolver()
-  
+
   const paragraph = {
     type: 'paragraph',
     content: [
@@ -34,7 +34,7 @@ try {
   }
 
   const html = resolver.render(paragraph, {}, false)
-  
+
 
   document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <pre>

@@ -15,7 +15,7 @@
     "next": "^13.4.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "storyblok-js-client": "file:..",
+    "@eurocamp/storyblok-js-client": "file:..",
     "swr": "^2.2.4"
   }
 }

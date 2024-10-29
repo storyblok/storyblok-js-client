@@ -31,7 +31,7 @@ Are you eager to dive into coding? **[Follow these steps to kickstart a new proj
 ## Installation
 
 ```sh
-npm install storyblok-js-client # yarn add storyblok-js-client
+npm install @eurocamp/storyblok-js-client # yarn add @eurocamp/storyblok-js-client
 ```
 
 #### Compatibility
@@ -48,7 +48,7 @@ npm install storyblok-js-client # yarn add storyblok-js-client
 
 ```javascript
 // 1. Import the Storyblok client
-import StoryblokClient from "storyblok-js-client";
+import StoryblokClient from "@eurocamp/storyblok-js-client";
 
 // 2. Initialize the client with the preview token
 // from your space dashboard at https://app.storyblok.com
@@ -61,7 +61,7 @@ const Storyblok = new StoryblokClient({
 
 ```javascript
 // 1. Import the Storyblok client
-import StoryblokClient from "storyblok-js-client";
+import StoryblokClient from "@eurocamp/storyblok-js-client";
 const spaceId = <YOUR_SPACE_ID>;
 
 // 2. Initialize the client with the oauth token
@@ -84,7 +84,7 @@ Storyblok.delete(`spaces/${spaceId}/stories/1`, null);
 You can import and use the `RichTextResolver` directly:
 
 ```js
-import RichTextResolver from 'storyblok-js-client/richTextResolver'
+import RichTextResolver from '@eurocamp/storyblok-js-client/richTextResolver'
 
 const resolver = new RichTextResolver()
 
@@ -583,7 +583,7 @@ new StoryblokClient({
 ### Filter by content type values and path
 
 ```javascript
-import StoryblokClient from 'storyblok-js-client'
+import StoryblokClient from '@eurocamp/storyblok-js-client'
 
 let client = new StoryblokClient({
   accessToken: '<YOUR_SPACE_ACCESS_TOKEN>',
@@ -633,7 +633,7 @@ client
 Following a code example using the storyblok-js-client to back up all content on your local filesystem inside a 'backup' folder.
 
 ```javascript
-import StoryblokClient from 'storyblok-js-client'
+import StoryblokClient from '@eurocamp/storyblok-js-client'
 import fs from 'fs'
 
 let client = new StoryblokClient({
@@ -682,7 +682,7 @@ To define how to add some classes to specific html attributes rendered by the ri
 Below, you can check an example:
 
 ```javascript
-import StoryblokClient from 'storyblok-js-client'
+import StoryblokClient from '@eurocamp/storyblok-js-client'
 
 // the default schema copied and updated
 import MySchema from './my-schema'
@@ -700,8 +700,8 @@ If you just want to change the way a specific tag is rendered you can import the
 Instead of `<p>Normal headline</p><h3><span class="margin-bottom-fdsafdsada">Styled headline</span></h3>` it will render `<p>Normal headline</p><h3 class="margin-bottom-fdsafdsada">Styled headline</h3>`.
 
 ```javascript
-import RichTextResolver from 'storyblok-js-client/richTextResolver'
-import MySchema from 'storyblok-js-client/schema'
+import RichTextResolver from '@eurocamp/storyblok-js-client/richTextResolver'
+import MySchema from '@eurocamp/storyblok-js-client/schema'
 
 MySchema.nodes.heading = function (node) {
   let attrs = {}

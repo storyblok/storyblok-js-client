@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import StoryblokClient from "storyblok-js-client";
+  import StoryblokClient from "@eurocamp/storyblok-js-client";
 
   let story = null;
   let client = new StoryblokClient({ accessToken: "OurklwV5XsDJTIE1NJaD2wtt"})

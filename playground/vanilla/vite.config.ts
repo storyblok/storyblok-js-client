@@ -11,7 +11,7 @@ export default defineConfig({
   ],
   /* resolve: {
     alias: {
-      'storyblok-js-client': resolve(__dirname, '../../src/index.ts'),
+      '@eurocamp/storyblok-js-client': resolve(__dirname, '../../src/index.ts'),
     },
   }, */
 })

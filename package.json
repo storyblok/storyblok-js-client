@@ -1,5 +1,5 @@
 {
-  "name": "storyblok-js-client",
+  "name": "@eurocamp/storyblok-js-client",
   "module": "./dist/index.mjs",
   "version": "5.0.0",
   "packageManager": "pnpm@9.1.4",
@@ -52,7 +52,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/storyblok/storyblok-js-client.git"
+    "url": "git+https://github.com/Eurocamp/storyblok-js-client.git"
   },
   "author": "Alexander Feiglstorfer <delooks@gmail.com>",
   "bugs": {
@@ -93,7 +93,7 @@
     ]
   },
   "publishConfig": {
-    "access": "public"
+    "registry": "https://npm.pkg.github.com"
   },
   "lint-staged": {
     "*.{js,jsx,css,ts,tsx}": [

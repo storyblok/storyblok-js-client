@@ -120,8 +120,16 @@ describe('StoryblokClient', () => {
 
       expect(client.maxRetries).toBe(5)
     })
-    // TODO: seems like implmentation is missing
-    it.skip('should desactivate resolveNestedRelations', () => {
+    it('should set retryDelayModifier', () => {
+      const retryDelayModifier = (retryCount: number) => retryCount * 300
+      client = new StoryblokClient({
+        retryDelayModifier,
+      })
+
+      expect(client.retryDelayModifier).toBe(retryDelayModifier)
+    })
+    // TODO: seems like implementation is missing
+    it.skip('should deactivate resolveNestedRelations', () => {
       client = new StoryblokClient({
         resolveNestedRelations: false,
       })
@@ -156,7 +164,7 @@ describe('StoryblokClient', () => {
 
     it('should return cacheVersions', async () => {
       const mockThrottle = vi.fn().mockResolvedValue({
-        data: { 
+        data: {
           stories: [{ id: 1, title: 'Update' }],
           cv: 1645521118
         },
@@ -165,15 +173,15 @@ describe('StoryblokClient', () => {
       });
       client.throttle = mockThrottle;
       await client.get('test', { version: 'draft', token: 'test-token' });
-  
+
       expect(client.cacheVersions()).toEqual({
         'test-token': 1645521118
       });
     })
-  
+
     it('should return cacheVersion', async () => {
       const mockThrottle = vi.fn().mockResolvedValue({
-        data: { 
+        data: {
           stories: [{ id: 1, title: 'Update' }],
           cv: 1645521118
         },
@@ -182,7 +190,7 @@ describe('StoryblokClient', () => {
       });
       client.throttle = mockThrottle;
       await client.get('test', { version: 'draft', token: 'test-token' });
-  
+
       expect(client.cacheVersion('test-token')).toBe(1645521118);
     })
 
@@ -223,7 +231,7 @@ describe('StoryblokClient', () => {
       expect(client.cacheProvider().flush).toHaveBeenCalled();
       expect(client.clearCacheVersion).toHaveBeenCalled();
     });
-    
+
   })
 
   describe('get', () => {
@@ -313,20 +321,20 @@ describe('StoryblokClient', () => {
   describe('post', () => {
     it('should post data to the API', async () => {
       const mockThrottle = vi.fn().mockResolvedValue({
-        data: { 
-          stories: [{ id: 1, title: 'Keep me posted' }] 
+        data: {
+          stories: [{ id: 1, title: 'Keep me posted' }]
         },
         headers: {},
         status: 200
       });
       client.throttle = mockThrottle;
       const result = await client.post('test', { data: 'test' })
-      expect(result).toEqual({ 
+      expect(result).toEqual({
         data: {
           stories: [{ id: 1, title: 'Keep me posted' }]
-        }, 
+        },
         headers: {},
-        status: 200 
+        status: 200
       })
     })
   })
@@ -334,20 +342,20 @@ describe('StoryblokClient', () => {
   describe('put', () => {
     it('should put data to the API', async () => {
       const mockThrottle = vi.fn().mockResolvedValue({
-        data: { 
-          stories: [{ id: 1, title: 'Update' }] 
+        data: {
+          stories: [{ id: 1, title: 'Update' }]
         },
         headers: {},
         status: 200
       });
       client.throttle = mockThrottle;
       const result = await client.put('test', { data: 'test' })
-      expect(result).toEqual({ 
+      expect(result).toEqual({
         data: {
           stories: [{ id: 1, title: 'Update' }]
-        }, 
+        },
         headers: {},
-        status: 200 
+        status: 200
       })
     })
   })
@@ -355,20 +363,20 @@ describe('StoryblokClient', () => {
   describe('delete', () => {
     it('should delete data from the API', async () => {
       const mockThrottle = vi.fn().mockResolvedValue({
-        data: { 
-          stories: [{ id: 1, title: 'Delete' }] 
+        data: {
+          stories: [{ id: 1, title: 'Delete' }]
         },
         headers: {},
         status: 200
       });
       client.throttle = mockThrottle;
       const result = await client.delete('test')
-      expect(result).toEqual({ 
+      expect(result).toEqual({
         data: {
           stories: [{ id: 1, title: 'Delete' }]
-        }, 
+        },
         headers: {},
-        status: 200 
+        status: 200
       })
     })
   })
@@ -384,9 +392,9 @@ describe('StoryblokClient', () => {
       id: 1,
       title: 'Test Story',
     });
-  
+
     await client.cacheResponse('/test-url', { token: 'test-token', version: 'published' });
-  
+
     expect(client.resolveStories).toHaveBeenCalled();
     expect(client.resolveCounter).toBe(1);
   });
@@ -395,6 +403,6 @@ describe('StoryblokClient', () => {
     expect(client.getToken()).toBe('test-token');
   })
 
- 
+
 
 })

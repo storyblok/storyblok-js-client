@@ -14,6 +14,6 @@
     "vite-plugin-qrcode": "^0.2.3"
   },
   "dependencies": {
-    "storyblok-js-client": "workspace:^"
+    "@eurocamp/storyblok-js-client": "workspace:^"
   }
 }

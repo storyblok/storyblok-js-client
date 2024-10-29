@@ -68,6 +68,7 @@ class Storyblok {
   private client: SbFetch
   private maxRetries: number
   private retriesDelay: number
+  private retryDelayModifier: (retryCount: number) => number
   private throttle: ThrottleFn
   private accessToken: string
   private cache: ISbCache
@@ -142,7 +143,8 @@ class Storyblok {
     }
 
     this.maxRetries = config.maxRetries || 10
-    this.retriesDelay = 300
+    this.retriesDelay = config.retriesDelay || 300
+    this.retryDelayModifier = config.retryDelayModifier || (() => this.retriesDelay)
     this.throttle = throttledQueue(this.throttledRequest, rateLimit, 1000)
     this.accessToken = config.accessToken || ''
     this.relations = {} as RelationsType
@@ -644,7 +646,7 @@ class Storyblok {
             console.log(
               `Hit rate limit. Retrying in ${this.retriesDelay / 1000} seconds.`
             )
-            await this.helpers.delay(this.retriesDelay)
+            await this.helpers.delay(this.retryDelayModifier(retries + 1))
             return this.cacheResponse(url, params, retries)
               .then(resolve)
               .catch(reject)

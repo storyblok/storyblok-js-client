@@ -223,6 +223,8 @@ export interface ISbConfig {
   headers?: any
   region?: string
   maxRetries?: number
+  retriesDelay?: number
+  retryDelayModifier?: (retryCount: number) => number
   https?: boolean
   rateLimit?: number
   componentResolver?: (component: string, data: any) => void
