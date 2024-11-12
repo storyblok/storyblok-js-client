@@ -2,7 +2,7 @@ import StoryblokClient from 'storyblok-js-client'
 import { describe, it, expect, beforeEach } from 'vitest'
 
 describe('StoryblokClient', () => {
-  let client
+  let client: StoryblokClient
 
   beforeEach(() => {
     // Setup default mocks
@@ -52,7 +52,7 @@ describe('StoryblokClient', () => {
 
     it("get('cdn/stories/testcontent-draft', { version: 'draft' }) should return the specific story draft", async () => {
       const { data } = await client.get('cdn/stories/testcontent-draft', {
-        version: 'draft'
+        version: 'draft',
       })
       expect(data.story.slug).toBe('testcontent-draft')
     })
