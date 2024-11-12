@@ -42,8 +42,11 @@ function throttledQueue(fn: ThrottleFn, limit: number, interval: number) {
   let activeCount = 0
   let isAborted = false
 
-  const next = function () {
+  const next = async function () {
     activeCount++
+
+    const x = queue.shift() as unknown as Shifted
+    x.resolve(await fn.apply(x.self, x.args))
 
     const id = setTimeout(function () {
       activeCount--
@@ -52,17 +55,12 @@ function throttledQueue(fn: ThrottleFn, limit: number, interval: number) {
         next()
       }
 
-      timeouts = timeouts.filter(function (currentId) {
-        return currentId !== id
-      })
+      timeouts = timeouts.filter((currentId) => currentId !== id)
     }, interval)
 
-    if (timeouts.indexOf(id) < 0) {
+    if (!timeouts.includes(id)) {
       timeouts.push(id)
     }
-
-    const x = queue.shift() as unknown as Shifted
-    x.resolve(fn.apply(x.self, x.args))
   }
 
   const throttled: ISbThrottle = function (
