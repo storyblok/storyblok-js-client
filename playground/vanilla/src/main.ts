@@ -5,7 +5,7 @@ import './style.css'
 const headers = new Headers()
 headers.append('Awiwi', 'Awiwi')
 const headers2 = {
-  'Awiwi': 'Awiwi'
+  Awiwi: 'Awiwi',
 }
 console.log(headers2.constructor.name)
 // 2. Initialize the client with the preview token
@@ -21,7 +21,7 @@ try {
     resolve_relations: 'root.author',
   })
   const resolver = new RichTextResolver()
-  
+
   const paragraph = {
     type: 'paragraph',
     content: [
@@ -34,7 +34,6 @@ try {
   }
 
   const html = resolver.render(paragraph, {}, false)
-  
 
   document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <pre>
@@ -46,5 +45,3 @@ try {
 } catch (error) {
   console.error(error)
 }
-
-
