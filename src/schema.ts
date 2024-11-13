@@ -1,4 +1,9 @@
-import type { ISbComponentType, ISbNode, MarkSchema, NodeSchema } from './interfaces';
+import type {
+  ISbComponentType,
+  ISbNode,
+  MarkSchema,
+  NodeSchema,
+} from './interfaces';
 import { SbHelpers } from './sbHelpers';
 
 const pick = function (attrs: Attrs, allowed: string[]) {

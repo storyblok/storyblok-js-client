@@ -1,4 +1,9 @@
-import type { AsyncFn, HtmlEscapes, ISbResult, ISbStoriesParams } from './interfaces';
+import type {
+  AsyncFn,
+  HtmlEscapes,
+  ISbResult,
+  ISbStoriesParams,
+} from './interfaces';
 
 interface ISbParams extends ISbStoriesParams {
   [key: string]: any;
@@ -69,10 +74,9 @@ export class SbHelpers {
         );
       }
       else {
-        pair
-          = `${prefix ? prefix + encodeURIComponent(`[${enkey}]`) : enkey
-          }=${
-            encodeURIComponent(value)}`;
+        pair = `${
+          prefix ? prefix + encodeURIComponent(`[${enkey}]`) : enkey
+        }=${encodeURIComponent(value)}`;
       }
       pairs.push(pair);
     }

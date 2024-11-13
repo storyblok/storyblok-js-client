@@ -270,7 +270,8 @@ class Storyblok {
       },
     );
 
-    return this.helpers.flatMap([firstRes, ...restRes], (res: ISbFlatMapped) => Object.values(res.data[e]));
+    return this.helpers.flatMap([firstRes, ...restRes], (res: ISbFlatMapped) =>
+      Object.values(res.data[e]));
   }
 
   public post(

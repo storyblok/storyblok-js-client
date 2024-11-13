@@ -5,23 +5,23 @@
 
 version: 2
 updates:
-  - package-ecosystem: "pip"
-    directory: "/"
+  - package-ecosystem: pip
+    directory: /
     schedule:
-      interval: "daily"
+      interval: daily
     # Raise pull requests for version updates
     # to pip against the `develop` branch
-    target-branch: "fix/update-package-json-INT-122"
+    target-branch: fix/update-package-json-INT-122
     # Labels on pull requests for version updates only
     labels:
-      - "pip dependencies"
+      - pip dependencies
 
-  - package-ecosystem: "npm"
-    directory: "/"
+  - package-ecosystem: npm
+    directory: /
     schedule:
-      interval: "weekly"
+      interval: weekly
       # Check for npm updates on Sundays
-      day: "sunday"
+      day: sunday
     # Labels on pull requests for security and version updates
     labels:
-      - "npm dependencies"
+      - npm dependencies
