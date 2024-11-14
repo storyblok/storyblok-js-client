@@ -1,23 +1,10 @@
-import { ThrottleFn } from './interfaces'
+import { ISbThrottle, Queue } from './interfaces'
 
-type Shifted = {
-  args: any
-  self: any
-  resolve: (args: any) => any
-}
-
-type Queue = {
-  resolve: (args: any) => any
-  reject: (args: any) => any
-  args: any[]
-  self: any
-}
-
-interface ISbThrottle {
-  abort: () => any
-  (...args: any): Promise<Queue>
-  name: string
-  AbortError?: () => void
+class AbortError extends Error {
+  constructor(msg: string) {
+    super(msg)
+    this.name = 'AbortError'
+  }
 }
 
 function isFinite(value: number) {
@@ -28,7 +15,11 @@ function isFinite(value: number) {
   return true
 }
 
-function throttledQueue(fn: ThrottleFn, limit: number, interval: number) {
+function throttledQueue<T extends (...args: Parameters<T>) => ReturnType<T>>(
+  fn: T,
+  limit: number,
+  interval: number
+): ISbThrottle<T> {
   if (!isFinite(limit)) {
     throw new TypeError('Expected `limit` to be a finite number')
   }
@@ -37,18 +28,21 @@ function throttledQueue(fn: ThrottleFn, limit: number, interval: number) {
     throw new TypeError('Expected `interval` to be a finite number')
   }
 
-  const queue: Queue[] = []
+  const queue: Queue<Parameters<T>>[] = []
   let timeouts: ReturnType<typeof setTimeout>[] = []
   let activeCount = 0
   let isAborted = false
 
-  const next = async function () {
+  const next = async () => {
     activeCount++
 
-    const x = queue.shift() as unknown as Shifted
-    x.resolve(await fn.apply(x.self, x.args))
+    const x = queue.shift()
+    if (x) {
+      const res = await fn(...x.args)
+      x.resolve(res)
+    }
 
-    const id = setTimeout(function () {
+    const id = setTimeout(() => {
       activeCount--
 
       if (queue.length > 0) {
@@ -63,16 +57,11 @@ function throttledQueue(fn: ThrottleFn, limit: number, interval: number) {
     }
   }
 
-  const throttled: ISbThrottle = function (
-    this: ISbThrottle,
-    ...args: []
-  ): Promise<Queue> {
-    // eslint-disable-next-line @typescript-eslint/no-this-alias
-    const self = this
+  const throttled: ISbThrottle<T> = (...args) => {
     if (isAborted) {
       return Promise.reject(
         new Error(
-          'Throttled function is aborted and not accepting new promises'
+          'Throttled function is already aborted and not accepting new promises'
         )
       )
     }
@@ -82,7 +71,6 @@ function throttledQueue(fn: ThrottleFn, limit: number, interval: number) {
         resolve: resolve,
         reject: reject,
         args: args,
-        self,
       })
 
       if (activeCount < limit) {
@@ -91,17 +79,14 @@ function throttledQueue(fn: ThrottleFn, limit: number, interval: number) {
     })
   }
 
-  throttled.abort = function () {
+  throttled.abort = () => {
     isAborted = true
     timeouts.forEach(clearTimeout)
     timeouts = []
 
-    queue.forEach(function (x) {
-      x.reject(function (this: ISbThrottle) {
-        Error.call(this, 'Throttled function aborted')
-        this.name = 'AbortError'
-      })
-    })
+    queue.forEach((x) =>
+      x.reject(() => new AbortError('Throttle function aborted'))
+    )
     queue.length = 0
   }
 

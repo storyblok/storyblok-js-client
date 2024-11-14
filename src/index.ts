@@ -17,10 +17,11 @@ import {
   ISbStoryParams,
   ISbContentMangmntAPI,
   ISbNode,
-  ThrottleFn,
   IMemoryType,
   ICacheProvider,
   ISbCustomFetch,
+  ISbResponse,
+  ISbResponseData,
 } from './interfaces'
 
 let memory: Partial<IMemoryType> = {}
@@ -47,15 +48,6 @@ interface ISbFlatMapped {
   data: any
 }
 
-export interface ISbResponseData {
-  link_uuids: string[]
-  links: string[]
-  rel_uuids: string[]
-  rels: any
-  story: ISbStoryData
-  stories: Array<ISbStoryData>
-}
-
 const VERSION = {
   V1: 'v1',
   V2: 'v2',
@@ -68,7 +60,7 @@ class Storyblok {
   private client: SbFetch
   private maxRetries: number
   private retriesDelay: number
-  private throttle: ThrottleFn
+  private throttle
   private accessToken: string
   private cache: ISbCache
   private helpers: SbHelpers
@@ -105,7 +97,10 @@ class Storyblok {
     headers.set('Accept', 'application/json')
 
     if (config.headers) {
-      const entries = (config.headers.constructor.name === 'Headers') ? config.headers.entries().toArray() : Object.entries(config.headers)
+      const entries =
+        config.headers.constructor.name === 'Headers'
+          ? config.headers.entries().toArray()
+          : Object.entries(config.headers)
 
       entries.forEach(([key, value]: [string, string]) => {
         headers.set(key, value)
@@ -143,7 +138,11 @@ class Storyblok {
 
     this.maxRetries = config.maxRetries || 10
     this.retriesDelay = 300
-    this.throttle = throttledQueue(this.throttledRequest, rateLimit, 1000)
+    this.throttle = throttledQueue(
+      this.throttledRequest.bind(this),
+      rateLimit,
+      1000
+    )
     this.accessToken = config.accessToken || ''
     this.relations = {} as RelationsType
     this.links = {} as LinksType
@@ -275,7 +274,9 @@ class Storyblok {
   ): Promise<ISbResponseData> {
     const url = `/${slug}`
 
-    return Promise.resolve(this.throttle('post', url, params, fetchOptions))
+    return Promise.resolve(
+      this.throttle('post', url, params, fetchOptions)
+    ) as Promise<ISbResponseData>
   }
 
   public put(
@@ -285,7 +286,9 @@ class Storyblok {
   ): Promise<ISbResponseData> {
     const url = `/${slug}`
 
-    return Promise.resolve(this.throttle('put', url, params, fetchOptions))
+    return Promise.resolve(
+      this.throttle('put', url, params, fetchOptions)
+    ) as Promise<ISbResponseData>
   }
 
   public delete(
@@ -295,7 +298,9 @@ class Storyblok {
   ): Promise<ISbResponseData> {
     const url = `/${slug}`
 
-    return Promise.resolve(this.throttle('delete', url, params, fetchOptions))
+    return Promise.resolve(
+      this.throttle('delete', url, params, fetchOptions)
+    ) as Promise<ISbResponseData>
   }
 
   public getStories(
@@ -601,7 +606,12 @@ class Storyblok {
 
     return new Promise(async (resolve, reject) => {
       try {
-        const res = await this.throttle('get', url, params, fetchOptions)
+        const res = (await this.throttle(
+          'get',
+          url,
+          params,
+          fetchOptions
+        )) as ISbResponse
         if (res.status !== 200) {
           return reject(res)
         }
@@ -627,9 +637,9 @@ class Storyblok {
         }
 
         if (
-            response.data.cv
-            && params.token
-            && cacheVersions[params.token] != response.data.cv
+          response.data.cv &&
+          params.token &&
+          cacheVersions[params.token] != response.data.cv
         ) {
           await this.flushCache()
           cacheVersions[params.token] = response.data.cv

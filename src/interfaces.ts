@@ -1,4 +1,5 @@
 import { ResponseFn } from './sbFetch'
+import Method from './constants'
 
 export interface ISbStoriesParams
   extends Partial<ISbStoryData>,
@@ -241,6 +242,7 @@ export interface ISbResponse {
   data: any
   status: number
   statusText: string
+  headers: any
 }
 
 export interface ISbError {
@@ -339,9 +341,34 @@ export interface ISbLinks {
   }
 }
 
-export type ThrottleFn = {
-  (...args: any): any
+export interface Queue<T> {
+  resolve: (value: unknown) => void
+  reject: (reason?: unknown) => void
+  args: T
 }
+
+export interface ISbResponseData {
+  link_uuids: string[]
+  links: string[]
+  rel_uuids: string[]
+  rels: any
+  story: ISbStoryData
+  stories: Array<ISbStoryData>
+}
+
+export interface ISbThrottle<
+  T extends (...args: Parameters<T>) => ReturnType<T>,
+> {
+  abort?: () => void
+  (...args: Parameters<T>): Promise<unknown>
+}
+
+export type ISbThrottledRequest = (
+  type: Method,
+  url: string,
+  params: ISbStoriesParams,
+  fetchOptions?: ISbCustomFetch
+) => Promise<unknown>
 
 export type AsyncFn = (...args: any) => [] | Promise<ISbResult>
 
