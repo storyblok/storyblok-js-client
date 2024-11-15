@@ -22,6 +22,8 @@ import type {
   ISbStoryParams,
   ThrottleFn,
 } from './interfaces';
+import type { IStoryblok } from './storyblok';
+import { graph } from './graphql-wrapper';
 
 let memory: Partial<IMemoryType> = {};
 
@@ -64,7 +66,7 @@ const _VERSION = {
 type ObjectValues<T> = T[keyof T];
 type Version = ObjectValues<typeof _VERSION>;
 
-class Storyblok {
+class Storyblok implements IStoryblok {
   private client: SbFetch;
   private maxRetries: number;
   private retriesDelay: number;
@@ -750,6 +752,15 @@ class Storyblok {
     await this.cacheProvider().flush();
     this.clearCacheVersion();
     return this;
+  }
+
+  // Wrap GraphQL queries
+  public async graphql(
+    query: string,
+    version: 'draft' | 'published' = 'draft',
+    variables?: Record<string, unknown>,
+  ): Promise<{ data: object }> {
+    return graph(query, this.accessToken, version, variables);
   }
 }
 
