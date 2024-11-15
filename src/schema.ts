@@ -1,40 +1,45 @@
-import { ISbNode, NodeSchema, MarkSchema, ISbComponentType } from './interfaces'
-import { SbHelpers } from './sbHelpers'
+import type {
+  ISbComponentType,
+  ISbNode,
+  MarkSchema,
+  NodeSchema,
+} from './interfaces';
+import { SbHelpers } from './sbHelpers';
 
 const pick = function (attrs: Attrs, allowed: string[]) {
-  const h = {} as Attrs
+  const h = {} as Attrs;
 
   for (const key in attrs) {
-    const value = attrs[key]
-    if (allowed.indexOf(key) > -1 && value !== null) {
-      h[key] = value
+    const value = attrs[key];
+    if (allowed.includes(key) && value !== null) {
+      h[key] = value;
     }
   }
-  return h
-}
+  return h;
+};
 
-const isEmailLinkType = (type: string) => type === 'email'
+const isEmailLinkType = (type: string) => type === 'email';
 
-type Attrs = {
-  [key: string]: string | number | Array<ISbComponentType<any>>
+interface Attrs {
+  [key: string]: string | number | Array<ISbComponentType<any>>;
 }
 
 // nodes
 const horizontal_rule: NodeSchema = () => {
   return {
     singleTag: 'hr',
-  }
-}
+  };
+};
 const blockquote: NodeSchema = () => {
   return {
     tag: 'blockquote',
-  }
-}
+  };
+};
 const bullet_list: NodeSchema = () => {
   return {
     tag: 'ul',
-  }
-}
+  };
+};
 const code_block: NodeSchema = (node: ISbNode) => {
   return {
     tag: [
@@ -44,18 +49,18 @@ const code_block: NodeSchema = (node: ISbNode) => {
         attrs: node.attrs,
       },
     ],
-  }
-}
+  };
+};
 const hard_break: NodeSchema = () => {
   return {
     singleTag: 'br',
-  }
-}
+  };
+};
 const heading: NodeSchema = (node: ISbNode) => {
   return {
     tag: `h${node.attrs.level}`,
-  }
-}
+  };
+};
 
 const image: NodeSchema = (node: ISbNode) => {
   return {
@@ -65,112 +70,112 @@ const image: NodeSchema = (node: ISbNode) => {
         attrs: pick(node.attrs, ['src', 'alt', 'title']),
       },
     ],
-  }
-}
+  };
+};
 const list_item: NodeSchema = () => {
   return {
     tag: 'li',
-  }
-}
+  };
+};
 const ordered_list: NodeSchema = () => {
   return {
     tag: 'ol',
-  }
-}
+  };
+};
 const paragraph: NodeSchema = () => {
   return {
     tag: 'p',
-  }
-}
+  };
+};
 
 const emoji: NodeSchema = (node: ISbNode) => {
   const attrs = {
-    ['data-type']: 'emoji',
-    ['data-name']: node.attrs.name,
-    emoji: node.attrs.emoji,
-  }
+    'data-type': 'emoji',
+    'data-name': node.attrs.name,
+    'emoji': node.attrs.emoji,
+  };
 
   return {
     tag: [
       {
         tag: 'span',
-        attrs: attrs,
+        attrs,
       },
     ],
-  }
-}
+  };
+};
 
 // marks
 const bold: MarkSchema = () => {
   return {
     tag: 'b',
-  }
-}
+  };
+};
 const strike: MarkSchema = () => {
   return {
     tag: 's',
-  }
-}
+  };
+};
 const underline: MarkSchema = () => {
   return {
     tag: 'u',
-  }
-}
+  };
+};
 const strong: MarkSchema = () => {
   return {
     tag: 'strong',
-  }
-}
+  };
+};
 const code: MarkSchema = () => {
   return {
     tag: 'code',
-  }
-}
+  };
+};
 const italic: MarkSchema = () => {
   return {
     tag: 'i',
-  }
-}
+  };
+};
 const link: MarkSchema = (node: ISbNode) => {
   if (!node.attrs) {
     return {
       tag: '',
-    }
+    };
   }
-  const escapeHTML = new SbHelpers().escapeHTML
-  const attrs = { ...node.attrs }
-  const { linktype = 'url' } = node.attrs
-  delete attrs.linktype
+  const escapeHTML = new SbHelpers().escapeHTML;
+  const attrs = { ...node.attrs };
+  const { linktype = 'url' } = node.attrs;
+  delete attrs.linktype;
 
   if (attrs.href) {
-    attrs.href = escapeHTML(node.attrs.href || '')
+    attrs.href = escapeHTML(node.attrs.href || '');
   }
 
   if (isEmailLinkType(linktype)) {
-    attrs.href = `mailto:${attrs.href}`
+    attrs.href = `mailto:${attrs.href}`;
   }
 
   if (attrs.anchor) {
-    attrs.href = `${attrs.href}#${attrs.anchor}`
-    delete attrs.anchor
+    attrs.href = `${attrs.href}#${attrs.anchor}`;
+    delete attrs.anchor;
   }
 
   if (attrs.custom) {
     for (const key in attrs.custom) {
-      attrs[key] = attrs.custom[key]
+      attrs[key] = attrs.custom[key];
     }
-    delete attrs.custom
+    delete attrs.custom;
   }
 
   return {
     tag: [
       {
         tag: 'a',
-        attrs: attrs,
+        attrs,
       },
     ],
-  }
-}
+  };
+};
 
 const styled: MarkSchema = (node: ISbNode) => {
   return {
@@ -180,20 +185,20 @@ const styled: MarkSchema = (node: ISbNode) => {
         attrs: node.attrs,
       },
     ],
-  }
-}
+  };
+};
 
 const subscript: MarkSchema = () => {
   return {
     tag: 'sub',
-  }
-}
+  };
+};
 
 const superscript: MarkSchema = () => {
   return {
     tag: 'sup',
-  }
-}
+  };
+};
 
 const anchor: MarkSchema = (node: ISbNode) => {
   return {
@@ -203,18 +208,19 @@ const anchor: MarkSchema = (node: ISbNode) => {
         attrs: node.attrs,
       },
     ],
-  }
-}
+  };
+};
 
 const highlight: MarkSchema = (node: ISbNode) => {
-  if (!node.attrs?.color)
+  if (!node.attrs?.color) {
     return {
       tag: '',
-    }
+    };
+  }
 
   const attrs = {
-    ['style']: `background-color:${node.attrs.color};`,
-  }
+    style: `background-color:${node.attrs.color};`,
+  };
   return {
     tag: [
       {
@@ -222,18 +228,19 @@ const highlight: MarkSchema = (node: ISbNode) => {
         attrs,
       },
     ],
-  }
-}
+  };
+};
 
 const textStyle: MarkSchema = (node: ISbNode) => {
-  if (!node.attrs?.color)
+  if (!node.attrs?.color) {
     return {
       tag: '',
-    }
+    };
+  }
 
   const attrs = {
-    ['style']: `color:${node.attrs.color}`,
-  }
+    style: `color:${node.attrs.color}`,
+  };
   return {
     tag: [
       {
@@ -241,8 +248,8 @@ const textStyle: MarkSchema = (node: ISbNode) => {
         attrs,
       },
     ],
-  }
-}
+  };
+};
 
 export default {
   nodes: {
@@ -273,4 +280,4 @@ export default {
     highlight,
     textStyle,
   },
-}
+};

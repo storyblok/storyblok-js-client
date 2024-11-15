@@ -10,11 +10,14 @@
     "declaration": true,
     "declarationDir": "dist/types",
     "emitDeclarationOnly": true,
-    "lib": ["ESNext", "DOM", "DOM.Iterable"]
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    // "paths": {
+    //   "storyblok-js-client": ["./dist/types/index.d.ts"],
+    // },
   },
   "extends": "@tsconfig/recommended/tsconfig.json",
   "$schema": "https://json.schemastore.org/tsconfig",
   "display": "Recommended",
   "include": ["./src"],
-  "exclude": ["node_modules", "./src/**/*.test.ts", "./src/**/*.spec.ts"]
+  "exclude": ["node_modules", "./src/**/*.test.ts", "./src/**/*.spec.ts"],
 }
