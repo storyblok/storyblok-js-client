@@ -17,3 +17,5 @@ export const STORYBLOK_JS_CLIENT_AGENT = {
   defaultAgentVersion: 'SB-Agent-Version',
   packageVersion: '6.0.0',
 };
+
+export const STORYBLOK_GRAPQL_API = 'https://gapi.storyblok.com/v1/api';
