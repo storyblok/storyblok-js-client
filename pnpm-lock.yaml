@@ -16,7 +16,7 @@ importers:
         version: 19.5.0
       '@storyblok/eslint-config':
         specifier: ^0.3.0
-        version: 0.3.0(@typescript-eslint/utils@8.14.0(eslint@9.14.0(jiti@1.21.6))(typescript@5.6.3))(@vue/compiler-sfc@3.5.12)(eslint-plugin-react-hooks@4.6.2(eslint@9.14.0(jiti@1.21.6)))(eslint@9.14.0(jiti@1.21.6))(svelte@4.2.18)(typescript@5.6.3)(vitest@2.1.4)
+        version: 0.3.0(@typescript-eslint/utils@8.14.0(eslint@9.14.0(jiti@1.21.6))(typescript@5.6.3))(@vue/compiler-sfc@3.5.12)(eslint-plugin-react-hooks@4.6.2(eslint@9.14.0(jiti@1.21.6)))(eslint@9.14.0(jiti@1.21.6))(svelte@4.2.19)(typescript@5.6.3)(vitest@2.1.4)
       '@tsconfig/recommended':
         specifier: ^1.0.8
         version: 1.0.8
@@ -684,6 +684,7 @@ packages:
   '@humanwhocodes/config-array@0.11.14':
     resolution: {integrity: sha512-3T8LkOmg45BV5FICb15QQMsyUSWrQ8AygVfC7ZG32zOalnqrilm018ZVCw0eapXux8FtA33q8PSRSstjee3jSg==}
     engines: {node: '>=10.10.0'}
+    deprecated: Use @eslint/config-array instead
 
   '@humanwhocodes/module-importer@1.0.1':
     resolution: {integrity: sha512-bxveV4V8v5Yb4ncFTT3rPSgZBOpCkjfK0y4oVVVJwIuDVBRMDXrPyXRL988i5ap9m9bnyEEjWfm5WkBmtffLfA==}
@@ -691,6 +692,7 @@ packages:
 
   '@humanwhocodes/object-schema@2.0.3':
     resolution: {integrity: sha512-93zYdMES/c1D69yZiKDBj0V24vqNzB/koF26KPaagAfd3P/4gUlh3Dys5ogAK+Exi9QyzlD8x/08Zt7wIKcDcA==}
+    deprecated: Use @eslint/object-schema instead
 
   '@humanwhocodes/retry@0.3.1':
     resolution: {integrity: sha512-JBxkERygn7Bv/GbN5Rv8Ul6LVknS+5Bp6RgDC/O8gEBU/yeH5Ui5C/OlWrTb6qct7LjjfT6Re2NxB0ln0yYybA==}
@@ -1301,11 +1303,6 @@ packages:
 
   acorn@8.11.3:
     resolution: {integrity: sha512-Y9rRfJG5jcKOE0CLisYbojUjIrIEE7AGMzA/Sm4BslANhbS+cDMpgBdcPT91oJ7OuJ9hYJBx59RjbhxVnrF8Xg==}
-    engines: {node: '>=0.4.0'}
-    hasBin: true
-
-  acorn@8.12.1:
-    resolution: {integrity: sha512-tcpGyI9zbizT9JbV6oYE477V6mTlXvvi0T0G3SNIYE2apm/G5huBa1+K89VGeovbg+jycCrfhl3ADxErOuO6Jg==}
     engines: {node: '>=0.4.0'}
     hasBin: true
 
@@ -2054,6 +2051,7 @@ packages:
   eslint@8.55.0:
     resolution: {integrity: sha512-iyUUAM0PCKj5QpwGfmCAG9XXbZCWsqP/eWAWrG/W0umvjuLRBECwSFdt+rCntju0xEH7teIABPwXpahftIaTdA==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    deprecated: This version is no longer supported. Please see https://eslint.org/version-support for other options.
     hasBin: true
 
   eslint@9.14.0:
@@ -3424,6 +3422,10 @@ packages:
     resolution: {integrity: sha512-d0FdzYIiAePqRJEb90WlJDkjUEx42xhivxN8muUBmfZnP+tzUgz12DJ2hRJi8sIHCME7jeK1PTMgKPSfTd8JrA==}
     engines: {node: '>=16'}
 
+  svelte@4.2.19:
+    resolution: {integrity: sha512-IY1rnGr6izd10B0A8LqsBfmlT5OILVuZ7XsI0vdGPEvuonFV7NYEUK4dAkm9Zg2q0Um92kYjTpS1CAP3Nh/KWw==}
+    engines: {node: '>=16'}
+
   swr@2.2.5:
     resolution: {integrity: sha512-QtxqyclFeAsxEUeZIYmsaQ0UjimSq1RZ9Un7I68/0ClKK/U3LoyQunwkQfJZr2fc22DfIXLNDc2wFyTEikCUpg==}
     peerDependencies:
@@ -3859,7 +3861,7 @@ snapshots:
       '@jridgewell/gen-mapping': 0.3.5
       '@jridgewell/trace-mapping': 0.3.25
 
-  '@antfu/eslint-config@3.6.2(@typescript-eslint/utils@8.14.0(eslint@9.14.0(jiti@1.21.6))(typescript@5.6.3))(@vue/compiler-sfc@3.5.12)(eslint-plugin-format@0.1.2(eslint@9.14.0(jiti@1.21.6)))(eslint-plugin-react-hooks@4.6.2(eslint@9.14.0(jiti@1.21.6)))(eslint@9.14.0(jiti@1.21.6))(svelte@4.2.18)(typescript@5.6.3)(vitest@2.1.4)':
+  '@antfu/eslint-config@3.6.2(@typescript-eslint/utils@8.14.0(eslint@9.14.0(jiti@1.21.6))(typescript@5.6.3))(@vue/compiler-sfc@3.5.12)(eslint-plugin-format@0.1.2(eslint@9.14.0(jiti@1.21.6)))(eslint-plugin-react-hooks@4.6.2(eslint@9.14.0(jiti@1.21.6)))(eslint@9.14.0(jiti@1.21.6))(svelte@4.2.19)(typescript@5.6.3)(vitest@2.1.4)':
     dependencies:
       '@antfu/install-pkg': 0.4.1
       '@clack/prompts': 0.7.0
@@ -3880,7 +3882,7 @@ snapshots:
       eslint-plugin-jsonc: 2.18.1(eslint@9.14.0(jiti@1.21.6))
       eslint-plugin-n: 17.13.1(eslint@9.14.0(jiti@1.21.6))
       eslint-plugin-no-only-tests: 3.3.0
-      eslint-plugin-perfectionist: 3.9.1(eslint@9.14.0(jiti@1.21.6))(svelte@4.2.18)(typescript@5.6.3)(vue-eslint-parser@9.4.3(eslint@9.14.0(jiti@1.21.6)))
+      eslint-plugin-perfectionist: 3.9.1(eslint@9.14.0(jiti@1.21.6))(svelte@4.2.19)(typescript@5.6.3)(vue-eslint-parser@9.4.3(eslint@9.14.0(jiti@1.21.6)))
       eslint-plugin-regexp: 2.6.0(eslint@9.14.0(jiti@1.21.6))
       eslint-plugin-toml: 0.11.1(eslint@9.14.0(jiti@1.21.6))
       eslint-plugin-unicorn: 55.0.0(eslint@9.14.0(jiti@1.21.6))
@@ -4361,7 +4363,7 @@ snapshots:
   '@jridgewell/gen-mapping@0.3.5':
     dependencies:
       '@jridgewell/set-array': 1.2.1
-      '@jridgewell/sourcemap-codec': 1.4.15
+      '@jridgewell/sourcemap-codec': 1.5.0
       '@jridgewell/trace-mapping': 0.3.25
 
   '@jridgewell/resolve-uri@3.1.2': {}
@@ -4375,7 +4377,7 @@ snapshots:
   '@jridgewell/trace-mapping@0.3.25':
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
-      '@jridgewell/sourcemap-codec': 1.4.15
+      '@jridgewell/sourcemap-codec': 1.5.0
 
   '@microsoft/api-extractor-model@7.29.8(@types/node@22.4.2)':
     dependencies:
@@ -4466,7 +4468,7 @@ snapshots:
 
   '@rollup/pluginutils@5.1.0(rollup@4.21.0)':
     dependencies:
-      '@types/estree': 1.0.5
+      '@types/estree': 1.0.6
       estree-walker: 2.0.2
       picomatch: 2.3.1
     optionalDependencies:
@@ -4604,9 +4606,9 @@ snapshots:
     transitivePeerDependencies:
       - '@types/node'
 
-  '@storyblok/eslint-config@0.3.0(@typescript-eslint/utils@8.14.0(eslint@9.14.0(jiti@1.21.6))(typescript@5.6.3))(@vue/compiler-sfc@3.5.12)(eslint-plugin-react-hooks@4.6.2(eslint@9.14.0(jiti@1.21.6)))(eslint@9.14.0(jiti@1.21.6))(svelte@4.2.18)(typescript@5.6.3)(vitest@2.1.4)':
+  '@storyblok/eslint-config@0.3.0(@typescript-eslint/utils@8.14.0(eslint@9.14.0(jiti@1.21.6))(typescript@5.6.3))(@vue/compiler-sfc@3.5.12)(eslint-plugin-react-hooks@4.6.2(eslint@9.14.0(jiti@1.21.6)))(eslint@9.14.0(jiti@1.21.6))(svelte@4.2.19)(typescript@5.6.3)(vitest@2.1.4)':
     dependencies:
-      '@antfu/eslint-config': 3.6.2(@typescript-eslint/utils@8.14.0(eslint@9.14.0(jiti@1.21.6))(typescript@5.6.3))(@vue/compiler-sfc@3.5.12)(eslint-plugin-format@0.1.2(eslint@9.14.0(jiti@1.21.6)))(eslint-plugin-react-hooks@4.6.2(eslint@9.14.0(jiti@1.21.6)))(eslint@9.14.0(jiti@1.21.6))(svelte@4.2.18)(typescript@5.6.3)(vitest@2.1.4)
+      '@antfu/eslint-config': 3.6.2(@typescript-eslint/utils@8.14.0(eslint@9.14.0(jiti@1.21.6))(typescript@5.6.3))(@vue/compiler-sfc@3.5.12)(eslint-plugin-format@0.1.2(eslint@9.14.0(jiti@1.21.6)))(eslint-plugin-react-hooks@4.6.2(eslint@9.14.0(jiti@1.21.6)))(eslint@9.14.0(jiti@1.21.6))(svelte@4.2.19)(typescript@5.6.3)(vitest@2.1.4)
       eslint: 9.14.0(jiti@1.21.6)
       eslint-plugin-format: 0.1.2(eslint@9.14.0(jiti@1.21.6))
     transitivePeerDependencies:
@@ -4933,7 +4935,7 @@ snapshots:
       '@vue/shared': 3.4.38
       entities: 4.5.0
       estree-walker: 2.0.2
-      source-map-js: 1.2.0
+      source-map-js: 1.2.1
 
   '@vue/compiler-core@3.5.12':
     dependencies:
@@ -4997,17 +4999,11 @@ snapshots:
       jsonparse: 1.3.1
       through: 2.3.8
 
-  acorn-jsx@5.3.2(acorn@8.11.3):
-    dependencies:
-      acorn: 8.11.3
-
   acorn-jsx@5.3.2(acorn@8.14.0):
     dependencies:
       acorn: 8.14.0
 
   acorn@8.11.3: {}
-
-  acorn@8.12.1: {}
 
   acorn@8.14.0: {}
 
@@ -5249,9 +5245,9 @@ snapshots:
 
   code-red@1.0.4:
     dependencies:
-      '@jridgewell/sourcemap-codec': 1.4.15
-      '@types/estree': 1.0.5
-      acorn: 8.11.3
+      '@jridgewell/sourcemap-codec': 1.5.0
+      '@types/estree': 1.0.6
+      acorn: 8.14.0
       estree-walker: 3.0.3
       periscopic: 3.1.0
 
@@ -5326,7 +5322,7 @@ snapshots:
   css-tree@2.3.1:
     dependencies:
       mdn-data: 2.0.30
-      source-map-js: 1.2.0
+      source-map-js: 1.2.1
 
   cssesc@3.0.0: {}
 
@@ -5840,7 +5836,7 @@ snapshots:
 
   eslint-plugin-no-only-tests@3.3.0: {}
 
-  eslint-plugin-perfectionist@3.9.1(eslint@9.14.0(jiti@1.21.6))(svelte@4.2.18)(typescript@5.6.3)(vue-eslint-parser@9.4.3(eslint@9.14.0(jiti@1.21.6))):
+  eslint-plugin-perfectionist@3.9.1(eslint@9.14.0(jiti@1.21.6))(svelte@4.2.19)(typescript@5.6.3)(vue-eslint-parser@9.4.3(eslint@9.14.0(jiti@1.21.6))):
     dependencies:
       '@typescript-eslint/types': 8.14.0
       '@typescript-eslint/utils': 8.14.0(eslint@9.14.0(jiti@1.21.6))(typescript@5.6.3)
@@ -5848,7 +5844,7 @@ snapshots:
       minimatch: 9.0.5
       natural-compare-lite: 1.4.0
     optionalDependencies:
-      svelte: 4.2.18
+      svelte: 4.2.19
       vue-eslint-parser: 9.4.3(eslint@9.14.0(jiti@1.21.6))
     transitivePeerDependencies:
       - supports-color
@@ -6069,8 +6065,8 @@ snapshots:
 
   espree@9.6.1:
     dependencies:
-      acorn: 8.11.3
-      acorn-jsx: 5.3.2(acorn@8.11.3)
+      acorn: 8.14.0
+      acorn-jsx: 5.3.2(acorn@8.14.0)
       eslint-visitor-keys: 3.4.3
 
   esquery@1.5.0:
@@ -6091,7 +6087,7 @@ snapshots:
 
   estree-walker@3.0.3:
     dependencies:
-      '@types/estree': 1.0.5
+      '@types/estree': 1.0.6
 
   esutils@2.0.3: {}
 
@@ -6430,7 +6426,7 @@ snapshots:
 
   is-reference@3.0.2:
     dependencies:
-      '@types/estree': 1.0.5
+      '@types/estree': 1.0.6
 
   is-regex@1.1.4:
     dependencies:
@@ -6646,7 +6642,7 @@ snapshots:
 
   magic-string@0.30.10:
     dependencies:
-      '@jridgewell/sourcemap-codec': 1.4.15
+      '@jridgewell/sourcemap-codec': 1.5.0
 
   magic-string@0.30.11:
     dependencies:
@@ -6996,7 +6992,7 @@ snapshots:
 
   mlly@1.7.1:
     dependencies:
-      acorn: 8.12.1
+      acorn: 8.14.0
       pathe: 1.1.2
       pkg-types: 1.1.3
       ufo: 1.5.4
@@ -7187,7 +7183,7 @@ snapshots:
 
   periscopic@3.1.0:
     dependencies:
-      '@types/estree': 1.0.5
+      '@types/estree': 1.0.6
       estree-walker: 3.0.3
       is-reference: 3.0.2
 
@@ -7615,6 +7611,24 @@ snapshots:
       locate-character: 3.0.0
       magic-string: 0.30.10
       periscopic: 3.1.0
+
+  svelte@4.2.19:
+    dependencies:
+      '@ampproject/remapping': 2.3.0
+      '@jridgewell/sourcemap-codec': 1.5.0
+      '@jridgewell/trace-mapping': 0.3.25
+      '@types/estree': 1.0.6
+      acorn: 8.14.0
+      aria-query: 5.3.0
+      axobject-query: 4.0.0
+      code-red: 1.0.4
+      css-tree: 2.3.1
+      estree-walker: 3.0.3
+      is-reference: 3.0.2
+      locate-character: 3.0.0
+      magic-string: 0.30.12
+      periscopic: 3.1.0
+    optional: true
 
   swr@2.2.5(react@18.3.1):
     dependencies:
