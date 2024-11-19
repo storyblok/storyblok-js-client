@@ -60,7 +60,7 @@ class Storyblok {
   private client: SbFetch;
   private maxRetries: number;
   private retriesDelay: number;
-  private throttle;
+  private throttle: ReturnType<typeof throttledQueue>;
   private accessToken: string;
   private cache: ISbCache;
   private helpers: SbHelpers;
@@ -145,6 +145,7 @@ class Storyblok {
       rateLimit,
       1000,
     );
+
     this.accessToken = config.accessToken || '';
     this.relations = {} as RelationsType;
     this.links = {} as LinksType;

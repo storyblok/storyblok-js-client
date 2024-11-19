@@ -7,24 +7,16 @@ class AbortError extends Error {
   }
 }
 
-function isFinite(value: number) {
-  if (Number.isNaN(value) || value === Infinity || value === -Infinity) {
-    return false;
-  }
-
-  return true;
-}
-
 function throttledQueue<T extends (...args: Parameters<T>) => ReturnType<T>>(
   fn: T,
   limit: number,
   interval: number,
 ): ISbThrottle<T> {
-  if (!isFinite(limit)) {
+  if (!Number.isFinite(limit)) {
     throw new TypeError('Expected `limit` to be a finite number');
   }
 
-  if (!isFinite(interval)) {
+  if (!Number.isFinite(interval)) {
     throw new TypeError('Expected `interval` to be a finite number');
   }
 
