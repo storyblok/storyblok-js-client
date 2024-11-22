@@ -30,8 +30,13 @@ function throttledQueue<T extends (...args: Parameters<T>) => ReturnType<T>>(
 
     const x = queue.shift();
     if (x) {
-      const res = await fn(...x.args);
-      x.resolve(res);
+      try {
+        const res = await fn(...x.args);
+        x.resolve(res);
+      }
+      catch (error) {
+        x.reject(error);
+      }
     }
 
     const id = setTimeout(() => {
