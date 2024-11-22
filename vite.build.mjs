@@ -1,10 +1,10 @@
-import { fileURLToPath } from 'node:url';
-import { resolve } from 'node:path';
-import { build } from 'vite';
+import { fileURLToPath } from 'node:url'
+import { resolve } from 'node:path'
+import { build } from 'vite'
 
-const __dirname = fileURLToPath(new URL('.', import.meta.url));
+const __dirname = fileURLToPath(new URL('.', import.meta.url))
 
-let firstRunCounter = 0;
+let firstRunCounter = 0
 const bundles = [
   {
     entry: 'entry.esm.ts',
@@ -49,6 +49,6 @@ const bundles = [
           npm_package_version: process.env.npm_package_version,
         },
       },
-    });
+    })
   }
-})();
+})()

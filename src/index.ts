@@ -14,14 +14,13 @@ import type {
   ISbCustomFetch,
   ISbLinkURLObject,
   ISbNode,
-  ISbResponse,
-  ISbResponseData,
   ISbResult,
   ISbStories,
   ISbStoriesParams,
   ISbStory,
   ISbStoryData,
   ISbStoryParams,
+  ThrottleFn,
 } from './interfaces';
 
 let memory: Partial<IMemoryType> = {};
@@ -48,6 +47,15 @@ interface ISbFlatMapped {
   data: any;
 }
 
+export interface ISbResponseData {
+  link_uuids: string[];
+  links: string[];
+  rel_uuids: string[];
+  rels: any;
+  story: ISbStoryData;
+  stories: Array<ISbStoryData>;
+}
+
 const _VERSION = {
   V1: 'v1',
   V2: 'v2',
@@ -60,7 +68,7 @@ class Storyblok {
   private client: SbFetch;
   private maxRetries: number;
   private retriesDelay: number;
-  private throttle: ReturnType<typeof throttledQueue>;
+  private throttle: ThrottleFn;
   private accessToken: string;
   private cache: ISbCache;
   private helpers: SbHelpers;
@@ -140,12 +148,7 @@ class Storyblok {
 
     this.maxRetries = config.maxRetries || 10;
     this.retriesDelay = 300;
-    this.throttle = throttledQueue(
-      this.throttledRequest.bind(this),
-      rateLimit,
-      1000,
-    );
-
+    this.throttle = throttledQueue(this.throttledRequest, rateLimit, 1000);
     this.accessToken = config.accessToken || '';
     this.relations = {} as RelationsType;
     this.links = {} as LinksType;
@@ -278,9 +281,7 @@ class Storyblok {
   ): Promise<ISbResponseData> {
     const url = `/${slug}`;
 
-    return Promise.resolve(
-      this.throttle('post', url, params, fetchOptions),
-    ) as Promise<ISbResponseData>;
+    return Promise.resolve(this.throttle('post', url, params, fetchOptions));
   }
 
   public put(
@@ -290,9 +291,7 @@ class Storyblok {
   ): Promise<ISbResponseData> {
     const url = `/${slug}`;
 
-    return Promise.resolve(
-      this.throttle('put', url, params, fetchOptions),
-    ) as Promise<ISbResponseData>;
+    return Promise.resolve(this.throttle('put', url, params, fetchOptions));
   }
 
   public delete(
@@ -302,9 +301,7 @@ class Storyblok {
   ): Promise<ISbResponseData> {
     const url = `/${slug}`;
 
-    return Promise.resolve(
-      this.throttle('delete', url, params, fetchOptions),
-    ) as Promise<ISbResponseData>;
+    return Promise.resolve(this.throttle('delete', url, params, fetchOptions));
   }
 
   public getStories(
@@ -619,12 +616,7 @@ class Storyblok {
 
     return new Promise(async (resolve, reject) => {
       try {
-        const res = (await this.throttle(
-          'get',
-          url,
-          params,
-          fetchOptions,
-        )) as ISbResponse;
+        const res = await this.throttle('get', url, params, fetchOptions);
         if (res.status !== 200) {
           return reject(res);
         }
@@ -643,8 +635,7 @@ class Storyblok {
         }
 
         if (response.data.story || response.data.stories) {
-          const resolveId = (this.resolveCounter
-            = ++this.resolveCounter % 1000);
+          const resolveId = (this.resolveCounter = ++this.resolveCounter % 1000);
           await this.resolveStories(response.data, params, `${resolveId}`);
         }
 

@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite';
+import { defineConfig } from 'vite'
 
 export default defineConfig({
   test: {
@@ -10,4 +10,4 @@ export default defineConfig({
       reportsDirectory: './tests/unit/coverage',
     },
   },
-});
+})
