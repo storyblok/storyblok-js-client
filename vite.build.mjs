@@ -35,6 +35,7 @@ const bundles = [
   for (const bundle of bundles) {
     await build({
       configFile: false,
+      minify: false,
       build: {
         lib: {
           entry: resolve(__dirname, 'src', bundle.entry),
