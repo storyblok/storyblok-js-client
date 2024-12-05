@@ -51,6 +51,9 @@ interface ISbFlatMapped {
 const _VERSION = {
   V1: 'v1',
   V2: 'v2',
+  V3: 'v3',
+  V4: 'v4',
+  V5: 'v5',
 } as const;
 
 type ObjectValues<T> = T[keyof T];
