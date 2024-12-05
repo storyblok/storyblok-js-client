@@ -56,11 +56,13 @@
     "test:e2e": "vitest run -c vitest.config.e2e.ts",
     "test:ui": "vitest --ui --coverage.enabled=true",
     "coverage": "vitest run --coverage",
-    "prepare": "npm run build"
+    "prepare": "npm run build",
+    "gravityci": "gravityci"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.5.0",
     "@commitlint/config-conventional": "^19.5.0",
+    "@gravityci/cli": "^0.0.4",
     "@storyblok/eslint-config": "^0.3.0",
     "@tsconfig/recommended": "^1.0.8",
     "@typescript-eslint/eslint-plugin": "^8.14.0",
