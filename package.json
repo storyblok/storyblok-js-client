@@ -1,7 +1,7 @@
 {
   "name": "storyblok-js-client",
   "version": "6.10.1",
-  "packageManager": "pnpm@9.12.3",
+  "packageManager": "pnpm@9.15.0",
   "description": "Universal JavaScript SDK for Storyblok's API",
   "author": "Alexander Feiglstorfer <delooks@gmail.com>",
   "license": "MIT",
@@ -50,7 +50,9 @@
   "scripts": {
     "lint": "eslint --max-warnings=0 './src/**/*.{ts,js}'",
     "build": "node vite.build.mjs && tsc",
-    "demo": "vite serve playground",
+    "playground": "pnpm run --filter ./playground/vanilla dev",
+    "playground:svelte": "pnpm run --filter ./playground/svelte dev",
+    "playground:next": "pnpm run --filter ./playground/nextjs dev",
     "dev:umd": "npx serve ./",
     "test": "vitest run",
     "test:e2e": "vitest run -c vitest.config.e2e.ts",
@@ -59,24 +61,24 @@
     "prepare": "npm run build"
   },
   "devDependencies": {
-    "@commitlint/cli": "^19.5.0",
-    "@commitlint/config-conventional": "^19.5.0",
+    "@commitlint/cli": "^19.6.0",
+    "@commitlint/config-conventional": "^19.6.0",
     "@storyblok/eslint-config": "^0.3.0",
     "@tsconfig/recommended": "^1.0.8",
-    "@typescript-eslint/eslint-plugin": "^8.14.0",
-    "@typescript-eslint/parser": "^8.14.0",
-    "@vitest/coverage-v8": "^2.1.4",
-    "@vitest/ui": "^2.1.4",
-    "eslint": "^9.14.0",
+    "@typescript-eslint/eslint-plugin": "^8.17.0",
+    "@typescript-eslint/parser": "^8.17.0",
+    "@vitest/coverage-v8": "^2.1.8",
+    "@vitest/ui": "^2.1.8",
+    "eslint": "^9.16.0",
     "eslint-config-prettier": "^9.1.0",
     "isomorphic-fetch": "^3.0.0",
     "kolorist": "^1.8.0",
-    "prettier": "^3.3.3",
-    "typescript": "^5.6.3",
+    "prettier": "^3.4.2",
+    "typescript": "^5.7.2",
     "vite": "^5.4.11",
     "vite-plugin-banner": "^0.8.0",
     "vite-plugin-dts": "^4.3.0",
-    "vitest": "^2.1.4"
+    "vitest": "^2.1.8"
   },
   "release": {
     "branches": [
