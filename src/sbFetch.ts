@@ -68,9 +68,9 @@ class SbFetch {
     return this._methodHandler('put');
   }
 
-  public delete(url: string, params: ISbStoriesParams) {
+  public delete(url: string, params?: ISbStoriesParams) {
     this.url = url;
-    this.parameters = params;
+    this.parameters = params ?? {} as ISbStoriesParams;
     return this._methodHandler('delete');
   }
 

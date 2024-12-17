@@ -76,7 +76,7 @@ Storyblok.post(`spaces/${spaceId}/stories`, {
 Storyblok.put(`spaces/${spaceId}/stories/1`, {
   story: { name: "xy", slug: "xy" },
 });
-Storyblok.delete(`spaces/${spaceId}/stories/1`, null);
+Storyblok.delete(`spaces/${spaceId}/stories/1`);
 ```
 
 ### Using the RichTextResolver separately
@@ -402,7 +402,7 @@ Storyblok.put('spaces/<YOUR_SPACE_ID>/stories/1', {
 **Example**
 
 ```javascript
-Storyblok.delete('spaces/<YOUR_SPACE_ID>/stories/1', null)
+Storyblok.delete('spaces/<YOUR_SPACE_ID>/stories/1')
   .then((response) => {
     console.log(response)
   })

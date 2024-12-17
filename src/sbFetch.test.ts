@@ -109,7 +109,7 @@ describe('sbFetch', () => {
         status: 204, // Typically, DELETE operations might not return content
       });
       mockFetch.mockResolvedValue(response);
-      await sbFetch.delete('stories/1', {});
+      await sbFetch.delete('stories/1');
       expect(mockFetch).toHaveBeenCalledWith(
         'https://api.storyblok.com/v2/stories/1',
         {
