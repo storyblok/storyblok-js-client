@@ -300,6 +300,9 @@ class Storyblok {
     params: ISbStoriesParams | ISbContentMangmntAPI,
     fetchOptions?: ISbCustomFetch,
   ): Promise<ISbResponseData> {
+    if (!params) {
+      params = {} as ISbStoriesParams;
+    }
     const url = `/${slug}`;
 
     return Promise.resolve(
