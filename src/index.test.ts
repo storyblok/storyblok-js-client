@@ -403,4 +403,89 @@ describe('storyblokClient', () => {
   it('should return access token', () => {
     expect(client.getToken()).toBe('test-token');
   });
+
+  describe('relation resolution', () => {
+    it('should resolve nested relations within content blocks', async () => {
+      const TEST_UUID = 'this-is-a-test-uuid';
+
+      const mockResponse = {
+        data: {
+          story: {
+            content: {
+              _uid: 'parent-uid',
+              component: 'page',
+              body: [{
+                _uid: 'slider-uid',
+                component: 'event_slider',
+                spots: [{
+                  _uid: 'event-uid',
+                  component: 'event',
+                  content: {
+                    _uid: 'content-uid',
+                    component: 'event',
+                    event_type: TEST_UUID,
+                  },
+                }],
+              }],
+            },
+          },
+          rel_uuids: [TEST_UUID],
+        },
+        headers: {},
+        status: 200,
+        statusText: 'OK',
+      };
+
+      const mockRelationsResponse = {
+        data: {
+          stories: [{
+            _uid: 'type-uid',
+            uuid: TEST_UUID,
+            content: {
+              name: 'Test Event Type',
+              component: 'event_type',
+            },
+          }],
+        },
+        headers: {},
+        status: 200,
+        statusText: 'OK',
+      };
+
+      // Setup the mock client's get method
+      const mockGet = vi.fn()
+        .mockImplementationOnce(() => Promise.resolve(mockResponse))
+        .mockImplementationOnce(() => Promise.resolve(mockRelationsResponse));
+
+      // Replace the client's fetch instance
+      client.client = {
+        get: mockGet,
+        post: vi.fn(),
+        setFetchOptions: vi.fn(),
+      };
+
+      const result = await client.get('cdn/stories/test', {
+        resolve_relations: [
+          'event.event_type',
+          'event_slider.spots',
+        ],
+        version: 'draft',
+      });
+
+      // Verify that the UUID was replaced with the resolved object
+      const resolvedEventType = result.data.story.content.body[0].spots[0].content.event_type;
+      expect(resolvedEventType).toEqual({
+        _uid: 'type-uid',
+        uuid: TEST_UUID,
+        content: {
+          name: 'Test Event Type',
+          component: 'event_type',
+        },
+        _stopResolving: true,
+      });
+
+      // Verify that get was called two times
+      expect(mockGet).toHaveBeenCalledTimes(2);
+    });
+  });
 });
