@@ -235,6 +235,147 @@ describe('storyblokClient', () => {
         headers: {},
       });
     });
+
+    it('should handle API errors gracefully', async () => {
+      const mockGet = vi.fn().mockRejectedValue({
+        status: 404,
+        statusText: 'Not Found',
+      });
+
+      client.client = {
+        get: mockGet,
+        post: vi.fn(),
+        setFetchOptions: vi.fn(),
+        baseURL: 'https://api.storyblok.com/v2',
+      };
+
+      await expect(client.get('cdn/stories/non-existent'))
+        .rejects
+        .toMatchObject({
+          status: 404,
+        });
+    });
+
+    it('should fetch and return a complex story object correctly', async () => {
+      const mockComplexStory = {
+        data: {
+          story: {
+            id: 123456,
+            uuid: 'story-uuid-123',
+            name: 'Complex Page',
+            slug: 'complex-page',
+            full_slug: 'folder/complex-page',
+            created_at: '2023-01-01T12:00:00.000Z',
+            published_at: '2023-01-02T12:00:00.000Z',
+            first_published_at: '2023-01-02T12:00:00.000Z',
+            content: {
+              _uid: 'content-123',
+              component: 'page',
+              title: 'Complex Page Title',
+              subtitle: 'Complex Page Subtitle',
+              intro: {
+                _uid: 'intro-123',
+                component: 'intro',
+                heading: 'Welcome to our page',
+                text: 'Some introduction text',
+              },
+              body: [
+                {
+                  _uid: 'text-block-123',
+                  component: 'text_block',
+                  text: 'First paragraph of content',
+                },
+                {
+                  _uid: 'image-block-123',
+                  component: 'image',
+                  src: 'https://example.com/image.jpg',
+                  alt: 'Example image',
+                },
+                {
+                  _uid: 'related-items-123',
+                  component: 'related_items',
+                  items: ['uuid1', 'uuid2'], // Relations that we won't resolve in this test
+                },
+              ],
+              seo: {
+                _uid: 'seo-123',
+                component: 'seo',
+                title: 'SEO Title',
+                description: 'SEO Description',
+                og_image: 'https://example.com/og-image.jpg',
+              },
+            },
+            position: 1,
+            is_startpage: false,
+            parent_id: 654321,
+            group_id: '789-group',
+            alternates: [],
+            translated_slugs: [],
+            default_full_slug: null,
+            lang: 'default',
+          },
+        },
+        headers: {},
+        status: 200,
+        statusText: 'OK',
+      };
+
+      const mockGet = vi.fn().mockResolvedValue(mockComplexStory);
+
+      client.client = {
+        get: mockGet,
+        post: vi.fn(),
+        setFetchOptions: vi.fn(),
+        baseURL: 'https://api.storyblok.com/v2',
+      };
+
+      const result = await client.get('cdn/stories/folder/complex-page');
+
+      // Verify the complete story structure is returned correctly
+      expect(result.data.story).toMatchObject({
+        id: 123456,
+        uuid: 'story-uuid-123',
+        name: 'Complex Page',
+        slug: 'complex-page',
+        full_slug: 'folder/complex-page',
+        content: expect.objectContaining({
+          _uid: 'content-123',
+          component: 'page',
+          title: 'Complex Page Title',
+          subtitle: 'Complex Page Subtitle',
+          intro: expect.objectContaining({
+            _uid: 'intro-123',
+            component: 'intro',
+          }),
+          body: expect.arrayContaining([
+            expect.objectContaining({
+              component: 'text_block',
+            }),
+            expect.objectContaining({
+              component: 'image',
+            }),
+            expect.objectContaining({
+              component: 'related_items',
+            }),
+          ]),
+        }),
+      });
+
+      // Verify specific nested properties
+      expect(result.data.story.content.seo).toEqual({
+        _uid: 'seo-123',
+        component: 'seo',
+        title: 'SEO Title',
+        description: 'SEO Description',
+        og_image: 'https://example.com/og-image.jpg',
+      });
+
+      // Verify that relations array exists but remains unresolved
+      expect(result.data.story.content.body[2].items).toEqual(['uuid1', 'uuid2']);
+
+      // Verify the API was called only once (no relation resolution)
+      expect(mockGet).toHaveBeenCalledTimes(1);
+    });
   });
 
   describe('getAll', () => {
@@ -402,5 +543,375 @@ describe('storyblokClient', () => {
 
   it('should return access token', () => {
     expect(client.getToken()).toBe('test-token');
+  });
+
+  describe('relation resolution', () => {
+    it('should resolve nested relations within content blocks', async () => {
+      const TEST_UUID = 'this-is-a-test-uuid';
+
+      const mockResponse = {
+        data: {
+          story: {
+            content: {
+              _uid: 'parent-uid',
+              component: 'page',
+              body: [{
+                _uid: 'slider-uid',
+                component: 'event_slider',
+                spots: [{
+                  _uid: 'event-uid',
+                  component: 'event',
+                  content: {
+                    _uid: 'content-uid',
+                    component: 'event',
+                    event_type: TEST_UUID,
+                  },
+                }],
+              }],
+            },
+          },
+          rel_uuids: [TEST_UUID],
+        },
+        headers: {},
+        status: 200,
+        statusText: 'OK',
+      };
+
+      const mockRelationsResponse = {
+        data: {
+          stories: [{
+            _uid: 'type-uid',
+            uuid: TEST_UUID,
+            content: {
+              name: 'Test Event Type',
+              component: 'event_type',
+            },
+          }],
+        },
+        headers: {},
+        status: 200,
+        statusText: 'OK',
+      };
+
+      // Setup the mock client's get method
+      const mockGet = vi.fn()
+        .mockImplementationOnce(() => Promise.resolve(mockResponse))
+        .mockImplementationOnce(() => Promise.resolve(mockRelationsResponse));
+
+      // Replace the client's fetch instance
+      client.client = {
+        get: mockGet,
+        post: vi.fn(),
+        setFetchOptions: vi.fn(),
+      };
+
+      const result = await client.get('cdn/stories/test', {
+        resolve_relations: [
+          'event.event_type',
+          'event_slider.spots',
+        ],
+        version: 'draft',
+      });
+
+      // Verify that the UUID was replaced with the resolved object
+      const resolvedEventType = result.data.story.content.body[0].spots[0].content.event_type;
+      expect(resolvedEventType).toEqual({
+        _uid: 'type-uid',
+        uuid: TEST_UUID,
+        content: {
+          name: 'Test Event Type',
+          component: 'event_type',
+        },
+        _stopResolving: true,
+      });
+
+      // Verify that get was called two times
+      expect(mockGet).toHaveBeenCalledTimes(2);
+    });
+
+    it('should resolve an array of relations', async () => {
+      const TEST_UUIDS = ['tag-1-uuid', 'tag-2-uuid'];
+
+      const mockResponse = {
+        data: {
+          story: {
+            content: {
+              _uid: 'root-uid',
+              component: 'post',
+              tags: TEST_UUIDS,
+            },
+          },
+          rel_uuids: TEST_UUIDS,
+        },
+        headers: {},
+        status: 200,
+        statusText: 'OK',
+      };
+
+      const mockRelationsResponse = {
+        data: {
+          stories: [
+            {
+              _uid: 'tag-1-uid',
+              uuid: TEST_UUIDS[0],
+              content: {
+                name: 'Tag 1',
+                component: 'tag',
+              },
+            },
+            {
+              _uid: 'tag-2-uid',
+              uuid: TEST_UUIDS[1],
+              content: {
+                name: 'Tag 2',
+                component: 'tag',
+              },
+            },
+          ],
+        },
+        headers: {},
+        status: 200,
+        statusText: 'OK',
+      };
+
+      const mockGet = vi.fn()
+        .mockImplementationOnce(() => Promise.resolve(mockResponse))
+        .mockImplementationOnce(() => Promise.resolve(mockRelationsResponse));
+
+      client.client = {
+        get: mockGet,
+        post: vi.fn(),
+        setFetchOptions: vi.fn(),
+        baseURL: 'https://api.storyblok.com/v2',
+      };
+
+      const result = await client.get('cdn/stories/test', {
+        resolve_relations: ['post.tags'],
+        version: 'draft',
+      });
+
+      expect(result.data.story.content.tags).toEqual([
+        {
+          _uid: 'tag-1-uid',
+          uuid: TEST_UUIDS[0],
+          content: {
+            name: 'Tag 1',
+            component: 'tag',
+          },
+          _stopResolving: true,
+        },
+        {
+          _uid: 'tag-2-uid',
+          uuid: TEST_UUIDS[1],
+          content: {
+            name: 'Tag 2',
+            component: 'tag',
+          },
+          _stopResolving: true,
+        },
+      ]);
+    });
+
+    it('should resolve multiple relation patterns simultaneously', async () => {
+      const AUTHOR_UUID = 'author-uuid';
+      const CATEGORY_UUID = 'category-uuid';
+
+      const mockResponse = {
+        data: {
+          story: {
+            content: {
+              _uid: 'root-uid',
+              component: 'post',
+              author: AUTHOR_UUID,
+              category: CATEGORY_UUID,
+            },
+          },
+          rel_uuids: [AUTHOR_UUID, CATEGORY_UUID],
+        },
+        headers: {},
+        status: 200,
+        statusText: 'OK',
+      };
+
+      const mockRelationsResponse = {
+        data: {
+          stories: [
+            {
+              _uid: 'author-uid',
+              uuid: AUTHOR_UUID,
+              content: {
+                name: 'John Doe',
+                component: 'author',
+              },
+            },
+            {
+              _uid: 'category-uid',
+              uuid: CATEGORY_UUID,
+              content: {
+                name: 'Technology',
+                component: 'category',
+              },
+            },
+          ],
+        },
+        headers: {},
+        status: 200,
+        statusText: 'OK',
+      };
+
+      const mockGet = vi.fn()
+        .mockImplementationOnce(() => Promise.resolve(mockResponse))
+        .mockImplementationOnce(() => Promise.resolve(mockRelationsResponse));
+
+      client.client = {
+        get: mockGet,
+        post: vi.fn(),
+        setFetchOptions: vi.fn(),
+        baseURL: 'https://api.storyblok.com/v2',
+      };
+
+      const result = await client.get('cdn/stories/test', {
+        resolve_relations: ['post.author', 'post.category'],
+        version: 'draft',
+      });
+
+      expect(result.data.story.content.author).toEqual({
+        _uid: 'author-uid',
+        uuid: AUTHOR_UUID,
+        content: {
+          name: 'John Doe',
+          component: 'author',
+        },
+        _stopResolving: true,
+      });
+
+      expect(result.data.story.content.category).toEqual({
+        _uid: 'category-uid',
+        uuid: CATEGORY_UUID,
+        content: {
+          name: 'Technology',
+          component: 'category',
+        },
+        _stopResolving: true,
+      });
+    });
+
+    it('should handle content with no relations to resolve', async () => {
+      const mockResponse = {
+        data: {
+          story: {
+            content: {
+              _uid: 'test-story-uid',
+              component: 'page',
+              title: 'Simple Page',
+              text: 'Just some text content',
+              number: 42,
+              boolean: true,
+            },
+          },
+        },
+        headers: {},
+        status: 200,
+        statusText: 'OK',
+      };
+
+      const mockGet = vi.fn()
+        .mockImplementationOnce(() => Promise.resolve(mockResponse));
+
+      client.client = {
+        get: mockGet,
+        post: vi.fn(),
+        setFetchOptions: vi.fn(),
+        baseURL: 'https://api.storyblok.com/v2',
+      };
+
+      const result = await client.get('cdn/stories/test', {
+        resolve_relations: ['page.author'], // Even with resolve_relations, nothing should change
+        version: 'draft',
+      });
+
+      // Verify the content remains unchanged
+      expect(result.data.story.content).toEqual({
+        _uid: 'test-story-uid',
+        component: 'page',
+        title: 'Simple Page',
+        text: 'Just some text content',
+        number: 42,
+        boolean: true,
+      });
+
+      // Verify that only one API call was made (no relations to resolve)
+      expect(mockGet).toHaveBeenCalledTimes(1);
+    });
+
+    it('should handle invalid relation patterns gracefully', async () => {
+      const mockResponse = {
+        data: {
+          story: {
+            content: {
+              _uid: 'test-uid',
+              component: 'page',
+              relation_field: 'some-uuid',
+            },
+          },
+        },
+        headers: {},
+        status: 200,
+        statusText: 'OK',
+      };
+
+      const mockGet = vi.fn()
+        .mockImplementationOnce(() => Promise.resolve(mockResponse));
+
+      client.client = {
+        get: mockGet,
+        post: vi.fn(),
+        setFetchOptions: vi.fn(),
+        baseURL: 'https://api.storyblok.com/v2',
+      };
+
+      const result = await client.get('cdn/stories/test', {
+        resolve_relations: ['invalid.pattern'],
+        version: 'draft',
+      });
+
+      // Should not throw and return original content
+      expect(result.data.story.content.relation_field).toBe('some-uuid');
+    });
+
+    it('should handle empty resolve_relations array', async () => {
+      const mockResponse = {
+        data: {
+          story: {
+            content: {
+              _uid: 'test-uid',
+              component: 'page',
+              relation_field: 'some-uuid',
+            },
+          },
+        },
+        headers: {},
+        status: 200,
+        statusText: 'OK',
+      };
+
+      const mockGet = vi.fn()
+        .mockImplementationOnce(() => Promise.resolve(mockResponse));
+
+      client.client = {
+        get: mockGet,
+        post: vi.fn(),
+        setFetchOptions: vi.fn(),
+        baseURL: 'https://api.storyblok.com/v2',
+      };
+
+      const result = await client.get('cdn/stories/test', {
+        resolve_relations: [],
+        version: 'draft',
+      });
+
+      expect(result.data.story.content.relation_field).toBe('some-uuid');
+      expect(mockGet).toHaveBeenCalledTimes(1);
+    });
   });
 });
