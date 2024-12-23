@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { ResponseFn } from './sbFetch';
 import SbFetch from './sbFetch';
 import { SbHelpers } from './sbHelpers';
+import type { ISbLink } from './interfaces';
 
 // Mocking external dependencies
 vi.mock('../src/sbFetch', () => {
@@ -375,6 +376,132 @@ describe('storyblokClient', () => {
 
       // Verify the API was called only once (no relation resolution)
       expect(mockGet).toHaveBeenCalledTimes(1);
+    });
+
+    describe('cdn/links endpoint', () => {
+      it('should fetch links with dates when include_dates is set to 1', async () => {
+        const mockLinksResponse = {
+          data: {
+            links: {
+              'story-1': {
+                id: 1,
+                uuid: 'story-1-uuid',
+                slug: 'story-1',
+                name: 'Story 1',
+                is_folder: false,
+                parent_id: 0,
+                published: true,
+                position: 0,
+                // Date fields included because of include_dates: 1
+                created_at: '2024-01-01T10:00:00.000Z',
+                published_at: '2024-01-01T11:00:00.000Z',
+                updated_at: '2024-01-02T10:00:00.000Z',
+              },
+              'story-2': {
+                id: 2,
+                uuid: 'story-2-uuid',
+                slug: 'story-2',
+                name: 'Story 2',
+                is_folder: false,
+                parent_id: 0,
+                published: true,
+                position: 1,
+                created_at: '2024-01-03T10:00:00.000Z',
+                published_at: '2024-01-03T11:00:00.000Z',
+                updated_at: '2024-01-04T10:00:00.000Z',
+              },
+            },
+          },
+          headers: {},
+          status: 200,
+        };
+
+        const mockGet = vi.fn().mockResolvedValue(mockLinksResponse);
+
+        client.client = {
+          get: mockGet,
+          post: vi.fn(),
+          setFetchOptions: vi.fn(),
+          baseURL: 'https://api.storyblok.com/v2',
+        };
+
+        const response = await client.get('cdn/links', {
+          version: 'draft',
+          include_dates: 1,
+        });
+
+        // Verify the structure of the response
+        expect(response).toHaveProperty('data.links');
+
+        // Check if links are present and have the correct structure
+        expect(response.data.links['story-1']).toBeDefined();
+        expect(response.data.links['story-2']).toBeDefined();
+
+        // Verify date fields are present in the response
+        const link: ISbLink = response.data.links['story-1'];
+        expect(link).toHaveProperty('created_at');
+        expect(link).toHaveProperty('published_at');
+        expect(link).toHaveProperty('updated_at');
+
+        // Verify the date formats
+        const DATETIME_FORMAT = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/;
+        expect(link.created_at).toMatch(DATETIME_FORMAT);
+        expect(link.published_at).toMatch(DATETIME_FORMAT);
+        expect(link.updated_at).toMatch(DATETIME_FORMAT);
+
+        // Verify the API was called with correct parameters
+        expect(mockGet).toHaveBeenCalledWith('/cdn/links', {
+          cv: 0,
+          token: 'test-token',
+          version: 'draft',
+          include_dates: 1,
+        });
+        expect(mockGet).toHaveBeenCalledTimes(1);
+      });
+
+      it('should handle links response without dates when include_dates is not set', async () => {
+        const mockResponse = {
+          data: {
+            links: {
+              'story-1': {
+                id: 1,
+                uuid: 'story-1-uuid',
+                slug: 'story-1',
+                name: 'Story 1',
+                is_folder: false,
+                parent_id: 0,
+                published: true,
+                position: 0,
+                // No date fields
+              },
+            },
+          },
+          headers: {},
+          status: 200,
+        };
+
+        const mockGet = vi.fn().mockResolvedValue(mockResponse);
+        client.client.get = mockGet;
+
+        const response = await client.get('cdn/links', { version: 'draft' });
+
+        expect(response.data.links['story-1']).not.toHaveProperty('created_at');
+        expect(response.data.links['story-1']).not.toHaveProperty('published_at');
+        expect(response.data.links['story-1']).not.toHaveProperty('updated_at');
+      });
+
+      it('should handle errors gracefully', async () => {
+        const mockGet = vi.fn().mockRejectedValue({
+          status: 404,
+        });
+        client.client.get = mockGet;
+
+        await expect(client.get('cdn/links', {
+          version: 'draft',
+        })).rejects.toMatchObject({
+          status: 404,
+        });
+      });
     });
   });
 

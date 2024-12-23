@@ -238,6 +238,10 @@ export interface ISbResult {
   headers: Headers;
 }
 
+export interface ISbLinksResult extends ISbResult {
+  data: ISbLinks;
+}
+
 export interface ISbResponse {
   data: any;
   status: number;
@@ -333,6 +337,22 @@ export interface ISbLink {
   position?: number;
   uuid?: string;
   is_startpage?: boolean;
+  path?: string;
+  real_path?: string;
+  published_at?: string;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface ISbLinksParams {
+  starts_with?: string;
+  version?: 'published' | 'draft';
+  paginated?: number;
+  per_page?: number;
+  page?: number;
+  sort_by?: string;
+  include_dates?: 0 | 1;
+  with_parent?: number;
 }
 
 export interface ISbLinks {
