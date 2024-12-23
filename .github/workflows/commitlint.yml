@@ -2,6 +2,10 @@ name: CI
 
 on: [push, pull_request]
 
+env:
+  PNPM_CACHE_FOLDER: .pnpm-store
+  SKIP_INSTALL_SIMPLE_GIT_HOOKS: 1 # Skip installing simple-git-hooks
+
 jobs:
   commitlint:
     runs-on: ubuntu-24.04

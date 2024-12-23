@@ -4,6 +4,10 @@ on:
   push:
     branches: [main, next, beta]
 
+env:
+  PNPM_CACHE_FOLDER: .pnpm-store
+  SKIP_INSTALL_SIMPLE_GIT_HOOKS: 1 # Skip installing simple-git-hooks
+
 jobs:
   publish:
     name: Publish to npm
