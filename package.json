@@ -61,23 +61,24 @@
     "prepare": "npm run build"
   },
   "devDependencies": {
-    "@commitlint/cli": "^19.6.0",
+    "@commitlint/cli": "^19.6.1",
     "@commitlint/config-conventional": "^19.6.0",
     "@storyblok/eslint-config": "^0.3.0",
     "@tsconfig/recommended": "^1.0.8",
-    "@typescript-eslint/eslint-plugin": "^8.17.0",
-    "@typescript-eslint/parser": "^8.17.0",
+    "@typescript-eslint/eslint-plugin": "^8.18.1",
+    "@typescript-eslint/parser": "^8.18.1",
     "@vitest/coverage-v8": "^2.1.8",
     "@vitest/ui": "^2.1.8",
-    "eslint": "^9.16.0",
+    "eslint": "^9.17.0",
     "eslint-config-prettier": "^9.1.0",
     "isomorphic-fetch": "^3.0.0",
     "kolorist": "^1.8.0",
     "prettier": "^3.4.2",
+    "simple-git-hooks": "^2.11.1",
     "typescript": "^5.7.2",
     "vite": "^5.4.11",
     "vite-plugin-banner": "^0.8.0",
-    "vite-plugin-dts": "^4.3.0",
+    "vite-plugin-dts": "^4.4.0",
     "vitest": "^2.1.8"
   },
   "release": {
@@ -100,5 +101,9 @@
     "extends": [
       "@commitlint/config-conventional"
     ]
+  },
+  "simple-git-hooks": {
+    "pre-commit": "pnpm lint",
+    "pre-push": "pnpm commitlint --last --verbose"
   }
 }
