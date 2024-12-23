@@ -12,6 +12,8 @@ import type {
   ISbConfig,
   ISbContentMangmntAPI,
   ISbCustomFetch,
+  ISbLinksParams,
+  ISbLinksResult,
   ISbLinkURLObject,
   ISbNode,
   ISbResponse,
@@ -227,10 +229,22 @@ class Storyblok {
   }
 
   public get(
+    slug: 'cdn/links',
+    params?: ISbLinksParams,
+    fetchOptions?: ISbCustomFetch
+  ): Promise<ISbLinksResult>;
+
+  public get(
     slug: string,
     params?: ISbStoriesParams,
+    fetchOptions?: ISbCustomFetch
+  ): Promise<ISbResult>;
+
+  public get(
+    slug: string,
+    params?: ISbStoriesParams | ISbLinksParams,
     fetchOptions?: ISbCustomFetch,
-  ): Promise<ISbResult> {
+  ): Promise<ISbResult | ISbLinksResult> {
     if (!params) {
       params = {} as ISbStoriesParams;
     }
@@ -451,7 +465,6 @@ class Storyblok {
     const fieldPath = jtree.component ? `${jtree.component}.${treeItem}` : treeItem;
     // Check if this exact pattern exists in the fields to resolve
     if (Array.isArray(fields) ? fields.includes(fieldPath) : fields === fieldPath) {
-      //
       this._resolveField(jtree, treeItem, resolveId);
     }
   }
