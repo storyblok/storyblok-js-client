@@ -380,72 +380,127 @@ class Storyblok {
    * @returns string | object
    */
   private getStoryReference(resolveId: string, uuid: string): string | JSON {
-    if (!this.relations[resolveId][uuid]) {
-      return uuid;
-    }
-    if (!this.stringifiedStoriesCache[uuid]) {
-      this.stringifiedStoriesCache[uuid] = JSON.stringify(
-        this.relations[resolveId][uuid],
-      );
-    }
-    return JSON.parse(this.stringifiedStoriesCache[uuid]);
+    const result = this.relations[resolveId][uuid]
+      ? JSON.parse(this.stringifiedStoriesCache[uuid] || JSON.stringify(this.relations[resolveId][uuid]))
+      : uuid;
+    return result;
   }
 
+  /**
+   * Resolves a field's value by replacing UUIDs with their corresponding story references
+   * @param jtree - The JSON tree object containing the field to resolve
+   * @param treeItem - The key of the field to resolve
+   * @param resolveId - The unique identifier for the current resolution context
+   *
+   * This method handles both single string UUIDs and arrays of UUIDs:
+   * - For single strings: directly replaces the UUID with the story reference
+   * - For arrays: maps through each UUID and replaces with corresponding story references
+   */
+  private _resolveField(
+    jtree: ISbStoriesParams,
+    treeItem: keyof ISbStoriesParams,
+    resolveId: string,
+  ): void {
+    const item = jtree[treeItem];
+    if (typeof item === 'string') {
+      jtree[treeItem] = this.getStoryReference(resolveId, item);
+    }
+    else if (Array.isArray(item)) {
+      jtree[treeItem] = item.map(uuid =>
+        this.getStoryReference(resolveId, uuid),
+      ).filter(Boolean);
+    }
+  }
+
+  /**
+   * Inserts relations into the JSON tree by resolving references
+   * @param jtree - The JSON tree object to process
+   * @param treeItem - The current field being processed
+   * @param fields - The relation patterns to resolve (string or array of strings)
+   * @param resolveId - The unique identifier for the current resolution context
+   *
+   * This method handles two types of relation patterns:
+   * 1. Nested relations: matches fields that end with the current field name
+   *    Example: If treeItem is "event_type", it matches patterns like "*.event_type"
+   *
+   * 2. Direct component relations: matches exact component.field patterns
+   *    Example: "event.event_type" for component "event" and field "event_type"
+   *
+   * The method supports both string and array formats for the fields parameter,
+   * allowing flexible specification of relation patterns.
+   */
   private _insertRelations(
     jtree: ISbStoriesParams,
     treeItem: keyof ISbStoriesParams,
-    fields: string | Array<string>,
+    fields: string | string[],
     resolveId: string,
   ): void {
-    if (fields.includes(`${jtree.component}.${treeItem}`)) {
-      if (typeof jtree[treeItem] === 'string') {
-        jtree[treeItem] = this.getStoryReference(resolveId, jtree[treeItem]);
-      }
-      else if (Array.isArray(jtree[treeItem])) {
-        jtree[treeItem] = jtree[treeItem as keyof ISbStoriesParams]
-          .map((uuid: string) => this.getStoryReference(resolveId, uuid))
-          .filter(Boolean);
-      }
+    // Check for nested relations (e.g., "*.event_type" or "spots.event_type")
+    const fieldPattern = Array.isArray(fields)
+      ? fields.find(f => f.endsWith(`.${treeItem}`))
+      : fields.endsWith(`.${treeItem}`);
+
+    if (fieldPattern) {
+      // If we found a matching pattern, resolve this field
+      this._resolveField(jtree, treeItem, resolveId);
+      return;
+    }
+
+    // If no nested pattern matched, check for direct component.field pattern
+    // e.g., "event.event_type" for a field within its immediate parent component
+    const fieldPath = jtree.component ? `${jtree.component}.${treeItem}` : treeItem;
+    // Check if this exact pattern exists in the fields to resolve
+    if (Array.isArray(fields) ? fields.includes(fieldPath) : fields === fieldPath) {
+      //
+      this._resolveField(jtree, treeItem, resolveId);
     }
   }
 
+  /**
+   * Recursively traverses and resolves relations in the story content tree
+   * @param story - The story object containing the content to process
+   * @param fields - The relation patterns to resolve
+   * @param resolveId - The unique identifier for the current resolution context
+   */
   private iterateTree(
     story: ISbStoryData,
     fields: string | Array<string>,
     resolveId: string,
   ): void {
-    const enrich = (jtree: ISbStoriesParams | any) => {
-      if (jtree == null) {
+    // Internal recursive function to process each node in the tree
+    const enrich = (jtree: ISbStoriesParams | any, path = '') => {
+      // Skip processing if node is null/undefined or marked to stop resolving
+      if (!jtree || jtree._stopResolving) {
         return;
       }
-      if (jtree.constructor === Array) {
-        for (let item = 0; item < jtree.length; item++) {
-          enrich(jtree[item]);
-        }
+
+      // Handle arrays by recursively processing each element
+      // Maintains path context by adding array indices
+      if (Array.isArray(jtree)) {
+        jtree.forEach((item, index) => enrich(item, `${path}[${index}]`));
       }
-      else if (jtree.constructor === Object) {
-        if (jtree._stopResolving) {
-          return;
-        }
-        for (const treeItem in jtree) {
+      // Handle object nodes
+      else if (typeof jtree === 'object') {
+        // Process each property in the object
+        for (const key in jtree) {
+          // Build the current path for the context
+          const newPath = path ? `${path}.${key}` : key;
+
+          // If this is a component (has component and _uid) or a link,
+          // attempt to resolve its relations and links
           if ((jtree.component && jtree._uid) || jtree.type === 'link') {
-            this._insertRelations(
-              jtree,
-              treeItem as keyof ISbStoriesParams,
-              fields,
-              resolveId,
-            );
-            this._insertLinks(
-              jtree,
-              treeItem as keyof ISbStoriesParams,
-              resolveId,
-            );
+            this._insertRelations(jtree, key as keyof ISbStoriesParams, fields, resolveId);
+            this._insertLinks(jtree, key as keyof ISbStoriesParams, resolveId);
           }
-          enrich(jtree[treeItem]);
+
+          // Continue traversing deeper into the tree
+          // This ensures we process nested components and their relations
+          enrich(jtree[key], newPath);
         }
       }
     };
 
+    // Start the traversal from the story's content
     enrich(story.content);
   }
 
