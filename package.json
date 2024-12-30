@@ -48,17 +48,22 @@
     "tests"
   ],
   "scripts": {
-    "lint": "eslint --max-warnings=0 './src/**/*.{ts,js}'",
-    "build": "node vite.build.mjs && tsc",
+    "dev": "vite build --watch",
+    "build": "node vite.build.mjs",
+    "test": "pnpm run test:unit:ci && pnpm run test:e2e",
+    "test:unit": "vitest",
+    "test:unit:ci": "vitest run",
+    "test:unit:ui": "vitest --ui",
+    "test:e2e": "vitest run -c vitest.config.e2e.ts",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "playground": "pnpm run --filter ./playground/vanilla dev",
     "playground:svelte": "pnpm run --filter ./playground/svelte dev",
     "playground:next": "pnpm run --filter ./playground/nextjs dev",
     "dev:umd": "npx serve ./",
-    "test": "vitest run",
-    "test:e2e": "vitest run -c vitest.config.e2e.ts",
-    "test:ui": "vitest --ui --coverage.enabled=true",
     "coverage": "vitest run --coverage",
-    "prepare": "npm run build"
+    "prepare": "pnpm simple-git-hooks",
+    "prepublishOnly": "pnpm build"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.6.1",

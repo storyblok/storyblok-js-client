@@ -34,7 +34,7 @@ const bundles = [
 ;(async () => {
   for (const bundle of bundles) {
     await build({
-      configFile: false,
+      configFile: 'vite.config.ts',
       build: {
         lib: {
           entry: resolve(__dirname, 'src', bundle.entry),
