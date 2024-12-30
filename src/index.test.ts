@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { ResponseFn } from './sbFetch';
 import SbFetch from './sbFetch';
 import { SbHelpers } from './sbHelpers';
-import type { ISbLink } from './interfaces';
+import type { ISbLink, ISbStoryData } from './interfaces';
 
 // Mocking external dependencies
 vi.mock('../src/sbFetch', () => {
@@ -1039,6 +1039,93 @@ describe('storyblokClient', () => {
 
       expect(result.data.story.content.relation_field).toBe('some-uuid');
       expect(mockGet).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  // eslint-disable-next-line test/prefer-lowercase-title
+  describe('ISbStoryData interface implementation', () => {
+    it('should validate a complete story object structure', () => {
+      const storyData: ISbStoryData = {
+        alternates: [],
+        content: {
+          _uid: 'test-uid',
+          component: 'test',
+        },
+        created_at: '2024-01-01T00:00:00.000Z',
+        deleted_at: undefined,
+        full_slug: 'test/story',
+        group_id: 'test-group',
+        id: 1,
+        is_startpage: false,
+        lang: 'default',
+        meta_data: {},
+        name: 'Test Story',
+        parent_id: null,
+        position: 0,
+        published_at: null,
+        slug: 'test-story',
+        sort_by_date: null,
+        tag_list: [],
+        uuid: 'test-uuid',
+      };
+
+      expect(storyData).toBeDefined();
+      expect(storyData).toMatchObject({
+        alternates: expect.any(Array),
+        content: expect.objectContaining({
+          _uid: expect.any(String),
+          component: expect.any(String),
+        }),
+        created_at: expect.any(String),
+        full_slug: expect.any(String),
+        group_id: expect.any(String),
+        id: expect.any(Number),
+        lang: expect.any(String),
+        name: expect.any(String),
+        position: expect.any(Number),
+        slug: expect.any(String),
+        uuid: expect.any(String),
+      });
+    });
+
+    it('should handle optional properties correctly', () => {
+      const storyData: ISbStoryData = {
+        alternates: [],
+        content: {
+          _uid: 'test-uid',
+          component: 'test',
+        },
+        created_at: '2024-01-01T00:00:00.000Z',
+        full_slug: 'test/story',
+        group_id: 'test-group',
+        id: 1,
+        lang: 'default',
+        meta_data: {},
+        name: 'Test Story',
+        position: 0,
+        published_at: null,
+        slug: 'test-story',
+        sort_by_date: null,
+        tag_list: [],
+        uuid: 'test-uuid',
+        parent_id: null,
+        // Optional properties
+        preview_token: {
+          token: 'test-token',
+          timestamp: '2024-01-01T00:00:00.000Z',
+        },
+        localized_paths: [
+          {
+            path: '/en/test',
+            name: 'Test EN',
+            lang: 'en',
+            published: true,
+          },
+        ],
+      };
+
+      expect(storyData.preview_token).toBeDefined();
+      expect(storyData.localized_paths).toBeDefined();
     });
   });
 });

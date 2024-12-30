@@ -82,6 +82,18 @@ export interface ISbComponentType<T extends string> {
   _editable?: string;
 }
 
+export interface PreviewToken {
+  token: string;
+  timestamp: string;
+}
+
+export interface LocalizedPath {
+  path: string;
+  name: string | null;
+  lang: string;
+  published: boolean;
+}
+
 export interface ISbStoryData<
   Content = ISbComponentType<string> & { [index: string]: any },
 > extends ISbMultipleStoriesData {
@@ -89,10 +101,12 @@ export interface ISbStoryData<
   breadcrumbs?: ISbLinkURLObject[];
   content: Content;
   created_at: string;
-  default_full_slug?: string;
+  deleted_at?: string;
+  default_full_slug?: string | null;
   default_root?: string;
   disble_fe_editor?: boolean;
-  first_published_at?: string;
+  favourite_for_user_ids?: number[] | null;
+  first_published_at?: string | null;
   full_slug: string;
   group_id: string;
   id: number;
@@ -104,16 +118,20 @@ export interface ISbStoryData<
     id: number;
     userid: string;
   };
+  last_author_id?: number;
+  localized_paths?: LocalizedPath[] | null;
   meta_data: any;
   name: string;
   parent?: ISbStoryData;
-  parent_id: number;
+  parent_id: number | null;
   path?: string;
   pinned?: '1' | boolean;
   position: number;
+  preview_token?: PreviewToken;
   published?: boolean;
   published_at: string | null;
-  release_id?: number;
+  release_id?: number | null;
+  scheduled_date?: string | null;
   slug: string;
   sort_by_date: string | null;
   tag_list: string[];
@@ -121,7 +139,7 @@ export interface ISbStoryData<
     path: string;
     name: string | null;
     lang: ISbStoryData['lang'];
-  }[];
+  }[] | null;
   unpublished_changes?: boolean;
   updated_at?: string;
   uuid: string;
