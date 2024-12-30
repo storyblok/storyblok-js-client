@@ -1,7 +1,7 @@
 {
   "name": "storyblok-js-client",
-  "version": "6.10.1",
-  "packageManager": "pnpm@9.15.0",
+  "version": "6.10.6",
+  "packageManager": "pnpm@9.15.2",
   "description": "Universal JavaScript SDK for Storyblok's API",
   "author": "Alexander Feiglstorfer <delooks@gmail.com>",
   "license": "MIT",
@@ -65,18 +65,15 @@
     "@commitlint/config-conventional": "^19.6.0",
     "@storyblok/eslint-config": "^0.3.0",
     "@tsconfig/recommended": "^1.0.8",
-    "@typescript-eslint/eslint-plugin": "^8.18.1",
-    "@typescript-eslint/parser": "^8.18.1",
     "@vitest/coverage-v8": "^2.1.8",
     "@vitest/ui": "^2.1.8",
     "eslint": "^9.17.0",
     "eslint-config-prettier": "^9.1.0",
-    "isomorphic-fetch": "^3.0.0",
     "kolorist": "^1.8.0",
     "prettier": "^3.4.2",
     "simple-git-hooks": "^2.11.1",
     "typescript": "^5.7.2",
-    "vite": "^5.4.11",
+    "vite": "^6.0.6",
     "vite-plugin-banner": "^0.8.0",
     "vite-plugin-dts": "^4.4.0",
     "vitest": "^2.1.8"
@@ -100,7 +97,10 @@
   "commitlint": {
     "extends": [
       "@commitlint/config-conventional"
-    ]
+    ],
+    "rules": {
+      "body-max-line-length": [2, "always", 200]
+    }
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm lint",
