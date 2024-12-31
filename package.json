@@ -1,7 +1,7 @@
 {
   "name": "storyblok-js-client",
-  "version": "6.10.1",
-  "packageManager": "pnpm@9.15.0",
+  "version": "6.10.6",
+  "packageManager": "pnpm@9.15.2",
   "description": "Universal JavaScript SDK for Storyblok's API",
   "author": "Alexander Feiglstorfer <delooks@gmail.com>",
   "license": "MIT",
@@ -48,35 +48,37 @@
     "tests"
   ],
   "scripts": {
-    "lint": "eslint --max-warnings=0 './src/**/*.{ts,js}'",
-    "build": "node vite.build.mjs && tsc",
+    "dev": "vite build --watch",
+    "build": "node vite.build.mjs",
+    "test": "pnpm run test:unit:ci && pnpm run test:e2e",
+    "test:unit": "vitest",
+    "test:unit:ci": "vitest run",
+    "test:unit:ui": "vitest --ui",
+    "test:e2e": "vitest run -c vitest.config.e2e.ts",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "playground": "pnpm run --filter ./playground/vanilla dev",
     "playground:svelte": "pnpm run --filter ./playground/svelte dev",
     "playground:next": "pnpm run --filter ./playground/nextjs dev",
     "dev:umd": "npx serve ./",
-    "test": "vitest run",
-    "test:e2e": "vitest run -c vitest.config.e2e.ts",
-    "test:ui": "vitest --ui --coverage.enabled=true",
     "coverage": "vitest run --coverage",
-    "prepare": "npm run build"
+    "prepare": "pnpm simple-git-hooks",
+    "prepublishOnly": "pnpm build"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.6.1",
     "@commitlint/config-conventional": "^19.6.0",
     "@storyblok/eslint-config": "^0.3.0",
     "@tsconfig/recommended": "^1.0.8",
-    "@typescript-eslint/eslint-plugin": "^8.18.1",
-    "@typescript-eslint/parser": "^8.18.1",
     "@vitest/coverage-v8": "^2.1.8",
     "@vitest/ui": "^2.1.8",
     "eslint": "^9.17.0",
     "eslint-config-prettier": "^9.1.0",
-    "isomorphic-fetch": "^3.0.0",
     "kolorist": "^1.8.0",
     "prettier": "^3.4.2",
     "simple-git-hooks": "^2.11.1",
     "typescript": "^5.7.2",
-    "vite": "^5.4.11",
+    "vite": "^6.0.6",
     "vite-plugin-banner": "^0.8.0",
     "vite-plugin-dts": "^4.4.0",
     "vitest": "^2.1.8"
@@ -100,7 +102,10 @@
   "commitlint": {
     "extends": [
       "@commitlint/config-conventional"
-    ]
+    ],
+    "rules": {
+      "body-max-line-length": [2, "always", 200]
+    }
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm lint",
