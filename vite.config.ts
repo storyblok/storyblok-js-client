@@ -1,7 +1,7 @@
 import { lightGreen } from 'kolorist';
 import pkg from './package.json';
 import banner from 'vite-plugin-banner';
-import { defineConfig } from 'vitest/config';
+import { defineConfig, type Plugin } from 'vitest/config';
 import dts from 'vite-plugin-dts';
 
 // eslint-disable-next-line no-console
@@ -16,7 +16,7 @@ export default defineConfig(() => ({
     banner({
       content: `/**\n * name: ${pkg.name}\n * (c) ${new Date().getFullYear()}\n * description: ${pkg.description}\n * author: ${pkg.author}\n */`,
     }),
-  ],
+  ] as Plugin[],
   test: {
     include: ['./src/**/*.test.ts'],
     coverage: {
