@@ -63,7 +63,8 @@
     "dev:umd": "npx serve ./",
     "coverage": "vitest run --coverage",
     "prepare": "pnpm simple-git-hooks",
-    "prepublishOnly": "pnpm build"
+    "prepublishOnly": "pnpm build",
+    "check-licenses": "node scripts/license-checker.mjs"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.7.1",
