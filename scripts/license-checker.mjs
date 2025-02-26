@@ -19,7 +19,6 @@ const EXCLUDED_LICENSES = [
   'Public Domain',
   'CC-BY-3.0',
   'BSD*',
-  'UNLICENSED',
   'Unlicense',
 ];
 
