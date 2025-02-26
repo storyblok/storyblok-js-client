@@ -539,6 +539,7 @@ class Storyblok {
           per_page: chunkSize,
           language: params.language,
           version: params.version,
+          starts_with: params.starts_with,
           by_uuids: chunks[chunkIndex].join(','),
         });
 
@@ -583,6 +584,7 @@ class Storyblok {
           per_page: chunkSize,
           language: params.language,
           version: params.version,
+          starts_with: params.starts_with,
           by_uuids: chunks[chunkIndex].join(','),
           excluding_fields: params.excluding_fields,
         });
