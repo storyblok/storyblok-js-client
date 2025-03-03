@@ -1,6 +1,6 @@
-# Change Log
+# Change Log (deprecated)
 
-All notable changes to this project will be documented in this file.
+This file is **no longer maintained**. To learn about changes made in specific versions of this library, check out its [GitHub releases](https://github.com/storyblok/storyblok-js-client/releases).
 
 ## [6.6.4] - 2024-01-26
 
