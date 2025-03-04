@@ -1,6 +1,7 @@
 import type {
   AsyncFn,
   HtmlEscapes,
+  ISbLinksParams,
   ISbResult,
   ISbStoriesParams,
 } from './interfaces';
@@ -19,7 +20,7 @@ export class SbHelpers {
   public isCDNUrl = (url = '') => url.includes('/cdn/');
 
   public getOptionsPage = (
-    options: ISbStoriesParams,
+    options: ISbStoriesParams | ISbLinksParams,
     perPage = 25,
     page = 1,
   ) => {

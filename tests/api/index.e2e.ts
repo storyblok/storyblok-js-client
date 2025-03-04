@@ -1,3 +1,4 @@
+import type { ISbLink } from 'storyblok-js-client';
 import StoryblokClient from 'storyblok-js-client';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -85,20 +86,27 @@ describe('StoryblokClient', () => {
   });
 
   describe('getAll function', () => {
+    it('getAll(\'cdn/links\') should return all links', async () => {
+      const result: ISbLink[] = await client.getAll('cdn/links', {
+        include_dates: 1,
+      });
+      expect(result.length).toBeGreaterThan(0);
+    });
+
     it('getAll(\'cdn/stories\') should return all stories', async () => {
-      const result = await client.getAll('cdn/stories', {});
+      const result: any[] = await client.getAll('cdn/stories', {});
       expect(result.length).toBeGreaterThan(0);
     });
 
     it('getAll(\'cdn/stories\') should return all stories with filtered results', async () => {
-      const result = await client.getAll('cdn/stories', {
+      const result: any[] = await client.getAll('cdn/stories', {
         starts_with: 'testcontent-0',
       });
       expect(result.length).toBe(1);
     });
 
     it('getAll(\'cdn/stories\', filter_query: { __or: [{ category: { any_in_array: \'Category 1\' } }, { category: { any_in_array: \'Category 2\' } }]}) should return all stories with the specific filter applied', async () => {
-      const result = await client.getAll('cdn/stories', {
+      const result: any[] = await client.getAll('cdn/stories', {
         filter_query: {
           __or: [
             { category: { any_in_array: 'Category 1' } },
@@ -110,14 +118,14 @@ describe('StoryblokClient', () => {
     });
 
     it('getAll(\'cdn/stories\', {by_slugs: \'folder/*\'}) should return all stories with the specific filter applied', async () => {
-      const result = await client.getAll('cdn/stories', {
+      const result: any[] = await client.getAll('cdn/stories', {
         by_slugs: 'folder/*',
       });
       expect(result.length).toBeGreaterThan(0);
     });
 
     it('getAll(\'cdn/links\') should return all links', async () => {
-      const result = await client.getAll('cdn/links', {});
+      const result: ISbLink[] = await client.getAll('cdn/links', {});
       expect(result.length).toBeGreaterThan(0);
     });
   });
