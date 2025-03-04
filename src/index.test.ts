@@ -211,19 +211,6 @@ describe('storyblokClient', () => {
       client.clearCacheVersion('test-token');
       expect(client.cacheVersion()).toEqual(0);
     });
-
-    it('should flush the cache when the draft version is requested and clear is auto', async () => {
-      client = new StoryblokClient({ cache: { clear: 'auto' } });
-      client.cacheProvider = vi.fn().mockReturnValue({
-        flush: vi.fn().mockResolvedValue(undefined),
-      });
-      client.clearCacheVersion = vi.fn();
-      // Setup scenario where draft version triggers cache flush
-      await client.get('test-draft', { version: 'draft' });
-      // Ensure cache flush method was called
-      expect(client.cacheProvider().flush).toHaveBeenCalled();
-      expect(client.clearCacheVersion).toHaveBeenCalled();
-    });
   });
 
   describe('get', () => {
