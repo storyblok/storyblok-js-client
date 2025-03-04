@@ -719,10 +719,7 @@ class Storyblok {
           await provider.set(cacheKey, response);
         }
 
-        if (
-          response.data.cv
-          && params.token
-        ) {
+        if (response.data.cv && params.token) {
           if (
             (
               (this.cache.clear === 'onpreview' && params.version === 'draft')
