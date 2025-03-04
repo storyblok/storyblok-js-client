@@ -677,10 +677,6 @@ class Storyblok {
     const cacheKey = this.helpers.stringify({ url, params });
     const provider = this.cacheProvider();
 
-    if (this.cache.clear === 'auto' && params.version === 'draft') {
-      await this.flushCache();
-    }
-
     if (params.version === 'published' && url !== '/cdn/spaces/me') {
       const cache = await provider.get(cacheKey);
       if (cache) {
@@ -723,12 +719,16 @@ class Storyblok {
           await provider.set(cacheKey, response);
         }
 
-        if (
-          response.data.cv
-          && params.token
-          && cacheVersions[params.token] !== response.data.cv
-        ) {
-          await this.flushCache();
+        const isCacheClearable = (this.cache.clear === 'onpreview' && params.version === 'draft')
+          || this.cache.clear === 'auto';
+
+        if (params.token && response.data.cv) {
+          if (isCacheClearable
+            && cacheVersions[params.token] // there is a cache
+            && cacheVersions[params.token] !== response.data.cv // a new cv is incoming
+          ) {
+            await this.flushCache();
+          }
           cacheVersions[params.token] = response.data.cv;
         }
 
@@ -784,7 +784,7 @@ class Storyblok {
     }
   }
 
-  private cacheProvider(): ICacheProvider {
+  public cacheProvider(): ICacheProvider {
     switch (this.cache.type) {
       case 'memory':
         return {

@@ -227,7 +227,7 @@ export interface ICacheProvider {
 
 export interface ISbCache {
   type?: 'none' | 'memory' | 'custom';
-  clear?: 'auto' | 'manual';
+  clear?: 'auto' | 'manual' | 'onpreview';
   custom?: ICacheProvider;
 }
 
