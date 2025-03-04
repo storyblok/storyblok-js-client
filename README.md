@@ -164,6 +164,8 @@ When initializing the Storyblok client you can define a cache provider for cachi
 
 The default behavior of the cache is `clear: 'manual'`, that is, if you need to clear the cache, you need to call `Storyblok.flushCache()` or activate the automatic clear with `clear: 'auto'`, as in the example below.
 
+To only clear the cache automatically when requests to the draft version happens you can set the config to `clear: 'onpreview'`.
+
 ```javascript
 let Storyblok = new StoryblokClient({
   accessToken: <YOUR_SPACE_ACCESS_TOKEN>,
