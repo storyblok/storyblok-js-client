@@ -256,7 +256,7 @@ class Storyblok {
 
   public async getAll(
     slug: string,
-    params: ISbStoriesParams,
+    params: ISbStoriesParams & ISbLinksParams,
     entity?: string,
     fetchOptions?: ISbCustomFetch,
   ): Promise<any[]> {
