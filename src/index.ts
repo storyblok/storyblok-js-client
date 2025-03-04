@@ -720,11 +720,13 @@ class Storyblok {
         }
 
         if (
-          params.version === 'draft'
+          (
+            (this.cache.clear === 'onpreview' && params.version === 'draft')
+            || this.cache.clear === 'auto'
+          )
           && response.data.cv
           && params.token
           && cacheVersions[params.token] !== response.data.cv
-          && this.cache.clear === 'auto'
         ) {
           await this.flushCache();
           cacheVersions[params.token] = response.data.cv;
