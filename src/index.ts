@@ -677,10 +677,6 @@ class Storyblok {
     const cacheKey = this.helpers.stringify({ url, params });
     const provider = this.cacheProvider();
 
-    if (this.cache.clear === 'auto' && params.version === 'draft') {
-      await this.flushCache();
-    }
-
     if (params.version === 'published' && url !== '/cdn/spaces/me') {
       const cache = await provider.get(cacheKey);
       if (cache) {
@@ -724,9 +720,11 @@ class Storyblok {
         }
 
         if (
-          response.data.cv
+          params.version === 'draft'
+          && response.data.cv
           && params.token
           && cacheVersions[params.token] !== response.data.cv
+          && this.cache.clear === 'auto'
         ) {
           await this.flushCache();
           cacheVersions[params.token] = response.data.cv;
