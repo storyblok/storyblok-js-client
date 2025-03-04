@@ -720,15 +720,19 @@ class Storyblok {
         }
 
         if (
-          (
-            (this.cache.clear === 'onpreview' && params.version === 'draft')
-            || this.cache.clear === 'auto'
-          )
-          && response.data.cv
+          response.data.cv
           && params.token
-          && cacheVersions[params.token] !== response.data.cv
         ) {
-          await this.flushCache();
+          if (
+            (
+              (this.cache.clear === 'onpreview' && params.version === 'draft')
+              || this.cache.clear === 'auto'
+            )
+            && cacheVersions[params.token] !== response.data.cv
+          ) {
+            await this.flushCache();
+          }
+
           cacheVersions[params.token] = response.data.cv;
         }
 
