@@ -1027,6 +1027,48 @@ describe('storyblokClient', () => {
       expect(result.data.story.content.relation_field).toBe('some-uuid');
       expect(mockGet).toHaveBeenCalledTimes(1);
     });
+
+    it('should pass starts_with parameter when resolving relations and links', async () => {
+      // Setup mocks
+      const TEST_UUID = 'test-uuid';
+      const STARTS_WITH = 'folder/';
+
+      // Mock the throttle function that handles API calls
+      const mockThrottle = vi.fn().mockResolvedValue({
+        data: {
+          story: { content: {} },
+          rel_uuids: [TEST_UUID],
+          link_uuids: [TEST_UUID],
+        },
+        status: 200,
+      });
+
+      client.throttle = mockThrottle;
+
+      // Mock the resolveRelations and resolveLinks methods
+      client.resolveRelations = vi.fn();
+      client.resolveLinks = vi.fn();
+
+      // Make the request with starts_with parameter
+      await client.get('cdn/stories/test', {
+        resolve_relations: 'component.field',
+        resolve_links: '1',
+        starts_with: STARTS_WITH,
+      });
+
+      // Verify params were passed correctly to relation and link resolution
+      expect(client.resolveRelations).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.objectContaining({ starts_with: STARTS_WITH }),
+        expect.anything(),
+      );
+
+      expect(client.resolveLinks).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.objectContaining({ starts_with: STARTS_WITH }),
+        expect.anything(),
+      );
+    });
   });
 
   // eslint-disable-next-line test/prefer-lowercase-title
