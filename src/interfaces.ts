@@ -309,6 +309,7 @@ export interface ISbContentMangmntAPI<
     is_startpage?: boolean;
     position?: number;
     first_published_at?: string;
+    sort_by_date?: string;
     translated_slugs_attributes?: {
       path: string;
       name: string | null;
