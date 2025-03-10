@@ -1,5 +1,19 @@
 name: Run Tests
-on: [push]
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+    paths:
+      - '!README.md'
+      - '!LICENSE'
+      - '!changelog.md'
+      - '!scripts/**'
+      - '!.vscode/**'
+      - '!.github/**'
+  push:
+    branches:
+      - '**'
 
 env:
   PNPM_CACHE_FOLDER: .pnpm-store
