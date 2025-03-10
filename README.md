@@ -553,7 +553,7 @@ Storyblok.richTextResolver.render(blok.richtext, options)
 
 ### Define a custom cache for fine-grained control caching
 
-Sometimes you want a custom cache implemention, for instance, when you want to host it on Redit for a distributed cache.
+Sometimes you want a custom cache implemention, for instance, when you want to host it on Redis for a distributed cache.
 
 In such cases, you can use the `custom` cache and redefine the methods:
 
