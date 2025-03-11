@@ -182,9 +182,7 @@ class SbFetch {
       const error: ISbError = {
         message: res.statusText,
         status: res.status,
-        response: Array.isArray(res.data)
-          ? res.data[0]
-          : res.data.error || res.data.slug,
+        response: res,
       };
 
       reject(error);
