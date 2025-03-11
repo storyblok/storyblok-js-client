@@ -10,7 +10,7 @@ import type {
   IMemoryType,
   ISbCache,
   ISbConfig,
-  ISbContentMangmntAPI,
+  ISbContentManagementAPI,
   ISbCustomFetch,
   ISbLinksParams,
   ISbLinksResult,
@@ -287,7 +287,7 @@ class Storyblok {
 
   public post(
     slug: string,
-    params: ISbStoriesParams | ISbContentMangmntAPI,
+    params: ISbStoriesParams | ISbContentManagementAPI,
     fetchOptions?: ISbCustomFetch,
   ): Promise<ISbResponseData> {
     const url = `/${slug}`;
@@ -299,7 +299,7 @@ class Storyblok {
 
   public put(
     slug: string,
-    params: ISbStoriesParams | ISbContentMangmntAPI,
+    params: ISbStoriesParams | ISbContentManagementAPI,
     fetchOptions?: ISbCustomFetch,
   ): Promise<ISbResponseData> {
     const url = `/${slug}`;
@@ -311,7 +311,7 @@ class Storyblok {
 
   public delete(
     slug: string,
-    params: ISbStoriesParams | ISbContentMangmntAPI,
+    params: ISbStoriesParams | ISbContentManagementAPI,
     fetchOptions?: ISbCustomFetch,
   ): Promise<ISbResponseData> {
     if (!params) {
