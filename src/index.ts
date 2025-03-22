@@ -12,6 +12,7 @@ import type {
   ISbConfig,
   ISbContentMangmntAPI,
   ISbCustomFetch,
+  ISbLink,
   ISbLinksParams,
   ISbLinksResult,
   ISbLinkURLObject,
@@ -215,7 +216,7 @@ class Storyblok {
 
   private makeRequest(
     url: string,
-    params: ISbStoriesParams,
+    params: ISbStoriesParams | ISbLinksParams,
     per_page: number,
     page: number,
     fetchOptions?: ISbCustomFetch,
@@ -254,12 +255,12 @@ class Storyblok {
     return this.cacheResponse(url, query, undefined, fetchOptions);
   }
 
-  public async getAll(
-    slug: string,
-    params: ISbStoriesParams,
+  public async getAll<T extends string>(
+    slug: T,
+    params: T extends 'cdn/links' ? ISbLinksParams : ISbStoriesParams,
     entity?: string,
     fetchOptions?: ISbCustomFetch,
-  ): Promise<any[]> {
+  ): Promise<T extends 'cdn/links' ? ISbLink[] : any[]> {
     const perPage = params?.per_page || 25;
     const url = `/${slug}`.replace(/\/$/, '');
     const e = entity ?? url.substring(url.lastIndexOf('/') + 1);
