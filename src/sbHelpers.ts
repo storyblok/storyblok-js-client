@@ -64,6 +64,9 @@ export class SbHelpers {
         continue;
       }
       const value = params[key];
+      if (value === null || value === undefined) {
+        continue;
+      }
       const enkey = isArray ? '' : encodeURIComponent(key);
       let pair;
       if (typeof value === 'object') {

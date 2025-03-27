@@ -1,5 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { SbHelpers } from './sbHelpers';
+import type { ISbResult } from './interfaces';
+
+type RangeFn = (...args: any) => [];
 
 describe('sbHelpers', () => {
   let helpers: SbHelpers;
@@ -63,8 +66,8 @@ describe('sbHelpers', () => {
   describe('asyncMap', () => {
     it('applies an async function to each element in the array', async () => {
       const numbers = [1, 2, 3];
-      const doubleAsync = async (n: number) => n * 2;
-      const results = await helpers.asyncMap(numbers, doubleAsync);
+      const doubleAsync = async (n: number) => (n * 2) as unknown as Promise<ISbResult>;
+      const results = await helpers.asyncMap(numbers as unknown as RangeFn[], doubleAsync);
       expect(results).toEqual([2, 4, 6]);
     });
   });
@@ -76,7 +79,7 @@ describe('sbHelpers', () => {
         { id: 2, values: [30, 40] },
       ];
       const flattenValues = (item: { values: number[] }) => item.values;
-      const result = helpers.flatMap(data, flattenValues);
+      const result = helpers.flatMap(data as unknown as ISbResult[], flattenValues);
       expect(result).toEqual([10, 20, 30, 40]);
     });
   });
@@ -92,6 +95,41 @@ describe('sbHelpers', () => {
       const params = { names: ['John', 'Jane'] };
       const result = helpers.stringify(params, '', true);
       expect(result).toBe('=John&=Jane');
+    });
+
+    it('handles undefined values', () => {
+      const params = { name: 'John', age: undefined };
+      const result = helpers.stringify(params);
+      expect(result).toBe('name=John');
+    });
+
+    it('handles null values', () => {
+      const params = { name: 'John', age: null };
+      const result = helpers.stringify(params);
+      expect(result).toBe('name=John');
+    });
+
+    it('handles null and undefined values', () => {
+      const params = { name: 'John', age: null, city: undefined, country: 'Italy' };
+      const result = helpers.stringify(params);
+      expect(result).toBe('name=John&country=Italy');
+    });
+
+    it('handles empty string values', () => {
+      const params = { name: 'John', age: null, city: undefined, country: '' };
+      const result = helpers.stringify(params);
+      expect(result).toBe('name=John&country=');
+    });
+
+    it('does not break when given an empty object', () => {
+      const params = {};
+      const result = helpers.stringify(params);
+      expect(result).toBe('');
+    });
+
+    it('does not break when given a null params', () => {
+      const result = helpers.stringify(null as any);
+      expect(result).toBe('');
     });
   });
 
