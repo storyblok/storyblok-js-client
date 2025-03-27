@@ -1157,4 +1157,88 @@ describe('storyblokClient', () => {
       expect(storyData.localized_paths).toBeDefined();
     });
   });
+
+  describe('getStory', () => {
+    it('should handle undefined resolve_relations parameter gracefully', async () => {
+      const storySlug = 'test-story';
+      const mockStoryResponse = {
+        data: {
+          story: {
+            id: 123,
+            uuid: 'test-uuid',
+            name: 'Test Story',
+            content: {
+              _uid: 'test-uid',
+              component: 'test',
+              title: 'Test Title',
+            },
+          },
+        },
+        headers: {},
+        status: 200,
+      };
+
+      // Mock the get method which getStory calls internally
+      client.get = vi.fn().mockResolvedValue(mockStoryResponse);
+
+      // Call getStory without resolve_relations
+      const result = await client.getStory(storySlug, {
+        version: 'published',
+        // No resolve_relations parameter
+      });
+
+      // Verify the function executed without errors
+      expect(result).toEqual(mockStoryResponse);
+
+      // Verify that get was called with the right parameters
+      expect(client.get).toHaveBeenCalledWith(
+        `cdn/stories/${storySlug}`,
+        {
+          version: 'published',
+          // resolve_level should not be added since resolve_relations was undefined
+        },
+        undefined,
+      );
+    });
+
+    it('should add resolve_level when resolve_relations is provided', async () => {
+      const storySlug = 'test-story';
+      const mockStoryResponse = {
+        data: {
+          story: {
+            id: 123,
+            uuid: 'test-uuid',
+            name: 'Test Story',
+            content: {
+              _uid: 'test-uid',
+              component: 'test',
+              title: 'Test Title',
+            },
+          },
+        },
+        headers: {},
+        status: 200,
+      };
+
+      // Mock the get method
+      client.get = vi.fn().mockResolvedValue(mockStoryResponse);
+
+      // Call getStory with resolve_relations
+      await client.getStory(storySlug, {
+        version: 'published',
+        resolve_relations: 'test.relation',
+      });
+
+      // Verify that get was called with resolve_level added
+      expect(client.get).toHaveBeenCalledWith(
+        `cdn/stories/${storySlug}`,
+        {
+          version: 'published',
+          resolve_relations: 'test.relation',
+          resolve_level: 2,
+        },
+        undefined,
+      );
+    });
+  });
 });
