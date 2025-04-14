@@ -100,10 +100,16 @@
         2,
         "always",
         200
+      ],
+      "footer-max-line-length": [
+        2,
+        "never",
+        200
       ]
     }
   },
   "simple-git-hooks": {
-    "pre-commit": "pnpm lint"
+    "pre-commit": "pnpm lint",
+    "pre-push": "pnpm commitlint --last --verbose"
   }
 }
