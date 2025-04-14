@@ -104,7 +104,6 @@
     }
   },
   "simple-git-hooks": {
-    "pre-commit": "pnpm lint",
-    "pre-push": "pnpm commitlint --last --verbose"
+    "pre-commit": "pnpm lint"
   }
 }
