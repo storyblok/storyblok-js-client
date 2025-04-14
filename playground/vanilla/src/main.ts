@@ -1,5 +1,4 @@
 import StoryblokClient from 'storyblok-js-client'
-import RichTextResolver from 'storyblok-js-client/richTextResolver'
 import './style.css'
 
 const headers = new Headers()
@@ -20,20 +19,6 @@ try {
     version: 'draft',
     resolve_relations: 'root.author',
   })
-  const resolver = new RichTextResolver()
-
-  const paragraph = {
-    type: 'paragraph',
-    content: [
-      {
-        text: 'Bold and italic',
-        type: 'text',
-        marks: [{ type: 'bold' }, { type: 'italic' }],
-      },
-    ],
-  }
-
-  const html = resolver.render(paragraph, {}, false)
 
   document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <pre>

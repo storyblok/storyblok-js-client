@@ -24,16 +24,6 @@
       "types": "./dist/types/entry.esm.d.ts",
       "import": "./dist/index.mjs",
       "require": "./dist/index.umd.js"
-    },
-    "./richTextResolver": {
-      "types": "./dist/types/richTextResolver.d.ts",
-      "import": "./dist/richTextResolver.mjs",
-      "require": "./dist/richTextResolver.umd.js"
-    },
-    "./schema": {
-      "types": "./dist/types/schema.d.ts",
-      "import": "./dist/schema.mjs",
-      "require": "./dist/schema.umd.js"
     }
   },
   "main": "./dist/index.umd.js",

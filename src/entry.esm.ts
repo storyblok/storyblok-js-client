@@ -4,7 +4,5 @@ import Client from './index';
 export default Client;
 export * from './constants';
 export * from './interfaces';
-export { default as RichtextResolver } from './richTextResolver';
 export { default as SbFetch } from './sbFetch';
 export * from './sbHelpers';
-export { default as RichtextSchema } from './schema';
