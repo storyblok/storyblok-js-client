@@ -1,5 +1,4 @@
 import throttledQueue from './throttlePromise';
-import RichTextResolver from './richTextResolver';
 import { SbHelpers } from './sbHelpers';
 import SbFetch from './sbFetch';
 import type Method from './constants';
@@ -15,7 +14,6 @@ import type {
   ISbLinksParams,
   ISbLinksResult,
   ISbLinkURLObject,
-  ISbNode,
   ISbResponse,
   ISbResponseData,
   ISbResult,
@@ -29,10 +27,6 @@ import type {
 let memory: Partial<IMemoryType> = {};
 
 const cacheVersions = {} as CachedVersions;
-
-interface ComponentResolverFn {
-  (...args: any): any;
-}
 
 interface CachedVersions {
   [key: string]: number;
@@ -70,8 +64,11 @@ class Storyblok {
   public relations: RelationsType;
   public links: LinksType;
   public version: 'draft' | 'published' | undefined;
-  // TODO: Remove on v7.x.x
-  public richTextResolver: RichTextResolver;
+  /**
+   * @deprecated This property is deprecated. Use the standalone `richTextResolver` from `@storyblok/richtext` instead.
+   * @see https://github.com/storyblok/richtext
+   */
+  public richTextResolver: unknown;
   public resolveNestedRelations: boolean;
   private stringifiedStoriesCache: Record<string, string>;
 
@@ -130,17 +127,6 @@ class Storyblok {
       rateLimit = config.rateLimit;
     }
 
-    if (config.richTextSchema) {
-      this.richTextResolver = new RichTextResolver(config.richTextSchema);
-    }
-    else {
-      this.richTextResolver = new RichTextResolver();
-    }
-
-    if (config.componentResolver) {
-      this.setComponentResolver(config.componentResolver);
-    }
-
     this.maxRetries = config.maxRetries || 10;
     this.retriesDelay = 300;
     this.throttle = throttledQueue(
@@ -165,22 +151,6 @@ class Storyblok {
       headers,
       responseInterceptor: config.responseInterceptor,
       fetch: config.fetch,
-    });
-  }
-
-  public setComponentResolver(resolver: ComponentResolverFn): void {
-    this.richTextResolver.addNode('blok', (node: ISbNode) => {
-      let html = '';
-
-      if (node.attrs.body) {
-        node.attrs.body.forEach((blok) => {
-          html += resolver(blok.component, blok);
-        });
-      }
-
-      return {
-        html,
-      };
     });
   }
 

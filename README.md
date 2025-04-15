@@ -79,22 +79,11 @@ Storyblok.put(`spaces/${spaceId}/stories/1`, {
 Storyblok.delete(`spaces/${spaceId}/stories/1`);
 ```
 
-### Using the RichTextResolver separately
-
-You can import and use the `RichTextResolver` directly:
-
-```js
-import RichTextResolver from 'storyblok-js-client/richTextResolver'
-
-const resolver = new RichTextResolver()
-
-const html = resolver.render(data)
-```
 
 ## NEW BRANCHES AND VERSIONS
 
 The old master branch containing version `4.x.y` has been moved to the `v4` branch.
-We’ve renamed the `master` branch to `main` and now it contains version >= 5.0.0.
+We've renamed the `master` branch to `main` and now it contains version >= 5.0.0.
 If you wish to continue using the non Typescript version with `axios`, please use version `4`. You can install it by running `npm install https://github.com/storyblok/storyblok-js-client.git#4.x.x`.
 
 ### BREAKING CHANGES - FROM VERSION 6
@@ -153,7 +142,6 @@ We added retro-compatibility when using `resolve_assets: 1` parameter under V2. 
   - (`rateLimit` Integer, optional, defaults to 3 for management api and 5 for cdn api)
   - (`timeout` Integer, optional)
   - (`maxRetries` Integer, optional, defaults to 5)
-  - (`richTextSchema` Object, optional - your custom schema for RichTextRenderer)
   - (`resolveNestedRelations` Boolean, optional - By default is true)
 - (`endpoint` String, optional)
 
@@ -238,7 +226,7 @@ One should catch the exception and handle it accordingly.
 
 With this parameter, you can resolve relations with live updates in the Storyblok JavaScript Bridge input event. It is possible to resolve content entries that are two levels deep, such as `resolve_relations=page.author,page.products`. Resolved relations can be found in the root of the API response, in the property `rels`. You can learn more about `resolve_relations` in [this tutorial](https://www.storyblok.com/tp/using-relationship-resolving-to-include-other-content-entries)
 
-> It is important to note that when using the `storyblok-js-client` and other framework-specific SDKs, you don’t need to look for the `rels` array after resolving relations. The resolved relations are injected into the properties and, hence, are directly accessible through the properties. For example, you can access the authors array directly with `page.author` once it is resolved.
+> It is important to note that when using the `storyblok-js-client` and other framework-specific SDKs, you don't need to look for the `rels` array after resolving relations. The resolved relations are injected into the properties and, hence, are directly accessible through the properties. For example, you can access the authors array directly with `page.author` once it is resolved.
 
 ```javascript
 window.storyblok.resolveRelations(
@@ -425,129 +413,6 @@ Storyblok.delete('spaces/<YOUR_SPACE_ID>/stories/1')
 Storyblok.flushCache()
 ```
 
-#### Method `Storyblok#setComponentResolver`
-
-**Parameters**
-
-- `callback` Function, Render function to render components of the richtext field
-
-Option 1: Use a switch case definition to render different components:
-
-```javascript
-Storyblok.setComponentResolver((component, blok) => {
-  switch (component) {
-    case 'my-custom-component':
-      return `<div class="my-component-class">${blok.text}</div>`
-      break
-    case 'my-header':
-      return `<h1 class="my-class">${blok.title}</h1>`
-      break
-    default:
-      return 'Resolver not defined'
-  }
-  switch (component) {
-    case 'my-custom-component':
-      return `<div class="my-component-class">${blok.text}</div>`
-      break
-    case 'my-header':
-      return `<h1 class="my-class">${blok.title}</h1>`
-      break
-    default:
-      return 'Resolver not defined'
-  }
-})
-```
-
-Option 2: Dynamically render a component (Example in Vue.js, which will only work with runtime template rendering enabled):
-
-```javascript
-Storyblok.setComponentResolver((component, blok) => {
-  return `<component :blok='${JSON.stringify(blok)}' is="${component}"></component>`
-})
-```
-
-#### Method `Storyblok#richTextResolver.render`
-
-**Parameters**
-
-- `[return]` String, Rendered html of a richtext field
-- `data` Richtext object, An object with a `content` (an array of nodes) field.
-- `options` (optional) Options to control render behavior.
-
-**Example**
-
-```javascript
-Storyblok.richTextResolver.render(blok.richtext)
-```
-
-**Optimizing images**
-
-You can instruct the richtext resolver to optimize images using [Storyblok Image Service](https://www.storyblok.com/docs/image-service)
-passing the option `optimizeImages: true`.
-
-**Example**
-
-```javascript
-Storyblok.richTextResolver.render(blok.richtext, { optimizeImages: true })
-```
-
-Also, it is possible to customize this option passing an object.
-All properties are optional and will be applied to each image in the field.
-
-**Example**
-
-```js
-const options = {
-  optimizeImages: {
-    class: 'w-full my-8 border-b border-black',
-    width: 640, // image width
-    height: 360, // image height
-    loading: 'lazy', // 'lazy' | 'eager'
-    filters: {
-      blur: 0, // 0 to 100
-      brightness: 0, // -100 to 100
-      fill: 'transparent', // Or any hexadecimal value like FFCC99
-      format: 'webp', // 'webp' | 'jpeg' | 'png'
-      grayscale: false,
-      quality: 95, // 0 to 100
-      rotate: 0, // 0 | 90 | 180 | 270
-    },
-    // srcset accepts an array with image widths.
-    // Example: [720, 1024, 1533]
-    // will render srcset="//../m/720x0 720w", "//../m/1024x0 1024w", "//../m/1533x0 1280w"
-    // Also accept an array to pass width and height.
-    // Example: [[720,500], 1024, [1500, 1000]]
-    // will render srcset="//../m/720x500 720w", "//../m/1024x0 1024w", "//../m/1500x1000 1280w"
-    srcset: [720, 1024, 1533],
-    sizes: ['(max-width: 767px) 100vw', '(max-width: 1024px) 768px', '1500px'],
-  },
-  optimizeImages: {
-    class: 'w-full my-8 border-b border-black',
-    width: 640, // image width
-    height: 360, // image height
-    loading: 'lazy', // 'lazy' | 'eager'
-    filters: {
-      blur: 0, // 0 to 100
-      brightness: 0, // -100 to 100
-      fill: 'transparent', // Or any hexadecimal value like FFCC99
-      format: 'webp', // 'webp' | 'jpeg' | 'png'
-      grayscale: false,
-      quality: 95, // 0 to 100
-      rotate: 0, // 0 | 90 | 180 | 270
-    },
-    // srcset accepts an array with image widths.
-    // Example: [720, 1024, 1533]
-    // will render srcset="//../m/720x0 720w", "//../m/1024x0 1024w", "//../m/1533x0 1280w"
-    // Also accept an array to pass width and height.
-    // Example: [[720,500], 1024, [1500, 1000]]
-    // will render srcset="//../m/720x500 720w", "//../m/1024x0 1024w", "//../m/1500x1000 1280w"
-    srcset: [720, 1024, 1533],
-    sizes: ['(max-width: 767px) 100vw', '(max-width: 1024px) 768px', '1500px'],
-  },
-}
-
-Storyblok.richTextResolver.render(blok.richtext, options)
-```
 
 ## Code examples
 
@@ -677,96 +542,6 @@ let getStories = (page) => {
 getStories(1)
 ```
 
-### How to define a custom schema for the RichTextRenderer
-
-To define how to add some classes to specific html attributes rendered by the rich text renderer, you need your own schema definition. With this new schema, you can pass it as the `richTextSchema` option when instantiate the `StoryblokClient` class. You **must** follow the [default schema](https://github.com/storyblok/storyblok-js-client/blob/main/src/schema.ts) to do this.
-
-Below, you can check an example:
-
-```javascript
-import StoryblokClient from 'storyblok-js-client'
-
-// the default schema copied and updated
-import MySchema from './my-schema'
-
-let client = new StoryblokClient({
-  accessToken: '<YOUR_SPACE_ACCESS_TOKEN>',
-  richTextSchema: MySchema,
-})
-
-client.richTextResolver.render(data)
-```
-
-If you just want to change the way a specific tag is rendered you can import the default schema and extend it. Following an example that will render headlines with classes:
-
-Instead of `<p>Normal headline</p><h3><span class="margin-bottom-fdsafdsada">Styled headline</span></h3>` it will render `<p>Normal headline</p><h3 class="margin-bottom-fdsafdsada">Styled headline</h3>`.
-
-```javascript
-import RichTextResolver from 'storyblok-js-client/richTextResolver'
-import MySchema from 'storyblok-js-client/schema'
-
-MySchema.nodes.heading = function (node) {
-  let attrs = {}
-
-  if (
-    node.content &&
-    node.content.length === 1 &&
-    node.content[0].marks &&
-    node.content[0].marks.length === 1 &&
-    node.content[0].marks[0].type === 'styled'
-  ) {
-    attrs = node.content[0].marks[0].attrs
-    delete node.content[0].marks
-  }
-
-  return {
-    tag: [
-      {
-        tag: `h${node.attrs.level}`,
-        attrs: attrs,
-      },
-    ],
-  }
-}
-
-let rteResolver = new RichTextResolver(MySchema)
-let rendered = rteResolver.render({
-  content: [
-    {
-      content: [
-        {
-          text: 'Normal headline',
-          type: 'text',
-        },
-      ],
-      type: 'paragraph',
-    },
-    {
-      attrs: {
-        level: 3,
-      },
-      content: [
-        {
-          marks: [
-            {
-              attrs: {
-                class: 'margin-bottom-fdsafdsada',
-              },
-              type: 'styled',
-            },
-          ],
-          text: 'Styled headline',
-          type: 'text',
-        },
-      ],
-      type: 'heading',
-    },
-  ],
-  type: 'doc',
-})
-
-console.log(rendered)
-```
 
 ### Handling access token overwrite
 

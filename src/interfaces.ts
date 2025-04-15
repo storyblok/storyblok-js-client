@@ -244,8 +244,6 @@ export interface ISbConfig {
   maxRetries?: number;
   https?: boolean;
   rateLimit?: number;
-  componentResolver?: (component: string, data: any) => void;
-  richTextSchema?: ISbSchema;
   endpoint?: string;
   version?: 'draft' | 'published' | undefined;
 }
@@ -272,27 +270,6 @@ export interface ISbError {
   message?: string;
   status?: number;
   response?: ISbResponse;
-}
-
-export interface ISbNode extends Element {
-  content: object[];
-  attrs: {
-    anchor?: string;
-    body?: Array<ISbComponentType<any>>;
-    href?: string;
-    level?: number;
-    linktype?: string;
-    custom?: LinkCustomAttributes;
-    [key: string]: any | undefined;
-  };
-}
-
-export interface NodeSchema {
-  (node: ISbNode): object;
-}
-
-export interface MarkSchema {
-  (node: ISbNode): object;
 }
 
 export interface ISbContentMangmntAPI<
@@ -331,14 +308,6 @@ export interface ISbManagmentApiResult {
 export interface ISbSchema {
   nodes: any;
   marks: any;
-}
-
-export interface ISbRichtext {
-  content?: ISbRichtext[];
-  marks?: ISbRichtext[];
-  attrs?: any;
-  text?: string;
-  type: string;
 }
 
 export interface LinkCustomAttributes {
