@@ -173,6 +173,7 @@ describe('StoryblokClient', () => {
     it('should not flush the cache when version: published + clear: onpreview', async () => {
       client = new StoryblokClient({
         accessToken: process.env.VITE_ACCESS_TOKEN,
+        version: 'published',
         cache: { type: 'memory', clear: 'onpreview' },
       });
       const mapi = new StoryblokClient({ oauthToken: process.env.VITE_OAUTH_TOKEN });
