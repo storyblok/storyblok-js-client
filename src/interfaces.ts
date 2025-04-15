@@ -247,6 +247,7 @@ export interface ISbConfig {
   componentResolver?: (component: string, data: any) => void;
   richTextSchema?: ISbSchema;
   endpoint?: string;
+  version?: 'draft' | 'published' | undefined;
 }
 
 export interface ISbResult {

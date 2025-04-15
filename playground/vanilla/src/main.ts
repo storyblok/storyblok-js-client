@@ -1,5 +1,4 @@
 import StoryblokClient from 'storyblok-js-client'
-import RichTextResolver from 'storyblok-js-client/richTextResolver'
 import './style.css'
 
 const headers = new Headers()
@@ -13,27 +12,23 @@ console.log(headers2.constructor.name)
 const Storyblok = new StoryblokClient({
   accessToken: import.meta.env.VITE_ACCESS_TOKEN as string,
   headers,
+  version: 'draft',
 })
 
 try {
   const result = await Storyblok.get('cdn/stories/', {
-    version: 'draft',
     resolve_relations: 'root.author',
   })
-  const resolver = new RichTextResolver()
 
-  const paragraph = {
-    type: 'paragraph',
-    content: [
-      {
-        text: 'Bold and italic',
-        type: 'text',
-        marks: [{ type: 'bold' }, { type: 'italic' }],
-      },
-    ],
-  }
+  const links = await Storyblok.getAll('cdn/links', {
+    version: 'published',
+  })
 
-  const html = resolver.render(paragraph, {}, false)
+  console.log({
+    links,
+    result,
+  })
+
 
   document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <pre>
