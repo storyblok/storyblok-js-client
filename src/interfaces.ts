@@ -245,6 +245,7 @@ export interface ISbConfig {
   https?: boolean;
   rateLimit?: number;
   endpoint?: string;
+  version?: 'draft' | 'published' | undefined;
 }
 
 export interface ISbResult {
