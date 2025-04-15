@@ -1,4 +1,4 @@
-import { SbHelpers } from './sbHelpers';
+import { stringify } from './utils';
 
 import type {
   ISbCustomFetch,
@@ -108,10 +108,7 @@ class SbFetch {
     let body = null;
 
     if (method === 'get') {
-      const helper = new SbHelpers();
-      urlString = `${this.baseURL}${this.url}?${helper.stringify(
-        this.parameters,
-      )}`;
+      urlString = `${this.baseURL}${this.url}?${stringify(this.parameters)}`;
     }
     else {
       body = JSON.stringify(this.parameters);
