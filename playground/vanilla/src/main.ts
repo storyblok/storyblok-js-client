@@ -20,16 +20,6 @@ try {
     resolve_relations: 'root.author',
   })
 
-  const links = await Storyblok.getAll('cdn/links', {
-    version: 'published',
-  })
-
-  console.log({
-    links,
-    result,
-  })
-
-
   document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <pre>
     <code>
