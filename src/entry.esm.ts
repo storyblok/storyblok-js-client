@@ -5,4 +5,4 @@ export default Client;
 export * from './constants';
 export * from './interfaces';
 export { default as SbFetch } from './sbFetch';
-export * from './sbHelpers';
+export * from './utils';
