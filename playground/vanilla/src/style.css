@@ -1,3 +1,6 @@
+/* You can add global styles to this file, and also import other style files */
+@import "tailwindcss";
+
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -93,3 +96,5 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+/* Remove custom CSS classes that are now replaced by Tailwind */

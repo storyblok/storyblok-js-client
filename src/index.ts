@@ -1,5 +1,14 @@
 import throttledQueue from './throttlePromise';
-import { SbHelpers } from './sbHelpers';
+import {
+  asyncMap,
+  delay,
+  flatMap,
+  getOptionsPage,
+  getRegionURL,
+  isCDNUrl,
+  range,
+  stringify,
+} from './utils';
 import SbFetch from './sbFetch';
 import type Method from './constants';
 import { STORYBLOK_AGENT, STORYBLOK_JS_CLIENT_AGENT } from './constants';
@@ -59,7 +68,6 @@ class Storyblok {
   private throttle: ReturnType<typeof throttledQueue>;
   private accessToken: string;
   private cache: ISbCache;
-  private helpers: SbHelpers;
   private resolveCounter: number;
   public relations: RelationsType;
   public links: LinksType;
@@ -81,14 +89,13 @@ class Storyblok {
     let endpoint = config.endpoint || pEndpoint;
 
     if (!endpoint) {
-      const getRegion = new SbHelpers().getRegionURL;
       const protocol = config.https === false ? 'http' : 'https';
 
       if (!config.oauthToken) {
-        endpoint = `${protocol}://${getRegion(config.region)}/${'v2' as Version}`;
+        endpoint = `${protocol}://${getRegionURL(config.region)}/${'v2' as Version}`;
       }
       else {
-        endpoint = `${protocol}://${getRegion(config.region)}/${'v1' as Version}`;
+        endpoint = `${protocol}://${getRegionURL(config.region)}/${'v1' as Version}`;
       }
     }
 
@@ -139,7 +146,6 @@ class Storyblok {
     this.relations = {} as RelationsType;
     this.links = {} as LinksType;
     this.cache = config.cache || { clear: 'manual' };
-    this.helpers = new SbHelpers();
     this.resolveCounter = 0;
     this.resolveNestedRelations = config.resolveNestedRelations || true;
     this.stringifiedStoriesCache = {} as Record<string, string>;
@@ -178,7 +184,7 @@ class Storyblok {
     url: string,
     params: ISbStoriesParams,
   ): ISbStoriesParams {
-    if (this.helpers.isCDNUrl(url)) {
+    if (isCDNUrl(url)) {
       return this.parseParams(params);
     }
 
@@ -194,7 +200,7 @@ class Storyblok {
   ): Promise<ISbResult> {
     const query = this.factoryParamOptions(
       url,
-      this.helpers.getOptionsPage(params, per_page, page),
+      getOptionsPage(params, per_page, page),
     );
 
     return this.cacheResponse(url, query, undefined, fetchOptions);
@@ -251,14 +257,14 @@ class Storyblok {
     );
     const lastPage = firstRes.total ? Math.ceil(firstRes.total / perPage) : 1;
 
-    const restRes: any = await this.helpers.asyncMap(
-      this.helpers.range(firstPage, lastPage),
+    const restRes: any = await asyncMap(
+      range(firstPage, lastPage),
       (i: number) => {
         return this.makeRequest(url, params, perPage, i + 1, fetchOptions);
       },
     );
 
-    return this.helpers.flatMap([firstRes, ...restRes], (res: ISbFlatMapped) =>
+    return flatMap([firstRes, ...restRes], (res: ISbFlatMapped) =>
       Object.values(res.data[e]));
   }
 
@@ -653,7 +659,7 @@ class Storyblok {
     retries?: number,
     fetchOptions?: ISbCustomFetch,
   ): Promise<ISbResult> {
-    const cacheKey = this.helpers.stringify({ url, params });
+    const cacheKey = stringify({ url, params });
     const provider = this.cacheProvider();
 
     if (params.version === 'published' && url !== '/cdn/spaces/me') {
@@ -722,7 +728,7 @@ class Storyblok {
             console.log(
               `Hit rate limit. Retrying in ${this.retriesDelay / 1000} seconds.`,
             );
-            await this.helpers.delay(this.retriesDelay);
+            await delay(this.retriesDelay);
             return this.cacheResponse(url, params, retries)
               .then(resolve)
               .catch(reject);
