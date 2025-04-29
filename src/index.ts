@@ -268,9 +268,7 @@ class Storyblok {
   ): Promise<ISbResponseData> {
     const url = `/${slug}`;
 
-    return Promise.resolve(
-      this.throttle('post', url, params, fetchOptions),
-    ) as Promise<ISbResponseData>;
+    return this.throttle('post', url, params, fetchOptions) as Promise<ISbResponseData>;
   }
 
   public put(
@@ -280,9 +278,7 @@ class Storyblok {
   ): Promise<ISbResponseData> {
     const url = `/${slug}`;
 
-    return Promise.resolve(
-      this.throttle('put', url, params, fetchOptions),
-    ) as Promise<ISbResponseData>;
+    return this.throttle('put', url, params, fetchOptions) as Promise<ISbResponseData>;
   }
 
   public delete(
@@ -295,9 +291,7 @@ class Storyblok {
     }
     const url = `/${slug}`;
 
-    return Promise.resolve(
-      this.throttle('delete', url, params, fetchOptions),
-    ) as Promise<ISbResponseData>;
+    return this.throttle('delete', url, params, fetchOptions) as Promise<ISbResponseData>;
   }
 
   public getStories(
