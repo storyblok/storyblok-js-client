@@ -168,6 +168,44 @@ class SbFetch {
     this.ejectInterceptor = true;
   }
 
+  /**
+   * Normalizes error messages from different response structures
+   * @param data The response data that might contain error information
+   * @returns A normalized error message string
+   */
+  private _normalizeErrorMessage(data: any): string {
+    // Handle array of error messages
+    if (Array.isArray(data)) {
+      return data[0] || 'Unknown error';
+    }
+
+    // Handle object with error property
+    if (data && typeof data === 'object') {
+      // Check for common error message patterns
+      if (data.error) {
+        return data.error;
+      }
+
+      // Handle nested error objects (like { name: ['has already been taken'] })
+      for (const key in data) {
+        if (Array.isArray(data[key])) {
+          return `${key}: ${data[key][0]}`;
+        }
+        if (typeof data[key] === 'string') {
+          return `${key}: ${data[key]}`;
+        }
+      }
+
+      // If we have a slug, it might be an error message
+      if (data.slug) {
+        return data.slug;
+      }
+    }
+
+    // Fallback for unknown error structures
+    return 'Unknown error';
+  }
+
   private _statusHandler(res: ISbResponse): Promise<ISbResponse | ISbError> {
     const statusOk = /20[0-6]/g;
 
@@ -177,11 +215,9 @@ class SbFetch {
       }
 
       const error: ISbError = {
-        message: res.statusText,
+        message: this._normalizeErrorMessage(res.data),
         status: res.status,
-        response: Array.isArray(res.data)
-          ? res.data[0]
-          : res.data.error || res.data.slug,
+        response: res,
       };
 
       reject(error);
