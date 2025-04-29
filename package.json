@@ -98,7 +98,7 @@
     "rules": {
       "body-max-line-length": [
         2,
-        "always",
+        "never",
         200
       ],
       "footer-max-line-length": [
