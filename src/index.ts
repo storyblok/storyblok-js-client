@@ -11,7 +11,8 @@ import {
 } from './utils';
 import SbFetch from './sbFetch';
 import type Method from './constants';
-import { STORYBLOK_AGENT, STORYBLOK_JS_CLIENT_AGENT } from './constants';
+import type { StoryblokContentVersionKeys } from './constants';
+import { STORYBLOK_AGENT, STORYBLOK_JS_CLIENT_AGENT, StoryblokContentVersion } from './constants';
 
 import type {
   ICacheProvider,
@@ -71,7 +72,7 @@ class Storyblok {
   private resolveCounter: number;
   public relations: RelationsType;
   public links: LinksType;
-  public version: 'draft' | 'published' | undefined;
+  public version: StoryblokContentVersionKeys | undefined;
   /**
    * @deprecated This property is deprecated. Use the standalone `richTextResolver` from `@storyblok/richtext` instead.
    * @see https://github.com/storyblok/richtext
@@ -149,7 +150,7 @@ class Storyblok {
     this.resolveCounter = 0;
     this.resolveNestedRelations = config.resolveNestedRelations || true;
     this.stringifiedStoriesCache = {} as Record<string, string>;
-    this.version = config.version || 'draft';
+    this.version = config.version || StoryblokContentVersion.DRAFT;
 
     this.client = new SbFetch({
       baseURL: endpoint,
