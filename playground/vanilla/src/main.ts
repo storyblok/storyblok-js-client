@@ -3,8 +3,9 @@ import './style.css'
 
 const capi = new StoryblokClient({
   accessToken: import.meta.env.VITE_ACCESS_TOKEN as string,
-  region: 'eu',
+  version: 'draft',
 })
+
 
 const mapi = new StoryblokClient({
   oauthToken: import.meta.env.VITE_OAUTH_TOKEN as string,

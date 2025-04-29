@@ -11,7 +11,8 @@ import {
 } from './utils';
 import SbFetch from './sbFetch';
 import type Method from './constants';
-import { STORYBLOK_AGENT, STORYBLOK_JS_CLIENT_AGENT } from './constants';
+import type { StoryblokContentVersionKeys } from './constants';
+import { STORYBLOK_AGENT, STORYBLOK_JS_CLIENT_AGENT, StoryblokContentVersion } from './constants';
 
 import type {
   ICacheProvider,
@@ -71,6 +72,7 @@ class Storyblok {
   private resolveCounter: number;
   public relations: RelationsType;
   public links: LinksType;
+  public version: StoryblokContentVersionKeys | undefined;
   /**
    * @deprecated This property is deprecated. Use the standalone `richTextResolver` from `@storyblok/richtext` instead.
    * @see https://github.com/storyblok/richtext
@@ -148,6 +150,7 @@ class Storyblok {
     this.resolveCounter = 0;
     this.resolveNestedRelations = config.resolveNestedRelations || true;
     this.stringifiedStoriesCache = {} as Record<string, string>;
+    this.version = config.version || StoryblokContentVersion.DRAFT;
 
     this.client = new SbFetch({
       baseURL: endpoint,
@@ -225,6 +228,7 @@ class Storyblok {
       params = {} as ISbStoriesParams;
     }
     const url = `/${slug}`;
+    params.version = params.version || this.version;
     const query = this.factoryParamOptions(url, params);
 
     return this.cacheResponse(url, query, undefined, fetchOptions);
@@ -236,9 +240,13 @@ class Storyblok {
     entity?: string,
     fetchOptions?: ISbCustomFetch,
   ): Promise<any[]> {
+    if (!params) {
+      params = {} as ISbStoriesParams;
+    }
     const perPage = params?.per_page || 25;
     const url = `/${slug}`.replace(/\/$/, '');
     const e = entity ?? url.substring(url.lastIndexOf('/') + 1);
+    params.version = params.version || this.version;
 
     const firstPage = 1;
     const firstRes = await this.makeRequest(

@@ -1,5 +1,6 @@
 import type { ResponseFn } from './sbFetch';
 import type Method from './constants';
+import type { StoryblokContentVersionKeys } from './constants';
 
 export interface ISbStoriesParams
   extends Partial<ISbStoryData>,
@@ -40,7 +41,7 @@ export interface ISbStoriesParams
   sort_by?: string;
   starts_with?: string;
   token?: string;
-  version?: 'draft' | 'published';
+  version?: StoryblokContentVersionKeys;
   with_tag?: string;
 }
 
@@ -48,7 +49,7 @@ export interface ISbStoryParams {
   resolve_level?: number;
   token?: string;
   find_by?: 'uuid';
-  version?: 'draft' | 'published';
+  version?: StoryblokContentVersionKeys;
   resolve_links?: 'link' | 'url' | 'story' | '0' | '1';
   resolve_links_level?: 1 | 2;
   resolve_relations?: string | string[];
@@ -245,6 +246,7 @@ export interface ISbConfig {
   https?: boolean;
   rateLimit?: number;
   endpoint?: string;
+  version?: StoryblokContentVersionKeys | undefined;
 }
 
 export interface ISbResult {
@@ -334,7 +336,7 @@ export interface ISbLink {
 
 export interface ISbLinksParams {
   starts_with?: string;
-  version?: 'published' | 'draft';
+  version?: StoryblokContentVersionKeys;
   paginated?: number;
   per_page?: number;
   page?: number;
