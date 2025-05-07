@@ -4,6 +4,7 @@ import './style.css'
 const capi = new StoryblokClient({
   accessToken: import.meta.env.VITE_ACCESS_TOKEN as string,
   version: 'draft',
+  skipRelationInlining: true,
 })
 
 
@@ -61,7 +62,11 @@ const handleError = (error: any) => {
 const getStories = async () => {
   return await capi.get('cdn/stories/', {
     version: 'draft',
-    resolve_relations: 'root.author',
+    resolve_relations: 'article-page.author',
+  }, {
+    headers: {
+      'test': 'custom',
+    },
   })
 }
 
@@ -118,6 +123,7 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 document.getElementById('get-stories')?.addEventListener('click', async () => {
   try {
     const result = await getStories()
+    console.log(result.data.rels)
     displayResult(result)
   } catch (error) {
     handleError(error)

@@ -413,6 +413,28 @@ Storyblok.delete('spaces/<YOUR_SPACE_ID>/stories/1')
 Storyblok.flushCache()
 ```
 
+### Configuration
+
+The Storyblok client accepts the following configuration options:
+
+```javascript
+{
+  accessToken: <YOUR_SPACE_ACCESS_TOKEN>,
+  cache: {
+    clear: "auto",
+    type: "memory",
+  },
+  responseInterceptor: (response) => {
+    // one can handle status codes and more with the response
+    if (response.status === 200) {
+      // handle your status here
+    }
+    // ALWAYS return the response
+    return response;
+  },
+  skipRelationInlining: false, // Set to true to skip inlining relations while still getting them in the rels array
+}
+```
 
 ## Code examples
 

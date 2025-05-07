@@ -79,6 +79,7 @@ class Storyblok {
    */
   public richTextResolver: unknown;
   public resolveNestedRelations: boolean;
+  public skipRelationInlining: boolean;
   private stringifiedStoriesCache: Record<string, string>;
 
   /**
@@ -149,6 +150,7 @@ class Storyblok {
     this.cache = config.cache || { clear: 'manual' };
     this.resolveCounter = 0;
     this.resolveNestedRelations = config.resolveNestedRelations || true;
+    this.skipRelationInlining = config.skipRelationInlining || false;
     this.stringifiedStoriesCache = {} as Record<string, string>;
     this.version = config.version || StoryblokContentVersion.DRAFT;
 
@@ -692,7 +694,10 @@ class Storyblok {
         if (response.data.story || response.data.stories) {
           const resolveId = (this.resolveCounter
             = ++this.resolveCounter % 1000);
-          await this.resolveStories(response.data, params, `${resolveId}`);
+          // Skip resolveStories entirely if skipRelationInlining is enabled
+          if (!this.skipRelationInlining) {
+            await this.resolveStories(response.data, params, `${resolveId}`);
+          }
         }
 
         if (params.version === 'published' && url !== '/cdn/spaces/me') {

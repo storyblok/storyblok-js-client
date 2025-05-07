@@ -247,6 +247,7 @@ export interface ISbConfig {
   rateLimit?: number;
   endpoint?: string;
   version?: StoryblokContentVersionKeys | undefined;
+  skipRelationInlining?: boolean;
 }
 
 export interface ISbResult {
