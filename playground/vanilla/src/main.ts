@@ -6,11 +6,11 @@ const capi = new StoryblokClient({
   version: 'draft',
 })
 
-
 const mapi = new StoryblokClient({
   oauthToken: import.meta.env.VITE_OAUTH_TOKEN as string,
   region: 'eu',
 })
+
 
 // Function to check if tokens are available
 const checkTokens = () => {
@@ -59,10 +59,11 @@ const handleError = (error: any) => {
  * @returns Promise with the story data
  */
 const getStories = async () => {
-  return await capi.get('cdn/stories/', {
+  /* return await capi.get('cdn/stories/', {
     version: 'draft',
     resolve_relations: 'root.author',
-  })
+  }) */
+  return await capi.getStories()
 }
 
 /**
@@ -70,9 +71,7 @@ const getStories = async () => {
  * @returns Promise with the links data
  */
 const getLinks = async () => {
-  return await capi.getAll('cdn/links', {
-    version: 'published',
-  })
+  return await capi.getAll('cdn/links')
 }
 
 /**
