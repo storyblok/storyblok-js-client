@@ -9,6 +9,7 @@ import type {
   ICacheProvider,
   IMemoryType,
   ISbCache,
+  ISbComponentType,
   ISbConfig,
   ISbContentMangmntAPI,
   ISbCustomFetch,
@@ -567,7 +568,7 @@ class Storyblok {
     params: ISbStoriesParams,
     resolveId: string,
   ): Promise<void> {
-    let relations = [];
+    let relations: ISbStoryData<ISbComponentType<string> & { [index: string]: any }>[] = [];
 
     if (responseData.rel_uuids) {
       const relSize = responseData.rel_uuids.length;
@@ -592,6 +593,12 @@ class Storyblok {
         relationsRes.data.stories.forEach((rel: ISbStoryData) => {
           relations.push(rel);
         });
+      }
+
+      // Replace rel_uuids with the fully resolved stories and clear it
+      if (relations.length > 0) {
+        responseData.rels = relations;
+        delete responseData.rel_uuids;
       }
     }
     else {
