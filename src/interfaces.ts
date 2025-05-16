@@ -247,6 +247,7 @@ export interface ISbConfig {
   componentResolver?: (component: string, data: any) => void;
   richTextSchema?: ISbSchema;
   endpoint?: string;
+  inlineAssets?: boolean;
 }
 
 export interface ISbResult {
@@ -425,4 +426,10 @@ export interface ISbAssetsParams {
   by_alt?: string;
   by_copyright?: string;
   by_title?: string;
+}
+
+export interface ISbField {
+  fieldtype: string;
+  id: string;
+  [key: string]: unknown;
 }

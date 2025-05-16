@@ -13,6 +13,7 @@ import type {
   ISbConfig,
   ISbContentMangmntAPI,
   ISbCustomFetch,
+  ISbField,
   ISbLinksParams,
   ISbLinksResult,
   ISbLinkURLObject,
@@ -74,6 +75,7 @@ class Storyblok {
   public richTextResolver: RichTextResolver;
   public resolveNestedRelations: boolean;
   private stringifiedStoriesCache: Record<string, string>;
+  private inlineAssets: boolean;
 
   /**
    *
@@ -157,6 +159,7 @@ class Storyblok {
     this.resolveCounter = 0;
     this.resolveNestedRelations = config.resolveNestedRelations || true;
     this.stringifiedStoriesCache = {} as Record<string, string>;
+    this.inlineAssets = config.inlineAssets || false;
 
     this.client = new SbFetch({
       baseURL: endpoint,
@@ -722,6 +725,7 @@ class Storyblok {
           const resolveId = (this.resolveCounter
             = ++this.resolveCounter % 1000);
           await this.resolveStories(response.data, params, `${resolveId}`);
+          response = await this.processInlineAssets(response);
         }
 
         if (params.version === 'published' && url !== '/cdn/spaces/me') {
@@ -839,6 +843,59 @@ class Storyblok {
     await this.cacheProvider().flush();
     this.clearCacheVersion();
     return this;
+  }
+
+  private async processInlineAssets(response: ISbResult): Promise<ISbResult> {
+    if (!this.inlineAssets) {
+      return response;
+    }
+
+    const processNode = (node: ISbField): unknown => {
+      if (!node || typeof node !== 'object') {
+        return node;
+      }
+
+      // Handle arrays
+      if (Array.isArray(node)) {
+        return node.map(item => processNode(item));
+      }
+
+      // Process object
+      let processedNode = { ...node };
+
+      // Check if this is an asset field
+      if (processedNode.fieldtype === 'asset' && Array.isArray(response.data.assets)) {
+        // Replace the assets array with the actual asset objects
+        processedNode = {
+          ...processedNode,
+          ...response.data.assets.find((asset: any) => asset.id === processedNode.id),
+        };
+      }
+
+      // Recursively process all properties
+      for (const key in processedNode) {
+        if (typeof processedNode[key] === 'object') {
+          processedNode[key] = processNode(processedNode[key] as ISbField);
+        }
+      }
+
+      return processedNode;
+    };
+
+    // Process the story content
+    if (response.data.story) {
+      response.data.story.content = processNode(response.data.story.content);
+    }
+
+    // Process all stories if present
+    if (response.data.stories) {
+      response.data.stories = response.data.stories.map((story: any) => {
+        story.content = processNode(story.content);
+        return story;
+      });
+    }
+
+    return response;
   }
 }
 
