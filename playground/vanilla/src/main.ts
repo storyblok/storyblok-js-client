@@ -4,6 +4,7 @@ import './style.css'
 const capi = new StoryblokClient({
   accessToken: import.meta.env.VITE_ACCESS_TOKEN as string,
   version: 'draft',
+  inlineAssets: true,
 })
 
 const mapi = new StoryblokClient({

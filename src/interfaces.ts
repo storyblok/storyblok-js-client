@@ -247,6 +247,7 @@ export interface ISbConfig {
   rateLimit?: number;
   endpoint?: string;
   version?: StoryblokContentVersionKeys | undefined;
+  inlineAssets?: boolean;
 }
 
 export interface ISbResult {
@@ -360,7 +361,7 @@ export interface Queue<T> {
 export interface ISbResponseData {
   link_uuids: string[];
   links: string[];
-  rel_uuids: string[];
+  rel_uuids?: string[];
   rels: any;
   story: ISbStoryData;
   stories: Array<ISbStoryData>;
@@ -396,4 +397,10 @@ export interface ISbAssetsParams {
   by_alt?: string;
   by_copyright?: string;
   by_title?: string;
+}
+
+export interface ISbField {
+  fieldtype: string;
+  id: string;
+  [key: string]: unknown;
 }

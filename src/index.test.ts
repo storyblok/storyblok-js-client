@@ -659,6 +659,119 @@ describe('storyblokClient', () => {
   });
 
   describe('relation resolution', () => {
+    it('should resolve more than 50 relations correctly', async () => {
+      // Create 60 UUIDs to exceed the 50 relation limit
+      const TEST_UUIDS = Array.from({ length: 60 }, (_, i) => `test-uuid-${i}`);
+
+      // Mock story with multiple relation fields
+      const mockResponse = {
+        data: {
+          story: {
+            content: {
+              _uid: 'root-uid',
+              component: 'page',
+              items: TEST_UUIDS.slice(0, 30), // First 30 UUIDs
+              otherItems: TEST_UUIDS.slice(30), // Next 30 UUIDs
+            },
+          },
+          // Include rel_uuids but not rels to simulate API behavior
+          rel_uuids: TEST_UUIDS,
+        },
+        headers: {},
+        status: 200,
+        statusText: 'OK',
+      };
+
+      // Create first chunk response (first 50 relations)
+      const mockFirstChunkResponse = {
+        data: {
+          stories: TEST_UUIDS.slice(0, 50).map(uuid => ({
+            uuid,
+            name: `Story ${uuid}`,
+            content: { component: 'test-component', _uid: uuid },
+            full_slug: `stories/${uuid}`,
+          })),
+        },
+        headers: {},
+        status: 200,
+        statusText: 'OK',
+      };
+
+      // Create second chunk response (remaining relations)
+      const mockSecondChunkResponse = {
+        data: {
+          stories: TEST_UUIDS.slice(50).map(uuid => ({
+            uuid,
+            name: `Story ${uuid}`,
+            content: { component: 'test-component', _uid: uuid },
+            full_slug: `stories/${uuid}`,
+          })),
+        },
+        headers: {},
+        status: 200,
+        statusText: 'OK',
+      };
+
+      // Setup the mock client's get method
+      const mockGet = vi.fn()
+        .mockImplementationOnce(() => Promise.resolve(mockResponse))
+        .mockImplementationOnce(() => Promise.resolve(mockFirstChunkResponse))
+        .mockImplementationOnce(() => Promise.resolve(mockSecondChunkResponse));
+
+      // Replace the client's fetch instance
+      client.client = {
+        get: mockGet,
+        post: vi.fn(),
+        setFetchOptions: vi.fn(),
+      };
+
+      const result = await client.get('cdn/stories/test', {
+        resolve_relations: ['page.items', 'page.otherItems'],
+      });
+
+      // Ensure all relations were resolved
+      const story = result.data.story;
+      expect(story.content.items).toBeInstanceOf(Array);
+      expect(story.content.items.length).toBe(30);
+      expect(story.content.otherItems).toBeInstanceOf(Array);
+      expect(story.content.otherItems.length).toBe(30);
+
+      // Check that first and last items from each array were properly resolved
+      // First array items should be objects, not UUIDs
+      expect(typeof story.content.items[0]).toBe('object');
+      expect(story.content.items[0].uuid).toBe('test-uuid-0');
+      expect(story.content.items[0].name).toBe('Story test-uuid-0');
+      expect(story.content.items[0].content.component).toBe('test-component');
+
+      // Last item in first array
+      expect(typeof story.content.items[29]).toBe('object');
+      expect(story.content.items[29].uuid).toBe('test-uuid-29');
+
+      // First item in second array
+      expect(typeof story.content.otherItems[0]).toBe('object');
+      expect(story.content.otherItems[0].uuid).toBe('test-uuid-30');
+
+      // Last item in second array
+      expect(typeof story.content.otherItems[29]).toBe('object');
+      expect(story.content.otherItems[29].uuid).toBe('test-uuid-59');
+
+      // Ensure rel_uuids was removed after resolution
+      expect(result.data.rel_uuids).toBeUndefined();
+
+      // Verify the API was called correctly for chunking
+      expect(mockGet).toHaveBeenCalledTimes(3);
+
+      // Check the parameters in second call (first chunk)
+      const firstChunkParams = mockGet.mock.calls[1][1];
+      expect(firstChunkParams).toHaveProperty('by_uuids');
+      expect(firstChunkParams.by_uuids).toContain('test-uuid-0');
+
+      // Check the parameters in third call (second chunk)
+      const secondChunkParams = mockGet.mock.calls[2][1];
+      expect(secondChunkParams).toHaveProperty('by_uuids');
+      expect(secondChunkParams.by_uuids).toContain('test-uuid-50');
+    });
+
     it('should resolve nested relations within content blocks', async () => {
       const TEST_UUID = 'this-is-a-test-uuid';
 
