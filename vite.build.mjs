@@ -17,18 +17,6 @@ const bundles = [
     name: 'StoryblokJSClient',
     fileName: 'index',
   },
-  {
-    entry: 'richTextResolver.ts',
-    formats: ['es', 'umd'],
-    name: 'RichTextResolver',
-    fileName: 'richTextResolver',
-  },
-  {
-    entry: 'schema.ts',
-    formats: ['es', 'umd'],
-    name: 'RichTextSchema',
-    fileName: 'schema',
-  },
 ]
 
 ;(async () => {

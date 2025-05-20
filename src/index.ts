@@ -1,9 +1,18 @@
 import throttledQueue from './throttlePromise';
-import RichTextResolver from './richTextResolver';
-import { SbHelpers } from './sbHelpers';
+import {
+  asyncMap,
+  delay,
+  flatMap,
+  getOptionsPage,
+  getRegionURL,
+  isCDNUrl,
+  range,
+  stringify,
+} from './utils';
 import SbFetch from './sbFetch';
 import type Method from './constants';
-import { STORYBLOK_AGENT, STORYBLOK_JS_CLIENT_AGENT } from './constants';
+import type { StoryblokContentVersionKeys } from './constants';
+import { STORYBLOK_AGENT, STORYBLOK_JS_CLIENT_AGENT, StoryblokContentVersion } from './constants';
 
 import type {
   ICacheProvider,
@@ -17,7 +26,6 @@ import type {
   ISbLinksParams,
   ISbLinksResult,
   ISbLinkURLObject,
-  ISbNode,
   ISbResponse,
   ISbResponseData,
   ISbResult,
@@ -31,10 +39,6 @@ import type {
 let memory: Partial<IMemoryType> = {};
 
 const cacheVersions = {} as CachedVersions;
-
-interface ComponentResolverFn {
-  (...args: any): any;
-}
 
 interface CachedVersions {
   [key: string]: number;
@@ -67,12 +71,15 @@ class Storyblok {
   private throttle: ReturnType<typeof throttledQueue>;
   private accessToken: string;
   private cache: ISbCache;
-  private helpers: SbHelpers;
   private resolveCounter: number;
   public relations: RelationsType;
   public links: LinksType;
-  // TODO: Remove on v7.x.x
-  public richTextResolver: RichTextResolver;
+  public version: StoryblokContentVersionKeys | undefined;
+  /**
+   * @deprecated This property is deprecated. Use the standalone `richTextResolver` from `@storyblok/richtext` instead.
+   * @see https://github.com/storyblok/richtext
+   */
+  public richTextResolver: unknown;
   public resolveNestedRelations: boolean;
   private stringifiedStoriesCache: Record<string, string>;
   private inlineAssets: boolean;
@@ -86,14 +93,13 @@ class Storyblok {
     let endpoint = config.endpoint || pEndpoint;
 
     if (!endpoint) {
-      const getRegion = new SbHelpers().getRegionURL;
       const protocol = config.https === false ? 'http' : 'https';
 
       if (!config.oauthToken) {
-        endpoint = `${protocol}://${getRegion(config.region)}/${'v2' as Version}`;
+        endpoint = `${protocol}://${getRegionURL(config.region)}/${'v2' as Version}`;
       }
       else {
-        endpoint = `${protocol}://${getRegion(config.region)}/${'v1' as Version}`;
+        endpoint = `${protocol}://${getRegionURL(config.region)}/${'v1' as Version}`;
       }
     }
 
@@ -132,17 +138,6 @@ class Storyblok {
       rateLimit = config.rateLimit;
     }
 
-    if (config.richTextSchema) {
-      this.richTextResolver = new RichTextResolver(config.richTextSchema);
-    }
-    else {
-      this.richTextResolver = new RichTextResolver();
-    }
-
-    if (config.componentResolver) {
-      this.setComponentResolver(config.componentResolver);
-    }
-
     this.maxRetries = config.maxRetries || 10;
     this.retriesDelay = 300;
     this.throttle = throttledQueue(
@@ -155,10 +150,10 @@ class Storyblok {
     this.relations = {} as RelationsType;
     this.links = {} as LinksType;
     this.cache = config.cache || { clear: 'manual' };
-    this.helpers = new SbHelpers();
     this.resolveCounter = 0;
     this.resolveNestedRelations = config.resolveNestedRelations || true;
     this.stringifiedStoriesCache = {} as Record<string, string>;
+    this.version = config.version || StoryblokContentVersion.DRAFT;
     this.inlineAssets = config.inlineAssets || false;
 
     this.client = new SbFetch({
@@ -167,22 +162,6 @@ class Storyblok {
       headers,
       responseInterceptor: config.responseInterceptor,
       fetch: config.fetch,
-    });
-  }
-
-  public setComponentResolver(resolver: ComponentResolverFn): void {
-    this.richTextResolver.addNode('blok', (node: ISbNode) => {
-      let html = '';
-
-      if (node.attrs.body) {
-        node.attrs.body.forEach((blok) => {
-          html += resolver(blok.component, blok);
-        });
-      }
-
-      return {
-        html,
-      };
     });
   }
 
@@ -210,7 +189,7 @@ class Storyblok {
     url: string,
     params: ISbStoriesParams,
   ): ISbStoriesParams {
-    if (this.helpers.isCDNUrl(url)) {
+    if (isCDNUrl(url)) {
       return this.parseParams(params);
     }
 
@@ -226,7 +205,7 @@ class Storyblok {
   ): Promise<ISbResult> {
     const query = this.factoryParamOptions(
       url,
-      this.helpers.getOptionsPage(params, per_page, page),
+      getOptionsPage(params, per_page, page),
     );
 
     return this.cacheResponse(url, query, undefined, fetchOptions);
@@ -246,13 +225,14 @@ class Storyblok {
 
   public get(
     slug: string,
-    params?: ISbStoriesParams | ISbLinksParams,
+    params: ISbStoriesParams | ISbLinksParams = {},
     fetchOptions?: ISbCustomFetch,
   ): Promise<ISbResult | ISbLinksResult> {
     if (!params) {
       params = {} as ISbStoriesParams;
     }
     const url = `/${slug}`;
+    params.version = params.version || this.version;
     const query = this.factoryParamOptions(url, params);
 
     return this.cacheResponse(url, query, undefined, fetchOptions);
@@ -260,13 +240,14 @@ class Storyblok {
 
   public async getAll(
     slug: string,
-    params: ISbStoriesParams,
+    params: ISbStoriesParams = {},
     entity?: string,
     fetchOptions?: ISbCustomFetch,
   ): Promise<any[]> {
     const perPage = params?.per_page || 25;
     const url = `/${slug}`.replace(/\/$/, '');
     const e = entity ?? url.substring(url.lastIndexOf('/') + 1);
+    params.version = params.version || this.version;
 
     const firstPage = 1;
     const firstRes = await this.makeRequest(
@@ -278,44 +259,40 @@ class Storyblok {
     );
     const lastPage = firstRes.total ? Math.ceil(firstRes.total / perPage) : 1;
 
-    const restRes: any = await this.helpers.asyncMap(
-      this.helpers.range(firstPage, lastPage),
+    const restRes: any = await asyncMap(
+      range(firstPage, lastPage),
       (i: number) => {
         return this.makeRequest(url, params, perPage, i + 1, fetchOptions);
       },
     );
 
-    return this.helpers.flatMap([firstRes, ...restRes], (res: ISbFlatMapped) =>
+    return flatMap([firstRes, ...restRes], (res: ISbFlatMapped) =>
       Object.values(res.data[e]));
   }
 
   public post(
     slug: string,
-    params: ISbStoriesParams | ISbContentMangmntAPI,
+    params: ISbStoriesParams | ISbContentMangmntAPI = {},
     fetchOptions?: ISbCustomFetch,
   ): Promise<ISbResponseData> {
     const url = `/${slug}`;
 
-    return Promise.resolve(
-      this.throttle('post', url, params, fetchOptions),
-    ) as Promise<ISbResponseData>;
+    return this.throttle('post', url, params, fetchOptions) as Promise<ISbResponseData>;
   }
 
   public put(
     slug: string,
-    params: ISbStoriesParams | ISbContentMangmntAPI,
+    params: ISbStoriesParams | ISbContentMangmntAPI = {},
     fetchOptions?: ISbCustomFetch,
   ): Promise<ISbResponseData> {
     const url = `/${slug}`;
 
-    return Promise.resolve(
-      this.throttle('put', url, params, fetchOptions),
-    ) as Promise<ISbResponseData>;
+    return this.throttle('put', url, params, fetchOptions) as Promise<ISbResponseData>;
   }
 
   public delete(
     slug: string,
-    params: ISbStoriesParams | ISbContentMangmntAPI,
+    params: ISbStoriesParams | ISbContentMangmntAPI = {},
     fetchOptions?: ISbCustomFetch,
   ): Promise<ISbResponseData> {
     if (!params) {
@@ -323,13 +300,11 @@ class Storyblok {
     }
     const url = `/${slug}`;
 
-    return Promise.resolve(
-      this.throttle('delete', url, params, fetchOptions),
-    ) as Promise<ISbResponseData>;
+    return this.throttle('delete', url, params, fetchOptions) as Promise<ISbResponseData>;
   }
 
   public getStories(
-    params: ISbStoriesParams,
+    params: ISbStoriesParams = {},
     fetchOptions?: ISbCustomFetch,
   ): Promise<ISbStories> {
     this._addResolveLevel(params);
@@ -339,7 +314,7 @@ class Storyblok {
 
   public getStory(
     slug: string,
-    params: ISbStoryParams,
+    params: ISbStoryParams = {},
     fetchOptions?: ISbCustomFetch,
   ): Promise<ISbStory> {
     this._addResolveLevel(params);
@@ -686,7 +661,7 @@ class Storyblok {
     retries?: number,
     fetchOptions?: ISbCustomFetch,
   ): Promise<ISbResult> {
-    const cacheKey = this.helpers.stringify({ url, params });
+    const cacheKey = stringify({ url, params });
     const provider = this.cacheProvider();
 
     if (params.version === 'published' && url !== '/cdn/spaces/me') {
@@ -756,7 +731,7 @@ class Storyblok {
             console.log(
               `Hit rate limit. Retrying in ${this.retriesDelay / 1000} seconds.`,
             );
-            await this.helpers.delay(this.retriesDelay);
+            await delay(this.retriesDelay);
             return this.cacheResponse(url, params, retries)
               .then(resolve)
               .catch(reject);

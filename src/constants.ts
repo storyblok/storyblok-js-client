@@ -17,3 +17,15 @@ export const STORYBLOK_JS_CLIENT_AGENT = {
   defaultAgentVersion: 'SB-Agent-Version',
   packageVersion: '6.0.0',
 };
+
+export const StoryblokContentVersion = {
+  DRAFT: 'draft',
+  PUBLISHED: 'published',
+} as const;
+
+export type StoryblokContentVersionKeys =
+  typeof StoryblokContentVersion[keyof typeof StoryblokContentVersion];
+
+export const StoryblokContentVersionValues = Object.values(
+  StoryblokContentVersion,
+) as StoryblokContentVersionKeys[];

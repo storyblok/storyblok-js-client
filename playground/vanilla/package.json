@@ -9,7 +9,9 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "@tailwindcss/vite": "^4.1.4",
     "pathe": "^1.1.2",
+    "tailwindcss": "^4.1.4",
     "typescript": "^5.7.2",
     "vite": "^5.4.11",
     "vite-plugin-qrcode": "^0.2.3"

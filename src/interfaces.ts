@@ -1,5 +1,6 @@
 import type { ResponseFn } from './sbFetch';
 import type Method from './constants';
+import type { StoryblokContentVersionKeys } from './constants';
 
 export interface ISbStoriesParams
   extends Partial<ISbStoryData>,
@@ -40,7 +41,7 @@ export interface ISbStoriesParams
   sort_by?: string;
   starts_with?: string;
   token?: string;
-  version?: 'draft' | 'published';
+  version?: StoryblokContentVersionKeys;
   with_tag?: string;
 }
 
@@ -48,7 +49,7 @@ export interface ISbStoryParams {
   resolve_level?: number;
   token?: string;
   find_by?: 'uuid';
-  version?: 'draft' | 'published';
+  version?: StoryblokContentVersionKeys;
   resolve_links?: 'link' | 'url' | 'story' | '0' | '1';
   resolve_links_level?: 1 | 2;
   resolve_relations?: string | string[];
@@ -244,9 +245,8 @@ export interface ISbConfig {
   maxRetries?: number;
   https?: boolean;
   rateLimit?: number;
-  componentResolver?: (component: string, data: any) => void;
-  richTextSchema?: ISbSchema;
   endpoint?: string;
+  version?: StoryblokContentVersionKeys | undefined;
   inlineAssets?: boolean;
 }
 
@@ -272,27 +272,6 @@ export interface ISbError {
   message?: string;
   status?: number;
   response?: ISbResponse;
-}
-
-export interface ISbNode extends Element {
-  content: object[];
-  attrs: {
-    anchor?: string;
-    body?: Array<ISbComponentType<any>>;
-    href?: string;
-    level?: number;
-    linktype?: string;
-    custom?: LinkCustomAttributes;
-    [key: string]: any | undefined;
-  };
-}
-
-export interface NodeSchema {
-  (node: ISbNode): object;
-}
-
-export interface MarkSchema {
-  (node: ISbNode): object;
 }
 
 export interface ISbContentMangmntAPI<
@@ -333,14 +312,6 @@ export interface ISbSchema {
   marks: any;
 }
 
-export interface ISbRichtext {
-  content?: ISbRichtext[];
-  marks?: ISbRichtext[];
-  attrs?: any;
-  text?: string;
-  type: string;
-}
-
 export interface LinkCustomAttributes {
   rel?: string;
   title?: string;
@@ -366,7 +337,7 @@ export interface ISbLink {
 
 export interface ISbLinksParams {
   starts_with?: string;
-  version?: 'published' | 'draft';
+  version?: StoryblokContentVersionKeys;
   paginated?: number;
   per_page?: number;
   page?: number;

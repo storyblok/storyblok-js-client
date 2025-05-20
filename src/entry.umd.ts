@@ -1,8 +1,6 @@
 import Client from './index';
-import RichtextResolver from './richTextResolver';
 import SbFetch from './sbFetch';
-import RichTextSchema from './schema';
-import * as sbHelpers from './sbHelpers';
+import * as utils from './utils';
 
 const extend = (to: Record<any, any>, _from: Record<any, any>) => {
   for (const key in _from) {
@@ -10,8 +8,8 @@ const extend = (to: Record<any, any>, _from: Record<any, any>) => {
   }
 };
 
-extend(Client, { RichtextResolver, SbFetch, RichTextSchema });
-extend(Client, sbHelpers);
+extend(Client, { SbFetch });
+extend(Client, utils);
 
 // Single default export object for UMD friendly bundle
 export default Client;

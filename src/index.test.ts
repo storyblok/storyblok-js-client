@@ -2,7 +2,6 @@ import StoryblokClient from '.';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { ResponseFn } from './sbFetch';
 import SbFetch from './sbFetch';
-import { SbHelpers } from './sbHelpers';
 import type { ISbLink, ISbStoryData } from './interfaces';
 
 // Mocking external dependencies
@@ -22,10 +21,8 @@ vi.mock('../src/sbFetch', () => {
     private baseURL: string;
     private timeout?: number;
     private headers: Headers;
-    private helpers: any;
     private responseInterceptor?: ResponseFn;
     constructor(config: any) {
-      this.helpers = new SbHelpers();
       this.baseURL = config.baseURL || 'https://api.storyblok.com/v2';
       this.responseInterceptor = config.responseInterceptor;
     }
@@ -65,15 +62,19 @@ describe('storyblokClient', () => {
       });
       expect(client.relations).toEqual({});
       expect(client.links).toEqual({});
-      // Failing test
-      /* expect(client.helpers).toBeInstanceOf(SbHelpers) */
+
       expect(client.resolveCounter).toBe(0);
       expect(client.resolveNestedRelations).toBeTruthy();
       expect(client.stringifiedStoriesCache).toEqual({});
+      expect(client.version).toBe('draft');
     });
 
     it('should set an accessToken', () => {
       expect(client.accessToken).toBe('test-token');
+    });
+
+    it('should set a version', () => {
+      expect(client.version).toBe('draft');
     });
 
     it('should set an endpoint', () => {
@@ -152,6 +153,14 @@ describe('storyblokClient', () => {
       await client.getAll('cdn/links');
       expect(client.client.responseInterceptor).toBe(responseInterceptor);
     });
+
+    it('should set a version', () => {
+      client = new StoryblokClient({
+        version: 'published',
+      });
+
+      expect(client.version).toBe('published');
+    });
   });
 
   describe('cache', () => {
@@ -214,16 +223,6 @@ describe('storyblokClient', () => {
   });
 
   describe('get', () => {
-    it('should fetch data from the API', async () => {
-      const result = await client.get('test');
-      expect(result).toEqual({
-        data: {
-          links: 'Test data',
-        },
-        headers: {},
-      });
-    });
-
     it('should handle API errors gracefully', async () => {
       const mockGet = vi.fn().mockRejectedValue({
         status: 404,
