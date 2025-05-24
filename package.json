@@ -1,7 +1,7 @@
 {
   "name": "storyblok-js-client",
-  "version": "6.10.11",
-  "packageManager": "pnpm@10.10.0",
+  "version": "7.0.0",
+  "packageManager": "pnpm@10.11.0",
   "description": "Universal JavaScript SDK for Storyblok's API",
   "author": "Alexander Feiglstorfer <delooks@gmail.com>",
   "license": "MIT",
