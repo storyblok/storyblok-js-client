@@ -50,6 +50,7 @@ export interface ISbStoryParams {
   token?: string;
   find_by?: 'uuid';
   version?: StoryblokContentVersionKeys;
+  resolve_assets?: number;
   resolve_links?: 'link' | 'url' | 'story' | '0' | '1';
   resolve_links_level?: 1 | 2;
   resolve_relations?: string | string[];
